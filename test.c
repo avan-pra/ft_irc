@@ -35,7 +35,6 @@ int main(int argc, char **argv)
 		printf("could not socket()\n");
 		return (1);
 	}
-	printf("%d\n", socket_fd);
 	serv.sin_addr.s_addr = INADDR_ANY;//htonl(INADDR_ANY);
 	serv.sin_family = PF_INET;
 	serv.sin_port = htons(atoi(argv[1]));
@@ -46,7 +45,6 @@ int main(int argc, char **argv)
 		printf("could not bind()\n");
 		return (1);
 	}
-	printf("%d\n", binderr);
 	l_err = listen(socket_fd, 128);
 	if (l_err != 0)
 	{
@@ -54,10 +52,9 @@ int main(int argc, char **argv)
 		printf("could not listen()\n");
 		return (1);
 	}
-	printf("%d\n", l_err);
 	sock_len = sizeof(cli);
 	acc_fd[0] = accept(socket_fd, (struct sockaddr *)&cli, &sock_len);
-	//acc_fd[1] = accept(socket_fd, (struct sockaddr *)&cli, &sock_len);
+	acc_fd[1] = accept(socket_fd, (struct sockaddr *)&cli, &sock_len);
 	if (acc_fd[0] < 0 && acc_fd[1] < 0)
 	{
 		printf("could not listen()\n");
@@ -84,7 +81,7 @@ int main(int argc, char **argv)
 				recv(acc_fd[i], buf, 255, 0);
 			if (buf[0] != '\0')
 			{
-				printf("%d\n", i);
+				printf("%s\n", buf);
 				tmp = 0;
 				while(tmp < 2)
 				{
