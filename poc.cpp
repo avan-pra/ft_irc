@@ -2,14 +2,16 @@
 #include <netinet/in.h> // For sockaddr_in
 #include <stdio.h>
 #include <arpa/inet.h>
+#include <iostream>
+#include <cerrno>
 
 #define SOCKET_FD	int
 
 int main(void)
 {
-	SOCKET_FD fd_user;	//fd pour transmettre des donnees
+	SOCKET_FD sock_fd;	//fd pour transmettre des donnees
 
-	socket(AF_INET, SOCK_STREAM, 0);
+	sock_fd = socket(AF_INET, SOCK_STREAM, 0);
 	/*
 	** socket() c'est l'equivalent de open() mais au lieu d'ouvrir un fichier, cela ouvre un fd qui sert à trasmettre des data
 	**
@@ -45,5 +47,17 @@ int main(void)
 	*/
 	// uint32_t i = 0xdeadbeef;
 	// printf("%x\n%x\n", i, htonl(i));
+	
+	bind(sock_fd, (const struct sockaddr*)&sock_attribute, sizeof(sock_attribute));
+	/*
+	** engros ca applique la configuration que l'on veut du socket via la structure cree ci dessus (sockaddr_in)
+	*/
 
+	listen(sock_fd, 1);
+	/*
+	** 
+	*/
+
+	socklen_t len = sizeof(sock_attribute);
+	accept(sock_fd, (struct sockaddr *)&sock_attribute, &len);
 }
