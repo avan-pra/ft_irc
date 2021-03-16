@@ -16,17 +16,16 @@
 #define closesocket(param) close(param)
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
-#define closesocket(param) close(param)
 
 #define PORT 6667
 
-#ifndef SOCK_NONBLOCK
-# define SOCK_NONBLOCK 2048
-#endif
+// #ifndef SOCK_NONBLOCK
+// # define SOCK_NONBLOCK 2048
+// #endif
 
-#ifndef O_NONBLOCK
-# define O_NONBLOCK 4
-#endif
+// #ifndef O_NONBLOCK
+// # define O_NONBLOCK 4
+// #endif
 
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -45,11 +44,11 @@ typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 
-SOCKET					g_serv_sock;
-std::vector<SOCKET>		g_cli_sock;
+extern SOCKET					g_serv_sock;
+extern std::vector<SOCKET>		g_cli_sock;
 
 /*
- ** setup_server.c
+** setup_server.c
 */
 
 void		sig_handler(int signal);

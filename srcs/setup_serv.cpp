@@ -38,8 +38,7 @@ int			setup_server()
 
 	if (sock == INVALID_SOCKET)
 		throw std::exception();
-
-	std::cout << "Le socket %d " << g_serv_sock << " est maintenant ouverte en mode TCP/IP\n";
+	std::cout << "Socket created" << std::endl;
 
 	sin.sin_addr.s_addr = INADDR_ANY;
 	sin.sin_family = AF_INET;
@@ -47,12 +46,12 @@ int			setup_server()
 
 	if (bind(sock, (SOCKADDR*)&sin, sizeof(sin)) == SOCKET_ERROR)
 		throw std::exception();
+	std::cout << "Socket successfully binded to port number " << PORT << std::endl;
 
 	if (listen(sock, 5) == SOCKET_ERROR)
 		throw std::exception();
-	std::cout << "Listage du port %d" << PORT << "...\n";
+	std::cout << "Started listening for connection on port number " << PORT << "...\n";
 
 	g_serv_sock = sock;
 	return (0);
 }
-

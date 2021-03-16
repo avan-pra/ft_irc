@@ -12,8 +12,18 @@
 
 #include "../includes/IRCserv.hpp"
 
+SOCKET					g_serv_sock;
+std::vector<SOCKET>		g_cli_sock;
+
 int			main(void)
 {
-	
+	try
+	{
+		setup_server();
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
 	return (0);
 }
