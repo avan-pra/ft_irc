@@ -22,11 +22,5 @@ int			main(void)
 		setup_server();
 	}
 	catch(const std::exception& e) { exit(1); }
-	
-	while (true)
-	{
-		
-	}
-	
 	return (0);
 }
