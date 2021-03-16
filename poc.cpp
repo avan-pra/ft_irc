@@ -51,11 +51,14 @@ int main(void)
 	bind(sock_fd, (const struct sockaddr*)&sock_attribute, sizeof(sock_attribute));
 	/*
 	** engros ca applique la configuration que l'on veut du socket via la structure cree ci dessus (sockaddr_in)
-	*/
-
-	listen(sock_fd, 1);
+    ** comme son nom l'indique le socket va se bind sur l'interface, le port etc... que l'on aura specifié
+	** et on peut donc (par exemple) nc sur le port en question (la connection ne pas etre accepté pour autant (pour le moment))
+    */
+	
+    listen(sock_fd, 1);
 	/*
-	** 
+	** fait en sorte que le socket PUISSE accepter des connections.
+    ** le 2eme parametre, c'est le nombre de connection que je veux mettre en attente (avant de les accepter)
 	*/
 
 	socklen_t len = sizeof(sock_attribute);
