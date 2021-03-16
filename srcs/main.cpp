@@ -21,9 +21,12 @@ int			main(void)
 	{
 		setup_server();
 	}
-	catch(const std::exception& e)
+	catch(const std::exception& e) { exit(1); }
+	
+	while (true)
 	{
-		std::cerr << e.what() << '\n';
+		
 	}
+	
 	return (0);
 }

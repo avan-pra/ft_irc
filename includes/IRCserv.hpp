@@ -19,14 +19,6 @@
 
 #define PORT 6667
 
-// #ifndef SOCK_NONBLOCK
-// # define SOCK_NONBLOCK 2048
-// #endif
-
-// #ifndef O_NONBLOCK
-// # define O_NONBLOCK 4
-// #endif
-
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <netinet/in.h>

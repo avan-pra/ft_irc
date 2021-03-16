@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/IRCserv.hpp"
+#include <stdio.h>
 
 void		sig_handler(int signal)
 {
@@ -28,13 +29,8 @@ int			setup_server()
 	SOCKET		sock;
 	SOCKADDR_IN sin;
 
-	#ifdef __APPLE__
-		sock = socket(AF_INET, SOCK_STREAM, 0);
-		fcntl(sock, F_SETFL, O_NONBLOCK);
-	#endif
-	#ifdef __linux__
-		sock = socket(AF_INET, SOCK_STREAM, SOCK_NONBLOCK);
-	#endif
+	sock = socket(AF_INET, SOCK_STREAM, 0);
+	fcntl(sock, F_SETFL, O_NONBLOCK);
 
 	if (sock == INVALID_SOCKET)
 		throw std::exception();
