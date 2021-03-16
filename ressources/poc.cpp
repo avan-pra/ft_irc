@@ -79,4 +79,7 @@ int main(void)
 
 	socklen_t len = sizeof(sock_attribute);
 	accept(sock_fd, (struct sockaddr *)&sock_attribute, &len);
+	/*
+	** accept pending connection if one is available
+	*/
 }
