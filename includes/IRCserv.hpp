@@ -40,10 +40,16 @@ extern SOCKET					g_serv_sock;
 extern std::vector<SOCKET>		g_cli_sock;
 
 /*
-** setup_server.c
+** setup_server.cpp
 */
 
 void		sig_handler(int signal);
 int			setup_server();
+
+/*
+** run_server.cpp
+*/
+
+void        run_server();
 
 #endif
