@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/17 15:30:03 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/17 15:50:46 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ class Server
 		fd_set	_exceptfs;
 		int		_max_fd;
 		timeval	_timeout;
-	
+
 	public:
-		
+
+		std::vector<int>	_client_fd;
+
 		Server();
 		~Server();
 
