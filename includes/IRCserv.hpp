@@ -39,17 +39,22 @@ typedef struct in_addr IN_ADDR;
 extern SOCKET					g_serv_sock;
 extern std::vector<SOCKET>		g_cli_sock;
 
+class Server;
+
 /*
 ** setup_server.cpp
 */
-
 void		sig_handler(int signal);
 int			setup_server();
 
 /*
 ** run_server.cpp
 */
-
 void        run_server();
+
+/*
+** accept.cpp
+*/
+void accept_user(Server &serv);
 
 #endif

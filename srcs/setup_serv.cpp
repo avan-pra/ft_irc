@@ -29,6 +29,8 @@ int			setup_server()
 	SOCKET		sock;
 	SOCKADDR_IN sin;
 
+	signal(SIGINT, sig_handler);
+
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	fcntl(sock, F_SETFL, O_NONBLOCK);
 

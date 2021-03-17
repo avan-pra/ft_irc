@@ -32,8 +32,6 @@ class Server
 
 	public:
 
-		std::vector<int>	_client_fd;
-
 		Server();
 		~Server();
 
@@ -41,6 +39,7 @@ class Server
 		fd_set &get_writefs();
 		fd_set &get_exceptfs();
 		int		get_max_fd();
+		timeval	&get_timeout();
 
 		void	set_max_fd(int);
 };
@@ -63,9 +62,10 @@ fd_set	&Server::get_readfs() { return _readfs; }
 fd_set	&Server::get_writefs() { return _writefs; }
 fd_set	&Server::get_exceptfs() { return _exceptfs; }
 int		Server::get_max_fd() { return _max_fd; }
+timeval	&Server::get_timeout() { return _timeout; }
 
 /*
-**
+** setter
 */
 void	Server::set_max_fd(int value) { _max_fd = value; }
 
