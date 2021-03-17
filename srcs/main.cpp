@@ -22,6 +22,7 @@ int			main(void)
 		setup_server();
 	}
 	catch(const std::exception& e) { exit(1); }
+
 	run_server();
 	return (0);
 }
