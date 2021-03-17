@@ -41,6 +41,8 @@ class Server
 		fd_set &get_writefs();
 		fd_set &get_exceptfs();
 		int		get_max_fd();
+
+		void	set_max_fd(int);
 };
 
 Server::Server()
@@ -60,6 +62,11 @@ Server::~Server()
 fd_set	&Server::get_readfs() { return _readfs; }
 fd_set	&Server::get_writefs() { return _writefs; }
 fd_set	&Server::get_exceptfs() { return _exceptfs; }
-int Server::get_max_fd() { return _max_fd; }
+int		Server::get_max_fd() { return _max_fd; }
+
+/*
+**
+*/
+void	Server::set_max_fd(int value) { _max_fd = value; }
 
 #endif
