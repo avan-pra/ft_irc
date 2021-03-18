@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/18 10:51:57 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/18 15:09:40 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,10 @@ void		run_server();
 */
 void		accept_user(Server &serv);
 void		try_accept_user(Server *serv);
+
+/*
+ ** ft_bzero.cpp
+*/
+void		ft_bzero(void *s, size_t n);
 
 #endif
