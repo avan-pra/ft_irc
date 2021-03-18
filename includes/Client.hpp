@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/18 11:50:38 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/18 15:10:57 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <string>
 # include <vector>
 # include <list>
-
-# include "Channel.hpp"
+# include <netinet/in.h>
+# include "IRCserv.hpp"
 
 class Channel;
 
@@ -27,7 +27,7 @@ class Client
 {
 	private:
 	
-		//int         _fd;
+		SOCKET      _fd;
 		std::string _nickname;
 		std::string	_username;
 		std::string	_hostname;
@@ -37,6 +37,8 @@ class Client
 		//std::vector<Channel>	_channels;	
 	public:
 		
+		sockaddr_in	sock_addr;
+
 		Client()
 		{
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   IRCserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/18 15:09:40 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/18 15:14:48 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # include <iostream>
 # include <vector>
 # include "./Server.hpp"
+# include "./Client.hpp"
+# include "./Channel.hpp"
 
 typedef int	SOCKET;
 typedef struct sockaddr_in SOCKADDR_IN;
