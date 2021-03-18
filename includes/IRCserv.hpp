@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/18 15:14:48 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/18 15:52:26 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct in_addr IN_ADDR;
 
 extern SOCKET					g_serv_sock;
 extern std::vector<SOCKET>		g_cli_sock;
+extern std::vector<Client>      g_aClient;
 
 class Server;
 

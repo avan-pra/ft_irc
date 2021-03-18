@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/18 11:49:55 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/18 15:55:21 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 # include <iostream>
 # include <string>
 # include <vector>
-
-# include "Client.hpp"
 
 class Client;
 
@@ -33,18 +31,8 @@ class Channel
 		std::vector<Client> _users;
 		
 	public:
-
-		Channel(/* args */);
+		Channel();
 		~Channel();
 };
-
-Channel::Channel(/* args */)
-{
-}
-
-Channel::~Channel()
-{
-}
-
 
 #endif
