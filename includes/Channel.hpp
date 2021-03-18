@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/16 15:49:19 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/18 11:49:55 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <vector>
 
 # include "Client.hpp"
+
+class Client;
 
 class Channel
 {
