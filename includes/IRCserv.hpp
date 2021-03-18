@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/18 10:31:57 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/18 10:51:57 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ void		run_server();
 ** get_client.cpp
 */
 void		accept_user(Server &serv);
+void		try_accept_user(Server *serv);
 
 #endif
