@@ -44,7 +44,7 @@ void run_server()
 		readyfd = select(serv.get_max_fd() + 1, &serv.get_readfs(), &serv.get_writefs(), &serv.get_exceptfs(), &serv.get_timeout());
 
 		try_accept_user(&serv);
-		for (size_t fd = 0; fd < g_cli_sock.size() || FD_ISSET(g_serv_sock, &serv.get_readfs()); ++fd)
+		for (size_t fd = 0; fd < g_cli_sock.size(); ++fd)
 		{
 			if (FD_ISSET(g_cli_sock[fd], &serv.get_readfs()))
 			{
