@@ -6,14 +6,14 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 09:49:00 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/18 20:51:45 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/18 20:56:08 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/IRCserv.hpp"
 # include <algorithm>
 
-bool sort_as(const std::pair<SOCKET,Client> &a,  const std::pair<SOCKET,Client> &b) 
+bool sort_dec(const std::pair<SOCKET,Client> &a,  const std::pair<SOCKET,Client> &b) 
 { 
   return (a.first > b.first); 
 }
@@ -31,8 +31,10 @@ void accept_user(Server &serv)
 		<< ntohs(clSock.sin_port) << std::endl;
 	new_client._fd = &new_fd;
 	new_client.sock_addr = clSock;
+	//push de <fd, User> sur le vecteur
 	g_aClient.push_back(std::make_pair(new_fd, new_client));
-	std::sort(g_aClient.begin(), g_aClient.end(), sort_as);
+	//sort en ordre decroissant en fonction de la key(ou first)
+	std::sort(g_aClient.begin(), g_aClient.end(), sort_dec);
 }
 
 void try_accept_user(Server *serv)
