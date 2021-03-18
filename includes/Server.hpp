@@ -6,12 +6,12 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/17 15:50:46 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/18 10:35:16 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_HPP
-# define SERVER_HPP
+#ifndef SERVER
+# define SERVER
 
 # include <unistd.h>
 # include <iostream>
@@ -32,41 +32,36 @@ class Server
 
 	public:
 
-		Server();
-		~Server();
+		Server()
+		{
+			set_timeout(10);
+			_max_fd = 0;
+		}
 
-		fd_set &get_readfs();
-		fd_set &get_writefs();
-		fd_set &get_exceptfs();
-		int		get_max_fd();
-		timeval	&get_timeout();
+		~Server()
+		{
+			;
+		}
 
-		void	set_max_fd(int);
+		/*
+		 ** getter
+		 */
+		fd_set	&get_readfs() { return _readfs; }
+		fd_set	&get_writefs() { return _writefs; }
+		fd_set	&get_exceptfs() { return _exceptfs; }
+		int		get_max_fd() { return _max_fd; }
+		timeval	&get_timeout() { return _timeout; }
+
+		/*
+		 ** setter
+		 */
+		void	set_max_fd(int value) { _max_fd = value; }
+		void	set_timeout(int sec = int(), int usec = int())
+		{
+			_timeout.tv_sec = sec;
+			_timeout.tv_usec = usec;
+		}
+
+
 };
-
-Server::Server()
-{
-	_timeout = {10, 0};
-	_max_fd = 0;
-}
-
-Server::~Server()
-{
-	;
-}
-
-/*
-** getter
-*/
-fd_set	&Server::get_readfs() { return _readfs; }
-fd_set	&Server::get_writefs() { return _writefs; }
-fd_set	&Server::get_exceptfs() { return _exceptfs; }
-int		Server::get_max_fd() { return _max_fd; }
-timeval	&Server::get_timeout() { return _timeout; }
-
-/*
-** setter
-*/
-void	Server::set_max_fd(int value) { _max_fd = value; }
-
 #endif

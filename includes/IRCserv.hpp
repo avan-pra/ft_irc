@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/16 15:35:16 by lmoulin          ###   ########.fr       */
+/*   Updated: 2021/03/18 10:31:57 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include <fcntl.h>
 # include <iostream>
 # include <vector>
+# include "./Server.hpp"
 
 typedef int	SOCKET;
 typedef struct sockaddr_in SOCKADDR_IN;
@@ -50,11 +51,11 @@ int			setup_server();
 /*
 ** run_server.cpp
 */
-void        run_server();
+void		run_server();
 
 /*
-** accept.cpp
+** get_client.cpp
 */
-void accept_user(Server &serv);
+void		accept_user(Server &serv);
 
 #endif

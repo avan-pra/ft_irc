@@ -14,7 +14,7 @@ static void re_init_serv_class(Server &serv)
 		if (serv.get_max_fd() < g_serv_sock)
 			serv.set_max_fd(g_serv_sock);
 	}
-	serv.get_timeout() = {10, 0};
+	serv.set_timeout(10);
 }
 
 static void push_fd_to_set(Server &serv)
@@ -30,13 +30,13 @@ static void push_fd_to_set(Server &serv)
 	}
 }
 
-void accept_user(Server &serv)
+void try_accept_user(Server *serv)
 {
-	FD_CLR(g_serv_sock, &serv.get_readfs());
-	SOCKET new_user;
-
-	new_user = accept(g_serv_sock, NULL, NULL); //null pour le moment, faudra probablement changer et mettre une structure dans user
-	g_cli_sock.push_back(new_user);
+	if (FD_ISSET(g_serv_sock, &serv->get_readfs()))
+	{
+		accept_user(*serv);
+		std::cout << "new user" << std::endl;
+	}
 }
 
 void run_server()
@@ -51,13 +51,9 @@ void run_server()
 		push_fd_to_set(serv);
 
 		readyfd = select(serv.get_max_fd() + 1, &serv.get_readfs(), &serv.get_writefs(), &serv.get_exceptfs(), &serv.get_timeout());
-		for (int fd = 0; fd < g_cli_sock.size() || FD_ISSET(g_serv_sock, &serv.get_readfs()); ++fd)
+		for (size_t fd = 0; fd < g_cli_sock.size() || FD_ISSET(g_serv_sock, &serv.get_readfs()); ++fd)
 		{
-			if (FD_ISSET(g_serv_sock, &serv.get_readfs()))
-			{
-				accept_user(serv);
-				std::cout << "new user" << std::endl;
-			}
+			try_accept_user(&serv);
 			if (FD_ISSET(g_cli_sock[fd], &serv.get_readfs()))
 			{
 				int ret = recv(g_cli_sock[fd], &c, 512, 0);
