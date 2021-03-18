@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/16 15:48:37 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/18 11:50:38 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,31 +21,29 @@
 
 # include "Channel.hpp"
 
+class Channel;
+
 class Client
 {
 	private:
 	
-		int         _fd;
+		//int         _fd;
 		std::string _nickname;
 		std::string	_username;
 		std::string	_hostname;
 		std::string	_realname;
-		int			_status; //?
+		//int			_status;
 	
-		std::vector<Channel>	_channels;	
+		//std::vector<Channel>	_channels;	
 	public:
 		
-		Client(std::string const nick, );
-		~Client();
+		Client()
+		{
+		}
+
+		~Client()
+		{
+		}
 };
-
-Client::Client(/* args */)
-{
-}
-
-Client::~Client()
-{
-}
-
 
 #endif
