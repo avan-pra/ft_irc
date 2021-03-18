@@ -30,15 +30,6 @@ static void push_fd_to_set(Server &serv)
 	}
 }
 
-void try_accept_user(Server *serv)
-{
-	if (FD_ISSET(g_serv_sock, &serv->get_readfs()))
-	{
-		accept_user(*serv);
-		std::cout << "new user" << std::endl;
-	}
-}
-
 void run_server()
 {
 	Server serv;
