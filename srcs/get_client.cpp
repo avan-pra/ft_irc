@@ -51,6 +51,5 @@ void try_accept_user(Server *serv)
 	if (FD_ISSET(g_serv_sock, &serv->get_readfs()))
 	{
 		accept_user(*serv);
-		std::cout << "new user" << std::endl;
 	}
 }
