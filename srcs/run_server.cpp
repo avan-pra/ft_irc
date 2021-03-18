@@ -55,14 +55,13 @@ void run_server()
 		{
 			if (FD_ISSET(g_cli_sock[fd], &serv.get_readfs()))
 			{
-				std::memset(c, 0, sizeof(c));
+				ft_bzero((char *)c, sizeof(c));
 				int ret = recv(g_cli_sock[fd], &c, BUFF_SIZE, 0);
 				if (ret == 0)
 					disconnect_client(&fd);
 				else if (ret > 0)
 				{
 					c[ret] = '\0';
-					std::cout << c;
 					//parser(c);
 				}
 				else
