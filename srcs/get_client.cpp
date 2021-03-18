@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_client.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 09:49:00 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/18 10:51:42 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/18 12:30:20 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@ void accept_user(Server &serv)
 {
 	FD_CLR(g_serv_sock, &serv.get_readfs());
 	SOCKET new_user;
+	sockaddr_in	clSock;
+	socklen_t	clSock_len = sizeof(clSock);
 
-	new_user = accept(g_serv_sock, NULL, NULL); //null pour le moment, faudra probablement changer et mettre une structure dans user
+	new_user = accept(g_serv_sock, (sockaddr*)&clSock, &clSock_len); //null pour le moment, faudra probablement changer et mettre une structure dans user
+	std::cout << inet_ntoa(clSock.sin_addr)<< ":"
+		<< ntohs(clSock.sin_port) << std::endl;
 	g_cli_sock.push_back(new_user);
 }
 
