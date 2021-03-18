@@ -30,6 +30,14 @@ static void push_fd_to_set(Server &serv)
 	}
 }
 
+void		disconnect_client(size_t *fd)
+{
+	std::cout << "goodbye" << std::endl;
+	closesocket(g_cli_sock[*fd]);
+	g_cli_sock.erase(g_cli_sock.begin() + *fd);
+	(*fd)--;
+}
+
 void run_server()
 {
 	Server serv;
@@ -48,14 +56,16 @@ void run_server()
 		{
 			if (FD_ISSET(g_cli_sock[fd], &serv.get_readfs()))
 			{
-				int ret = recv(g_cli_sock[fd], &c, 512, 0);
+				int ret = recv(g_cli_sock[fd], &c, 511, 0);
 				if (ret == 0)
+					disconnect_client(&fd);
+				else if (ret > 0)
 				{
-					std::cout << "goodbye" << std::endl;
-					closesocket(g_cli_sock[fd]);
-					g_cli_sock.erase(g_cli_sock.begin() + fd);
-					--fd;
+					c[ret] = '\0';
+					//parser(c);
 				}
+				else
+					std::cout << "Error : recv()\n";
 			}
 		}
 		std::cout << "nombre de clients " << g_cli_sock.size() << std::endl;
