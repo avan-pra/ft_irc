@@ -6,12 +6,12 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 09:49:00 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/18 12:30:20 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/18 14:34:41 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/IRCserv.hpp"
-#include "../includes/Server.hpp"
+# include "../includes/IRCserv.hpp"
+# include "../includes/Server.hpp"
 
 void accept_user(Server &serv)
 {
@@ -21,7 +21,7 @@ void accept_user(Server &serv)
 	socklen_t	clSock_len = sizeof(clSock);
 
 	new_user = accept(g_serv_sock, (sockaddr*)&clSock, &clSock_len); //null pour le moment, faudra probablement changer et mettre une structure dans user
-	std::cout << inet_ntoa(clSock.sin_addr)<< ":"
+	std::cout << "* New User connected at: " << inet_ntoa(clSock.sin_addr)<< ":"
 		<< ntohs(clSock.sin_port) << std::endl;
 	g_cli_sock.push_back(new_user);
 }
