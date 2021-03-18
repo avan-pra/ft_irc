@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 09:49:00 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/18 20:40:28 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/18 20:51:45 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void accept_user(Server &serv)
 		<< ntohs(clSock.sin_port) << std::endl;
 	new_client._fd = &new_fd;
 	new_client.sock_addr = clSock;
-	g_tryPair.push_back(std::make_pair(new_fd, new_client));
-	std::sort(g_tryPair.begin(), g_tryPair.end(), sort_as);
+	g_aClient.push_back(std::make_pair(new_fd, new_client));
+	std::sort(g_aClient.begin(), g_aClient.end(), sort_as);
 }
 
 void try_accept_user(Server *serv)

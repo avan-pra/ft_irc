@@ -6,7 +6,7 @@
 /*   By: lmoulin <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:27:54 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/03/18 19:42:18 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/18 20:49:35 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void		sig_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		for (std::vector<std::pair<SOCKET, Client> >::iterator it = g_tryPair.begin(); it != g_tryPair.end(); ++it)
+		for (std::vector<std::pair<SOCKET, Client> >::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
 			closesocket(it->first);
 		closesocket(g_serv_sock);
 		exit(0);

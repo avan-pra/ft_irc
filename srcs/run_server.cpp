@@ -8,7 +8,7 @@ static void re_init_serv_class(Server &serv)
 	FD_ZERO(&serv.get_writefs());
 	FD_ZERO(&serv.get_exceptfs());
 	{
-		serv.set_max_fd(g_tryPair.empty() ? 0 : g_tryPair[0].first);
+		serv.set_max_fd(g_aClient.empty() ? 0 : g_aClient[0].first);
 		if (serv.get_max_fd() < g_serv_sock)
 			serv.set_max_fd(g_serv_sock);
 	}
@@ -20,7 +20,7 @@ static void push_fd_to_set(Server &serv)
 	//push to server to read set
 	FD_SET(g_serv_sock, &serv.get_readfs());
 	//push all client fd to all 3 set
-	for (std::vector<std::pair<SOCKET, Client> >::iterator ite = g_tryPair.begin(); ite != g_tryPair.end(); ++ite)
+	for (std::vector<std::pair<SOCKET, Client> >::iterator ite = g_aClient.begin(); ite != g_aClient.end(); ++ite)
 	{
 		FD_SET(ite->first, &serv.get_readfs());
 		// FD_SET(*ite, &serv.get_writefs());
@@ -30,10 +30,10 @@ static void push_fd_to_set(Server &serv)
 
 void		disconnect_client(size_t &i)
 {
-	closesocket(g_tryPair[i].first);
-	std::cout << "* User disconnected from: " << inet_ntoa(g_tryPair[i].second.sock_addr.sin_addr)
-		<< ":" << ntohs(g_tryPair[i].second.sock_addr.sin_port) << std::endl;
-	g_tryPair.erase(g_tryPair.begin() + i);
+	closesocket(g_aClient[i].first);
+	std::cout << "* User disconnected from: " << inet_ntoa(g_aClient[i].second.sock_addr.sin_addr)
+		<< ":" << ntohs(g_aClient[i].second.sock_addr.sin_port) << std::endl;
+	g_aClient.erase(g_aClient.begin() + i);
 	i--;
 }
 
@@ -51,12 +51,12 @@ void run_server()
 		readyfd = select(serv.get_max_fd() + 1, &serv.get_readfs(), &serv.get_writefs(), &serv.get_exceptfs(), &serv.get_timeout());
 
 		try_accept_user(&serv);
-		for (size_t i = 0; i != g_tryPair.size(); ++i)
+		for (size_t i = 0; i != g_aClient.size(); ++i)
 		{
-			if (FD_ISSET(g_tryPair[i].first, &serv.get_readfs()))
+			if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()))
 			{
 				ft_bzero((char *)c, sizeof(c));
-				int ret = recv(g_tryPair[i].first, &c, BUFF_SIZE, 0);
+				int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
 				if (ret == 0)
 					disconnect_client(i);
 				else if (ret > 0)
