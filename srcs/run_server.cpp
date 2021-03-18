@@ -33,6 +33,8 @@ static void push_fd_to_set(Server &serv)
 void		disconnect_client(size_t *fd)
 {
 	closesocket(g_cli_sock[*fd]);
+	//mettre un msg de disconnect ici
+	//std::cout << "* User disconnected from: " << IP << ":" << PORT << std::endl;
 	g_cli_sock.erase(g_cli_sock.begin() + *fd);
 	(*fd)--;
 }
