@@ -42,6 +42,7 @@ class Server
 		{
 			;
 		}
+		//class coplienne
 
 		/*
 		 ** getter
@@ -61,7 +62,6 @@ class Server
 			_timeout.tv_sec = sec;
 			_timeout.tv_usec = usec;
 		}
-
-
 };
+
 #endif

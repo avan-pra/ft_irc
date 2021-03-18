@@ -30,4 +30,3 @@ void try_accept_user(Server *serv)
 		std::cout << "new user" << std::endl;
 	}
 }
-

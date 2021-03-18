@@ -13,11 +13,13 @@
 #ifndef IRCSERV_HPP
 # define IRCSERV_HPP
 
-#define closesocket(param) close(param)
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR -1
+# define closesocket(param) close(param)
+# define INVALID_SOCKET -1
+# define SOCKET_ERROR -1
 
-#define PORT 6667
+# define PORT 6667
+
+# define BUFF_SIZE 512
 
 # include <sys/types.h>
 # include <sys/socket.h>

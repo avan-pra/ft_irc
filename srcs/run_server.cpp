@@ -42,9 +42,10 @@ void run_server()
 		push_fd_to_set(serv);
 
 		readyfd = select(serv.get_max_fd() + 1, &serv.get_readfs(), &serv.get_writefs(), &serv.get_exceptfs(), &serv.get_timeout());
+
+		try_accept_user(&serv);
 		for (size_t fd = 0; fd < g_cli_sock.size() || FD_ISSET(g_serv_sock, &serv.get_readfs()); ++fd)
 		{
-			try_accept_user(&serv);
 			if (FD_ISSET(g_cli_sock[fd], &serv.get_readfs()))
 			{
 				int ret = recv(g_cli_sock[fd], &c, 512, 0);
@@ -57,6 +58,6 @@ void run_server()
 				}
 			}
 		}
-		std::cout << g_cli_sock.size() << std::endl;
+		std::cout << "nombre de clients " << g_cli_sock.size() << std::endl;
 	}
 }
