@@ -1,71 +1,6 @@
 #include <iostream>
 #include "../includes/IRCserv.hpp"
 
-enum commandCode
-{
-	// RFC 1459
-	ePASS,
-	eNICK,
-	eUSER,
-	eSERVER,
-	eOPER,
-	eQUIT,
-	eSQUIT,
-	eJOIN,
-	ePART,
-	eMODE,
-	eTOPIC,
-	eNAMES,
-	eLIST,
-	eINVITE,
-	eKICK,
-	eVERSION,
-	eSTATS,
-	eLINKS,
-	eTIME,
-	eCONNECT,
-	eTRACE,
-	eADMIN,
-	eINFO,
-	ePRIVMSG,
-	eNOTICE,
-	eWHO,
-	eWHOIS,
-	eWHOWAS,
-	eKILL,
-	ePING,
-	ePONG,
-	eERROR,
-	eAWAY,
-	eREHASH,
-	eRESTART,
-	eSUMMON,
-	eUSERS,
-	eWALLOPS,
-	eUSERHOST,
-	eISON,
-
-	// RFC 2812
-	eSERVICE,
-	eMOTD,
-	eLUSERS,
-	eSERVLIST,
-	eSQUERY,
-	eDIE,
-
-	//RFC 2813
-	eNJOIN,
-};
-
-static commandCode hashit(const std::string &inString)
-{
-	if (inString == "NICK") return eNICK;
-	if (inString == "PRIVMSG") return ePRIVMSG;
-	if (inString == "MODE") return eMODE;
-	if (inString == "PING") return ePING;
-	return eERROR;
-}
-
 static void	build_unfinished_packet(const std::string &true_line, const size_t &client_idx, std::string &last)
 {
 	// si il y a un crlf en fin de string alors c'est good, on stock R
@@ -96,7 +31,6 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 
 	for (size_t i = 0; packet[i] != std::string(""); ++i)
 	{
-		//packet[i].substr(0, packet[i].find(" ", 0))
 		try
 		{
 			std::cout << serv.get_command().at(packet[i].substr(0, packet[i].find(" ", 0))) << std::endl;
