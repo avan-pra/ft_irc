@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/19 16:31:01 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/19 16:40:38 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,16 @@ void		ft_bzero(void *s, size_t n);
 **	ft_atoi.cpp
 */
 int			ft_atoi(std::string str);
+
+/*
+** ft_split.cpp
+*/
+std::string		*ft_split(std::string s, std::string splitter);
+
+/*
+** parser.cpp
+*/
+void            parser(char *line, const size_t &client_idx);
+
 
 #endif
