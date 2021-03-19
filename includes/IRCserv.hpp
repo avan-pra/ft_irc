@@ -91,7 +91,7 @@ std::string		*ft_split(std::string s, std::string splitter);
 /*
 ** parser.cpp
 */
-void            parser(char *line, const size_t &client_idx);
+void            parser(char *line, const size_t &client_idx, const Server &server);
 
 
 #endif

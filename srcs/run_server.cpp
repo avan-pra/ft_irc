@@ -61,7 +61,7 @@ void run_server(Server &serv)
 				else if (ret > 0)
 				{
 					c[ret] = '\0';
-					parser(c, i);
+					parser(c, i, serv);
 				}
 				else
 					std::cout << "Error : recv()\n";
