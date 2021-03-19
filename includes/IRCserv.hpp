@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/18 20:46:29 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/19 16:31:01 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 
 # define BUFF_SIZE 512
 
+# define FILE_NAME "../irc.conf"
+
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <netinet/in.h>
@@ -34,6 +36,7 @@
 # include <vector>
 # include <utility>
 # include <functional>
+# include <fstream>
 # include "./Server.hpp"
 # include "./Client.hpp"
 # include "./Channel.hpp"
@@ -57,7 +60,7 @@ int			setup_server();
 /*
 ** run_server.cpp
 */
-void		run_server();
+void		run_server(Server &serv);
 
 /*
 ** get_client.cpp
@@ -66,8 +69,18 @@ void		accept_user(Server &serv);
 void		try_accept_user(Server *serv);
 
 /*
+** parse_conf.cpp
+*/
+void		parse_conf(Server &serv);
+
+/*
  ** ft_bzero.cpp
 */
 void		ft_bzero(void *s, size_t n);
+
+/*
+**	ft_atoi.cpp
+*/
+int			ft_atoi(std::string str);
 
 #endif

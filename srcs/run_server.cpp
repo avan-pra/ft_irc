@@ -37,9 +37,8 @@ void		disconnect_client(size_t &i)
 	i--;
 }
 
-void run_server()
+void run_server(Server &serv)
 {
-	Server serv;
 	int readyfd;
 	char c[BUFF_SIZE + 1];
 

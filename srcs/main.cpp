@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:04 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/03/18 20:46:47 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/19 16:30:22 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int			main(void)
 	}
 	catch(const std::exception& e) { exit(1); }
 
-	run_server();
+	Server serv;
+	parse_conf(serv);
+	run_server(serv);
 	return (0);
 }
