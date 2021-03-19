@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 15:17:11 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/19 11:50:17 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/19 12:28:22 by lmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int				len(std::string s, std::string splitter)
 	while (ret < s.length())
 	{
 		ret = s.find(splitter, ret);
-			if (ret == std::string::npos)
-				break ;
 		if (ret == std::string::npos)
 			break;
 		ret += splitter.length();
@@ -56,7 +54,7 @@ std::string		*ft_split(std::string s, std::string splitter)
 		if (k != ret)
 		{
 			if (ret == std::string::npos)
-				break ;
+				now[i] = s.substr(k);
 			else
 			{
 				now[i] = s.substr(k);
