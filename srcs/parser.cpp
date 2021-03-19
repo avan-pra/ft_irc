@@ -3,17 +3,62 @@
 
 enum commandCode
 {
-	eCAP,
+	// RFC 1459
+	ePASS,
 	eNICK,
-	ePRIVMSG,
+	eUSER,
+	eSERVER,
+	eOPER,
+	eQUIT,
+	eSQUIT,
+	eJOIN,
+	ePART,
 	eMODE,
+	eTOPIC,
+	eNAMES,
+	eLIST,
+	eINVITE,
+	eKICK,
+	eVERSION,
+	eSTATS,
+	eLINKS,
+	eTIME,
+	eCONNECT,
+	eTRACE,
+	eADMIN,
+	eINFO,
+	ePRIVMSG,
+	eNOTICE,
+	eWHO,
+	eWHOIS,
+	eWHOWAS,
+	eKILL,
 	ePING,
+	ePONG,
 	eERROR,
+	eAWAY,
+	eREHASH,
+	eRESTART,
+	eSUMMON,
+	eUSERS,
+	eWALLOPS,
+	eUSERHOST,
+	eISON,
+
+	// RFC 2812
+	eSERVICE,
+	eMOTD,
+	eLUSERS,
+	eSERVLIST,
+	eSQUERY,
+	eDIE,
+
+	//RFC 2813
+	eNJOIN,
 };
 
 static commandCode hashit(const std::string &inString)
 {
-	if (inString == "CAP") return eCAP;
 	if (inString == "NICK") return eNICK;
 	if (inString == "PRIVMSG") return ePRIVMSG;
 	if (inString == "MODE") return eMODE;
@@ -53,10 +98,6 @@ void	parser(char *line, const size_t &client_idx)
 	{
 		switch (hashit(packet[i].substr(0, packet[i].find(" ", 0))))
 		{
-			case eCAP:
-				// capfuntion()
-				std::cout << "CAP" << std::endl;
-				break;
 			case eNICK:
 				// nickfuntion()
 				std::cout << "NICK" << std::endl;
