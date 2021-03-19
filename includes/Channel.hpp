@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/19 14:28:40 by lmoulin          ###   ########.fr       */
+/*   Updated: 2021/03/19 14:31:16 by lmoulin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ class Channel
 		 ** setter
 		*/
 
-		void			set_password(std::string pass) { _password = pass}
+		void			set_password(std::string pass) { _password = pass;}
 };
 
 #endif
