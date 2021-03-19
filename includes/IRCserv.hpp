@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/18 20:46:29 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/19 11:54:47 by avan-pra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,16 @@ void		try_accept_user(Server *serv);
  ** ft_bzero.cpp
 */
 void		ft_bzero(void *s, size_t n);
+
+/*
+** ft_split.cpp
+*/
+std::string		*ft_split(std::string s, std::string splitter);
+
+/*
+** parser.cpp
+*/
+void            parser(char *line, const size_t &client_idx);
+
 
 #endif
