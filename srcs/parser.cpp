@@ -79,7 +79,7 @@ static void	build_unfinished_packet(const std::string &true_line, const size_t &
 	}
 }
 
-void	parser(char *line, const size_t &client_idx)
+void	parser(char *line, const size_t &client_idx, const Server &serv)
 {
 	std::string	*packet;
 	std::string true_line;
@@ -96,28 +96,12 @@ void	parser(char *line, const size_t &client_idx)
 
 	for (size_t i = 0; packet[i] != std::string(""); ++i)
 	{
-		switch (hashit(packet[i].substr(0, packet[i].find(" ", 0))))
+		//packet[i].substr(0, packet[i].find(" ", 0))
+		try
 		{
-			case eNICK:
-				// nickfuntion()
-				std::cout << "NICK" << std::endl;
-				break;
-			case ePRIVMSG:
-				// privmsgfuntion()
-				std::cout << "PRIVMSG" << std::endl;
-				break;
-			case eMODE:
-				// modefuntion()
-				std::cout << "MODE" << std::endl;
-				break;
-			case ePING:
-				// pingfuntion()
-				std::cout << "PING" << std::endl;
-				break;
-			case eERROR:
-				std::cout << "ERROR" << std::endl;
-				break;
+			std::cout << serv.get_command().at(packet[i].substr(0, packet[i].find(" ", 0))) << std::endl;
 		}
+		catch (const std::exception &e) { std::cout <<" ERROR pas connu" << std::endl; }
 	}
 	delete [] packet;
 }

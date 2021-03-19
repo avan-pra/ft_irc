@@ -19,6 +19,9 @@
 # include <vector>
 # include <sys/select.h>
 # include <sys/time.h>
+# include <map>
+
+std::map<std::string, int (*)(const std::string &line, const size_t &client_idx)> fill_command(void);
 
 class Server
 {
@@ -33,10 +36,11 @@ class Server
 		fd_set		_exceptfs;
 		int			_max_fd;
 		timeval		_timeout;
+        const std::map<std::string, int (*)(const std::string &line, const size_t &client_idx)> _command;
 
 	public:
 
-		Server()
+		Server() : _command(fill_command())
 		{
 			set_timeout(10);
 			_max_fd = 0;
@@ -49,8 +53,8 @@ class Server
 		//class coplienne
 
 		/*
-		 ** getter
-		 */
+		** getter
+		*/
 		std::string	get_hostname() const	{ return _hostname;}
 		std::string	get_port() const		{return _port;}
 		int			get_listen_limit() const		{return _listen_limit;}
@@ -59,6 +63,7 @@ class Server
 		fd_set	&get_exceptfs() { return _exceptfs; }
 		int		get_max_fd() { return _max_fd; }
 		timeval	&get_timeout() { return _timeout; }
+        const std::map<std::string, int (*)(const std::string &line, const size_t &client_idx)>	&get_command() const { return _command; }
 		/*
 		 ** setter
 		 */
