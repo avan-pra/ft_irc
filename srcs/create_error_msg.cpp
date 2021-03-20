@@ -12,7 +12,8 @@ std::string create_error(const int &code, const size_t &client_idx, const Server
 	{
 		case 421:
 			return sample + ERR_UNKNOWNCOMMAND(arg1);
-
+		case 431:
+			return sample + ERR_NONICKNAMEGIVEN();
 
 		default:
 			return std::string("");
