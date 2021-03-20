@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../includes/IRCserv.hpp"
+#include "../includes/commands.hpp"
 
 static void	build_unfinished_packet(const std::string &true_line, const size_t &client_idx, std::string &last)
 {
@@ -18,6 +19,7 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 {
 	std::string	*packet;
 	std::string true_line;
+	std::string command;
 
 	//add old unfinished packet if any exist
 	true_line = g_aClient[client_idx].second.get_unended_packet() + std::string(line);
@@ -31,14 +33,14 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 
 	for (size_t i = 0; packet[i] != std::string(""); ++i)
 	{
+		command = std::string(packet[i].substr(0, packet[i].find(" ", 0)));
+
 		try
 		{
-			if (serv.get_command().at(packet[i].substr(0, packet[i].find(" ", 0))) != NULL)
-				serv.get_command().at(packet[i].substr(0, packet[i].find(" ", 0)))(packet[i], client_idx, serv);
-			else
-				throw std::exception();
+			if (serv.get_command().at(command) != NULL)
+				serv.get_command().at(command)(packet[i], client_idx, serv);
 		}
-		catch (const std::exception &e) { std::cout << packet[0] << " : Unknown command\n"; }
+		catch (const std::exception &e) { std::cout << create_error(421, client_idx, serv, command); } //il faut envoyer ca au client
 	}
 	delete [] packet;
 }
