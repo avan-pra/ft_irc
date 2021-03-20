@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/19 16:40:38 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/20 11:38:58 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define BUFF_SIZE 512
 
-# define FILE_NAME "../irc.conf"
+# define FILE_NAME "./irc.conf"
 
 # include <sys/types.h>
 # include <sys/socket.h>
