@@ -35,7 +35,7 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 		{
 			std::cout << serv.get_command().at(packet[i].substr(0, packet[i].find(" ", 0))) << std::endl;
 		}
-		catch (const std::exception &e) { std::cout <<" ERROR pas connu" << std::endl; }
+		catch (const std::exception &e) { std::cout << packet[0] << " : Unknown command\n"; }
 	}
 	delete [] packet;
 }
