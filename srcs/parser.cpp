@@ -26,21 +26,23 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 
 	packet = ft_split(true_line, std::string("\r\n"));
 
-	size_t i = 0;
-	while (packet[i] != std::string(""))
-		++i;
-	build_unfinished_packet(true_line, client_idx, packet[i - 1]);
-
-	for (size_t i = 0; packet[i] != std::string(""); ++i)
+	size_t n_packet = 0;
+	while (packet[n_packet] != std::string(""))
+		++n_packet;
+	if (n_packet != 0)
 	{
-		command = std::string(packet[i].substr(0, packet[i].find(" ", 0)));
-
-		try
+		build_unfinished_packet(true_line, client_idx, packet[n_packet - 1]);
+		for (size_t i = 0; packet[i] != std::string(""); ++i)
 		{
-			if (serv.get_command().at(command) != NULL)
-				serv.get_command().at(command)(packet[i], client_idx, serv);
+			command = std::string(packet[i].substr(0, packet[i].find(" ", 0)));
+
+			try
+			{
+				if (serv.get_command().at(command) != NULL)
+					serv.get_command().at(command)(packet[i], client_idx, serv);
+			}
+			catch (const std::exception &e) { g_aClient[client_idx].second.send_reply(create_error(421, client_idx, serv, command)); } //il faut envoyer ca au client
 		}
-		catch (const std::exception &e) { g_aClient[client_idx].second.send_reply(create_error(421, client_idx, serv, command)); } //il faut envoyer ca au client
 	}
 	delete [] packet;
 }
