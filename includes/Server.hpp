@@ -21,7 +21,9 @@
 # include <sys/time.h>
 # include <map>
 
-std::map<std::string, int (*)(const std::string &line, const size_t &client_idx)> fill_command(void);
+class Server;
+
+std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)> fill_command(void);
 
 class Server
 {
@@ -36,7 +38,7 @@ class Server
 		fd_set		_exceptfs;
 		int			_max_fd;
 		timeval		_timeout;
-        const std::map<std::string, int (*)(const std::string &line, const size_t &client_idx)> _command;
+        const std::map<std::string, void (*)(const std::string &line, const size_t &client_idx, const Server &serv)> _command;
 
 	public:
 
@@ -63,7 +65,7 @@ class Server
 		fd_set	&get_exceptfs() { return _exceptfs; }
 		int		get_max_fd() { return _max_fd; }
 		timeval	&get_timeout() { return _timeout; }
-        const std::map<std::string, int (*)(const std::string &line, const size_t &client_idx)>	&get_command() const { return _command; }
+        const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)>	&get_command() const { return _command; }
 		/*
 		 ** setter
 		 */

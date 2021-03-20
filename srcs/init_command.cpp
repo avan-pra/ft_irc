@@ -1,19 +1,20 @@
 #include <iostream>
 #include <map>
 #include "../includes/Server.hpp"
+#include "../includes/commands.hpp"
 
 typedef struct	command_list
 {
 	std::string name;
-	int (*function)(const std::string &line, const size_t &client_idx);
+	void	(*function)(const std::string &line, const size_t &client_idx);
 }				command_l;
 
-std::map<std::string, int (*)(const std::string &line, const size_t &client_idx)>	fill_command(void)
+std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)>	fill_command(void)
 {
-	std::map<std::string, int (*)(const std::string &line, const size_t &client_idx)> cmd;
+	std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)> cmd;
 
 	cmd["PASS"] = NULL;
-	cmd["NICK"] = NULL; 
+	cmd["NICK"] = nick_command; 
 	cmd["USER"] = NULL; 
 	cmd["SERVER"] = NULL; 
 	cmd["OPER"] = NULL; 

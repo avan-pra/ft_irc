@@ -33,7 +33,10 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 	{
 		try
 		{
-			std::cout << serv.get_command().at(packet[i].substr(0, packet[i].find(" ", 0))) << std::endl;
+			if (serv.get_command().at(packet[i].substr(0, packet[i].find(" ", 0))) != NULL)
+				serv.get_command().at(packet[i].substr(0, packet[i].find(" ", 0)))(packet[i], client_idx, serv);
+			else
+				throw std::exception();
 		}
 		catch (const std::exception &e) { std::cout <<" ERROR pas connu" << std::endl; }
 	}
