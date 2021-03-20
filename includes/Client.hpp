@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/19 12:56:11 by lmoulin          ###   ########.fr       */
+/*   Updated: 2021/03/20 16:04:09 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <vector>
 # include <list>
 # include <netinet/in.h>
+# include <sys/socket.h>
+# include <sys/types.h>
+# include <cerrno>
 
 typedef int	SOCKET;
 
@@ -38,7 +41,7 @@ class Client
 		//std::vector<Channel>	_channels;	
 	public:
 
-		SOCKET			*_fd;
+		SOCKET			_fd;
 		sockaddr_in		sock_addr;
 
 		Client()
@@ -50,7 +53,7 @@ class Client
 		}
 
 		/*
-		 ** getter
+		 ** Getter
 		*/
 		std::string		get_unended_packet() { return (_unended_packet); }
 		std::string		get_username() { return (_username); }
@@ -66,6 +69,15 @@ class Client
 		void			set_hostname(std::string host) { _hostname = host; }
 		void			set_realname(std::string real) { _realname = real; }
 		void			set_nickname(std::string nick) { _nickname = nick; }
+
+		/*
+		** Methods
+		*/
+
+		void			send_reply(const std::string &s)
+		{
+			send(_fd, s.c_str(), s.size(), 0);
+		}
 };
 
 #endif

@@ -40,7 +40,7 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 			if (serv.get_command().at(command) != NULL)
 				serv.get_command().at(command)(packet[i], client_idx, serv);
 		}
-		catch (const std::exception &e) { std::cout << create_error(421, client_idx, serv, command); } //il faut envoyer ca au client
+		catch (const std::exception &e) { g_aClient[client_idx].second.send_reply(create_error(421, client_idx, serv, command)); } //il faut envoyer ca au client
 	}
 	delete [] packet;
 }

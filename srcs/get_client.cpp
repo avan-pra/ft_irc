@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 09:49:00 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/18 20:56:08 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/20 16:02:07 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void accept_user(Server &serv)
 	new_fd = accept(g_serv_sock, (sockaddr*)&clSock, &clSock_len); 
 	std::cout << "* New user connected from: " << inet_ntoa(clSock.sin_addr)<< ":"
 		<< ntohs(clSock.sin_port) << std::endl;
-	new_client._fd = &new_fd;
+	new_client._fd = new_fd;
 	new_client.sock_addr = clSock;
 	//push de <fd, User> sur le vecteur
 	g_aClient.push_back(std::make_pair(new_fd, new_client));
