@@ -52,6 +52,83 @@
 # define ERR_UMODEUNKNOWNFLAG() (":Unknown MODE flag\r\n")
 # define ERR_USERSDONTMATCH() (":Cant change mode for other users\r\n")
 
+/*
+**  reponse for command file
+*/
+# define RPL_NONE() ("\r\n") //300
+//# define RPL_USERHOST(pseudo, host) (":[<réponse>{<espace><réponse>}]\r\n") //<réponse> ::= <pseudo>['*'] '=' <'+'|'-'><hôte>
+//# define RPL_ISON(pseudo) (":[<pseudo> {<espace><pseudo>}]\r\n")
+# define RPL_AWAY(pseudo) (pseudo + " :<message d'absence>\r\n")
+# define RPL_UNAWAY() (":You are no longer marked as being away\r\n")
+# define RPL_NOWAWAY() (":You have been marked as being away\r\n")
+# define RPL_WHOISUSER(pseudo, user, host) (pseudo + " " + user + " " + host + " * :<vrai nom>\r\n")
+//# define RPL_WHOISSERVER(pseudo, server) (pseudo + " " + server + " :<info serveur>\r\n")
+# define RPL_WHOISOPERATOR(pseudo) (pseudo + " :is an IRC operator\r\n")
+# define RPL_WHOISIDLE(pseudo, integer) (pseudo + " " + integer + " :seconds idle\r\n")
+# define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of /WHOIS list\r\n")
+//# define RPL_WHOISCHANNELS(pseudo, channel) (pseudo + " :{[@|+]<canal><espace>}\r\n")
+//# define RPL_WHOWASUSER(pseudo, user, host) (pseudo + " " + user + " " + host + " * :<vrai nom>\r\n")
+# define RPL_ENDOFWHOWAS(pseudo) (pseudo + " :End of WHOWAS\r\n")
+# define RPL_LISTSTART() ("Channel :Users Name\r\n")
+//# define RPL_LIST(channel) (channel + " <# visible> :<sujet>\r\n")
+# define RPL_LISTEND() (":End of /LIST\r\n")
+//# define RPL_CHANNELMODEIS(channel, mode) (channel + " " + mode + " <paramètres de mode>\r\n")
+# define RPL_NOTOPIC(channel) (channel + " :No topic is set\r\n")
+# define RPL_TOPIC(channel, subject) (channel + " :" + subject + "\r\n")
+# define RPL_INVITING(channel, pseudo) (channel + " " + pseudo + "\r\n")
+# define RPL_SUMMONING(user) (user + " :Summoning user to IRC\r\n")
+# define RPL_VERSION(version, debuglevel, server) (version + " " + debuglevel + " " + server + " :<commentaires>\r\n")
+//# define RPL_WHOREPLY(channel, user, host, server, pseudo) (channel + " " + user + " " + host + " " + server + " " + pseudo + " <H|G>[*][@|+] :<compteur de distance> <vrai nom>\r\n")
+# define RPL_ENDOFWHO(name) (name + " :End of /WHO list\r\n")
+//# define RPL_NAMREPLY(channel) (channel + " :[[@|+]<pseudo> [[@|+]<pseudo> [...]]]\r\n")
+# define RPL_ENDOFNAMES(channel) (channel + " :End of /NAMES list\r\n")
+//# define RPL_LINKS(mask, server) (mask + " " + server + " :<compteur de distance> <info serveur>\r\n")
+# define RPL_ENDOFLINKS(mask) (mask + " :End of /LINKS list\r\n)"
+//# define RPL_BANLIST(channel) (channel + ": <identification de bannissement>\r\n")
+# define RPL_ENDOFBANLIST(channel) (channel + " :End of channel ban list\r\n")
+# define RPL_INFO(info) (":" + info + "\r\n")
+# define RPL_ENDOFINFO() (":End of /INFO list\r\n")
+# define RPL_MOTDSTART(server) (":- " + server + " Message of the day - \r\n")
+# define RPL_MOTD(comment) (":- " + comment + "\r\n")
+# define RPL_ENDOFMOTD() (":End of /MOTD command\r\n")
+# define RPL_YOUREOPER() (":You are now an IRC operator\r\n")
+# define RPL_REHASHING(config_file) (config_file + " :Rehashing\r\n")
+# define RPL_TIME(server, time_serveur) (server + " :" + time_serveur + "\r\n")
+# define RPL_USERSSTART() (":UserID Terminal Hôte\r\n")
+//# define RPL_USERS() (":%-8s %-9s %-8s\r\n")
+# define RPL_ENDOFUSERS() (":End of users\r\n")
+# define RPL_NOUSERS() (":Nobody logged in\r\n")
+//# define RPL_TRACELINK() ("Link <version & niveau de débugage> <destination> <serveur suivant>\r\n")
+# define RPL_TRACECONNECTING(classe, server) ("Try. " + classe + " " + server + "\r\n")
+# define RPL_TRACEHANDSHAKE
+# define RPL_TRACEUNKNOWN
+# define RPL_TRACEOPERATOR
+# define RPL_TRACEUSER
+# define RPL_TRACESERVER
+# define RPL_TRACENEWTYPE
+# define RPL_TRACELOG
+# define RPL_STATSLINKINFO
+# define RPL_STATSCOMMANDS
+# define RPL_STATSCLINE
+# define RPL_STATSNLINE
+# define RPL_STATSILINE
+# define RPL_STATSKLINE
+# define RPL_STATSYLINE
+# define RPL_ENDOFSTATS
+# define RPL_STATSLLINE
+# define RPL_STATSUPTIME
+# define RPL_STATSOLINE
+# define RPL_STATSHLINE
+# define RPL_UMODEIS
+# define RPL_LUSERCLIENT
+# define RPL_LUSEROP
+# define RPL_LUSERUNKNOWN
+# define RPL_LUSERCHANNELS
+# define RPL_LUSERME
+# define RPL_ADMINME
+# define RPL_ADMINLOC1
+# define RPL_ADMINLOC2
+# define RPL_ADMINEMAIL
 
 
 std::string create_error(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string());
