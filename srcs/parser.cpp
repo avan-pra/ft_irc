@@ -38,7 +38,7 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 			else
 				throw std::exception();
 		}
-		catch (const std::exception &e) { std::cout <<" ERROR pas connu" << std::endl; }
+		catch (const std::exception &e) { std::cout << packet[0] << " : Unknown command\n"; }
 	}
 	delete [] packet;
 }
