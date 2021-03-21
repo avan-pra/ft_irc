@@ -130,6 +130,8 @@
 # define RPL_ADMINLOC2
 # define RPL_ADMINEMAIL
 
+//define invalid character as for username
+# define USERNAME_VALID_CHAR "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_[]{}\\`|"
 
 std::string create_error(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string());
 /*
