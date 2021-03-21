@@ -19,7 +19,6 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 {
 	std::string	*packet;
 	std::string true_line;
-	std::string command;
 
 	//add old unfinished packet if any exist
 	true_line = g_aClient[client_idx].second.get_unended_packet() + std::string(line);
@@ -34,7 +33,7 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 		build_unfinished_packet(true_line, client_idx, packet[n_packet - 1]);
 		for (size_t i = 0; packet[i] != std::string(""); ++i)
 		{
-			command = std::string(packet[i].substr(0, packet[i].find(" ", 0)));
+			std::string command = std::string(packet[i].substr(0, packet[i].find(" ", 0)));
 
 			try
 			{
