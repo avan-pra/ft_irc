@@ -9,7 +9,7 @@ std::string create_error(const int &code, const size_t &client_idx, const Server
 	std::string sample;
 
 	if (g_aClient[client_idx].second.get_nickname().empty())
-		sample = std::string(":" + serv.get_hostname() + " " + std::to_string(code));
+		sample = std::string(":" + serv.get_hostname() + " " + std::to_string(code) + " ");
 	else
 		sample = std::string(":" + serv.get_hostname() + " " + std::to_string(code) + " " + g_aClient[client_idx].second.get_nickname());
 
@@ -23,6 +23,8 @@ std::string create_error(const int &code, const size_t &client_idx, const Server
 			return sample + ERR_ERRONEUSNICKNAME(arg1);
 		case 433:
 			return sample + ERR_NICKNAMEINUSE(arg1);
+		case 461:
+			return sample + ERR_NEEDMOREPARAMS(arg1);
 
 		default:
 			return std::string("");
