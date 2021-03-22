@@ -17,8 +17,8 @@ static void	build_unfinished_packet(const std::string &true_line, const size_t &
 
 void	parser(char *line, const size_t &client_idx, const Server &serv)
 {
-	std::string	*packet;
-	std::string true_line;
+	std::vector<std::string>	packet;
+	std::string					true_line;
 
 	//add old unfinished packet if any exist
 	true_line = g_aClient[client_idx].second.get_unended_packet() + std::string(line);
@@ -43,5 +43,4 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 			catch (const std::exception &e) { g_aClient[client_idx].second.send_reply(create_error(421, client_idx, serv, command)); } //il faut envoyer ca au client
 		}
 	}
-	delete [] packet;
 }
