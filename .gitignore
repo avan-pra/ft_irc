@@ -5,3 +5,4 @@ bircd.tar
 bircd.tar.gz
 *.pyc
 serv
+*.o
