@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/22 20:15:39 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/22 20:39:13 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,13 @@
 static bool is_number(const std::string& s)
 {
     std::string::const_iterator it = s.begin();
-    while (it != s.end() && std::isdigit(*it))
+    while (it != s.end())
+	{
+		if (!std::isdigit(*it))
+			return false;
 		++it;
-    return !s.empty() && it == s.end();
+	}
+	return true;
 }
 
 void		check_realname(const std::string str, const size_t &client_idx, const Server &serv)
