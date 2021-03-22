@@ -47,7 +47,7 @@ static void	check_username_ownership(std::string str, const size_t &client_idx, 
 
 void	nick_command(const std::string &line, const size_t &client_idx, const Server &serv)
 {
-	std::string *arg;
+	std::vector<std::string> arg;
 
 	//split arguments
 	arg = ft_split(line, " ");
@@ -64,8 +64,9 @@ void	nick_command(const std::string &line, const size_t &client_idx, const Serve
 		// if all check has passed set his username
 		g_aClient[client_idx].second.set_nickname(name);
 	}
-	catch(const std::exception& e){ }
+	catch(const std::exception& e){ return ; }
 
-	// ERR_NICKNAMEINUSE
 	// ERR_NICKCOLLISION
+	// ERR_UNAVAILABLE_RESSOURCE
+	// ERR_RESTRICTED
 }

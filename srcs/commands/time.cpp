@@ -6,12 +6,11 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:54:27 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/22 15:24:15 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/22 16:37:09 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/IRCserv.hpp"
-#include "../../includes/Server.hpp"
 #include "../../includes/commands.hpp"
 #include <ctime>
 
