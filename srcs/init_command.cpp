@@ -54,7 +54,7 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["USERHOST"] = NULL;
 	cmd["ISON"] = NULL;
 	cmd["SERVICE"] = NULL;
-	cmd["MOTD"] = NULL;
+	cmd["MOTD"] = motd_command;
 	cmd["LUSERS"] = NULL;
 	cmd["SERVLIST"] = NULL;
 	cmd["SQUERY"] = NULL;
