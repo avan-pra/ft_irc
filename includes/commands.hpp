@@ -19,7 +19,7 @@
 # define ERR_NOTEXTTOSEND() (":No text to send\r\n")
 # define ERR_NOTOPLEVEL(mask) (mask + " :No toplevel domain specified\r\n")
 # define ERR_WILDTOPLEVEL(mask) (mask + " :Wildcard in toplevel domain\r\n")
-# define ERR_UNKNOWNCOMMAND(command) (command + " :Unknown command\r\n")
+# define ERR_UNKNOWNCOMMAND(command) (" " + command + " :Unknown command\r\n")
 # define ERR_NOMOTD() (":MOTD File is missing\r\n")
 # define ERR_NOADMININFO(server) (server + " :No administrative info available\r\n")
 # define ERR_FILEERROR(operation, file) (":File error doing " + operation + " on " + file + "\r\n")
