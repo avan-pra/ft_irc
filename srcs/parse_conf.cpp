@@ -62,6 +62,7 @@ int		checkline(std::string s, Server &serv)
 			return	(1);
 		}
 	}
+	return (1);
 }
 
 void	parse_conf(Server &serv)
