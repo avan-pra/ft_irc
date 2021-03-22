@@ -144,5 +144,6 @@ void	nick_command(const std::string &line, const size_t &client_idx, const Serve
 void	user_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	ping_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	time_command(const std::string &line, const size_t &client_idx, const Server &serv);
+void	motd_command(const std::string &line, const size_t &client_idx, const Server &serv);
 
 #endif
