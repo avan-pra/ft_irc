@@ -28,7 +28,7 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["LIST"] = NULL;
 	cmd["INVITE"] = NULL;
 	cmd["KICK"] = NULL;
-	cmd["VERSION"] = NULL;
+	cmd["VERSION"] = version_command;
 	cmd["STATS"] = NULL;
 	cmd["LINKS"] = NULL;
 	cmd["TIME"] = time_command;

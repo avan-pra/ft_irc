@@ -77,7 +77,7 @@
 # define RPL_TOPIC(channel, subject) (channel + " :" + subject + "\r\n")
 # define RPL_INVITING(channel, pseudo) (channel + " " + pseudo + "\r\n")
 # define RPL_SUMMONING(user) (user + " :Summoning user to IRC\r\n")
-# define RPL_VERSION(version, debuglevel, server) (version + " " + debuglevel + " " + server + " :<commentaires>\r\n")
+# define RPL_VERSION(version, debuglevel, server, comment) (version + "." + debuglevel + " " + server + " :" + comment + "\r\n")
 //# define RPL_WHOREPLY(channel, user, host, server, pseudo) (channel + " " + user + " " + host + " " + server + " " + pseudo + " <H|G>[*][@|+] :<compteur de distance> <vrai nom>\r\n")
 # define RPL_ENDOFWHO(name) (name + " :End of /WHO list\r\n")
 //# define RPL_NAMREPLY(channel) (channel + " :[[@|+]<pseudo> [[@|+]<pseudo> [...]]]\r\n")
@@ -146,5 +146,6 @@ void	ping_command(const std::string &line, const size_t &client_idx, const Serve
 void	time_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	motd_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	info_command(const std::string &line, const size_t &client_idx, const Server &serv);
+void	version_command(const std::string &line, const size_t &client_idx, const Server &serv);
 
 #endif
