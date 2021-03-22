@@ -3,7 +3,7 @@
 #include <cstring>
 
 //does what it says
-void		check_empty_line(const std::string &arg, const size_t &client_idx, const Server &serv)
+static void		check_empty_line(const std::string &arg, const size_t &client_idx, const Server &serv)
 {
 	if (arg.find_first_not_of(' ') == arg.npos)
 	{
@@ -13,12 +13,8 @@ void		check_empty_line(const std::string &arg, const size_t &client_idx, const S
 }
 
 //check username char and size
-std::string	check_username(std::string str, const size_t &client_idx, const Server &serv)
+static std::string	check_username(const std::string &str, const size_t &client_idx, const Server &serv)
 {
-	//int w = 0;
-	//while (str[w] == ' ')
-	//	++w;
-	//str.erase(0, w).substr(0, str.find(" ", 0));
 	//check si la taille de l'username > 9 si oui envoie une erreur
 	if (str.length() > 9)
 	{
@@ -35,25 +31,41 @@ std::string	check_username(std::string str, const size_t &client_idx, const Serv
 	return str;
 }
 
+static void	check_username_ownership(std::string str, const size_t &client_idx, const Server &serv)
+{
+	for (size_t i = 0; i != g_aClient.size(); ++i)
+	{
+		if (i != client_idx)
+		{
+			if (g_aClient[i].second.get_nickname() == str)
+			{
+				g_aClient[client_idx].second.send_reply(create_error(433, client_idx, serv, str)); throw std::exception();
+			}
+		}
+	}
+}
+
 void	nick_command(const std::string &line, const size_t &client_idx, const Server &serv)
 {
 	std::string *arg;
 
-	//try to remove "NICK " from string
+	//split arguments
 	arg = ft_split(line, " ");
-	
+
 	try
-	{	
+	{
+		//check if username exist and if its not blank or smth
 		check_empty_line(arg[1], client_idx, serv);
 		//check username char and size
 		std::string name = check_username(arg[1], client_idx, serv);
+		//check if any other user owns his username
+		check_username_ownership(name, client_idx, serv);
 
 		// if all check has passed set his username
 		g_aClient[client_idx].second.set_nickname(name);
 	}
 	catch(const std::exception& e){ }
-	
-	// ERR_ERRONEUSNICKNAME
+
 	// ERR_NICKNAMEINUSE
 	// ERR_NICKCOLLISION
 }

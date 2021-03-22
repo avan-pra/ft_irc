@@ -6,7 +6,12 @@
 
 std::string create_error(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1, const std::string &arg2)
 {
-	std::string sample = std::string(":" + serv.get_hostname() + " " + std::to_string(code) + " " + g_aClient[client_idx].second.get_nickname());
+	std::string sample;
+
+	if (g_aClient[client_idx].second.get_nickname().empty())
+		sample = std::string(":" + serv.get_hostname() + " " + std::to_string(code));
+	else
+		sample = std::string(":" + serv.get_hostname() + " " + std::to_string(code) + " " + g_aClient[client_idx].second.get_nickname());
 
 	switch (code)
 	{
@@ -16,6 +21,8 @@ std::string create_error(const int &code, const size_t &client_idx, const Server
 			return sample + ERR_NONICKNAMEGIVEN();
 		case 432:
 			return sample + ERR_ERRONEUSNICKNAME(arg1);
+		case 433:
+			return sample + ERR_NICKNAMEINUSE(arg1);
 
 		default:
 			return std::string("");
