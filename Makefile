@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/03/22 12:09:31 by lucas            ###   ########.fr        #
+#    Updated: 2021/03/22 14:03:31 by jvaquer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ DIR_SRCS = ./srcs/
 
 SRC = main.cpp parser.cpp get_client.cpp parse_conf.cpp \
 	  run_server.cpp setup_serv.cpp init_command.cpp \
-	  create_error_msg.cpp commands/nick.cpp libft/ft_atoi.cpp \
+	  create_error_msg.cpp commands/nick.cpp commands/user.cpp libft/ft_atoi.cpp \
 	  libft/ft_bzero.cpp libft/ft_split.cpp
 
 OBJ = $(SRCS:.cpp=.o)
