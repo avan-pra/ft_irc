@@ -1,4 +1,5 @@
 #include "../../includes/commands.hpp"
+#include "../../includes/IRCserv.hpp"
 #include <cstring>
 
 //does what it says
@@ -14,10 +15,10 @@ void		check_empty_line(const std::string &arg, const size_t &client_idx, const S
 //check username char and size
 std::string	check_username(std::string str, const size_t &client_idx, const Server &serv)
 {
-	int w = 0;
-	while (str[w] == ' ')
-		++w;
-	str.erase(0, w).substr(0, str.find(" ", 0));
+	//int w = 0;
+	//while (str[w] == ' ')
+	//	++w;
+	//str.erase(0, w).substr(0, str.find(" ", 0));
 	//check si la taille de l'username > 9 si oui envoie une erreur
 	if (str.length() > 9)
 		g_aClient[client_idx].second.send_reply(create_error(432, client_idx, serv, str)); throw std::exception();
@@ -32,17 +33,16 @@ std::string	check_username(std::string str, const size_t &client_idx, const Serv
 
 void	nick_command(const std::string &line, const size_t &client_idx, const Server &serv)
 {
-	std::string arg;
+	std::string *arg;
 
 	//try to remove "NICK " from string
-	try { arg = line.substr(5); }
-	catch(const std::exception& e) { }
+	arg = ft_split(line, " ");
 	
 	try
 	{	
-		check_empty_line(arg, client_idx, serv);
+		check_empty_line(arg[1], client_idx, serv);
 		//check username char and size
-		std::string name = check_username(arg, client_idx, serv);
+		std::string name = check_username(arg[1], client_idx, serv);
 
 		// if all check has passed set his username
 		g_aClient[client_idx].second.set_nickname(name);
