@@ -141,5 +141,6 @@ std::string create_error(const int &code, const size_t &client_idx, const Server
 class Server;
 
 void	nick_command(const std::string &line, const size_t &client_idx, const Server &serv);
+void	user_command(const std::string &line, const size_t &client_idx, const Server &serv);
 
 #endif
