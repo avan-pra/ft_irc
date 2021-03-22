@@ -15,6 +15,22 @@ static void	build_unfinished_packet(const std::string &true_line, const size_t &
 	}
 }
 
+void	clear_empty_packet(std::vector<std::string> &packet)
+{
+	size_t						i = 0;
+	std::vector<std::string>	clear;
+
+	for (std::vector<std::string>::iterator it = packet.begin(); it != packet.end(); it++)
+	{
+		i = 0;
+		while ((*it)[i] && (*it)[i] == ' ')
+			i++;
+		if (i != it->size())
+			clear.push_back(*it);
+	}
+	packet.swap(clear);
+}
+
 void	parser(char *line, const size_t &client_idx, const Server &serv)
 {
 	std::vector<std::string>	packet;
@@ -24,7 +40,7 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 	true_line = g_aClient[client_idx].second.get_unended_packet() + std::string(line);
 
 	packet = ft_split(true_line, std::string("\r\n"));
-
+	clear_empty_packet(packet);
 	if (packet.size() != 0)
 	{
 		build_unfinished_packet(true_line, client_idx, packet.back());
