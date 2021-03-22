@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/20 16:04:09 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/22 18:26:43 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class Client
 		std::string		_hostname;
 		std::string		_realname;
 		std::string		_unended_packet;
+		std::string		_mode;
 		//int			_status;
 	
 		//std::vector<Channel>	_channels;	
@@ -60,6 +61,7 @@ class Client
 		std::string		get_hostname() { return (_hostname); }
 		std::string		get_realname() { return (_realname); }
 		std::string		get_nickname() { return (_nickname); }
+		std::string		get_mode(){ return (_mode);}
 
 		/*
 		 ** Setter
@@ -69,6 +71,7 @@ class Client
 		void			set_hostname(std::string host) { _hostname = host; }
 		void			set_realname(std::string real) { _realname = real; }
 		void			set_nickname(std::string nick) { _nickname = nick; }
+		void			set_mode(std::string mode) {_mode = mode;}
 
 		/*
 		** Methods
