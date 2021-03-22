@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 19:01:28 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/22 19:30:24 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/22 19:42:05 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,5 @@ void	motd_command(const std::string &line, const size_t &client_idx, const Serve
 	g_aClient[client_idx].second.send_reply(RPL_MOTD(std::string(motd_line)));
 	}
 	g_aClient[client_idx].second.send_reply(RPL_ENDOFMOTD());
+	file.close();
 }

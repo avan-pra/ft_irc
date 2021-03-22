@@ -35,7 +35,7 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["CONNECT"] = NULL;
 	cmd["TRACE"] = NULL;
 	cmd["ADMIN"] = NULL;
-	cmd["INFO"] = NULL;
+	cmd["INFO"] = info_command;
 	cmd["PRIVMSG"] = NULL;
 	cmd["NOTICE"] = NULL;
 	cmd["WHO"] = NULL;

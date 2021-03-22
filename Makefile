@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/03/22 19:05:48 by lucas            ###   ########.fr        #
+#    Updated: 2021/03/22 19:58:24 by lucas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC = main.cpp parser.cpp get_client.cpp parse_conf.cpp \
 	  create_error_msg.cpp \
 	  \
 	  commands/nick.cpp commands/user.cpp commands/time.cpp \
-	  commands/motd.cpp \
+	  commands/motd.cpp commands/info.cpp \
 	  libft/ft_atoi.cpp libft/ft_bzero.cpp libft/ft_split.cpp
 
 OBJ = $(SRCS:.cpp=.o)

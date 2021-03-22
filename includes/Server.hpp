@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/19 16:01:58 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/22 21:49:59 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,14 @@ class Server
 		fd_set		_exceptfs;
 		int			_max_fd;
 		timeval		_timeout;
+		time_t		_start_time;
         const std::map<std::string, void (*)(const std::string &line, const size_t &client_idx, const Server &serv)> _command;
 
 	public:
 
 		Server() : _command(fill_command())
 		{
+			time(&_start_time);
 			set_timeout(10);
 			_max_fd = 0;
 		}
@@ -65,6 +67,7 @@ class Server
 		fd_set	&get_exceptfs() { return _exceptfs; }
 		int		get_max_fd() { return _max_fd; }
 		timeval	&get_timeout() { return _timeout; }
+		time_t	get_start_time() const { return _start_time; }
         const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)>	&get_command() const { return _command; }
 		/*
 		 ** setter
