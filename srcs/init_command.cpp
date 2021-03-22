@@ -31,7 +31,7 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["VERSION"] = NULL;
 	cmd["STATS"] = NULL;
 	cmd["LINKS"] = NULL;
-	cmd["TIME"] = NULL;
+	cmd["TIME"] = time_command;
 	cmd["CONNECT"] = NULL;
 	cmd["TRACE"] = NULL;
 	cmd["ADMIN"] = NULL;
