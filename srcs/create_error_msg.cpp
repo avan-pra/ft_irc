@@ -9,7 +9,7 @@ std::string create_error(const int &code, const size_t &client_idx, const Server
 	std::string sample;
 
 	if (g_aClient[client_idx].second.get_nickname().empty())
-		sample = std::string(":" + serv.get_hostname() + " " + std::to_string(code) + " ");
+		sample = std::string(":" + serv.get_hostname() + " " + std::to_string(code));
 	else
 		sample = std::string(":" + serv.get_hostname() + " " + std::to_string(code) + " " + g_aClient[client_idx].second.get_nickname());
 

@@ -40,10 +40,11 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 	true_line = g_aClient[client_idx].second.get_unended_packet() + std::string(line);
 
 	packet = ft_split(true_line, std::string("\r\n"));
-	clear_empty_packet(packet);
+
 	if (packet.size() != 0)
 	{
 		build_unfinished_packet(true_line, client_idx, packet.back());
+		clear_empty_packet(packet);
 		for (std::vector<std::string>::iterator str = packet.begin(); str != packet.end(); ++str)
 		{
 			std::string command = std::string(str->substr(0, str->find(" ", 0)));

@@ -3,9 +3,9 @@
 #include <cstring>
 
 //does what it says
-static void		check_empty_line(const std::string &arg, const size_t &client_idx, const Server &serv)
+static void		check_empty_line(const std::vector<std::string> &arg, const size_t &client_idx, const Server &serv)
 {
-	if (arg.find_first_not_of(' ') == arg.npos)
+	if (arg.size() < 2 || arg[1].find_first_not_of(' ') == arg[1].npos)
 	{
 		g_aClient[client_idx].second.send_reply(create_error(431, client_idx, serv));
 		throw std::exception();
@@ -21,7 +21,7 @@ static std::string	check_username(const std::string &str, const size_t &client_i
 		g_aClient[client_idx].second.send_reply(create_error(432, client_idx, serv, str)); throw std::exception();
 	}
 	//check si la string contient des char interdit (les chars valides sont au dessus)
-	for (int i = 0; i < str.length(); ++i)
+	for (size_t i = 0; i < str.length(); ++i)
 	{
 		if (!std::strchr(USERNAME_VALID_CHAR, str[i]))
 		{
@@ -55,7 +55,7 @@ void	nick_command(const std::string &line, const size_t &client_idx, const Serve
 	try
 	{
 		//check if username exist and if its not blank or smth
-		check_empty_line(arg[1], client_idx, serv);
+		check_empty_line(arg, client_idx, serv);
 		//check username char and size
 		std::string name = check_username(arg[1], client_idx, serv);
 		//check if any other user owns his username
