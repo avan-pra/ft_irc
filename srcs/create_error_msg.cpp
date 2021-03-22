@@ -25,7 +25,8 @@ std::string create_error(const int &code, const size_t &client_idx, const Server
 			return sample + ERR_NICKNAMEINUSE(arg1);
 		case 461:
 			return sample + ERR_NEEDMOREPARAMS(arg1);
-
+		case 462:
+			return sample + ERR_ALREADYREGISTRED();
 		default:
 			return std::string("");
 	}
