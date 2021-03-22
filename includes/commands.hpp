@@ -100,35 +100,35 @@
 # define RPL_NOUSERS() (":Nobody logged in\r\n")
 //# define RPL_TRACELINK() ("Link <version & niveau de débugage> <destination> <serveur suivant>\r\n")
 # define RPL_TRACECONNECTING(classe, server) ("Try. " + classe + " " + server + "\r\n")
-# define RPL_TRACEHANDSHAKE
-# define RPL_TRACEUNKNOWN
-# define RPL_TRACEOPERATOR
-# define RPL_TRACEUSER
-# define RPL_TRACESERVER
-# define RPL_TRACENEWTYPE
-# define RPL_TRACELOG
-# define RPL_STATSLINKINFO
-# define RPL_STATSCOMMANDS
-# define RPL_STATSCLINE
-# define RPL_STATSNLINE
-# define RPL_STATSILINE
-# define RPL_STATSKLINE
-# define RPL_STATSYLINE
-# define RPL_ENDOFSTATS
-# define RPL_STATSLLINE
-# define RPL_STATSUPTIME
-# define RPL_STATSOLINE
-# define RPL_STATSHLINE
-# define RPL_UMODEIS
-# define RPL_LUSERCLIENT
-# define RPL_LUSEROP
-# define RPL_LUSERUNKNOWN
-# define RPL_LUSERCHANNELS
-# define RPL_LUSERME
-# define RPL_ADMINME
-# define RPL_ADMINLOC1
-# define RPL_ADMINLOC2
-# define RPL_ADMINEMAIL
+# define RPL_TRACEHANDSHAKE(classe, server) ("H.S. " + classe + " " + serveur + "\r\n")
+# define RPL_TRACEUNKNOWN(classe) ("???? " + classe + " " + "[<adresse IP du client au format utilisant des points>]\r\n")
+# define RPL_TRACEOPERATOR(classe, pseudo) ("Oper " + classe + " " + pseudo + "\r\n")
+# define RPL_TRACEUSER(classe, pseudo) ("User " + classe + " " + pseudo + "\r\n")
+# define RPL_TRACESERVER(classe) ("Serv " + classe + " <int>S <int>C <serveur> <pseudo!utilisateur|*!*>@<hôte|serveur>\r\n")
+# define RPL_TRACENEWTYPE(new_type, name) (new_type + " 0 " + name + "\r\n")
+# define RPL_TRACELOG(file_log, debug_level) ("File " + file_log + " " + debug_level + "\r\n")
+# define RPL_STATSLINKINFO(link, sendq, msg_send, octets_send, msg_recv, octet_recu, time_connect) (link + " " + sendq + " " + msg_send + " " + octets_send + " " + msg_recv + " " + octet_recu + " " + time_connect + "\r\n")
+# define RPL_STATSCOMMANDS(cmd, compteur) (cmd + " " + compteur + "\r\n")
+# define RPL_STATSCLINE(host, name, port, classe) ("C " + host + " * " + name + " " + port + " " + classe + "\r\n")
+# define RPL_STATSNLINE(host, name, port, classe) ("N " + host + " * " + name + " " + port + " " + classe + "\r\n")
+# define RPL_STATSILINE(host, port, classe) ("I " + host + " * " + host + " " + port + " " + classe + "\r\n")
+# define RPL_STATSKLINE(host, user_name, port, classe) ("K " + host + " * " + user_name + " " + port + " " + classe + "\r\n")
+# define RPL_STATSYLINE(classe, frq_ping, frq_connection, sendq_max) ("Y " + classe + " " + frq_ping + " " + frq_connection + " " + sendq_max + "\r\n")
+# define RPL_ENDOFSTATS(stat_letter) (stat_letter + " :End of /STATS report\r\n")
+# define RPL_STATSLLINE(host_mask, server_name, max_depth) ("L " + host_mask + " * " + server_name + max_depth "\r\n")
+//# define RPL_STATSUPTIME() (":Server Up %d days %d:%02d:%02d\r\n")
+# define RPL_STATSOLINE(host_mask, name) ("O " + host_mask + " * " + name + "\r\n")
+# define RPL_STATSHLINE(host_mask, server_name) ("H " + host_mask + " * " + server_name + "\r\n")
+# define RPL_UMODEIS() ("<chaîne de mode utilisateur>\r\n")
+# define RPL_LUSERCLIENT(int1, int2, int3) (":There are " + int1 + " users and " + int2 + " invisible on " + int3 + " servers\r\n")
+# define RPL_LUSEROP(int1) (int1 + " :operator(s) online\r\n")
+# define RPL_LUSERUNKNOWN(int1) (int1 + " :unknown connection(s)\r\n")
+# define RPL_LUSERCHANNELS(int1) (int1 + " :channels formed\r\n")
+# define RPL_LUSERME(int1, int2) (":I have " + int1 + " clients and " + int2 + " servers\r\n")
+# define RPL_ADMINME(server) (server + " :Administrative info\r\n")
+# define RPL_ADMINLOC1() (":<info admin>\r\n")
+# define RPL_ADMINLOC2() (":<info admin>\r\n")
+# define RPL_ADMINEMAIL() (":<info admin>\r\n")
 
 //define invalid character as for username
 # define USERNAME_VALID_CHAR "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_[]{}\\`|"
