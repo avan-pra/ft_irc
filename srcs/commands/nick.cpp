@@ -21,12 +21,16 @@ std::string	check_username(std::string str, const size_t &client_idx, const Serv
 	//str.erase(0, w).substr(0, str.find(" ", 0));
 	//check si la taille de l'username > 9 si oui envoie une erreur
 	if (str.length() > 9)
+	{
 		g_aClient[client_idx].second.send_reply(create_error(432, client_idx, serv, str)); throw std::exception();
+	}
 	//check si la string contient des char interdit (les chars valides sont au dessus)
 	for (int i = 0; i < str.length(); ++i)
 	{
 		if (!std::strchr(USERNAME_VALID_CHAR, str[i]))
+		{
 			g_aClient[client_idx].second.send_reply(create_error(432, client_idx, serv, str)); throw std::exception();
+		}
 	}
 	return str;
 }
