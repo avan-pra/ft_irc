@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/22 20:39:13 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/23 11:58:16 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,13 @@ void	user_command(const std::string &line, const size_t &client_idx, const Serve
 		args = ft_split(line_new, " ");
 		check_realname(realname, client_idx, serv);
 		check_user_registered(realname, args, client_idx, serv);
-		g_aClient[client_idx].second.set_username(args[1]);
-		g_aClient[client_idx].second.set_realname(realname);
-		g_aClient[client_idx].second.set_mode(args[2]);
-		std::cout << "* User Registered correctly" << std::endl;
+		if (g_aClient[client_idx].second.get_nickname().size())
+		{
+			g_aClient[client_idx].second.set_username(args[1]);
+			g_aClient[client_idx].second.set_realname(realname);
+			g_aClient[client_idx].second.set_mode(args[2]);
+			g_aClient[client_idx].second.send_reply(RPL_WELCOME(g_aClient[client_idx].second.get_nickname(), g_aClient[client_idx].second.get_username(), g_aClient[client_idx].second.get_hostname()));
+		}
 	}
 	catch(const std::exception &e) {return ; }
 	
