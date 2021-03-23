@@ -39,13 +39,13 @@ void	info_command(const std::string &line, const size_t &client_idx, const Serve
 	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" Project : FT_IRC of 42")));
 	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" Version : beta 1.0")));
 	g_aClient[client_idx].second.send_reply( RPL_INFO( std::string( " Created by :")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" Lucas Moulin\t\tlmoulin\t\t<lmoulin@student.42.fr>")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" Eudald Vaquer\t\tjvaquer\t\t<jvaquer@student.42.fr>")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" Arthur Van Praet\tavan-pra\t<avan-pra@student.42.fr>")));
+	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string("lmoulin  <lmoulin@student.42.fr>")));
+	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string("jvaquer  <jvaquer@student.42.fr>")));
+	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string("avan-pra <avan-pra@student.42.fr>")));
 	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string("")));
 	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" You can check our other project at :")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" https://github.com/Velovo")));
 	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" https://github.com/lucasmln")));
 	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" https://github.com/EudaldV98")));
+	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" https://github.com/Velovo")));
 	g_aClient[client_idx].second.send_reply(RPL_ENDOFINFO());
 }

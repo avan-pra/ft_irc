@@ -20,7 +20,7 @@ void	motd_command(const std::string &line, const size_t &client_idx, const Serve
 	std::fstream		file;
 	std::string			motd_line;
 
-	file.open("motd");
+	file.open("./motd");
 	if (!file)
 	{
 		g_aClient[client_idx].second.send_reply(ERR_NOMOTD());
