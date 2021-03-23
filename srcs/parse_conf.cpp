@@ -11,12 +11,14 @@
 /* ************************************************************************** */
 
 # include "../includes/IRCserv.hpp"
+# include <cstring>
 
 enum confID
 {
 	eHOSTNAME,
 	ePORT,
 	eLISTEN_LIMIT,
+	eSERVER_PASSWORD_HASH,
 	eERROR,
 };
 
@@ -25,6 +27,7 @@ confID	hashit_s(const std::string &s)
 	if (s == "HOSTNAME")			return	eHOSTNAME;
 	else if (s == "PORT")			return	ePORT;
 	else if (s == "LISTEN_LIMIT")	return	eLISTEN_LIMIT;
+	else if (s == "SERVER_PASSWORD_HASH") return eSERVER_PASSWORD_HASH;
 	return	eERROR;
 }
 
@@ -55,6 +58,37 @@ int		checkline(std::string s, Server &serv)
 			}
 			serv.set_listen_limit(listen_limit);
 			return	(0);
+		}
+		case eSERVER_PASSWORD_HASH:
+		{
+			std::string password = s.substr(s.find("=") + 1);
+			if (password.empty())
+				return (0);
+			if (password.size() != 64)
+			{
+				std::cout << "Password must be a sha256 hash" << std::endl; return (1);
+			}
+			for (char i = 0; i < 64; ++i)
+			{
+				if (!std::strchr(HASH_CHAR, password[i]))
+				{
+					std::cout << "Password must be a sha256 hash" << std::endl; return (1);
+				}
+			}
+			//set up hash in a byte like array
+			{
+				unsigned char target[32];
+				int i = 0;
+				int j = 0;
+				while (i < 32)
+				{
+					target[i] = char2hex(password[j]) * 16 + char2hex(password[j + 1]);
+					++i;
+					j += 2;
+				}
+				serv.set_password(target);
+			}
+			return (0);
 		}
 		case eERROR:
 		{

@@ -23,6 +23,8 @@
 
 # define FILE_NAME "./irc.conf"
 
+# define HASH_CHAR "0123456789abcdefABCDEF"
+
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <netinet/in.h>
@@ -87,6 +89,11 @@ int			ft_atoi(std::string str);
 ** ft_split.cpp
 */
 std::vector<std::string>	ft_split(std::string s, std::string splitter);
+
+/*
+** char2hex.cpp
+*/
+int		char2hex(char input);
 
 /*
 ** parser.cpp

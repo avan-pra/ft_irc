@@ -20,6 +20,7 @@
 # include <sys/select.h>
 # include <sys/time.h>
 # include <map>
+# include <cstring>
 
 class Server;
 
@@ -28,7 +29,6 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 class Server
 {
 	private:
-
 		std::string	_hostname;
 		std::string	_port;
 		int			_listen_limit;
@@ -40,6 +40,7 @@ class Server
 		timeval		_timeout;
 		time_t		_start_time;
         const std::map<std::string, void (*)(const std::string &line, const size_t &client_idx, const Server &serv)> _command;
+		unsigned char _password[32];
 
 	public:
 
@@ -59,9 +60,10 @@ class Server
 		/*
 		** getter
 		*/
-		std::string	get_hostname() const	{ return _hostname;}
-		std::string	get_port() const		{return _port;}
-		int			get_listen_limit() const		{return _listen_limit;}
+		std::string	get_hostname() const	{ return _hostname; }
+		std::string	get_port() const		{ return _port; }
+		int			get_listen_limit() const		{ return _listen_limit; }
+		const unsigned char *get_password() const { return _password; }
 		fd_set	&get_readfs() { return _readfs; }
 		fd_set	&get_writefs() { return _writefs; }
 		fd_set	&get_exceptfs() { return _exceptfs; }
@@ -75,6 +77,7 @@ class Server
 		void	set_hostname(const std::string hostname) { _hostname = hostname; }
 		void	set_port(const std::string port) {_port = port; }
 		void	set_listen_limit(int listen_limit) { _listen_limit = listen_limit; }
+		void	set_password(const unsigned char *password) { std::memcpy(_password, password, 32); }
 		void	set_max_fd(int value) { _max_fd = value; }
 		void	set_timeout(int sec = int(), int usec = int())
 		{
