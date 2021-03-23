@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/23 22:20:03 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/23 23:08:03 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../includes/IRCserv.hpp"
 #include <vector>
 
-static bool is_number(const std::string& s)
+static bool		is_number(const std::string& s)
 {
     std::string::const_iterator it = s.begin();
     while (it != s.end())
@@ -26,7 +26,7 @@ static bool is_number(const std::string& s)
 	return true;
 }
 
-void		check_realname(const std::string str, const size_t &client_idx, const Server &serv)
+void			check_realname(const std::string str, const size_t &client_idx, const Server &serv)
 {
 	if (str.size() < 1)
 	{
@@ -35,7 +35,7 @@ void		check_realname(const std::string str, const size_t &client_idx, const Serv
 	}
 }
 
-static void	check_user_registered(const std::string str, const std::vector<std::string> vect, const size_t &client_idx, const Server &serv)
+static void		check_user_registered(const std::string str, const std::vector<std::string> vect, const size_t &client_idx, const Server &serv)
 {
 	if (vect.size() < 4)
 	{
@@ -54,7 +54,7 @@ static void	check_user_registered(const std::string str, const std::vector<std::
 	}
 }
 
-void	user_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void			user_command(const std::string &line, const size_t &client_idx, const Server &serv)
 {
 	std::vector<std::string> params;
 	std::vector<std::string> args;
@@ -81,7 +81,4 @@ void	user_command(const std::string &line, const size_t &client_idx, const Serve
 		}
 	}
 	catch(const std::exception &e) {return ; }
-	
-	//ERR_ALREADYREGISTRED
-	//ERR_NEEDMOREPARAMS
 }
