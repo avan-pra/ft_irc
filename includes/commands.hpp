@@ -50,8 +50,7 @@
 # define ERR_CANTKILLSERVER() (":You cant kill a server!\r\n")
 # define ERR_NOOPERHOST() (":No O-lines for your host\r\n")
 # define ERR_UMODEUNKNOWNFLAG() (":Unknown MODE flag\r\n")
-# define ERR_USERSDONTMATCH() (":Cant change mode for other users\r\n")
-
+# define ERR_USERSDONTMATCH() (":Cannot change mode for other users\r\n")
 /*
 **  reponse for command file
 */
@@ -120,7 +119,7 @@
 //# define RPL_STATSUPTIME() (":Server Up %d days %d:%02d:%02d\r\n")
 # define RPL_STATSOLINE(host_mask, name) ("O " + host_mask + " * " + name + "\r\n")
 # define RPL_STATSHLINE(host_mask, server_name) ("H " + host_mask + " * " + server_name + "\r\n")
-# define RPL_UMODEIS() ("<chaîne de mode utilisateur>\r\n")
+# define RPL_UMODEIS(user_mode) (user_mode)
 # define RPL_LUSERCLIENT(int1, int2, int3) (":There are " + int1 + " users and " + int2 + " invisible on " + int3 + " servers\r\n")
 # define RPL_LUSEROP(int1) (int1 + " :operator(s) online\r\n")
 # define RPL_LUSERUNKNOWN(int1) (int1 + " :unknown connection(s)\r\n")

@@ -27,6 +27,10 @@ std::string create_error(const int &code, const size_t &client_idx, const Server
 			return sample + ERR_NEEDMOREPARAMS(arg1);
 		case 462:
 			return sample + ERR_ALREADYREGISTRED();
+		case 501:
+			return sample + ERR_UMODEUNKNOWNFLAG();
+		case 502:
+			return sample + ERR_USERSDONTMATCH();
 		default:
 			return std::string("");
 	}
