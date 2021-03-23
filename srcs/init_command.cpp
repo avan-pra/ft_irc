@@ -61,7 +61,7 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["DIE"] = NULL;
 	cmd["NJOIN"] = NULL;
 
-	cmd["CAP"] = NULL;
+	cmd["CAP"] = cap_command;
 
 	return cmd;
 }

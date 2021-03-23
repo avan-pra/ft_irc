@@ -40,7 +40,7 @@ SRCS_CMD = $(addprefix $(DIR_CMD), $(SRC_CMD))
 DIR_CMD = ./srcs/commands/
 SRC_CMD = nick.cpp user.cpp time.cpp \
 		  motd.cpp info.cpp version.cpp \
-		  pass.cpp join.cpp
+		  pass.cpp join.cpp cap.cpp
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 
