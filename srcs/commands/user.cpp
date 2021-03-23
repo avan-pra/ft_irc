@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/23 11:58:16 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/23 12:15:09 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	user_command(const std::string &line, const size_t &client_idx, const Serve
 			g_aClient[client_idx].second.set_username(args[1]);
 			g_aClient[client_idx].second.set_realname(realname);
 			g_aClient[client_idx].second.set_mode(args[2]);
+			g_aClient[client_idx].second.set_hostname("");
 			g_aClient[client_idx].second.send_reply(RPL_WELCOME(g_aClient[client_idx].second.get_nickname(), g_aClient[client_idx].second.get_username(), g_aClient[client_idx].second.get_hostname()));
 		}
 	}
