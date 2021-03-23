@@ -51,6 +51,7 @@
 # define ERR_NOOPERHOST() (":No O-lines for your host\r\n")
 # define ERR_UMODEUNKNOWNFLAG() (":Unknown MODE flag\r\n")
 # define ERR_USERSDONTMATCH() (":Cannot change mode for other users\r\n")
+# define ERR_INVALIDCAP(command) (" " + command + " :Invalid CAP command\r\n")
 /*
 **  reponse for command file
 */
