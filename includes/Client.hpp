@@ -37,6 +37,7 @@ class Client
 		std::string		_realname;
 		std::string		_unended_packet;
 		std::string		_mode;
+		bool			_registered;
 		//int			_status;
 	
 		//std::vector<Channel>	_channels;	
@@ -45,7 +46,7 @@ class Client
 		SOCKET			_fd;
 		sockaddr_in		sock_addr;
 
-		Client()
+		Client() : _registered(false)
 		{
 		}
 
@@ -62,6 +63,7 @@ class Client
 		std::string		get_realname() { return (_realname); }
 		std::string		get_nickname() { return (_nickname); }
 		std::string		get_mode(){ return (_mode);}
+		bool			is_registered() { return (_registered); }
 
 		/*
 		 ** Setter
@@ -71,7 +73,8 @@ class Client
 		void			set_hostname(std::string host) { _hostname = host; }
 		void			set_realname(std::string real) { _realname = real; }
 		void			set_nickname(std::string nick) { _nickname = nick; }
-		void			set_mode(std::string mode) {_mode = mode;}
+		void			set_mode(std::string mode) { _mode = mode; }
+		void			set_register(bool registered) { _registered = registered; }
 
 		/*
 		** Methods
