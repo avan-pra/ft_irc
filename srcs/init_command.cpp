@@ -13,9 +13,9 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 {
 	std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)> cmd;
 
-	cmd["PASS"] = NULL;
-	cmd["NICK"] = nick_command; 
-	cmd["USER"] = user_command; 
+	cmd["PASS"] = pass_command;
+	cmd["NICK"] = nick_command;
+	cmd["USER"] = user_command;
 	cmd["SERVER"] = NULL; 
 	cmd["OPER"] = NULL; 
 	cmd["QUIT"] = NULL; 

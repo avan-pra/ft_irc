@@ -37,7 +37,7 @@ SRCS_CMD = $(addprefix $(DIR_CMD), $(SRC_CMD))
 DIR_CMD = ./srcs/commands/
 SRC_CMD = nick.cpp user.cpp time.cpp \
 		  motd.cpp info.cpp version.cpp \
-		  join.cpp 
+		  pass.cpp
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 
@@ -47,7 +47,7 @@ $(NAME) : $(OBJ) $(OBJ_LIB) $(OBJ_CMD)
 		$(C++) $(FLAGS) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) -o $(NAME)
 
 clean :
-		rm -rf $(OBJ)
+		rm -rf $(OBJ) $(OBJ_CMD) $(OBJ_LIB)
 
 fclean : clean
 		rm -rf $(NAME)
