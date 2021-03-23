@@ -6,17 +6,18 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/03/23 11:21:19 by lucas            ###   ########.fr        #
+#    Updated: 2021/03/23 17:07:19 by lucas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = Serv
 
 C++ = clang++
+CUR_DIR = $(shell pwd)
 
 FLAG = -Wall -Werror -Wextra -std=c++98
 
-FLAGS =  -lssl -lcrypto
+FLAGS = -lssl -lcrypto -ldl -L$(CUR_DIR)/openssl-1.1.1j
 
 #srcs file
 SRCS =			$(addprefix $(DIR_SRCS), $(SRC)) 
@@ -46,6 +47,7 @@ OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 all : $(NAME)
 
 $(NAME) : $(OBJ) $(OBJ_LIB) $(OBJ_CMD)
+		echo $(CUR_DIR)
 		$(C++) $(FLAGS) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) -o $(NAME)
 
 clean :

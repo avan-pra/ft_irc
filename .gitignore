@@ -6,3 +6,4 @@ bircd.tar.gz
 *.pyc
 serv
 *.o
+openssl-1.1.1j
