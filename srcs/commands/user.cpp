@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/23 12:15:09 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/23 22:20:03 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ static void	check_user_registered(const std::string str, const std::vector<std::
 		g_aClient[client_idx].second.send_reply(create_error(461, client_idx, serv, "USER"));
 		throw std::exception();
 	}
-	if (!is_number(vect[2]))
-		throw std::exception();
+	//if (!is_number(vect[2]))
+	//	throw std::exception();
 	for (size_t i = 0; i != g_aClient.size(); i++)
 	{
 		if (g_aClient[i].second.get_username() == vect[1] ||
