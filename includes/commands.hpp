@@ -150,6 +150,7 @@ void	motd_command(const std::string &line, const size_t &client_idx, const Serve
 void	info_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	version_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	join_command(const std::string &line, const size_t &client_idx, const Server &serv);
+void	mode_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	cap_command(const std::string &line, const size_t &client_idx, const Server &serv);
 
 #endif

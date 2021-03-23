@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/03/23 17:07:19 by lucas            ###   ########.fr        #
+#    Updated: 2021/03/23 23:10:57 by jvaquer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SRCS_CMD = $(addprefix $(DIR_CMD), $(SRC_CMD))
 DIR_CMD = ./srcs/commands/
 SRC_CMD = nick.cpp user.cpp time.cpp \
 		  motd.cpp info.cpp version.cpp \
-		  pass.cpp join.cpp cap.cpp
+		  pass.cpp join.cpp mode.cpp cap.cpp
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 
