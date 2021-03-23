@@ -16,6 +16,8 @@ C++ = clang++
 
 FLAG = -Wall -Werror -Wextra -std=c++98
 
+FLAGS =  -lssl -lcrypto
+
 #srcs file
 SRCS =			$(addprefix $(DIR_SRCS), $(SRC)) 
 DIR_SRCS = ./srcs/
