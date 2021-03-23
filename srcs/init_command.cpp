@@ -20,7 +20,7 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["OPER"] = NULL; 
 	cmd["QUIT"] = NULL; 
 	cmd["SQUIT"] = NULL; 
-	cmd["JOIN"] = NULL; 
+	cmd["JOIN"] = join_command; 
 	cmd["PART"] = NULL; 
 	cmd["MODE"] = NULL; 
 	cmd["TOPIC"] = NULL;
