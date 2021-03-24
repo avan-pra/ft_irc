@@ -34,7 +34,7 @@
 # define ERR_SUMMONDISABLED() (":SUMMON has been disabled\r\n")
 # define ERR_USERSDISABLED() (":USERS has been disabled\r\n")
 # define ERR_NOTREGISTERED() (":You have not registered\r\n")
-# define ERR_NEEDMOREPARAMS(command) (command + " :Not enough parameters\r\n")
+# define ERR_NEEDMOREPARAMS(command) (" " + command + " :Not enough parameters\r\n")
 # define ERR_ALREADYREGISTRED() (":Unauthorized command (already registered)\r\n")
 # define ERR_NOPERMFORHOST() (":Your host isn't among the privileged\r\n")
 # define ERR_PASSWDMISMATCH() (":Password incorrect\r\n")
@@ -49,8 +49,8 @@
 # define ERR_CHANOPRIVSNEEDED(channel) (channel + " :You're not channel operator\r\n")
 # define ERR_CANTKILLSERVER() (":You cant kill a server!\r\n")
 # define ERR_NOOPERHOST() (":No O-lines for your host\r\n")
-# define ERR_UMODEUNKNOWNFLAG() (":Unknown MODE flag\r\n")
-# define ERR_USERSDONTMATCH() (":Cannot change mode for other users\r\n")
+# define ERR_UMODEUNKNOWNFLAG() (" :Unknown MODE flag\r\n")
+# define ERR_USERSDONTMATCH() (" :Cannot change mode for other users\r\n")
 # define ERR_INVALIDCAP(command) (" " + command + " :Invalid CAP command\r\n")
 /*
 **  reponse for command file
