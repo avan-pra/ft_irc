@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/24 13:59:56 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/24 14:51:44 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/socket.h>
 # include <sys/types.h>
 # include <cerrno>
+# include "./Channel.hpp"
 
 typedef int	SOCKET;
 
@@ -30,7 +31,7 @@ class Channel;
 class Client
 {
 	private:
-	
+
 		std::string		_nickname;
 		std::string		_username;
 		std::string		_hostname;
@@ -40,8 +41,8 @@ class Client
 		bool			_is_register;
 		bool			_is_cap;
 		//int			_status;
-	
-		//std::vector<Channel>	_channels;	
+
+		std::vector<Channel>	_channels;
 	public:
 
 		SOCKET			_fd;
