@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/22 21:49:59 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/24 13:31:04 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,18 @@
 # include <sys/time.h>
 # include <map>
 # include <cstring>
+# include "./Channel.hpp"
 
 class Server;
-
+class Channel;
 std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)> fill_command(void);
 
 class Server
 {
 	private:
-		std::string	_hostname;
-		std::string	_port;
-		int			_listen_limit;
+		std::string						_hostname;
+		std::string						_port;
+		int								_listen_limit;
 
 		fd_set		_readfs;
 		fd_set		_writefs;
@@ -39,6 +40,7 @@ class Server
 		int			_max_fd;
 		timeval		_timeout;
 		time_t		_start_time;
+		std::vector<Channel>	_vChannel;
         const std::map<std::string, void (*)(const std::string &line, const size_t &client_idx, const Server &serv)> _command;
 		unsigned char _password[32];
 
@@ -70,6 +72,7 @@ class Server
 		int		get_max_fd() { return _max_fd; }
 		timeval	&get_timeout() { return _timeout; }
 		time_t	get_start_time() const { return _start_time; }
+		std::vector<Channel>	get_vChannel() const { return _vChannel; }
         const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)>	&get_command() const { return _command; }
 		/*
 		 ** setter
@@ -83,6 +86,11 @@ class Server
 		{
 			_timeout.tv_sec = sec;
 			_timeout.tv_usec = usec;
+		}
+
+		void	add_channel(Channel channel)
+		{
+			_vChannel.push_back(channel);
 		}
 };
 

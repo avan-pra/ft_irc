@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/03/23 23:10:57 by jvaquer          ###   ########.fr        #
+#    Updated: 2021/03/24 12:20:14 by lucas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,8 @@ C++ = clang++
 CUR_DIR = $(shell pwd)
 
 FLAG = -Wall -Werror -Wextra -std=c++98
+
+#CXXFLAGS = $(FLAG)
 
 FLAGS = -lssl -lcrypto -ldl -L$(CUR_DIR)/openssl-1.1.1j
 
