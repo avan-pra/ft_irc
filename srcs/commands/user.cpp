@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/23 23:08:03 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/24 13:27:32 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../includes/IRCserv.hpp"
 #include <vector>
 
-static bool		is_number(const std::string& s)
+static bool			is_number(const std::string& s)
 {
     std::string::const_iterator it = s.begin();
     while (it != s.end())
@@ -26,7 +26,7 @@ static bool		is_number(const std::string& s)
 	return true;
 }
 
-void			check_realname(const std::string str, const size_t &client_idx, const Server &serv)
+static void			check_realname(const std::string str, const size_t &client_idx, const Server &serv)
 {
 	if (str.size() < 1)
 	{
@@ -35,15 +35,25 @@ void			check_realname(const std::string str, const size_t &client_idx, const Ser
 	}
 }
 
-static void		check_user_registered(const std::string str, const std::vector<std::string> vect, const size_t &client_idx, const Server &serv)
+static void			check_2nd_arg(const std::string str, const size_t &client_idx, const Server &serv)
+{
+	if (!is_number(str))
+	{
+		
+	}
+	else
+	{
+		g_aClient[client_idx].second.set_mode(str);
+	}
+}
+
+static void			check_user_registered(const std::string str, const std::vector<std::string> vect, const size_t &client_idx, const Server &serv)
 {
 	if (vect.size() < 4)
 	{
 		g_aClient[client_idx].second.send_reply(create_error(461, client_idx, serv, "USER"));
 		throw std::exception();
 	}
-	//if (!is_number(vect[2]))
-	//	throw std::exception();
 	for (size_t i = 0; i != g_aClient.size(); i++)
 	{
 		if (g_aClient[i].second.get_username() == vect[1] ||
@@ -54,7 +64,7 @@ static void		check_user_registered(const std::string str, const std::vector<std:
 	}
 }
 
-void			user_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void				user_command(const std::string &line, const size_t &client_idx, const Server &serv)
 {
 	std::vector<std::string> params;
 	std::vector<std::string> args;
