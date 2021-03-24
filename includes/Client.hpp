@@ -38,6 +38,7 @@ class Client
 		std::string		_unended_packet;
 		std::string		_mode;
 		bool			_registered;
+		bool			_is_cap;
 		//int			_status;
 	
 		//std::vector<Channel>	_channels;	
@@ -46,7 +47,7 @@ class Client
 		SOCKET			_fd;
 		sockaddr_in		sock_addr;
 
-		Client() : _registered(false)
+		Client() : _registered(false), _is_cap(false)
 		{
 		}
 
@@ -64,6 +65,7 @@ class Client
 		std::string		get_nickname() { return (_nickname); }
 		std::string		get_mode(){ return (_mode);}
 		bool			is_registered() { return (_registered); }
+		bool			is_cap() { return (_is_cap); }
 
 		/*
 		 ** Setter
@@ -75,6 +77,7 @@ class Client
 		void			set_nickname(std::string nick) { _nickname = nick; }
 		void			set_mode(std::string mode) { _mode = mode; }
 		void			set_register(bool registered) { _registered = registered; }
+		void			set_cap(bool cap) { _is_cap = cap; }
 
 		/*
 		** Methods
@@ -84,6 +87,8 @@ class Client
 		{
 			send(_fd, s.c_str(), s.size(), 0);
 		}
+
+		std::string		hold_packet;
 };
 
 #endif

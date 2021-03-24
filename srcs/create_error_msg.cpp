@@ -15,6 +15,8 @@ std::string create_error(const int &code, const size_t &client_idx, const Server
 
 	switch (code)
 	{
+		case 410:
+			return sample + ERR_INVALIDCAP(arg1);
 		case 421:
 			return sample + ERR_UNKNOWNCOMMAND(arg1);
 		case 431:
