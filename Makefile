@@ -24,7 +24,7 @@ SRCS =			$(addprefix $(DIR_SRCS), $(SRC))
 DIR_SRCS = ./srcs/
 SRC = main.cpp parser.cpp get_client.cpp parse_conf.cpp \
 	  run_server.cpp setup_serv.cpp init_command.cpp \
-	  create_error_msg.cpp
+	  create_msg.cpp
 
 OBJ = $(SRCS:.cpp=.o)
 
