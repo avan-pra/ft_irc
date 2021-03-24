@@ -17,7 +17,7 @@ static void		check_nick(const std::string nick, const size_t &client_idx, const 
 {
 	if (nick != g_aClient[client_idx].second.get_nickname())
 	{
-		g_aClient[client_idx].second.send_reply(create_error(502, client_idx, serv));
+		g_aClient[client_idx].second.send_reply(create_msg(502, client_idx, serv));
 		throw std::exception();
 	}
 }

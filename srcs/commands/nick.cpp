@@ -7,7 +7,7 @@ static void		check_empty_line(const std::vector<std::string> &arg, const size_t 
 {
 	if (arg.size() < 2 || arg[1].find_first_not_of(' ') == arg[1].npos)
 	{
-		g_aClient[client_idx].second.send_reply(create_error(431, client_idx, serv));
+		g_aClient[client_idx].second.send_reply(create_msg(431, client_idx, serv));
 		throw std::exception();
 	}
 }
@@ -18,14 +18,14 @@ static std::string	check_username(const std::string &str, const size_t &client_i
 	//check si la taille de l'username > 9 si oui envoie une erreur
 	if (str.length() > 9)
 	{
-		g_aClient[client_idx].second.send_reply(create_error(432, client_idx, serv, str)); throw std::exception();
+		g_aClient[client_idx].second.send_reply(create_msg(432, client_idx, serv, str)); throw std::exception();
 	}
 	//check si la string contient des char interdit (les chars valides sont au dessus)
 	for (size_t i = 0; i < str.length(); ++i)
 	{
 		if (!std::strchr(USERNAME_VALID_CHAR, str[i]))
 		{
-			g_aClient[client_idx].second.send_reply(create_error(432, client_idx, serv, str)); throw std::exception();
+			g_aClient[client_idx].second.send_reply(create_msg(432, client_idx, serv, str)); throw std::exception();
 		}
 	}
 	return str;
@@ -39,7 +39,7 @@ static void	check_username_ownership(std::string str, const size_t &client_idx, 
 		{
 			if (g_aClient[i].second.get_nickname() == str)
 			{
-				g_aClient[client_idx].second.send_reply(create_error(433, client_idx, serv, str)); throw std::exception();
+				g_aClient[client_idx].second.send_reply(create_msg(433, client_idx, serv, str)); throw std::exception();
 			}
 		}
 	}

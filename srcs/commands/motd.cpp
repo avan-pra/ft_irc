@@ -23,16 +23,16 @@ void	motd_command(const std::string &line, const size_t &client_idx, const Serve
 	file.open("./motd");
 	if (!file)
 	{
-		g_aClient[client_idx].second.send_reply(ERR_NOMOTD());
+		g_aClient[client_idx].second.send_reply(ERR_NOMOTD()); //je connais pas le code et flemme de check
 		return ;
 	}
-	g_aClient[client_idx].second.send_reply(RPL_MOTDSTART(serv.get_hostname()));
+	g_aClient[client_idx].second.send_reply(create_msg(375, client_idx, serv, serv.get_hostname()));
 	while (file)
 	{
 		getline(file, motd_line);
 		if (motd_line.size() > 0 && motd_line.size() <= 80)
-	g_aClient[client_idx].second.send_reply(RPL_MOTD(std::string(motd_line)));
+		g_aClient[client_idx].second.send_reply(create_msg(372, client_idx, serv, std::string(motd_line))); //pk std::string ???????
 	}
-	g_aClient[client_idx].second.send_reply(RPL_ENDOFMOTD());
+	g_aClient[client_idx].second.send_reply(create_msg(376, client_idx, serv));
 	file.close();
 }

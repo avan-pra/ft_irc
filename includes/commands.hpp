@@ -55,7 +55,7 @@
 /*
 **  reponse for command file
 */
-# define RPL_WELCOME(nick, user, host) ("Welcome to the Internet Relay Network \n" + nick + "!" + user + "@" + host + "\r\n")
+# define RPL_WELCOME(nick) (" :Welcome to the Internet Relay Network " + nick + "\r\n")
 # define RPL_NONE() ("\r\n") //300
 //# define RPL_USERHOST(pseudo, host) (":[<réponse>{<espace><réponse>}]\r\n") //<réponse> ::= <pseudo>['*'] '=' <'+'|'-'><hôte>
 //# define RPL_ISON(pseudo) (":[<pseudo> {<espace><pseudo>}]\r\n")
@@ -89,9 +89,9 @@
 # define RPL_ENDOFBANLIST(channel) (channel + " :End of channel ban list\r\n")
 # define RPL_INFO(info) (":" + info + "\r\n")
 # define RPL_ENDOFINFO() (":End of /INFO list\r\n")
-# define RPL_MOTDSTART(server) (":- " + server + " Message of the day - \r\n")
-# define RPL_MOTD(comment) (":- " + comment + "\r\n")
-# define RPL_ENDOFMOTD() (":End of /MOTD command\r\n")
+# define RPL_MOTDSTART(server) (" :- " + server + " Message of the day - \r\n")
+# define RPL_MOTD(comment) (" :- " + comment + "\r\n")
+# define RPL_ENDOFMOTD() (" :End of /MOTD command\r\n")
 # define RPL_YOUREOPER() (":You are now an IRC operator\r\n")
 # define RPL_REHASHING(config_file) (config_file + " :Rehashing\r\n")
 # define RPL_TIME(server, time_serveur) (server + " :" + time_serveur + "\r\n")
@@ -134,7 +134,7 @@
 //define invalid character as for username
 # define USERNAME_VALID_CHAR "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_[]{}\\`|"
 
-std::string create_error(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string());
+std::string create_msg(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string());
 /*
 **  end of error
 */

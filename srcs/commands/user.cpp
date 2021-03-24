@@ -30,7 +30,7 @@ static void			check_realname(const std::string str, const size_t &client_idx, co
 {
 	if (str.size() < 1)
 	{
-		g_aClient[client_idx].second.send_reply(create_error(461, client_idx, serv, "USER"));
+		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "USER"));
 		throw std::exception();
 	}
 }
@@ -51,7 +51,7 @@ static void			check_user_registered(const std::string str, const std::vector<std
 {
 	if (vect.size() < 4)
 	{
-		g_aClient[client_idx].second.send_reply(create_error(461, client_idx, serv, "USER"));
+		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "USER"));
 		throw std::exception();
 	}
 	for (size_t i = 0; i != g_aClient.size(); i++)
@@ -59,7 +59,7 @@ static void			check_user_registered(const std::string str, const std::vector<std
 		if (g_aClient[i].second.get_username() == vect[1] ||
 			g_aClient[i].second.get_realname() == str)
 		{
-			g_aClient[client_idx].second.send_reply(create_error(462, client_idx, serv, str));throw std::exception();
+			g_aClient[client_idx].second.send_reply(create_msg(462, client_idx, serv, str));throw std::exception();
 		}
 	}
 }
@@ -87,8 +87,7 @@ void				user_command(const std::string &line, const size_t &client_idx, const Se
 			g_aClient[client_idx].second.set_realname(realname);
 			g_aClient[client_idx].second.set_mode(args[2]);
 			g_aClient[client_idx].second.set_hostname("");
-			// g_aClient[client_idx].second.send_reply(RPL_WELCOME(g_aClient[client_idx].second.get_nickname(), g_aClient[client_idx].second.get_username(), g_aClient[client_idx].second.get_hostname()));
-			g_aClient[client_idx].second.send_reply(":" + serv.get_hostname() + " 001 " + g_aClient[client_idx].second.get_nickname() + " :Welcome to the OragonoTest IRC Network " + g_aClient[client_idx].second.get_nickname());
+			g_aClient[client_idx].second.send_reply(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
 			motd_command("", client_idx, serv);
 		}
 	}
