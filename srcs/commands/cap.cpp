@@ -29,7 +29,7 @@ void	cap_command(const std::string &line, const size_t &client_idx, const Server
 
 	if (arg.size() < 2)
 	{
-		g_aClient[client_idx].second.send_reply(create_error(410, client_idx, serv, "*"));
+		g_aClient[client_idx].second.send_reply(create_msg(410, client_idx, serv, "*"));
 		return ;
 	}
 	switch (cap_arg(arg[1]))

@@ -30,7 +30,7 @@ void			check_realname(const std::string str, const size_t &client_idx, const Ser
 {
 	if (str.size() < 1)
 	{
-		g_aClient[client_idx].second.send_reply(create_error(461, client_idx, serv, "USER"));
+		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "USER"));
 		throw std::exception();
 	}
 }
@@ -39,7 +39,7 @@ static void		check_user_registered(const std::string str, const std::vector<std:
 {
 	if (vect.size() < 4)
 	{
-		g_aClient[client_idx].second.send_reply(create_error(461, client_idx, serv, "USER"));
+		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "USER"));
 		throw std::exception();
 	}
 	//if (!is_number(vect[2]))
@@ -49,7 +49,7 @@ static void		check_user_registered(const std::string str, const std::vector<std:
 		if (g_aClient[i].second.get_username() == vect[1] ||
 			g_aClient[i].second.get_realname() == str)
 		{
-			g_aClient[client_idx].second.send_reply(create_error(462, client_idx, serv, str));throw std::exception();
+			g_aClient[client_idx].second.send_reply(create_msg(462, client_idx, serv, str));throw std::exception();
 		}
 	}
 }

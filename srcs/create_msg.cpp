@@ -4,7 +4,7 @@
 #include <string>
 #include "../includes/commands.hpp"
 
-std::string create_error(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1, const std::string &arg2)
+std::string create_msg(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1, const std::string &arg2)
 {
 	std::string sample;
 
