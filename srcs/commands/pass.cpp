@@ -9,6 +9,8 @@ void	pass_command(const std::string &line, const size_t &client_idx, const Serve
 	{
 		g_aClient[client_idx].second.send_reply(create_msg(462, client_idx, serv)); return;
 	}
+	if (g_aClient[client_idx].second.get_nickname().empty() == false)
+		return;
 	std::vector<std::string> arg = ft_split(line, " ");
 	if (arg.size() < 2)
 	{
