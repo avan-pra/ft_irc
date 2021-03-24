@@ -88,6 +88,7 @@ int		checkline(std::string s, Server &serv)
 				}
 				serv.set_password(target);
 			}
+			serv.set_need_pass(true);
 			return (0);
 		}
 		case eERROR:

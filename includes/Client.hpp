@@ -39,6 +39,7 @@ class Client
 		std::string		_unended_packet;
 		std::string		_mode;
 		bool			_is_register;
+		bool			_has_good_password;
 		bool			_is_cap;
 		//int			_status;
 
@@ -48,7 +49,7 @@ class Client
 		SOCKET			_fd;
 		sockaddr_in		sock_addr;
 
-		Client() : _is_register(false), _is_cap(false)
+		Client() : _is_register(false), _has_good_password(false), _is_cap(false)
 		{
 		}
 
@@ -66,6 +67,7 @@ class Client
 		std::string		get_nickname() { return (_nickname); }
 		std::string		get_mode(){ return (_mode);}
 		bool			is_registered() { return (_is_register); }
+		bool			is_good_password() { return (_has_good_password); }
 		bool			is_cap() { return (_is_cap); }
 
 		/*
@@ -78,6 +80,7 @@ class Client
 		void			set_nickname(std::string nick) { _nickname = nick; }
 		void			set_mode(std::string mode) { _mode = mode; }
 		void			set_register(bool registered) { _is_register = registered; }
+		void			set_password_state(bool submit) { _has_good_password = submit; }
 		void			set_cap(bool cap) { _is_cap = cap; }
 
 		/*

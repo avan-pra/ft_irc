@@ -42,7 +42,8 @@ class Server
 		time_t		_start_time;
 		std::vector<Channel>	_vChannel;
         const std::map<std::string, void (*)(const std::string &line, const size_t &client_idx, const Server &serv)> _command;
-		unsigned char _password[32];
+		unsigned char	_password[32];
+		bool			_pass_for_connection;
 
 	public:
 
@@ -51,6 +52,8 @@ class Server
 			time(&_start_time);
 			set_timeout(10);
 			_max_fd = 0;
+			bzero(_password, 32);
+			_pass_for_connection = false;
 		}
 
 		~Server()
@@ -74,6 +77,7 @@ class Server
 		time_t	get_start_time() const { return _start_time; }
 		std::vector<Channel>	get_vChannel() const { return _vChannel; }
         const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)>	&get_command() const { return _command; }
+		bool	get_need_pass() const { return _pass_for_connection; }
 		/*
 		 ** setter
 		 */
@@ -87,6 +91,7 @@ class Server
 			_timeout.tv_sec = sec;
 			_timeout.tv_usec = usec;
 		}
+		void	set_need_pass(bool need) { _pass_for_connection = need; }
 
 		void	add_channel(Channel channel)
 		{

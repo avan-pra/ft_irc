@@ -15,7 +15,7 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 	else if (code < 100)
 		true_code = std::string(1, '0').append(std::to_string(code));
 	if (g_aClient[client_idx].second.get_nickname().empty())
-		sample = std::string(":" + serv.get_hostname() + " " + true_code);
+		sample = std::string(":" + serv.get_hostname() + " " + true_code + " *");
 	else
 		sample = std::string(":" + serv.get_hostname() + " " + true_code + " " + g_aClient[client_idx].second.get_nickname());
 
