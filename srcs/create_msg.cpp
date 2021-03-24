@@ -7,14 +7,22 @@
 std::string create_msg(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1, const std::string &arg2)
 {
 	std::string sample;
+	std::string true_code;
 
+	true_code = std::to_string(code);
+	if (code < 10)
+		true_code = std::string(2, '0').append(std::to_string(code));
+	else if (code < 100)
+		true_code = std::string(1, '0').append(std::to_string(code));
 	if (g_aClient[client_idx].second.get_nickname().empty())
-		sample = std::string(":" + serv.get_hostname() + " " + std::to_string(code));
+		sample = std::string(":" + serv.get_hostname() + " " + true_code);
 	else
-		sample = std::string(":" + serv.get_hostname() + " " + std::to_string(code) + " " + g_aClient[client_idx].second.get_nickname());
+		sample = std::string(":" + serv.get_hostname() + " " + true_code + " " + g_aClient[client_idx].second.get_nickname());
 
 	switch (code)
 	{
+		case 1:
+			return sample + RPL_WELCOME(arg1);
 		case 410:
 			return sample + ERR_INVALIDCAP(arg1);
 		case 421:

@@ -55,7 +55,7 @@
 /*
 **  reponse for command file
 */
-# define RPL_WELCOME(nick, user, host) ("Welcome to the Internet Relay Network \n" + nick + "!" + user + "@" + host + "\r\n")
+# define RPL_WELCOME(nick) (" :Welcome to the Internet Relay Network " + nick + "\r\n")
 # define RPL_NONE() ("\r\n") //300
 //# define RPL_USERHOST(pseudo, host) (":[<réponse>{<espace><réponse>}]\r\n") //<réponse> ::= <pseudo>['*'] '=' <'+'|'-'><hôte>
 //# define RPL_ISON(pseudo) (":[<pseudo> {<espace><pseudo>}]\r\n")
