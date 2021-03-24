@@ -142,6 +142,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 class Server;
 
 void	pass_command(const std::string &line, const size_t &client_idx, const Server &serv);
+void	ping_command(const std::string &line, const size_t &client_idx, const Server &serv);
+void	pong_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	nick_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	user_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	ping_command(const std::string &line, const size_t &client_idx, const Server &serv);

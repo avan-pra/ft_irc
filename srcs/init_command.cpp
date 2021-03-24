@@ -42,8 +42,8 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["WHOIS"] = NULL;
 	cmd["WHOWAS"] = NULL;
 	cmd["KILL"] = NULL;
-	cmd["PING"] = NULL;
-	cmd["PONG"] = NULL;
+	cmd["PING"] = ping_command;
+	cmd["PONG"] = pong_command;
 	cmd["ERROR"] = NULL;
 	cmd["AWAY"] = NULL;
 	cmd["REHASH"] = NULL;
