@@ -56,7 +56,7 @@ void run_server(Server &serv)
 			{
 				ft_bzero((char *)c, sizeof(c));
 				int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
-				if (ret == 0)
+				if (ret <= 0)
 					disconnect_client(i);
 				else if (ret > 0)
 				{
@@ -67,8 +67,6 @@ void run_server(Server &serv)
 					}
 					catch(const IncorrectPassException &e){ disconnect_client(i); }
 				}
-				else
-					std::cout << "Error : recv()\n";
 			}
 		}
 	}
