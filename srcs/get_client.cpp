@@ -35,7 +35,7 @@ void accept_user(Server &serv)
 	//push de <fd, User> sur le vecteur
 	g_aClient.push_back(std::make_pair(new_fd, new_client));
 	//send motd a l'arrivee du client sur le server
-	motd_command("", g_aClient.size() - 1, serv);
+	// motd_command("", g_aClient.size() - 1, serv);
 	//sort en ordre decroissant en fonction de la key(ou first)
 	std::sort(g_aClient.begin(), g_aClient.end(), sort_dec);
 }
