@@ -82,12 +82,18 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 		{
 			std::string command = std::string(str->substr(0, str->find(" ", 0)));
 
-			//put to uppercase letter
+			//put to uppercase letter the command (irssi send in lower case for example)
 			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 				*it = std::toupper(*it);
 			try
 			{
-				if (serv.get_command().at(command) != NULL)
+				/*
+				** execute command only if: ((if not registered and command are either PASS NICK or USER)
+				** or if register) AND if command exist
+				*/
+				if (((g_aClient[client_idx].second.is_registered() == false && (command == "PASS" || command == "NICK" || command == "USER" || command == "CAP"))
+					|| g_aClient[client_idx].second.is_registered() == true)
+					&& serv.get_command().at(command) != NULL)
 					serv.get_command().at(command)(*str, client_idx, serv);
 			}
 			catch (const IncorrectPassException &e) { throw IncorrectPassException(); }
