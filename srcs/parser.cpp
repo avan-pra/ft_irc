@@ -1,6 +1,8 @@
 #include <iostream>
 #include "../includes/IRCserv.hpp"
 #include "../includes/commands.hpp"
+#include <algorithm>
+#include <cstring>
 
 static void	build_unfinished_packet(const std::string &true_line, const size_t &client_idx, std::string &last)
 {
@@ -80,6 +82,9 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 		{
 			std::string command = std::string(str->substr(0, str->find(" ", 0)));
 
+			//put to uppercase letter
+			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
+				*it = std::toupper(*it);
 			try
 			{
 				if (serv.get_command().at(command) != NULL)

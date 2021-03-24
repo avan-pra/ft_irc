@@ -87,8 +87,8 @@
 # define RPL_ENDOFLINKS(mask) (mask + " :End of /LINKS list\r\n)"
 //# define RPL_BANLIST(channel) (channel + ": <identification de bannissement>\r\n")
 # define RPL_ENDOFBANLIST(channel) (channel + " :End of channel ban list\r\n")
-# define RPL_INFO(info) (":" + info + "\r\n")
-# define RPL_ENDOFINFO() (":End of /INFO list\r\n")
+# define RPL_INFO(info) (" :" + info + "\r\n")
+# define RPL_ENDOFINFO() (" :End of /INFO list\r\n")
 # define RPL_MOTDSTART(server) (" :- " + server + " Message of the day - \r\n")
 # define RPL_MOTD(comment) (" :- " + comment + "\r\n")
 # define RPL_ENDOFMOTD() (" :End of /MOTD command\r\n")

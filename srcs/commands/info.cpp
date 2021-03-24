@@ -30,22 +30,23 @@ void	info_command(const std::string &line, const size_t &client_idx, const Serve
 		if (time.back() == '\n')
 			time.pop_back();
 	}
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" Server name : ") + serv.get_hostname()));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" ") + serv.get_hostname() + " compiled on " + time));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string("--------------------INFO--------------------")));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" Server name : ") + serv.get_hostname()));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" ") + serv.get_hostname() + " compiled on " + time));
 	time = ctime(&tmp);
 	if (time.back() == '\n')
 		time.pop_back();
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" ") + serv.get_hostname() + " started on " + time));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" Project : FT_IRC of 42")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" Version : beta 1.0")));
-	g_aClient[client_idx].second.send_reply( RPL_INFO( std::string( " Created by :")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string("lmoulin  <lmoulin@student.42.fr>")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string("jvaquer  <jvaquer@student.42.fr>")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string("avan-pra <avan-pra@student.42.fr>")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string("")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" You can check our other project at :")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" https://github.com/lucasmln")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" https://github.com/EudaldV98")));
-	g_aClient[client_idx].second.send_reply(RPL_INFO(std::string(" https://github.com/Velovo")));
-	g_aClient[client_idx].second.send_reply(RPL_ENDOFINFO());
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" ") + serv.get_hostname() + " started on " + time));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" Project : FT_IRC of 42")));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" Version : beta 1.0")));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" Created by :")));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string("  lmoulin  <lmoulin@student.42.fr>")));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string("  jvaquer  <jvaquer@student.42.fr>")));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string("  avan-pra <avan-pra@student.42.fr>")));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string("")));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" You can check our other project at :")));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string("  https://github.com/lucasmln")));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string("  https://github.com/EudaldV98")));
+	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string("  https://github.com/Velovo")));
+	g_aClient[client_idx].second.send_reply(create_msg(374, client_idx, serv));
 }
