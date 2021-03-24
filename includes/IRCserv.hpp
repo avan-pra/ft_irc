@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/22 16:19:26 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/24 17:31:37 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,15 @@ int		char2hex(char input);
 ** parser.cpp
 */
 void            parser(char *line, const size_t &client_idx, const Server &server);
+
+class	IncorrectPassException: public std::exception
+{
+	virtual const char	*what() const throw()
+	{
+		return "";
+	};
+};
+
 
 
 #endif

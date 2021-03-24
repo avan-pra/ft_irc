@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/24 14:51:44 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/24 17:16:13 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class Client
 		std::string		_username;
 		std::string		_hostname;
 		std::string		_realname;
+		std::string		_servername;
 		std::string		_unended_packet;
 		std::string		_mode;
 		bool			_is_register;
@@ -65,6 +66,7 @@ class Client
 		std::string		get_hostname() { return (_hostname); }
 		std::string		get_realname() { return (_realname); }
 		std::string		get_nickname() { return (_nickname); }
+		std::string		get_servername() {return (_servername); }
 		std::string		get_mode(){ return (_mode);}
 		bool			is_registered() { return (_is_register); }
 		bool			is_good_password() { return (_has_good_password); }
@@ -78,6 +80,7 @@ class Client
 		void			set_hostname(std::string host) { _hostname = host; }
 		void			set_realname(std::string real) { _realname = real; }
 		void			set_nickname(std::string nick) { _nickname = nick; }
+		void			set_servername(std::string servername) { _servername = servername; }
 		void			set_mode(std::string mode) { _mode = mode; }
 		void			set_register(bool registered) { _is_register = registered; }
 		void			set_password_state(bool submit) { _has_good_password = submit; }

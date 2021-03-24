@@ -61,7 +61,11 @@ void run_server(Server &serv)
 				else if (ret > 0)
 				{
 					c[ret] = '\0';
-					parser(c, i, serv);
+					try
+					{
+						parser(c, i, serv);
+					}
+					catch(const IncorrectPassException &e){ disconnect_client(i); }
 				}
 				else
 					std::cout << "Error : recv()\n";
