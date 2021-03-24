@@ -21,12 +21,5 @@ void	pass_command(const std::string &line, const size_t &client_idx, const Serve
 	unsigned char *d = SHA256(reinterpret_cast<unsigned char*> (const_cast<char*> (s)), strlen(s), 0);
 
 	if (memcmp(d, serv.get_password(), 32) == 0)
-	{
-		std::cout << "yay hash correspond :D" << std::endl;
 		g_aClient[client_idx].second.set_password_state(true);
-	}
-	else
-	{
-		std::cout << "hash doesnt correspond :(" << std::endl;
-	}
 }
