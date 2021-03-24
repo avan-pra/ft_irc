@@ -23,6 +23,12 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 	{
 		case 1:
 			return sample + RPL_WELCOME(arg1);
+		case 372:
+			return sample + RPL_MOTD(arg1);
+		case 375:
+			return sample + RPL_MOTDSTART(arg1);
+		case 376:
+			return sample + RPL_ENDOFMOTD();
 		case 410:
 			return sample + ERR_INVALIDCAP(arg1);
 		case 421:
