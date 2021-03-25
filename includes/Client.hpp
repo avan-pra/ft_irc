@@ -43,6 +43,7 @@ class Client
 		bool			_has_good_password;
 		// bool			_is_cap;
 		time_t			_last_activity;
+		bool			_ping_sended;
 		//int			_status;
 
 		std::vector<Channel>	_channels;
@@ -73,6 +74,8 @@ class Client
 		bool			is_good_password() { return (_has_good_password); }
 		// bool			is_cap() { return (_is_cap); }
 		time_t			&get_last_activity() { return _last_activity; }
+		bool			get_ping_status() { return _ping_sended; }
+
 		/*
 		 ** Setter
 		*/
@@ -86,6 +89,7 @@ class Client
 		void			set_register(bool registered) { _is_register = registered; }
 		void			set_password_state(bool submit) { _has_good_password = submit; }
 		// void			set_cap(bool cap) { _is_cap = cap; }
+		void			set_ping_status(bool ping) { _ping_sended = ping; }
 
 		/*
 		** Methods
