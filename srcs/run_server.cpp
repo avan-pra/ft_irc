@@ -1,5 +1,6 @@
 #include "../includes/IRCserv.hpp"
 #include "../includes/Server.hpp"
+#include <ctime>
 
 //called at each message received
 static void re_init_serv_class(Server &serv)
@@ -12,7 +13,7 @@ static void re_init_serv_class(Server &serv)
 		if (serv.get_max_fd() < g_serv_sock)
 			serv.set_max_fd(g_serv_sock);
 	}
-	serv.set_timeout(10);
+	serv.set_timeout(3);
 }
 
 static void push_fd_to_set(Server &serv)
@@ -37,6 +38,32 @@ void		disconnect_client(size_t &i)
 	i--;
 }
 
+void ping_if_away(const size_t &client_idx, const Server &serv)
+{
+	time_t time_compare; //may be optimized better
+
+	time(&time_compare);
+	//si je lui ai pas deja envoye un ping et si ca fait plus de 30sec que je l'ai pas ping
+	if (g_aClient[client_idx].second.get_ping_status() == false && time_compare - g_aClient[client_idx].second.get_last_activity() > PING)
+	{
+		g_aClient[client_idx].second.send_reply("PING :" + serv.get_hostname() + "\r\n");
+		g_aClient[client_idx].second.set_ping_status(true);
+	}
+}
+
+bool kick_if_away(size_t &client_idx, const Server &serv)
+{
+	time_t time_compare; //may be optimized better
+
+	time(&time_compare);
+	if (g_aClient[client_idx].second.get_ping_status() == true && time_compare - g_aClient[client_idx].second.get_last_activity() > TIMEOUT)
+	{
+		disconnect_client(client_idx);
+		return true;
+	}
+	return false;
+}
+
 void run_server(Server &serv)
 {
 	int readyfd;
@@ -52,7 +79,11 @@ void run_server(Server &serv)
 		try_accept_user(&serv);
 		for (size_t i = 0; i != g_aClient.size(); ++i)
 		{
-			if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()))
+			ping_if_away(i, serv);
+			//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes
+			if (kick_if_away(i, serv) == true)
+				;
+			else if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()))
 			{
 				ft_bzero((char *)c, sizeof(c));
 				int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
