@@ -33,35 +33,8 @@ void	clear_empty_packet(std::vector<std::string> &packet)
 	packet.swap(clear);
 }
 
-void hold_if_cap(std::vector<std::string> &packet, const size_t &client_idx)
-{
-	for (int i = 0; i < packet.size(); ++i)
-	{
-		std::vector<std::string> line = ft_split(packet[i], " ");
-		try
-		{
-			if (line[0] == "CAP" && line[1] != "END")
-				g_aClient[client_idx].second.set_cap(true);
-			else if (line[0] == "CAP" && line[1] == "END")
-			{
-				g_aClient[client_idx].second.set_cap(false);
-				std::vector<std::string> holded = ft_split(g_aClient[client_idx].second.hold_packet, "\r\n");
-				for (int j = 0; j < holded.size(); ++j)
-					packet.push_back(holded[j]);
-				g_aClient[client_idx].second.hold_packet = std::string("");
-			}
-			if (g_aClient[client_idx].second.is_cap() == true)
-			{
-				if (line[0] != "CAP")
-				{
-					g_aClient[client_idx].second.hold_packet = g_aClient[client_idx].second.hold_packet + packet[i] + "\r\n";
-					packet[i] = "";
-				}
-			}
-		}
-		catch(const std::exception& e) { }
-	}
-}
+// void hold_if_cap(std::vector<std::string> &packet, const size_t &client_idx)
+// a degager ^^
 
 void	parser(char *line, const size_t &client_idx, const Server &serv)
 {
@@ -76,7 +49,6 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 	if (packet.size() != 0)
 	{
 		build_unfinished_packet(true_line, client_idx, packet.back());
-		// hold_if_cap(packet, client_idx);
 		clear_empty_packet(packet);
 		for (std::vector<std::string>::iterator str = packet.begin(); str != packet.end(); ++str)
 		{

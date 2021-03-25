@@ -32,6 +32,7 @@ void accept_user(Server &serv)
 		<< ntohs(clSock.sin_port) << std::endl;
 	new_client._fd = new_fd;
 	new_client.sock_addr = clSock;
+	ctime(&new_client.get_last_activity());
 	//push de <fd, User> sur le vecteur
 	g_aClient.push_back(std::make_pair(new_fd, new_client));
 	//send motd a l'arrivee du client sur le server
