@@ -154,5 +154,6 @@ void	version_command(const std::string &line, const size_t &client_idx, const Se
 void	join_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	mode_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	cap_command(const std::string &line, const size_t &client_idx, const Server &serv);
+void	quit_command(const std::string &line, const size_t &client_idx, const Server &serv);
 
 #endif

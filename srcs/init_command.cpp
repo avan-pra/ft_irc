@@ -18,7 +18,7 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["USER"] = user_command;
 	cmd["SERVER"] = NULL; 
 	cmd["OPER"] = NULL; 
-	cmd["QUIT"] = NULL; 
+	cmd["QUIT"] = quit_command; 
 	cmd["SQUIT"] = NULL; 
 	cmd["JOIN"] = join_command; 
 	cmd["PART"] = NULL; 

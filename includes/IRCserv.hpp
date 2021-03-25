@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/24 17:31:37 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/25 15:07:50 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,12 @@ class	IncorrectPassException: public std::exception
 	};
 };
 
-
+class	QuitCommandException: public std::exception
+{
+	virtual const char *what() const throw()
+	{
+		return "";
+	};
+};
 
 #endif

@@ -66,6 +66,7 @@ void run_server(Server &serv)
 						parser(c, i, serv);
 					}
 					catch(const IncorrectPassException &e){ disconnect_client(i); }
+					catch(const QuitCommandException &e){ disconnect_client(i); }
 				}
 			}
 		}

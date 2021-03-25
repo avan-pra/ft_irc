@@ -97,6 +97,7 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 					serv.get_command().at(command)(*str, client_idx, serv);
 			}
 			catch (const IncorrectPassException &e) { throw IncorrectPassException(); }
+			catch (const QuitCommandException &e) {throw QuitCommandException(); }
 			catch (const std::exception &e) { g_aClient[client_idx].second.send_reply(create_msg(421, client_idx, serv, command)); } //il faut envoyer ca au client
 		}
 	}
