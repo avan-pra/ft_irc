@@ -23,6 +23,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 	{
 		case 1:
 			return sample + RPL_WELCOME(arg1);
+		case 221:
+			return sample + RPL_UMODEIS(arg1);
 		case 331:
 			return sample + ERR_NOTOPIC(arg1);
 		case 332:
