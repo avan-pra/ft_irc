@@ -21,6 +21,10 @@
 
 # define BUFF_SIZE 512
 
+# define PING 30
+
+# define TIMEOUT 45
+
 # define FILE_NAME "./irc.conf"
 
 # define HASH_CHAR "0123456789abcdefABCDEF"
