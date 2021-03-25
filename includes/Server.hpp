@@ -50,7 +50,7 @@ class Server
 		Server() : _command(fill_command())
 		{
 			time(&_start_time);
-			set_timeout(10);
+			set_timeout(3);
 			_max_fd = 0;
 			bzero(_password, 32);
 			_pass_for_connection = false;
