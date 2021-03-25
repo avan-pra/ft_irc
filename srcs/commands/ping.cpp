@@ -7,7 +7,7 @@ void	ping_command(const std::string &line, const size_t &client_idx, const Serve
 	
 	try
 	{
-		g_aClient[client_idx].second.send_reply("PONG " + arg[1] + "\r\n");
+		g_aClient[client_idx].second.send_reply(":" + serv.get_hostname() + " PONG " + serv.get_hostname() + " " + arg[1] + "\r\n");
 	}
 	catch(const std::exception& e) { }
 }
