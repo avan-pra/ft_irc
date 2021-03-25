@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/25 12:56:01 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/25 19:00:12 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/Server.hpp"
 #include "../../includes/commands.hpp"
+#include "./Pair.hpp"
 
-std::map<std::string, Channel>	g_mChannel;
+std::vector<Channel>	g_vChannel;
 
 // Parameters: ( <channel> *( "," <channel> ) [ <key> *( "," <key> ) ] )
 //               / "0"
@@ -40,8 +41,16 @@ bool error_chan_key(const std::string::iterator it_k)
 {
 	if (!(*it_k > 0 && *it_k < 6) || *it_k == 7 || *it_k == 8 ||
 		*it_k == 12 || *it_k == 14 || *it_k == 31 || (*it_k > 30 && *it_k <= 127))
-		return (true);
-	return (false);
+		return (false);
+	return (true);
+}
+
+int		find_channel(std::string name)
+{
+	for (size_t i = 0; i < g_vChannel.size(); i++)
+		if (name == g_vChannel[i].get_name())
+			return (i);
+	return (-1);
 }
 
 int		check_name_and_key(std::map<std::string, std::string> &chan)
@@ -65,7 +74,7 @@ int		check_name_and_key(std::map<std::string, std::string> &chan)
 		}
 		for (std::string::iterator it_k = it->second.begin(); it_k != it->second.end(); it_k++)
 		{
-			if (error_chan_key(it_k))
+			if (it->second.compare("") && error_chan_key(it_k))
 			{
 				it = chan.erase(it);
 				del = true;
@@ -80,9 +89,9 @@ int		check_name_and_key(std::map<std::string, std::string> &chan)
 
 int		try_enter_chan(const std::map<std::string, std::string>::iterator it)
 {
-	std::map<std::string, Channel>::iterator it_chan = g_mChannel.find(it->first);
+	int		i = find_channel(it->first);
 
-	if (it->second == it_chan->second.get_password())
+	if (it->second == g_vChannel[i].get_password())
 		return (1);
 	return (0);
 }
@@ -93,17 +102,17 @@ void	create_channel(const std::map<std::string, std::string>::iterator it, const
 
 	chan.get_users().push_back(g_aClient[client_idx].second);
 	chan.set_operator(g_aClient[client_idx].second);
-	g_mChannel.insert(std::make_pair(it->first, chan));
+	g_vChannel.push_back(chan);
 	enter = true;
 }
 
 void	add_client_to_channel(const std::map<std::string, std::string>::iterator it, const Server &serv, const size_t &client_idx, bool &enter)
 {
-	std::map<std::string, Channel>::iterator channel = g_mChannel.find(it->first);
+	int		i = find_channel(it->first);
 
-	channel->second.get_users().push_back(g_aClient[client_idx].second);
+	g_vChannel[i].get_users().push_back(g_aClient[client_idx].second);
+	g_aClient[client_idx].second.send_reply(create_msg(332, client_idx, serv, it->first, g_vChannel[i].get_topic()));
 	enter = true;
-	g_aClient[client_idx].second.send_reply(create_msg(432, client_idx, serv, it->first, channel->second.get_topic()));
 }
 
 
@@ -118,24 +127,25 @@ void	join_command(const std::string &line, const size_t &client_idx, const Serve
 	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, params[0])); throw IncorrectPassException();
+		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, params[0]));
 		return ;
 	}
 	params.resize(3);
 	chan_name = ft_split(params[1], ",");
 	key = ft_split(params[2], ",");
-	key.resize(chan_name.size());
+	if (key.size() < chan_name.size())
+		while (key.size() < chan_name.size())
+			key.push_back("");
 	for (size_t i = 0; i < chan_name.size(); i++)
 		tmp.insert(std::make_pair(chan_name[i], key[i]));
-
 	if (!check_name_and_key(tmp))
-		g_aClient[client_idx].second.send_reply(create_msg(476, client_idx, serv, chan_name[0])); throw IncorrectPassException();
-
-	std::cout << "oui\n";
+		g_aClient[client_idx].second.send_reply(create_msg(476, client_idx, serv, chan_name[0]));
 	enter = false;
+	if (tmp.empty())
+		return ;
 	for (std::map<std::string, std::string>::iterator it = tmp.begin(); it != tmp.end(); it++)
 	{
-		if (g_mChannel.find(it->first) == g_mChannel.end())
+		if (find_channel(it->first) == -1)
 			create_channel(it, client_idx, enter);
 		else
 		{
