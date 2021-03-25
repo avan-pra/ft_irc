@@ -52,6 +52,8 @@
 # define ERR_UMODEUNKNOWNFLAG() (" :Unknown MODE flag\r\n")
 # define ERR_USERSDONTMATCH() (" :Cannot change mode for other users\r\n")
 # define ERR_INVALIDCAP(command) (" " + command + " :Invalid CAP command\r\n")
+# define ERR_NOTOPIC(channel) (channel + " :No topic is set\r\n")
+# define ERR_BADCHANMASK(channel) (channel + " :Bad Channel Mask\r\n")
 /*
 **  reponse for command file
 */

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/24 13:22:31 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/25 12:06:17 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ class Channel
 		std::string		_name;
 		std::string		_topic;
 		std::string		_password;
+		Client			_operator;
 
 		std::vector<Client>		_users;
 		
 	public:
 		Channel() {}
 
-		Channel(std::string name, std::string topic, std::string pass)
+		Channel(std::string name, std::string pass)
 		{
 			_name = name;
 			_password = pass;
-			_topic = topic;
 		}
 
 		~Channel() {}
@@ -47,8 +47,11 @@ class Channel
 		/*
 		 ** getter
 		*/
-		std::string		get_password() { return (_password); }
-		std::string		get_name() { return _name; }
+		std::string				get_password() const { return (_password); }
+		std::string				get_name() const { return _name; }
+		std::string				get_topic() const { return _topic; }
+		std::vector<Client>		get_users() const { return _users; }
+		Client					get_operator() const { return _operator; }
 
 		/*
 		 ** setter
@@ -56,6 +59,17 @@ class Channel
 
 		void			set_password(std::string pass) { _password = pass; }
 		void			set_name(std::string name) { _name = name; }
+		void			set_operator(Client op) { _operator = op; }
+
+
+		Channel			&operator=(const Channel &other)
+		{
+			_name = other.get_name();
+			_password = other.get_password();
+			_topic = other.get_topic();
+			_users = other.get_users();
+			return (*this);
+		}
 };
 
 #endif

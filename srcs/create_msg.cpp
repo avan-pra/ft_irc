@@ -23,6 +23,10 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 	{
 		case 1:
 			return sample + RPL_WELCOME(arg1);
+		case 331:
+			return sample + ERR_NOTOPIC(arg1);
+		case 332:
+			return sample + RPL_TOPIC(arg1, arg2);
 		case 371:
 			return sample + RPL_INFO(arg1);
 		case 372:
@@ -47,6 +51,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 			return sample + ERR_NEEDMOREPARAMS(arg1);
 		case 462:
 			return sample + ERR_ALREADYREGISTRED();
+		case 476:
+			return sample + ERR_BADCHANMASK(arg1);
 		case 501:
 			return sample + ERR_UMODEUNKNOWNFLAG();
 		case 502:

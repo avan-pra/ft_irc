@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/25 15:07:50 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/25 15:20:16 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 
-extern SOCKET					g_serv_sock;
-extern std::vector<std::pair<SOCKET, Client> >   g_aClient;
+extern SOCKET									g_serv_sock;
+extern std::vector<std::pair<SOCKET, Client> >	g_aClient;
+extern std::map<std::string, Channel>			g_mChannel;
 
 class Server;
 
