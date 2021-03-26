@@ -33,7 +33,7 @@
 # define ERR_NOLOGIN(user) (user + " :User not logged in\r\n")
 # define ERR_SUMMONDISABLED() (":SUMMON has been disabled\r\n")
 # define ERR_USERSDISABLED() (":USERS has been disabled\r\n")
-# define ERR_NOTREGISTERED() (":You have not registered\r\n")
+# define ERR_NOTREGISTERED() (" :You have not registered\r\n")
 # define ERR_NEEDMOREPARAMS(command) (" " + command + " :Not enough parameters\r\n")
 # define ERR_ALREADYREGISTRED() (":Unauthorized command (already registered)\r\n")
 # define ERR_NOPERMFORHOST() (":Your host isn't among the privileged\r\n")
@@ -83,7 +83,7 @@
 # define RPL_VERSION(version, debuglevel, server, comment) (version + "." + debuglevel + " " + server + " :" + comment + "\r\n")
 //# define RPL_WHOREPLY(channel, user, host, server, pseudo) (channel + " " + user + " " + host + " " + server + " " + pseudo + " <H|G>[*][@|+] :<compteur de distance> <vrai nom>\r\n")
 # define RPL_ENDOFWHO(name) (name + " :End of /WHO list\r\n")
-//# define RPL_NAMREPLY(channel) (channel + " :[[@|+]<pseudo> [[@|+]<pseudo> [...]]]\r\n")
+# define RPL_NAMREPLY(channel) (channel + " :[[@|+]<pseudo> [[@|+]<pseudo> [...]]]\r\n") //modif_ici
 # define RPL_ENDOFNAMES(channel) (channel + " :End of /NAMES list\r\n")
 //# define RPL_LINKS(mask, server) (mask + " " + server + " :<compteur de distance> <info serveur>\r\n")
 # define RPL_ENDOFLINKS(mask) (mask + " :End of /LINKS list\r\n)"
@@ -161,5 +161,6 @@ void	join_command(const std::string &line, const size_t &client_idx, const Serve
 void	mode_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	cap_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	quit_command(const std::string &line, const size_t &client_idx, const Server &serv);
+void	names_command(const std::string &line, const size_t &client_idx, const Server &serv);
 
 #endif
