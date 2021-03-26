@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/25 19:00:12 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/26 12:12:21 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/Server.hpp"
 #include "../../includes/commands.hpp"
-#include "./Pair.hpp"
 
-std::vector<Channel>	g_vChannel;
 
 // Parameters: ( <channel> *( "," <channel> ) [ <key> *( "," <key> ) ] )
 //               / "0"
@@ -25,7 +23,7 @@ std::vector<Channel>	g_vChannel;
 //                [ ":" chanstring ]
 //                key        =  1*23( %x01-05 / %x07-08 / %x0C / %x0E-1F / %x21-7F )
 //                  ; any 7-bit US_ASCII character,
- //                 ; except NUL, CR, LF, FF, h/v TABs, and " "
+//                 ; except NUL, CR, LF, FF, h/v TABs, and " "
 
 bool	error_chan_name(const std::string tmp, const std::string::iterator it_s)
 {
@@ -102,6 +100,7 @@ void	create_channel(const std::map<std::string, std::string>::iterator it, const
 
 	chan.get_users().push_back(g_aClient[client_idx].second);
 	chan.set_operator(g_aClient[client_idx].second);
+	chan.set_mode("nt");
 	g_vChannel.push_back(chan);
 	enter = true;
 }
@@ -130,7 +129,6 @@ void	join_command(const std::string &line, const size_t &client_idx, const Serve
 		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, params[0]));
 		return ;
 	}
-	params.resize(3);
 	chan_name = ft_split(params[1], ",");
 	key = ft_split(params[2], ",");
 	if (key.size() < chan_name.size())
@@ -139,7 +137,10 @@ void	join_command(const std::string &line, const size_t &client_idx, const Serve
 	for (size_t i = 0; i < chan_name.size(); i++)
 		tmp.insert(std::make_pair(chan_name[i], key[i]));
 	if (!check_name_and_key(tmp))
+	{
 		g_aClient[client_idx].second.send_reply(create_msg(476, client_idx, serv, chan_name[0]));
+		return ;
+	}
 	enter = false;
 	if (tmp.empty())
 		return ;
@@ -153,4 +154,6 @@ void	join_command(const std::string &line, const size_t &client_idx, const Serve
 				add_client_to_channel(it, serv, client_idx, enter);
 		}
 	}
+	if (enter == false)
+		g_aClient[client_idx].second.send_reply(create_msg(476, client_idx, serv, chan_name[0]));
 }

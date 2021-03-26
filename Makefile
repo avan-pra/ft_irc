@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/03/25 14:12:46 by jvaquer          ###   ########.fr        #
+#    Updated: 2021/03/26 14:03:23 by lucas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,14 +43,13 @@ DIR_CMD = ./srcs/commands/
 SRC_CMD = nick.cpp user.cpp time.cpp \
 		  motd.cpp info.cpp version.cpp \
 		  pass.cpp join.cpp mode.cpp cap.cpp \
-		  ping.cpp pong.cpp quit.cpp
+		  ping.cpp pong.cpp quit.cpp names.cpp \
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 
 all : $(NAME)
 
 $(NAME) : $(OBJ) $(OBJ_LIB) $(OBJ_CMD)
-		echo $(CUR_DIR)
 		$(C++) $(FLAGS) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) -o $(NAME)
 
 clean :

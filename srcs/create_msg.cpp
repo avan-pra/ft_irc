@@ -29,6 +29,10 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 			return sample + ERR_NOTOPIC(arg1);
 		case 332:
 			return sample + RPL_TOPIC(arg1, arg2);
+		case 353:
+			return sample + RPL_NAMEREPLY(arg1, arg2);
+		case 366:
+			return sample + RPL_ENDOFNAMES(arg1);
 		case 371:
 			return sample + RPL_INFO(arg1);
 		case 372:
