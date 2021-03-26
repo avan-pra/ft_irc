@@ -30,7 +30,7 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 		case 332:
 			return sample + RPL_TOPIC(arg1, arg2);
 		case 353:
-			return sample + RPL_NAMEREPLY(arg1, arg2);
+			return sample + RPL_NAMREPLY(arg1); //modif_ici
 		case 366:
 			return sample + RPL_ENDOFNAMES(arg1);
 		case 371:
@@ -53,6 +53,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 			return sample + ERR_ERRONEUSNICKNAME(arg1);
 		case 433:
 			return sample + ERR_NICKNAMEINUSE(arg1);
+		case 451:
+			return sample + ERR_NOTREGISTERED();
 		case 461:
 			return sample + ERR_NEEDMOREPARAMS(arg1);
 		case 462:

@@ -36,6 +36,24 @@ void	clear_empty_packet(std::vector<std::string> &packet)
 // void hold_if_cap(std::vector<std::string> &packet, const size_t &client_idx)
 // a degager ^^
 
+bool	can_execute(const std::string command, const size_t &client_idx, const Server &serv)
+{
+	bool ret = false;
+
+	//ptet opti le search
+	if ((g_aClient[client_idx].second.is_registered() == false && (command == "PASS" || command == "NICK" || command == "USER" || command == "CAP" || command == "SERVER"))
+		|| g_aClient[client_idx].second.is_registered() == true)
+		ret = true;
+	try
+	{
+		serv.get_command().at(command);
+	}
+	catch (const std::exception &e) { throw std::exception(); }
+	if (ret == false)
+		g_aClient[client_idx].second.send_reply(create_msg(451, client_idx, serv));
+	return ret;
+}
+
 void	parser(char *line, const size_t &client_idx, const Server &serv)
 {
 	std::vector<std::string>	packet;
@@ -63,9 +81,7 @@ void	parser(char *line, const size_t &client_idx, const Server &serv)
 				** execute command only if: ((if not registered and command are either PASS NICK or USER)
 				** or if register) AND if command exist
 				*/
-				if (((g_aClient[client_idx].second.is_registered() == false && (command == "PASS" || command == "NICK" || command == "USER" || command == "CAP"))
-					|| g_aClient[client_idx].second.is_registered() == true)
-					&& serv.get_command().at(command) != NULL)
+				if (can_execute(command, client_idx, serv) == true)
 					serv.get_command().at(command)(*str, client_idx, serv);
 			}
 			catch (const IncorrectPassException &e) { throw IncorrectPassException(); }
