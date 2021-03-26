@@ -136,7 +136,11 @@
 //define invalid character as for username
 # define USERNAME_VALID_CHAR "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_[]{}\\`|"
 
+//define channel chars
+# define CHANNEL_VALID_CHAR "#&!+"
+
 std::string create_msg(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string());
+
 /*
 **  end of error
 */
