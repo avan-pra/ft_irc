@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/29 21:32:44 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/29 22:49:32 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,14 @@ int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const
 	return (0);
 }
 
-void	create_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter)
+void	create_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter, const MyServ &serv)
 {
 	Channel		chan(it->first, it->second);
 
 	chan.add_user(g_aClient[client_idx].second);
 	chan.set_operator(g_aClient[client_idx].second);
-	chan.set_mode("nt");
+	chan.set_mode("+nt");
+	g_aClient[client_idx].second.send_reply(create_msg(324, client_idx,serv));
 	g_vChannel.push_back(chan);
 	enter = true;
 }
@@ -160,7 +161,7 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 	{
 		if (find_channel(it->first) == -1)
 		{
-			create_channel(it, client_idx, enter);
+			create_channel(it, client_idx, enter, serv);
 			names_command("names " + it->first, client_idx, serv);
 		}
 		else
