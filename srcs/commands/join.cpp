@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/29 22:49:32 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/29 22:55:21 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void	create_channel(const std::map<std::string, std::string>::iterator it, const
 	chan.add_user(g_aClient[client_idx].second);
 	chan.set_operator(g_aClient[client_idx].second);
 	chan.set_mode("+nt");
-	g_aClient[client_idx].second.send_reply(create_msg(324, client_idx,serv));
 	g_vChannel.push_back(chan);
 	enter = true;
 }
