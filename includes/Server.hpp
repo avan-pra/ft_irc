@@ -1,102 +1,29 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Server.hpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/24 13:31:04 by lucas            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#ifndef SERVER_HPP
+# define SERVER_HPP
 
-#ifndef SERVER
-# define SERVER
-
-# include <unistd.h>
 # include <iostream>
-# include <string>
-# include <vector>
-# include <sys/select.h>
-# include <sys/time.h>
-# include <map>
-# include <cstring>
-# include "./Channel.hpp"
-
-class Server;
-class Channel;
-std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)> fill_command(void);
 
 class Server
 {
 	private:
-		std::string						_hostname;
-		std::string						_port;
-		int								_listen_limit;
-
-		fd_set		_readfs;
-		fd_set		_writefs;
-		fd_set		_exceptfs;
-		int			_max_fd;
-		timeval		_timeout;
-		time_t		_start_time;
-		std::vector<Channel>	_vChannel;
-        const std::map<std::string, void (*)(const std::string &line, const size_t &client_idx, const Server &serv)> _command;
-		unsigned char	_password[32];
-		bool			_pass_for_connection;
+		std::string _servername;
+		size_t		_hopcount;
+		size_t		_token;
+		std::string _info;
 
 	public:
+		Server(/* args */) {};
+		~Server() {};
 
-		Server() : _command(fill_command())
-		{
-			time(&_start_time);
-			set_timeout(3);
-			_max_fd = 0;
-			bzero(_password, 32);
-			_pass_for_connection = false;
-		}
+	std::string	get_servername() { return _servername; }
+	size_t		get_hopcount() { return _hopcount; }
+	size_t		get_token() { return _token; }
+	std::string	get_info() { return _info; }
 
-		~Server()
-		{
-			;
-		}
-		//class coplienne
-
-		/*
-		** getter
-		*/
-		std::string	get_hostname() const	{ return _hostname; }
-		std::string	get_port() const		{ return _port; }
-		int			get_listen_limit() const		{ return _listen_limit; }
-		const unsigned char *get_password() const { return _password; }
-		fd_set	&get_readfs() { return _readfs; }
-		fd_set	&get_writefs() { return _writefs; }
-		fd_set	&get_exceptfs() { return _exceptfs; }
-		int		get_max_fd() { return _max_fd; }
-		timeval	&get_timeout() { return _timeout; }
-		time_t	get_start_time() const { return _start_time; }
-		std::vector<Channel>	get_vChannel() const { return _vChannel; }
-        const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)>	&get_command() const { return _command; }
-		bool	get_need_pass() const { return _pass_for_connection; }
-		/*
-		 ** setter
-		 */
-		void	set_hostname(const std::string hostname) { _hostname = hostname; }
-		void	set_port(const std::string port) {_port = port; }
-		void	set_listen_limit(int listen_limit) { _listen_limit = listen_limit; }
-		void	set_password(const unsigned char *password) { std::memcpy(_password, password, 32); }
-		void	set_max_fd(int value) { _max_fd = value; }
-		void	set_timeout(int sec = int(), int usec = int())
-		{
-			_timeout.tv_sec = sec;
-			_timeout.tv_usec = usec;
-		}
-		void	set_need_pass(bool need) { _pass_for_connection = need; }
-
-		void	add_channel(Channel channel)
-		{
-			_vChannel.push_back(channel);
-		}
+	void	set_servername(std::string name) { _servername = name; }
+	void	set_hopcount(size_t n) { _hopcount = n; }
+	void	set_token(size_t name) { _token = name; }
+	void	set_info(std::string info) { _info = info; }
 };
 
 #endif

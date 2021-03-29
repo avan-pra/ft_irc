@@ -3,7 +3,7 @@
 #include <cstring>
 
 //does what it says
-static void		check_empty_line(const std::vector<std::string> &arg, const size_t &client_idx, const Server &serv)
+static void		check_empty_line(const std::vector<std::string> &arg, const size_t &client_idx, const MyServ &serv)
 {
 	if (arg.size() < 2 || arg[1].find_first_not_of(' ') == arg[1].npos)
 	{
@@ -13,7 +13,7 @@ static void		check_empty_line(const std::vector<std::string> &arg, const size_t 
 }
 
 //check username char and size
-static std::string	check_username(const std::string &str, const size_t &client_idx, const Server &serv)
+static std::string	check_username(const std::string &str, const size_t &client_idx, const MyServ &serv)
 {
 	//check si la taille de l'username > 9 si oui envoie une erreur
 	if (str.length() > 9)
@@ -31,7 +31,7 @@ static std::string	check_username(const std::string &str, const size_t &client_i
 	return str;
 }
 
-static void	check_username_ownership(std::string str, const size_t &client_idx, const Server &serv)
+static void	check_username_ownership(std::string str, const size_t &client_idx, const MyServ &serv)
 {
 	for (size_t i = 0; i != g_aClient.size(); ++i)
 	{
@@ -45,7 +45,7 @@ static void	check_username_ownership(std::string str, const size_t &client_idx, 
 	}
 }
 
-void	nick_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void	nick_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string> arg;
 

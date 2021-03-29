@@ -1,10 +1,10 @@
 #include <iostream>
-#include "../includes/Server.hpp"
+#include "../includes/MyServ.hpp"
 #include "../includes/IRCserv.hpp"
 #include <string>
 #include "../includes/commands.hpp"
 
-std::string create_msg(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1, const std::string &arg2, const std::string &arg3)
+std::string create_msg(const int &code, const size_t &client_idx, const MyServ &serv, const std::string &arg1, const std::string &arg2, const std::string &arg3)
 {
 	std::string sample;
 	std::string true_code;

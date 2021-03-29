@@ -13,7 +13,7 @@
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/commands.hpp"
 
-static void		check_nickname(const std::string str, const size_t &client_idx, const Server &serv)
+static void		check_nickname(const std::string str, const size_t &client_idx, const MyServ &serv)
 {
 	if (str != g_aClient[client_idx].second.get_nickname())
 	{
@@ -22,7 +22,7 @@ static void		check_nickname(const std::string str, const size_t &client_idx, con
 	}
 }
 
-static int		check_channel_name(const std::string str, const size_t &client_idx, const Server &serv)
+static int		check_channel_name(const std::string str, const size_t &client_idx, const MyServ &serv)
 {
 	for (int i = 0; i < g_vChannel.size(); i++)
 		if (str == g_vChannel[i].get_name())
@@ -32,7 +32,7 @@ static int		check_channel_name(const std::string str, const size_t &client_idx, 
 	return 0;
 }
 
-static void		check_usr_in_channel(const int channel_idx, const size_t &client_idx, const Server &serv)
+static void		check_usr_in_channel(const int channel_idx, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<Client> vect = g_vChannel[channel_idx].get_users();
 	for (int i = 0; i < vect.size(); i++)
@@ -41,7 +41,7 @@ static void		check_usr_in_channel(const int channel_idx, const size_t &client_id
 	g_aClient[client_idx].second.send_reply(create_msg(441, client_idx, serv, g_vChannel[channel_idx].get_name(), g_aClient[client_idx].second.get_nickname()));
 }
 
-static void		check_usr_mode(const std::string mode, const size_t &client_idx, const Server &serv)
+static void		check_usr_mode(const std::string mode, const size_t &client_idx, const MyServ &serv)
 {
 	//CHECK IF MODE IS VALID
 	if (mode[0] != '+' || mode[0] != '-')
@@ -58,7 +58,7 @@ static void		check_usr_mode(const std::string mode, const size_t &client_idx, co
 	//2. valid mode
 }
 
-static void		check_chann_mode(const std::string mode, const int channel_idx, const int &client_idx, const Server &serv)
+static void		check_chann_mode(const std::string mode, const int channel_idx, const int &client_idx, const MyServ &serv)
 {
 	//CHECK IF MODE IS VALID
 	if (mode[0] != '+' || mode[0] != '-')
@@ -71,7 +71,7 @@ static void		check_chann_mode(const std::string mode, const int channel_idx, con
 	//2. valid mode
 }
 
-void			mode_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void			mode_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string> params;
 	std::string str, mode;

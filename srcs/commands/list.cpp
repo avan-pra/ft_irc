@@ -12,7 +12,7 @@
 
 #include "../../includes/Channel.hpp"
 #include "../../includes/IRCserv.hpp"
-#include "../../includes/Server.hpp"
+#include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
 template <class T>
@@ -38,13 +38,13 @@ std::string		to_string(T value)
 	return (sign + output);
 }
 
-void	all_list(const size_t &client_idx, const Server &serv)
+void	all_list(const size_t &client_idx, const MyServ &serv)
 {
 	for (std::vector<Channel>::iterator it = g_vChannel.begin(); it != g_vChannel.end(); it++)
 		list_command(std::string("list ") + it->get_name(), client_idx, serv);
 }
 
-void	list_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void	list_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string>	params;
 	std::vector<std::string>	chan_name;

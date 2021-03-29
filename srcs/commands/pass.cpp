@@ -1,9 +1,9 @@
 #include "../../includes/commands.hpp"
-#include "../../includes/Server.hpp"
+#include "../../includes/MyServ.hpp"
 #include <cstring>
 #include <openssl/sha.h>
 
-void	pass_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void	pass_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	if (g_aClient[client_idx].second.is_registered() == true)
 	{

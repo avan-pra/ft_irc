@@ -26,7 +26,7 @@ static bool			is_number(const std::string& s)
 	return true;
 }
 
-static void			check_realname(const std::string str, const size_t &client_idx, const Server &serv)
+static void			check_realname(const std::string str, const size_t &client_idx, const MyServ &serv)
 {
 	if (str.size() < 1)
 	{
@@ -35,7 +35,7 @@ static void			check_realname(const std::string str, const size_t &client_idx, co
 	}
 }
 
-static void			check_2nd_arg(const std::string str, std::string &host_name, std::string &mode, const size_t &client_idx, const Server &serv)
+static void			check_2nd_arg(const std::string str, std::string &host_name, std::string &mode, const size_t &client_idx, const MyServ &serv)
 {
 	if (!is_number(str))
 	{
@@ -56,7 +56,7 @@ static void			check_2nd_arg(const std::string str, std::string &host_name, std::
 	}
 }
 
-static void			check_user_registered(const std::string str, const std::vector<std::string> vect, const size_t &client_idx, const Server &serv)
+static void			check_user_registered(const std::string str, const std::vector<std::string> vect, const size_t &client_idx, const MyServ &serv)
 {
 	for (size_t i = 0; i != g_aClient.size(); i++)
 	{
@@ -78,7 +78,7 @@ static void			set_user(const std::string username, const std::string host_name, 
 	g_aClient[client_idx].second.set_servername(server_name);
 }
 
-void				user_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void				user_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string> params;
 	std::vector<std::string> args;

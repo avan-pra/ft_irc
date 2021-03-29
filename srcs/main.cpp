@@ -12,13 +12,14 @@
 
 #include "../includes/IRCserv.hpp"
 
-SOCKET					g_serv_sock;
-std::vector<std::pair<SOCKET, Client> >   g_aClient;
-std::vector<Channel>						g_vChannel;
+SOCKET									g_serv_sock;
+std::vector<std::pair<SOCKET, Client> >	g_aClient;
+std::vector<Channel>					g_vChannel;
+std::vector<std::pair<SOCKET, Server> >	g_aServer;
 
 int			main(void)
 {
-	Server serv;
+	MyServ serv;
 
 	try
 	{

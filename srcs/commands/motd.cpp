@@ -11,10 +11,10 @@
 /* ************************************************************************** */
 
 #include "../../includes/IRCserv.hpp"
-#include "../../includes/Server.hpp"
+#include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
-void	motd_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void	motd_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	(void)line;
 	std::fstream		file;

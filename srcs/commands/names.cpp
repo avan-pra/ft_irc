@@ -13,7 +13,7 @@
 #include "../../includes/Channel.hpp"
 #include "../../includes/Client.hpp"
 #include "../../includes/IRCserv.hpp"
-#include "../../includes/Server.hpp"
+#include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
 
@@ -45,7 +45,7 @@ std::string		set_nick_list(const int &chan_id)
 	return (lst);
 }
 
-void	names_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void	names_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string>	params = ft_split(line, " ");
 	std::vector<std::string>	channel_names;

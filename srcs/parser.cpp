@@ -36,7 +36,7 @@ void	clear_empty_packet(std::vector<std::string> &packet)
 // void hold_if_cap(std::vector<std::string> &packet, const size_t &client_idx)
 // a degager ^^
 
-bool	can_execute(const std::string command, const size_t &client_idx, const Server &serv)
+bool	can_execute(const std::string command, const size_t &client_idx, const MyServ &serv)
 {
 	bool ret = false;
 
@@ -54,7 +54,7 @@ bool	can_execute(const std::string command, const size_t &client_idx, const Serv
 	return ret;
 }
 
-void	parser(char *line, const size_t &client_idx, const Server &serv)
+void	parser(char *line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string>	packet;
 	std::string					true_line;

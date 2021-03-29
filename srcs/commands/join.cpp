@@ -12,7 +12,7 @@
 
 #include "../../includes/Channel.hpp"
 #include "../../includes/IRCserv.hpp"
-#include "../../includes/Server.hpp"
+#include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
 
@@ -136,7 +136,7 @@ void	make_channel_pair(const std::vector<std::string> &params, std::map<std::str
 		tmp.insert(std::make_pair(chan_name[i], key[i]));
 }
 
-void	join_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void	join_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string>			params;
 	std::vector<std::string>			chan_name;

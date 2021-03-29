@@ -143,29 +143,29 @@
 # define USER_VALID_MODE "aiwroOs"
 # define CHANNEL_VALID_MODE "OovaimnqpsrtklbeI"
 
-std::string create_msg(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string());
+std::string create_msg(const int &code, const size_t &client_idx, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string());
 
 /*
 **  end of error
 */
 
-class Server;
+class MyServ;
 
-void	pass_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	ping_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	pong_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	nick_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	user_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	ping_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	time_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	motd_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	info_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	version_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	join_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	mode_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	cap_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	quit_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	names_command(const std::string &line, const size_t &client_idx, const Server &serv);
-void	list_command(const std::string &line, const size_t &client_idx, const Server &serv);
+void	pass_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	ping_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	pong_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	nick_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	user_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	ping_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	time_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	motd_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	info_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	version_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	join_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	mode_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	cap_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	quit_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	names_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	list_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 
 #endif

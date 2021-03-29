@@ -14,7 +14,7 @@
 #include "../../includes/commands.hpp"
 #include <ctime>
 
-void	time_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void	time_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	time_t			get_time;
 	std::string		now;
