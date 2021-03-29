@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/29 18:23:47 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/29 21:49:33 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static void		check_usr_mode(const std::string mode, const size_t &client_idx, co
 	//CHECK IF MODE IS VALID
 	if (!(mode[0] == '+' || mode[0] == '-'))
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv)); throw std::exception();
+		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv));
+		throw std::exception();
 	}
 	for (int i = 1; i < mode.size(); i++)
 		if (!std::strchr(USER_VALID_MODE, mode[i]))
@@ -65,7 +66,8 @@ static void		check_chann_mode(const std::string mode, const int channel_idx, con
 	//CHECK IF MODE IS VALID
 	if (!(mode[0] == '+' || mode[0] == '-'))
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx, serv)); throw std::exception();
+		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx, serv));
+		throw std::exception();
 	}
 	for (int i = 1; i < mode.size(); i++)
 		if (!std::strchr(CHANNEL_VALID_MODE, mode[i]))
@@ -100,11 +102,7 @@ void			mode_command(const std::string &line, const size_t &client_idx, const MyS
 			else
 			{
 				mode = params[2];
-				try
-				{
-					check_chann_mode(mode, channel_idx, client_idx, serv);	
-				}
-				catch(const std::exception& e) { return ; }
+				check_chann_mode(mode, channel_idx, client_idx, serv);	
 			}
 		}
 		else
@@ -115,11 +113,7 @@ void			mode_command(const std::string &line, const size_t &client_idx, const MyS
 			else
 			{
 				mode = params[2];
-				try
-				{
-					check_usr_mode(mode, client_idx, serv);
-				}
-				catch(const std::exception& e) { return; }
+				check_usr_mode(mode, client_idx, serv);
 				g_aClient[client_idx].second.send_reply(create_msg(221, client_idx, serv, g_aClient[client_idx].second.get_mode()));
 			}
 		}
