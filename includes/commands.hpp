@@ -76,7 +76,7 @@
 # define RPL_LIST(channel, topic) (channel + " :" + topic + "\r\n")
 # define RPL_LISTEND() (" :End of /LIST\r\n")
 # define RPL_CHANNELMODEIS(channel, mode, params) (channel + " " + mode + " " + params + "\r\n")
-# define RPL_NOTOPIC(channel) (channel + " :No topic is set\r\n")
+# define RPL_NOTOPIC(channel) (" " +channel + " :No topic is set\r\n")
 # define RPL_TOPIC(channel, subject) (channel + " :" + subject + "\r\n")
 # define RPL_INVITING(channel, pseudo) (channel + " " + pseudo + "\r\n")
 # define RPL_SUMMONING(user) (user + " :Summoning user to IRC\r\n")
