@@ -21,14 +21,14 @@ void	quit_command(const std::string &line, const size_t &client_idx, const MySer
 	args = ft_split(line, " ");
 	if (args.size() == 1)
 	{
-		std::cout << "QUIT  :leaving" << std::endl; 
+		// std::cout << "QUIT  :leaving" << std::endl; 
 		throw QuitCommandException();
 	}
 	else
 	{
 		for (int i = 1; i < args.size() ; i++)
 			output += args[i] + " ";
-		std::cout << "QUIT   " << output << std::endl;
+		// std::cout << "QUIT   " << output << std::endl;
 		throw QuitCommandException();
 	}
 }
