@@ -18,7 +18,7 @@ std::vector<Channel>						g_vChannel;
 
 int			main(void)
 {
-	Server serv;
+	MyServ serv;
 
 	try
 	{

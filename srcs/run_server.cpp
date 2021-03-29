@@ -1,9 +1,9 @@
 #include "../includes/IRCserv.hpp"
-#include "../includes/Server.hpp"
+#include "../includes/MyServ.hpp"
 #include <ctime>
 
 //called at each message received
-static void re_init_serv_class(Server &serv)
+static void re_init_serv_class(MyServ &serv)
 {
 	FD_ZERO(&serv.get_readfs());
 	FD_ZERO(&serv.get_writefs());
@@ -16,7 +16,7 @@ static void re_init_serv_class(Server &serv)
 	serv.set_timeout(3);
 }
 
-static void push_fd_to_set(Server &serv)
+static void push_fd_to_set(MyServ &serv)
 {
 	//push to server to read set
 	FD_SET(g_serv_sock, &serv.get_readfs());
@@ -38,7 +38,7 @@ void		disconnect_client(size_t &i)
 	i--;
 }
 
-void ping_if_away(const size_t &client_idx, const Server &serv)
+void ping_if_away(const size_t &client_idx, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
 
@@ -51,7 +51,7 @@ void ping_if_away(const size_t &client_idx, const Server &serv)
 	}
 }
 
-bool kick_if_away(size_t &client_idx, const Server &serv)
+bool kick_if_away(size_t &client_idx, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
 
@@ -64,7 +64,7 @@ bool kick_if_away(size_t &client_idx, const Server &serv)
 	return false;
 }
 
-void run_server(Server &serv)
+void run_server(MyServ &serv)
 {
 	int readyfd;
 	char c[BUFF_SIZE + 1];

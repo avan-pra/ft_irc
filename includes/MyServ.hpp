@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.hpp                                         :+:      :+:    :+:   */
+/*   MyServ.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER
-# define SERVER
+#ifndef MYSERV
+# define MYSERV
 
 # include <unistd.h>
 # include <iostream>
@@ -23,11 +23,11 @@
 # include <cstring>
 # include "./Channel.hpp"
 
-class Server;
+class MyServ;
 class Channel;
-std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)> fill_command(void);
+std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)> fill_command(void);
 
-class Server
+class MyServ
 {
 	private:
 		std::string						_hostname;
@@ -41,13 +41,13 @@ class Server
 		timeval		_timeout;
 		time_t		_start_time;
 		std::vector<Channel>	_vChannel;
-        const std::map<std::string, void (*)(const std::string &line, const size_t &client_idx, const Server &serv)> _command;
+        const std::map<std::string, void (*)(const std::string &line, const size_t &client_idx, const MyServ &serv)> _command;
 		unsigned char	_password[32];
 		bool			_pass_for_connection;
 
 	public:
 
-		Server() : _command(fill_command())
+		MyServ() : _command(fill_command())
 		{
 			time(&_start_time);
 			set_timeout(3);
@@ -56,7 +56,7 @@ class Server
 			_pass_for_connection = false;
 		}
 
-		~Server()
+		~MyServ()
 		{
 			;
 		}
@@ -76,7 +76,7 @@ class Server
 		timeval	&get_timeout() { return _timeout; }
 		time_t	get_start_time() const { return _start_time; }
 		std::vector<Channel>	get_vChannel() const { return _vChannel; }
-        const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)>	&get_command() const { return _command; }
+        const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	&get_command() const { return _command; }
 		bool	get_need_pass() const { return _pass_for_connection; }
 		/*
 		 ** setter

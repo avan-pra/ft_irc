@@ -13,7 +13,7 @@
 #include "../../includes/commands.hpp"
 #include "../../includes/IRCserv.hpp"
 
-void	quit_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void	quit_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string> args;
 	std::string	output;

@@ -19,7 +19,7 @@ bool sort_dec(const std::pair<SOCKET,Client> &a,  const std::pair<SOCKET,Client>
   return (a.first > b.first); 
 }
 
-void accept_user(Server &serv)
+void accept_user(MyServ &serv)
 {
 	Client		new_client;
 	FD_CLR(g_serv_sock, &serv.get_readfs());
@@ -41,7 +41,7 @@ void accept_user(Server &serv)
 	std::sort(g_aClient.begin(), g_aClient.end(), sort_dec);
 }
 
-void try_accept_user(Server *serv)
+void try_accept_user(MyServ *serv)
 {
 	if (FD_ISSET(g_serv_sock, &serv->get_readfs()))
 	{

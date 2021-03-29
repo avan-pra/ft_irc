@@ -1,6 +1,6 @@
 #include <iostream>
 #include <map>
-#include "../includes/Server.hpp"
+#include "../includes/MyServ.hpp"
 #include "../includes/commands.hpp"
 
 typedef struct	command_list
@@ -9,9 +9,9 @@ typedef struct	command_list
 	void	(*function)(const std::string &line, const size_t &client_idx);
 }				command_l;
 
-std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)>	fill_command(void)
+std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	fill_command(void)
 {
-	std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const Server &serv)> cmd;
+	std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)> cmd;
 
 	cmd["PASS"] = pass_command;
 	cmd["NICK"] = nick_command;

@@ -31,7 +31,7 @@ confID	hashit_s(const std::string &s)
 	return	eERROR;
 }
 
-int		checkline(std::string s, Server &serv)
+int		checkline(std::string s, MyServ &serv)
 {
 	switch (hashit_s(s.substr(0, s.find("=", 0))))
 	{
@@ -100,7 +100,7 @@ int		checkline(std::string s, Server &serv)
 	return (1);
 }
 
-void	parse_conf(Server &serv)
+void	parse_conf(MyServ &serv)
 {
 	std::fstream		file;
 	std::string			line;

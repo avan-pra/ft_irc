@@ -1,6 +1,6 @@
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/commands.hpp"
-#include "../../includes/Server.hpp"
+#include "../../includes/MyServ.hpp"
 
 enum cap_commands
 {
@@ -23,7 +23,7 @@ static cap_commands cap_arg(std::string arg)
 	return eERROR;
 }
 
-void	cap_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void	cap_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string> arg = ft_split(line, " ");
 

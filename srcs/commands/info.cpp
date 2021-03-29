@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #include "../../includes/IRCserv.hpp"
-#include "../../includes/Server.hpp"
+#include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 #include <sys/stat.h>
 
-void	info_command(const std::string &line, const size_t &client_idx, const Server &serv)
+void	info_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	(void)line;
 	struct stat	file_info;

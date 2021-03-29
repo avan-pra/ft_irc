@@ -43,7 +43,7 @@
 # include <utility>
 # include <functional>
 # include <fstream>
-# include "./Server.hpp"
+# include "./MyServ.hpp"
 # include "./Client.hpp"
 # include "./Channel.hpp"
 
@@ -56,7 +56,7 @@ extern SOCKET									g_serv_sock;
 extern std::vector<std::pair<SOCKET, Client> >	g_aClient;
 extern std::vector<Channel>						g_vChannel;
 
-class Server;
+class MyServ;
 
 /*
 ** setup_server.cpp
@@ -67,18 +67,18 @@ int			setup_server();
 /*
 ** run_server.cpp
 */
-void		run_server(Server &serv);
+void		run_server(MyServ &serv);
 
 /*
 ** get_client.cpp
 */
-void		accept_user(Server &serv);
-void		try_accept_user(Server *serv);
+void		accept_user(MyServ &serv);
+void		try_accept_user(MyServ *serv);
 
 /*
 ** parse_conf.cpp
 */
-void		parse_conf(Server &serv);
+void		parse_conf(MyServ &serv);
 
 /*
  ** ft_bzero.cpp
@@ -103,7 +103,7 @@ int		char2hex(char input);
 /*
 ** parser.cpp
 */
-void            parser(char *line, const size_t &client_idx, const Server &server);
+void            parser(char *line, const size_t &client_idx, const MyServ &server);
 
 int		find_channel(std::string name);
 

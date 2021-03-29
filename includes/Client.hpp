@@ -102,19 +102,19 @@ class Client
 
 		std::string		hold_packet;
 
-bool	operator==(const Client &a) const
-{
-	if (a.get_username() != get_username())
-		return (false);
-	if (a.get_realname() != get_realname() || a.get_hostname() != get_hostname())
-		return (false);
-	return (true);
-}
+	bool	operator==(const Client &a) const
+	{
+		if (a.get_username() != get_username())
+			return (false);
+		if (a.get_realname() != get_realname() || a.get_hostname() != get_hostname())
+			return (false);
+		return (true);
+	}
 
-bool	operator!=(const Client &a) const
-{
-	return (!(a == *this));
-}
+	bool	operator!=(const Client &a) const
+	{
+		return (!(a == *this));
+	}
 };
 
 
