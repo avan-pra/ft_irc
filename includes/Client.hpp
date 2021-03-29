@@ -52,7 +52,7 @@ class Client
 		SOCKET			_fd;
 		sockaddr_in		sock_addr;
 
-		Client() : _is_register(false), _has_good_password(false)//, _is_cap(false)
+		Client() : _is_register(false), _has_good_password(false), _ping_sended(false)//, _is_cap(false)
 		{
 		}
 
