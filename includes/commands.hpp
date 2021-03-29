@@ -84,7 +84,7 @@
 //# define RPL_WHOREPLY(channel, user, host, server, pseudo) (channel + " " + user + " " + host + " " + server + " " + pseudo + " <H|G>[*][@|+] :<compteur de distance> <vrai nom>\r\n")
 # define RPL_ENDOFWHO(name) (name + " :End of /WHO list\r\n")
 # define RPL_NAMREPLY(channel, nick_list) (channel + " :" + nick_list + "\r\n") //modif_ici
-# define RPL_ENDOFNAMES(channel) (channel + " :End of /NAMES list\r\n")
+# define RPL_ENDOFNAMES(channel) (" " + channel + " :End of /NAMES list\r\n")
 //# define RPL_LINKS(mask, server) (mask + " " + server + " :<compteur de distance> <info serveur>\r\n")
 # define RPL_ENDOFLINKS(mask) (mask + " :End of /LINKS list\r\n)"
 //# define RPL_BANLIST(channel) (channel + ": <identification de bannissement>\r\n")

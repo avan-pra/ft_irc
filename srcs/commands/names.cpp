@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/26 11:14:49 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/29 13:13:52 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/29 19:49:28 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ std::string	set_flag(const int &chan_id)
 {
 	std::string flag = g_vChannel[chan_id].get_mode();
 	if (flag.find("p") != std::string::npos)
-		return ("*");
+		return (" * ");
 	else if (flag.find("s") != std::string::npos)
-		return ("@");
+		return (" @ ");
 	else
-		return ("=");
+		return (" = ");
 }
 
 std::string		set_nick_list(const int &chan_id)
@@ -38,7 +38,6 @@ std::string		set_nick_list(const int &chan_id)
 			lst += "@";
 		else
 			lst += "+";
-		std::cout << "find " << g_vChannel[chan_id][i].get_nickname() << "|\n";
 		lst += g_vChannel[chan_id][i].get_nickname();
 		lst += " ";
 	}

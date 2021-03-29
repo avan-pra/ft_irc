@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/29 14:05:45 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/29 20:05:29 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,8 @@ void	make_channel_pair(const std::vector<std::string> &params, std::map<std::str
 	std::vector<std::string>	key;
 
 	chan_name = ft_split(params[1], ",");
-	key = ft_split(params[2], ",");
+	if (params.size() > 2)
+		key = ft_split(params[2], ",");
 	if (key.size() < chan_name.size())
 		while (key.size() < chan_name.size())
 			key.push_back("");
@@ -164,6 +165,7 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 		{
 			create_channel(it, client_idx, enter);
 			names_command("names " + it->first, client_idx, serv);
+				mode_command("mode " + it->first, client_idx, serv);
 		}
 		else
 		{
@@ -171,6 +173,7 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 			{
 				add_client_to_channel(it, client_idx, enter);
 				names_command("names " + it->first, client_idx, serv);
+				mode_command("mode " + it->first, client_idx, serv);
 			}
 		}
 	}
