@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/29 15:11:28 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/29 18:23:47 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ static void		check_usr_mode(const std::string mode, const size_t &client_idx, co
 		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv));
 	for (int i = 1; i < mode.size(); i++)
 		if (!std::strchr(USER_VALID_MODE, mode[i]))
+		{
 			g_aClient[client_idx].second.send_reply(create_msg(501, client_idx, serv));
+			throw std::exception();
+		}
+	g_aClient[client_idx].second.set_mode(mode);
 	//1. +/-
 	
 	//2. valid mode
@@ -61,7 +65,7 @@ static void		check_chann_mode(const std::string mode, const int channel_idx, con
 		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx, serv));
 	for (int i = 1; i < mode.size(); i++)
 		if (!std::strchr(CHANNEL_VALID_MODE, mode[i]))
-			g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv));
+		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv));
 	//CHECK IF MODE IS ALREADY SET
 	//1. +/-
 	//2. valid mode
@@ -76,7 +80,7 @@ void			mode_command(const std::string &line, const size_t &client_idx, const Ser
 	if (params.size() < 2)
 	{
 		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "MODE"));
-		throw std::exception();
+		return ;
 	}
 	try
 	{
@@ -104,6 +108,7 @@ void			mode_command(const std::string &line, const size_t &client_idx, const Ser
 			{
 				mode = params[2];
 				check_usr_mode(mode, client_idx, serv);
+				g_aClient[client_idx].second.send_reply(create_msg(221, client_idx, serv, g_aClient[client_idx].second.get_mode()));
 			}
 		}
 	}
