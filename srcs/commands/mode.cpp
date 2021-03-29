@@ -44,8 +44,10 @@ static void		check_usr_in_channel(const int channel_idx, const size_t &client_id
 static void		check_usr_mode(const std::string mode, const size_t &client_idx, const MyServ &serv)
 {
 	//CHECK IF MODE IS VALID
-	if (mode[0] != '+' || mode[0] != '-')
-		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv));
+	if (!(mode[0] == '+' || mode[0] == '-'))
+	{
+		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv)); throw std::exception();
+	}
 	for (int i = 1; i < mode.size(); i++)
 		if (!std::strchr(USER_VALID_MODE, mode[i]))
 		{
@@ -61,8 +63,10 @@ static void		check_usr_mode(const std::string mode, const size_t &client_idx, co
 static void		check_chann_mode(const std::string mode, const int channel_idx, const int &client_idx, const MyServ &serv)
 {
 	//CHECK IF MODE IS VALID
-	if (mode[0] != '+' || mode[0] != '-')
-		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx, serv));
+	if (!(mode[0] == '+' || mode[0] == '-'))
+	{
+		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx, serv)); throw std::exception();
+	}
 	for (int i = 1; i < mode.size(); i++)
 		if (!std::strchr(CHANNEL_VALID_MODE, mode[i]))
 		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv));
@@ -96,7 +100,11 @@ void			mode_command(const std::string &line, const size_t &client_idx, const MyS
 			else
 			{
 				mode = params[2];
-				check_chann_mode(mode, channel_idx, client_idx, serv);
+				try
+				{
+					check_chann_mode(mode, channel_idx, client_idx, serv);	
+				}
+				catch(const std::exception& e) { return ; }
 			}
 		}
 		else
@@ -104,10 +112,14 @@ void			mode_command(const std::string &line, const size_t &client_idx, const MyS
 			check_nickname(str, client_idx, serv);
 			if (params.size() == 2)
 				g_aClient[client_idx].second.send_reply(create_msg(221, client_idx, serv, g_aClient[client_idx].second.get_mode()));
-			else 
+			else
 			{
 				mode = params[2];
-				check_usr_mode(mode, client_idx, serv);
+				try
+				{
+					check_usr_mode(mode, client_idx, serv);
+				}
+				catch(const std::exception& e) { return; }
 				g_aClient[client_idx].second.send_reply(create_msg(221, client_idx, serv, g_aClient[client_idx].second.get_mode()));
 			}
 		}
