@@ -46,6 +46,7 @@
 # include "./MyServ.hpp"
 # include "./Client.hpp"
 # include "./Channel.hpp"
+# include "./Server.hpp"
 
 typedef int	SOCKET;
 typedef struct sockaddr_in SOCKADDR_IN;
@@ -55,6 +56,7 @@ typedef struct in_addr IN_ADDR;
 extern SOCKET									g_serv_sock;
 extern std::vector<std::pair<SOCKET, Client> >	g_aClient;
 extern std::vector<Channel>						g_vChannel;
+extern std::vector<std::pair<SOCKET, Server> >	g_aServer;
 
 class MyServ;
 
