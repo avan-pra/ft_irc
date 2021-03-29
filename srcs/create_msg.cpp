@@ -27,8 +27,10 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + RPL_UMODEIS(arg1);
 		case 322:
 			return sample + RPL_LIST(arg1, arg2);
+		case 323:
+			return sample + RPL_LISTEND();
 		case 324:
-			return sample + RPL_CHANNELMODEIS(arg1, arg2, );
+			return sample + RPL_CHANNELMODEIS(arg1, arg2, arg3);
 		case 331:
 			return sample + ERR_NOTOPIC(arg1);
 		case 332:

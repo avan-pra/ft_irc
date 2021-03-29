@@ -25,7 +25,7 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["MODE"] = mode_command; 
 	cmd["TOPIC"] = NULL;
 	cmd["NAMES"] = names_command;
-	cmd["LIST"] = NULL;
+	cmd["LIST"] = list_command;
 	cmd["INVITE"] = NULL;
 	cmd["KICK"] = NULL;
 	cmd["VERSION"] = version_command;

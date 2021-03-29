@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 13:51:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/29 14:30:59 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/29 20:39:42 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,16 @@ void	list_command(const std::string &line, const size_t &client_idx, const MySer
 	if (params.size() == 1)
 		return ;
 	chan_name = ft_split(params[1], ",");
+	std::cout << "after\n";
 	for (std::vector<std::string>::iterator it = chan_name.begin(); it != chan_name.end(); it++)
 	{
-		std::cout << "start for " << *it << std::endl;
 		if ((chan_id = find_channel(*it)) != -1)
 		{
 			std::cout << "find " << g_vChannel[chan_id].get_name() << std::endl;
 			find = true;
 			topic = to_string(g_vChannel[chan_id].get_users().size()) + g_vChannel[chan_id].get_topic();
-			g_aClient[client_idx].second.send_reply(create_msg(322, client_idx, serv, *it, topic));
+			g_aClient[client_idx].second.send_reply(create_msg(322, client_idx, serv, " " + *it, topic));
+			g_aClient[client_idx].second.send_reply(create_msg(323, client_idx, serv));
 		}
 	}
 	if (find == false)

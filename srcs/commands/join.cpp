@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/29 20:05:29 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/29 21:32:44 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@
 
 bool	error_chan_name(const std::string tmp, const std::string::iterator it_s)
 {
-	if (it_s == tmp.begin() && *it_s != '&' && *it_s != '#' && *it_s != '+' && *it_s != '!')
+	std::string::const_iterator it = tmp.begin();
+
+	if (*it != '&' && *it != '#' && *it != '+' && *it != '!')
 		return (true);
 	if (*it_s == 0x07 || *it_s == 0x08 || *it_s == '\r' || *it_s == '\n' ||
 			*it_s == 0x0a || *it_s == ' ' || *it_s == ',' || (*it_s == ':' && it_s != tmp.begin() + 1))
@@ -55,19 +57,16 @@ int		check_name_and_key(std::map<std::string, std::string> &chan)
 {
 	std::map<std::string, std::string>::iterator	it = chan.begin();
 	std::string					tmp;
-	bool						del;
 
 	while (it != chan.end())
 	{
-		del = false;
 		tmp = it->first;
 		for (std::string::iterator it_s = tmp.begin(); it_s != tmp.end(); it_s++)
 		{
 			if (error_chan_name(tmp, it_s))
 			{
 				it = chan.erase(it);
-				del = true;
-				break ;
+				return (0);
 			}
 		}
 		for (std::string::iterator it_k = it->second.begin(); it_k != it->second.end(); it_k++)
@@ -75,12 +74,10 @@ int		check_name_and_key(std::map<std::string, std::string> &chan)
 			if (it->second.compare("") && error_chan_key(it_k))
 			{
 				it = chan.erase(it);
-				del = true;
-				break ;
+				return (0);
 			}
 		};
-		if (!del)
-			it++;
+		it++;
 	}
 	return (chan.size());
 }
@@ -165,7 +162,6 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 		{
 			create_channel(it, client_idx, enter);
 			names_command("names " + it->first, client_idx, serv);
-				mode_command("mode " + it->first, client_idx, serv);
 		}
 		else
 		{
@@ -173,7 +169,6 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 			{
 				add_client_to_channel(it, client_idx, enter);
 				names_command("names " + it->first, client_idx, serv);
-				mode_command("mode " + it->first, client_idx, serv);
 			}
 		}
 	}
