@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/26 11:36:56 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/29 14:31:17 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Channel
 		{
 			_name = name;
 			_password = pass;
+			_topic = "";
 		}
 
 		~Channel() {}
@@ -64,6 +65,15 @@ class Channel
 		void			set_operator(Client op) { _operator = op; }
 		void			set_mode(std::string mode) { _mode = mode; }
 
+		void			add_user(Client user)
+		{
+			_users.push_back(user);
+		}
+
+
+		std::vector<Client>::iterator	users_begin() { return _users.begin(); }
+		std::vector<Client>::iterator	users_end() { return _users.end(); }
+
 
 		Channel			&operator=(const Channel &other)
 		{
@@ -72,6 +82,10 @@ class Channel
 			_topic = other.get_topic();
 			_users = other.get_users();
 			return (*this);
+		}
+		Client			&operator[](int idx)
+		{
+			return (_users[idx]);
 		}
 };
 

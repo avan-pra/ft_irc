@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/24 17:16:13 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/29 13:39:32 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ class Client
 		 ** Getter
 		*/
 		std::string		get_unended_packet() { return (_unended_packet); }
-		std::string		get_username() { return (_username); }
-		std::string		get_hostname() { return (_hostname); }
-		std::string		get_realname() { return (_realname); }
-		std::string		get_nickname() { return (_nickname); }
+		std::string		get_username() const { return (_username); }
+		std::string		get_hostname() const { return (_hostname); }
+		std::string		get_realname() const { return (_realname); }
+		std::string		get_nickname() const { return (_nickname); }
 		std::string		get_servername() {return (_servername); }
 		std::string		get_mode(){ return (_mode);}
 		bool			is_registered() { return (_is_register); }
@@ -101,6 +101,21 @@ class Client
 		}
 
 		std::string		hold_packet;
+
+bool	operator==(const Client &a) const
+{
+	if (a.get_username() != get_username())
+		return (false);
+	if (a.get_realname() != get_realname() || a.get_hostname() != get_hostname())
+		return (false);
+	return (true);
+}
+
+bool	operator!=(const Client &a) const
+{
+	return (!(a == *this));
+}
 };
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/25 18:45:49 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/29 12:24:59 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define BUFF_SIZE 512
 
-# define PING 30
+# define PING 300
 
 # define TIMEOUT 45
 
@@ -104,6 +104,8 @@ int		char2hex(char input);
 ** parser.cpp
 */
 void            parser(char *line, const size_t &client_idx, const Server &server);
+
+int		find_channel(std::string name);
 
 class	IncorrectPassException: public std::exception
 {
