@@ -70,6 +70,20 @@ int			setup_server();
 ** run_server.cpp
 */
 void		run_server(MyServ &serv);
+bool 		kick_if_away(size_t &client_idx, const MyServ &serv);
+void 		ping_if_away(const size_t &client_idx, const MyServ &serv);
+void		disconnect_client(size_t &i);
+
+/*
+** iterate_client.cpp
+*/
+void		iterate_client(MyServ &serv, char *c);
+
+
+/*
+** iterate_server.cpp
+*/
+
 
 /*
 ** get_client.cpp
