@@ -46,7 +46,8 @@ bool	can_execute(const std::string command, const size_t &client_idx, const MySe
 		ret = true;
 	try
 	{
-		serv.get_command().at(command);
+		if (serv.get_command().at(command) == NULL)
+			return false;
 	}
 	catch (const std::exception &e) { throw std::exception(); }
 	if (ret == false)
