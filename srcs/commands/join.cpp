@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/26 12:12:21 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/29 14:05:45 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,19 @@ int		check_name_and_key(std::map<std::string, std::string> &chan)
 	return (chan.size());
 }
 
-int		try_enter_chan(const std::map<std::string, std::string>::iterator it)
+int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const size_t &client_idx,
+															bool &enter)
 {
 	int		i = find_channel(it->first);
 
+	for (std::vector<Client>::iterator it = g_vChannel[i].users_begin(); it != g_vChannel[i].users_end(); it++)
+	{
+		if (*it == g_aClient[client_idx].second)
+		{
+			enter = true;
+			return (0);
+		}
+	}
 	if (it->second == g_vChannel[i].get_password())
 		return (1);
 	return (0);
@@ -98,27 +107,38 @@ void	create_channel(const std::map<std::string, std::string>::iterator it, const
 {
 	Channel		chan(it->first, it->second);
 
-	chan.get_users().push_back(g_aClient[client_idx].second);
+	chan.add_user(g_aClient[client_idx].second);
 	chan.set_operator(g_aClient[client_idx].second);
 	chan.set_mode("nt");
 	g_vChannel.push_back(chan);
 	enter = true;
 }
 
-void	add_client_to_channel(const std::map<std::string, std::string>::iterator it, const Server &serv, const size_t &client_idx, bool &enter)
+void	add_client_to_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter)
 {
 	int		i = find_channel(it->first);
 
-	g_vChannel[i].get_users().push_back(g_aClient[client_idx].second);
-	g_aClient[client_idx].second.send_reply(create_msg(332, client_idx, serv, it->first, g_vChannel[i].get_topic()));
+	g_vChannel[i].add_user(g_aClient[client_idx].second);
 	enter = true;
 }
 
+void	make_channel_pair(const std::vector<std::string> &params, std::map<std::string, std::string> &tmp,
+										std::vector<std::string> &chan_name)
+{
+	std::vector<std::string>	key;
+
+	chan_name = ft_split(params[1], ",");
+	key = ft_split(params[2], ",");
+	if (key.size() < chan_name.size())
+		while (key.size() < chan_name.size())
+			key.push_back("");
+	for (size_t i = 0; i < chan_name.size(); i++)
+		tmp.insert(std::make_pair(chan_name[i], key[i]));
+}
 
 void	join_command(const std::string &line, const size_t &client_idx, const Server &serv)
 {
 	std::vector<std::string>			params;
-	std::vector<std::string>			key;
 	std::vector<std::string>			chan_name;
 	std::map<std::string, std::string>	tmp;
 	bool								enter;
@@ -129,13 +149,7 @@ void	join_command(const std::string &line, const size_t &client_idx, const Serve
 		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, params[0]));
 		return ;
 	}
-	chan_name = ft_split(params[1], ",");
-	key = ft_split(params[2], ",");
-	if (key.size() < chan_name.size())
-		while (key.size() < chan_name.size())
-			key.push_back("");
-	for (size_t i = 0; i < chan_name.size(); i++)
-		tmp.insert(std::make_pair(chan_name[i], key[i]));
+	make_channel_pair(params, tmp, chan_name);
 	if (!check_name_and_key(tmp))
 	{
 		g_aClient[client_idx].second.send_reply(create_msg(476, client_idx, serv, chan_name[0]));
@@ -147,13 +161,19 @@ void	join_command(const std::string &line, const size_t &client_idx, const Serve
 	for (std::map<std::string, std::string>::iterator it = tmp.begin(); it != tmp.end(); it++)
 	{
 		if (find_channel(it->first) == -1)
+		{
 			create_channel(it, client_idx, enter);
+			names_command("names " + it->first, client_idx, serv);
+		}
 		else
 		{
-			if (try_enter_chan(it))
-				add_client_to_channel(it, serv, client_idx, enter);
+			if (try_enter_chan(it, client_idx, enter))
+			{
+				add_client_to_channel(it, client_idx, enter);
+				names_command("names " + it->first, client_idx, serv);
+			}
 		}
 	}
 	if (enter == false)
-		g_aClient[client_idx].second.send_reply(create_msg(476, client_idx, serv, chan_name[0]));
+		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, chan_name[0]));
 }

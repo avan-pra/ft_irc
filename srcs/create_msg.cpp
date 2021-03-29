@@ -25,12 +25,14 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 			return sample + RPL_WELCOME(arg1);
 		case 221:
 			return sample + RPL_UMODEIS(arg1);
+		case 322:
+			return sample + RPL_LIST(arg1, arg2);
 		case 331:
 			return sample + ERR_NOTOPIC(arg1);
 		case 332:
 			return sample + RPL_TOPIC(arg1, arg2);
 		case 353:
-			return sample + RPL_NAMREPLY(arg1); //modif_ici
+			return sample + RPL_NAMREPLY(arg1, arg2); //modif_ici
 		case 366:
 			return sample + RPL_ENDOFNAMES(arg1);
 		case 371:
@@ -43,6 +45,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 			return sample + RPL_MOTDSTART(arg1);
 		case 376:
 			return sample + RPL_ENDOFMOTD();
+		case 403:
+			return sample + ERR_NOSUCHCHANNEL(arg1);
 		case 410:
 			return sample + ERR_INVALIDCAP(arg1);
 		case 421:

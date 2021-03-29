@@ -73,7 +73,7 @@
 //# define RPL_WHOWASUSER(pseudo, user, host) (pseudo + " " + user + " " + host + " * :<vrai nom>\r\n")
 # define RPL_ENDOFWHOWAS(pseudo) (pseudo + " :End of WHOWAS\r\n")
 # define RPL_LISTSTART() ("Channel :Users Name\r\n")
-//# define RPL_LIST(channel) (channel + " <# visible> :<sujet>\r\n")
+# define RPL_LIST(channel, topic) (channel + " :" + topic + "\r\n")
 # define RPL_LISTEND() (":End of /LIST\r\n")
 //# define RPL_CHANNELMODEIS(channel, mode) (channel + " " + mode + " <paramètres de mode>\r\n")
 # define RPL_NOTOPIC(channel) (channel + " :No topic is set\r\n")
@@ -83,7 +83,7 @@
 # define RPL_VERSION(version, debuglevel, server, comment) (version + "." + debuglevel + " " + server + " :" + comment + "\r\n")
 //# define RPL_WHOREPLY(channel, user, host, server, pseudo) (channel + " " + user + " " + host + " " + server + " " + pseudo + " <H|G>[*][@|+] :<compteur de distance> <vrai nom>\r\n")
 # define RPL_ENDOFWHO(name) (name + " :End of /WHO list\r\n")
-# define RPL_NAMREPLY(channel) (channel + " :[[@|+]<pseudo> [[@|+]<pseudo> [...]]]\r\n") //modif_ici
+# define RPL_NAMREPLY(channel, nick_list) (channel + " :" + nick_list + "\r\n") //modif_ici
 # define RPL_ENDOFNAMES(channel) (channel + " :End of /NAMES list\r\n")
 //# define RPL_LINKS(mask, server) (mask + " " + server + " :<compteur de distance> <info serveur>\r\n")
 # define RPL_ENDOFLINKS(mask) (mask + " :End of /LINKS list\r\n)"
@@ -162,5 +162,6 @@ void	mode_command(const std::string &line, const size_t &client_idx, const Serve
 void	cap_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	quit_command(const std::string &line, const size_t &client_idx, const Server &serv);
 void	names_command(const std::string &line, const size_t &client_idx, const Server &serv);
+void	list_command(const std::string &line, const size_t &client_idx, const Server &serv);
 
 #endif
