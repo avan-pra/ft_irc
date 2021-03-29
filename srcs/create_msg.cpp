@@ -4,7 +4,7 @@
 #include <string>
 #include "../includes/commands.hpp"
 
-std::string create_msg(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1, const std::string &arg2)
+std::string create_msg(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1, const std::string &arg2, const std::string &arg3)
 {
 	std::string sample;
 	std::string true_code;
@@ -25,6 +25,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 			return sample + RPL_WELCOME(arg1);
 		case 221:
 			return sample + RPL_UMODEIS(arg1);
+		case 324:
+			return sample + RPL_CHANNELMODEIS(arg1, arg2, );
 		case 331:
 			return sample + ERR_NOTOPIC(arg1);
 		case 332:
@@ -43,6 +45,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 			return sample + RPL_MOTDSTART(arg1);
 		case 376:
 			return sample + RPL_ENDOFMOTD();
+		case 401:
+			return sample + ERR_NOSUCHNICK(arg1);
 		case 410:
 			return sample + ERR_INVALIDCAP(arg1);
 		case 421:
@@ -53,6 +57,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const Server &
 			return sample + ERR_ERRONEUSNICKNAME(arg1);
 		case 433:
 			return sample + ERR_NICKNAMEINUSE(arg1);
+		case 441:
+			return sample + ERR_USERNOTINCHANNEL(arg1, arg2);
 		case 451:
 			return sample + ERR_NOTREGISTERED();
 		case 461:

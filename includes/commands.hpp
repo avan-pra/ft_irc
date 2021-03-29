@@ -75,7 +75,7 @@
 # define RPL_LISTSTART() ("Channel :Users Name\r\n")
 //# define RPL_LIST(channel) (channel + " <# visible> :<sujet>\r\n")
 # define RPL_LISTEND() (":End of /LIST\r\n")
-//# define RPL_CHANNELMODEIS(channel, mode) (channel + " " + mode + " <paramètres de mode>\r\n")
+# define RPL_CHANNELMODEIS(channel, mode, params) (channel + " " + mode + " " + params + "\r\n")
 # define RPL_NOTOPIC(channel) (channel + " :No topic is set\r\n")
 # define RPL_TOPIC(channel, subject) (channel + " :" + subject + "\r\n")
 # define RPL_INVITING(channel, pseudo) (channel + " " + pseudo + "\r\n")
@@ -139,7 +139,11 @@
 //define channel chars
 # define CHANNEL_VALID_CHAR "#&!+"
 
-std::string create_msg(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string());
+//define valid USER modes
+# define USER_VALID_MODE "aiwroOs"
+# define CHANNEL_VALID_MODE "OovaimnqpsrtklbeI"
+
+std::string create_msg(const int &code, const size_t &client_idx, const Server &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string());
 
 /*
 **  end of error

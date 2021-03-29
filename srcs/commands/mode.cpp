@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/26 15:01:42 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/29 15:11:28 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,47 @@ static void		check_nickname(const std::string str, const size_t &client_idx, con
 	}
 }
 
-static void		check_channel(const std::string str, const size_t &client_idx, const Server &serv)
+static int		check_channel_name(const std::string str, const size_t &client_idx, const Server &serv)
 {
-	//check channel in vector
+	for (int i = 0; i < g_vChannel.size(); i++)
+		if (str == g_vChannel[i].get_name())
+			return i;
+	g_aClient[client_idx].second.send_reply(create_msg(401, client_idx, serv, str));
+	throw std::exception();
+	return 0;
 }
 
-static void		check_params(const std::string cmd, const size_t &client_idx, const Server &serv)
+static void		check_usr_in_channel(const int channel_idx, const size_t &client_idx, const Server &serv)
 {
-	//IF ONLY NICK GIVEN RPLY WITH CURRENT MODE
-	
+	std::vector<Client> vect = g_vChannel[channel_idx].get_users();
+	for (int i = 0; i < vect.size(); i++)
+		if (g_aClient[client_idx].second .get_nickname() == vect[i].get_nickname())
+			return ;
+	g_aClient[client_idx].second.send_reply(create_msg(441, client_idx, serv, g_vChannel[channel_idx].get_name(), g_aClient[client_idx].second.get_nickname()));
+}
+
+static void		check_usr_mode(const std::string mode, const size_t &client_idx, const Server &serv)
+{
 	//CHECK IF MODE IS VALID
+	if (mode[0] != '+' || mode[0] != '-')
+		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv));
+	for (int i = 1; i < mode.size(); i++)
+		if (!std::strchr(USER_VALID_MODE, mode[i]))
+			g_aClient[client_idx].second.send_reply(create_msg(501, client_idx, serv));
+	//1. +/-
+	
+	//2. valid mode
+}
+
+static void		check_chann_mode(const std::string mode, const int channel_idx, const int &client_idx, const Server &serv)
+{
+	//CHECK IF MODE IS VALID
+	if (mode[0] != '+' || mode[0] != '-')
+		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx, serv));
+	for (int i = 1; i < mode.size(); i++)
+		if (!std::strchr(CHANNEL_VALID_MODE, mode[i]))
+			g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv));
+	//CHECK IF MODE IS ALREADY SET
 	//1. +/-
 	//2. valid mode
 }
@@ -39,7 +70,7 @@ static void		check_params(const std::string cmd, const size_t &client_idx, const
 void			mode_command(const std::string &line, const size_t &client_idx, const Server &serv)
 {
 	std::vector<std::string> params;
-	std::string str, cmd;
+	std::string str, mode;
 
 	params = ft_split(line, " ");
 	if (params.size() < 2)
@@ -52,7 +83,17 @@ void			mode_command(const std::string &line, const size_t &client_idx, const Ser
 		str = params[1];
 		if (std::strchr(CHANNEL_VALID_CHAR, str[0]))
 		{
-			check_channel(str, client_idx, serv);
+			int	channel_idx = 0;
+
+			channel_idx = check_channel_name(str, client_idx, serv);
+			check_usr_in_channel(channel_idx, client_idx, serv);
+			if (params.size() == 2)
+				g_aClient[client_idx].second.send_reply(create_msg(324, client_idx, serv, g_vChannel[channel_idx].get_name(), g_vChannel[channel_idx].get_mode(), ""));
+			else
+			{
+				mode = params[2];
+				check_chann_mode(mode, channel_idx, client_idx, serv);
+			}
 		}
 		else
 		{
@@ -61,8 +102,8 @@ void			mode_command(const std::string &line, const size_t &client_idx, const Ser
 				g_aClient[client_idx].second.send_reply(create_msg(221, client_idx, serv, g_aClient[client_idx].second.get_mode()));
 			else 
 			{
-				cmd = params[2];
-				check_params(cmd, client_idx, serv);
+				mode = params[2];
+				check_usr_mode(mode, client_idx, serv);
 			}
 		}
 	}
