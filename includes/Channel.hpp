@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/29 14:31:17 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/30 14:40:37 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <string>
 # include <vector>
 # include "./Client.hpp"
-
 
 class Client;
 
@@ -33,6 +32,7 @@ class Channel
 		std::string		_mode;
 
 		std::vector<Client>		_users;
+		std::vector<Client>		_invite;
 		
 	public:
 		Channel() {}
@@ -55,6 +55,7 @@ class Channel
 		std::vector<Client>		get_users() const { return _users; }
 		std::string				get_mode() const { return _mode; }
 		Client					get_operator() const { return _operator; }
+		std::vector<Client>		get_invite() const { return _invite; }
 
 		/*
 		 ** setter
@@ -68,6 +69,16 @@ class Channel
 		void			add_user(Client user)
 		{
 			_users.push_back(user);
+		}
+
+		void			add_invite(Client user)
+		{
+			_invite.push_back(user);
+		}
+
+		void			remove_invite(std::vector<Client>::iterator user)
+		{
+			_invite.erase(user);
 		}
 
 

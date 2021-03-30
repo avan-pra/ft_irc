@@ -67,6 +67,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + ERR_USERNOTINCHANNEL(arg1, arg2);
 		case 442:
 			return sample + ERR_NOTONCHANNEL(arg1);
+		case 443:
+			return sample + ERR_USERONCHANNEL(arg1, arg2);
 		case 451:
 			return sample + ERR_NOTREGISTERED();
 		case 461:
@@ -75,6 +77,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + ERR_ALREADYREGISTRED();
 		case 476:
 			return sample + ERR_BADCHANMASK(arg1);
+		case 482:
+			return sample + ERR_CHANOPRIVSNEEDED(arg1);
 		case 501:
 			return sample + ERR_UMODEUNKNOWNFLAG();
 		case 502:
