@@ -29,7 +29,7 @@
 # define ERR_NICKCOLLISION(nick) (nick + " :Nickname collision KILL\r\n")
 # define ERR_USERNOTINCHANNEL(pseudo, channel) (pseudo + " " + channel + " :They aren't on that channel\r\n")
 # define ERR_NOTONCHANNEL(channel) (channel + " :You're not on that channel\r\n")
-# define ERR_USERONCHANNEL(user, channel) (user + " " + channel + " :is already on channel\r\n")
+# define ERR_USERONCHANNEL(user, channel) (user + " " + channel + " :User is already on that channel\r\n")
 # define ERR_NOLOGIN(user) (user + " :User not logged in\r\n")
 # define ERR_SUMMONDISABLED() (":SUMMON has been disabled\r\n")
 # define ERR_USERSDISABLED() (":USERS has been disabled\r\n")

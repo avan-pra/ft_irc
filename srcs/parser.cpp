@@ -59,7 +59,7 @@ bool	can_execute(const std::string command, const size_t &client_idx, const MySe
 static void	forward_packet_from_client_to_new_server(std::vector<std::string> &packet, std::vector<std::string>::iterator &str)
 {
 	++str;
-	for (str; str < packet.end(); ++str)
+	for (; str < packet.end(); ++str)
 	{
 		g_aServer[g_aServer.size() - 1].second.set_unended_packet(g_aServer[g_aServer.size() - 1].second.get_unended_packet() + *str + "\r\n");
 	}
