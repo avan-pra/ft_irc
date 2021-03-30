@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:22:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/30 14:41:40 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/30 16:23:43 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	invite_command(const std::string &line, const size_t &client_idx, const MyS
 			g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, params[2]));
 			return ;
 		}
-	g_vChannel[chan_id].add_invite(g_aClient[nick_id].second);
-	for (std::vector<Client>::iterator it = g_vChannel[chan_id].get_invite().begin(); it != g_vChannel[chan_id].get_invite().end(); it++)
+	g_vChannel[chan_id]._invite.push_back(g_aClient[nick_id].second);
+	for (std::vector<Client>::iterator it = g_vChannel[chan_id]._invite.begin(); it != g_vChannel[chan_id]._invite.end(); it++)
 		std::cout << it->get_nickname() << std::endl;
 }
