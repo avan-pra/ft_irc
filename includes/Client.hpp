@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/30 12:52:29 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/30 14:24:40 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ class Client
 
 	bool	operator==(const Client &a) const
 	{
-		if (a.get_username() != get_username())
+		if (a.get_username() != get_username() || _fd != a._fd)
 			return (false);
 		if (a.get_realname() != get_realname() || a.get_hostname() != get_hostname())
 			return (false);
