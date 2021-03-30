@@ -62,6 +62,9 @@ void	nick_command(const std::string &line, const size_t &client_idx, const MySer
 		check_username_ownership(name, client_idx, serv);
 
 		// if all check has passed set his username
+		if (g_aClient[client_idx].second.is_registered() == true)
+			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
+				+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " NICK " + name + "\r\n");
 		g_aClient[client_idx].second.set_nickname(name);
 	}
 	catch(const std::exception& e){ return ; }
