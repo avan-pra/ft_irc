@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 13:51:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/29 22:00:54 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/30 16:28:13 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	create_list(const std::string &it, size_t chan_id, const size_t &client_idx
 
 	if ((chan_id = find_channel(it)) != -1)
 	{
-		topic = to_string(g_vChannel[chan_id].get_users().size()) + g_vChannel[chan_id].get_topic();
+		topic = to_string(g_vChannel[chan_id]._users.size()) + g_vChannel[chan_id].get_topic();
 		msg += create_msg(322, client_idx, serv, " " + it, topic);
 		return (true);
 	}
@@ -83,7 +83,7 @@ void	list_command(const std::string &line, const size_t &client_idx, const MySer
 		if ((chan_id = find_channel(*it)) != -1)
 		{
 			find = true;
-			topic = to_string(g_vChannel[chan_id].get_users().size()) + g_vChannel[chan_id].get_topic();
+			topic = to_string(g_vChannel[chan_id]._users.size()) + g_vChannel[chan_id].get_topic();
 			g_aClient[client_idx].second.send_reply(create_msg(322, client_idx, serv, " " + *it, topic));
 		}
 	}
