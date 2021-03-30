@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:22:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/30 16:23:43 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/30 16:43:37 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		check_if_are_on(const std::vector<std::string> &params, const size_t &clien
 {
 	int		find = 0;
 
-	for (std::vector<Client>::iterator it = g_vChannel[chan_id].users_begin(); it != g_vChannel[chan_id].users_end(); it++)
+	for (std::vector<Client>::iterator it = g_vChannel[chan_id]._users.begin(); it != g_vChannel[chan_id]._users.end(); it++)
 	{
 		if (it->get_nickname() == g_aClient[client_idx].second.get_nickname())
 			find = find == 2 ? 2: 1;
@@ -71,6 +71,7 @@ void	invite_command(const std::string &line, const size_t &client_idx, const MyS
 	std::vector<std::string>	params;
 	int							chan_id;
 	int							nick_id;
+	bool						exist = false;
 
 	params = ft_split(line, " ");
 	 check_line(params, client_idx, serv, chan_id, nick_id);
@@ -84,7 +85,15 @@ void	invite_command(const std::string &line, const size_t &client_idx, const MyS
 			g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, params[2]));
 			return ;
 		}
-	g_vChannel[chan_id]._invite.push_back(g_aClient[nick_id].second);
-	for (std::vector<Client>::iterator it = g_vChannel[chan_id]._invite.begin(); it != g_vChannel[chan_id]._invite.end(); it++)
-		std::cout << it->get_nickname() << std::endl;
+	for (std::vector<Client>::iterator it = g_vChannel[chan_id]._invite.begin();
+		it != g_vChannel[chan_id]._invite.end(); it++)
+	{
+		if (*it == g_aClient[nick_id].second)
+			exist = true;
+	}
+	if (!exist)
+		g_vChannel[chan_id]._invite.push_back(g_aClient[nick_id].second);
+	for (size_t i = 0; i < g_vChannel[chan_id]._invite.size(); i++)
+		std::cout << g_vChannel[chan_id]._invite[i].get_nickname() << std::endl;
+	g_aClient[client_idx].second.send_reply(create_msg(341, client_idx, serv, params[2], g_aClient[client_idx].second.get_nickname()));
 }
