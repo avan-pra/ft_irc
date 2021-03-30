@@ -2,8 +2,10 @@
 #include "../includes/MyServ.hpp"
 #include <ctime>
 
-void	iterate_client(MyServ &serv, char *c)
+void	iterate_client(MyServ &serv)
 {
+	char c[BUFF_SIZE + 1];
+
 	for (size_t i = 0; i != g_aClient.size(); ++i)
 	{
 		ping_if_away(i, serv);

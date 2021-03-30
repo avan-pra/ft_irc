@@ -77,7 +77,7 @@ void		disconnect_client(size_t &i);
 /*
 ** iterate_client.cpp
 */
-void		iterate_client(MyServ &serv, char *c);
+void		iterate_client(MyServ &serv);
 
 
 /*
