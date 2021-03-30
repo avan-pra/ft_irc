@@ -16,13 +16,13 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["PASS"] = pass_command;
 	cmd["NICK"] = nick_command;
 	cmd["USER"] = user_command;
-	cmd["SERVER"] = NULL; 
+	cmd["SERVER"] = server_command; 
 	cmd["OPER"] = NULL; 
 	cmd["QUIT"] = quit_command; 
 	cmd["SQUIT"] = NULL; 
 	cmd["JOIN"] = join_command; 
 	cmd["PART"] = NULL; 
-	cmd["MODE"] = mode_command; 
+	cmd["MODE"] = mode_command;
 	cmd["TOPIC"] = NULL;
 	cmd["NAMES"] = names_command;
 	cmd["LIST"] = list_command;

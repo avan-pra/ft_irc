@@ -56,6 +56,15 @@ bool	can_execute(const std::string command, const size_t &client_idx, const MySe
 	return ret;
 }
 
+static void	forward_packet_from_client_to_new_server(std::vector<std::string> &packet, std::vector<std::string>::iterator &str)
+{
+	++str;
+	for (str; str < packet.end(); ++str)
+	{
+		g_aServer[g_aServer.size() - 1].second.set_unended_packet(g_aServer[g_aServer.size() - 1].second.get_unended_packet() + *str + "\r\n");
+	}
+}
+
 void	parser(char *line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string>	packet;
@@ -88,6 +97,7 @@ void	parser(char *line, const size_t &client_idx, const MyServ &serv)
 			}
 			catch (const IncorrectPassException &e) { throw IncorrectPassException(); }
 			catch (const QuitCommandException &e) {throw QuitCommandException(); }
+			catch (const NewServerException &e) { forward_packet_from_client_to_new_server(packet, str); throw NewServerException(); }
 			catch (const std::exception &e) { g_aClient[client_idx].second.send_reply(create_msg(421, client_idx, serv, command)); } //il faut envoyer ca au client
 		}
 	}

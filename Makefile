@@ -44,7 +44,7 @@ SRC_CMD = nick.cpp user.cpp time.cpp \
 		  motd.cpp info.cpp version.cpp \
 		  pass.cpp join.cpp mode.cpp cap.cpp \
 		  ping.cpp pong.cpp quit.cpp names.cpp \
-		  list.cpp invite.cpp \
+		  list.cpp invite.cpp server.cpp\
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 

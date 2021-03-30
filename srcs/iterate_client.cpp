@@ -25,8 +25,9 @@ void	iterate_client(MyServ &serv)
 				{
 					parser(c, i, serv);
 				}
-				catch(const IncorrectPassException &e){ disconnect_client(i); }
-				catch(const QuitCommandException &e){ disconnect_client(i); }
+				catch(const IncorrectPassException &e) { disconnect_client(i); }
+				catch(const QuitCommandException &e) { disconnect_client(i); }
+				catch(const NewServerException &e) { g_aClient.erase(g_aClient.begin() + i); i--; }
 			}
 		}
 	}
