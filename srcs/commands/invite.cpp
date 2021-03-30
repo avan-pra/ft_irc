@@ -49,7 +49,7 @@ int		check_if_are_on(const std::vector<std::string> &params, const size_t &clien
 {
 	int		find = 0;
 
-	for (std::vector<Client>::iterator it = g_vChannel[chan_id].users_begin(); it != g_vChannel[chan_id].users_end(); it++)
+	for (std::vector<Client>::iterator it = g_vChannel[chan_id]._users.begin(); it != g_vChannel[chan_id]._users.end(); it++) //modif_ici
 	{
 		if (it->get_nickname() == g_aClient[client_idx].second.get_nickname())
 			find = find == 2 ? 2: 1;
