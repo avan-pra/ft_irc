@@ -9,7 +9,7 @@ void	pass_command(const std::string &line, const size_t &client_idx, const MySer
 	{
 		g_aClient[client_idx].second.send_reply(create_msg(462, client_idx, serv)); return;
 	}
-	if (g_aClient[client_idx].second.get_nickname().empty() == false)
+	if (g_aClient[client_idx].second.get_nickname().empty() == false || g_aClient[client_idx].second.get_pass_try() == true)
 		return;
 	std::vector<std::string> arg = ft_split(line, " ");
 	if (arg.size() < 2)
@@ -22,4 +22,5 @@ void	pass_command(const std::string &line, const size_t &client_idx, const MySer
 
 	if (memcmp(d, serv.get_password(), 32) == 0)
 		g_aClient[client_idx].second.set_password_state(true);
+	g_aClient[client_idx].second.set_pass_try(true);
 }

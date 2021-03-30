@@ -41,6 +41,7 @@ class Client
 		std::string		_mode;
 		bool			_is_register;
 		bool			_has_good_password;
+		bool			_has_try_password;
 		// bool			_is_cap;
 		time_t			_last_activity;
 		bool			_ping_sended;
@@ -52,7 +53,7 @@ class Client
 		SOCKET			_fd;
 		sockaddr_in		sock_addr;
 
-		Client() : _is_register(false), _has_good_password(false), _ping_sended(false)//, _is_cap(false)
+		Client() : _is_register(false), _has_good_password(false), _ping_sended(false), _has_try_password(false)//, _is_cap(false)
 		{
 		}
 
@@ -75,6 +76,7 @@ class Client
 		// bool					is_cap() { return (_is_cap); }
 		time_t					&get_last_activity() { return _last_activity; }
 		bool					get_ping_status() { return _ping_sended; }
+		bool					get_pass_try() { return _has_try_password; }
 		std::vector<Channel>	get_channels() { return _channels; }
 
 		/*
@@ -91,7 +93,7 @@ class Client
 		void			set_password_state(bool submit) { _has_good_password = submit; }
 		// void			set_cap(bool cap) { _is_cap = cap; }
 		void			set_ping_status(bool ping) { _ping_sended = ping; }
-
+		void			set_pass_try(bool pass) { _has_try_password = pass; }
 		/*
 		** Methods
 		*/
