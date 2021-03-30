@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:11:18 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/30 17:00:17 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/30 20:12:51 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,17 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 			}	
 			chann_idx = check_channel_exists(channel_name, client_idx, serv);
 			check_usr_in_channel(chann_idx, client_idx, serv);
-			// for (std::vector<Client>::iterator it = g_vChannel[chann_idx]._users.begin(); 
-			// 	it != g_vChannel[chann_idx]._users.end(); it++)
-			// {
-			// 	if (it->get_nickname() == g_aClient[client_idx].second.get_nickname())
-			// 		g_vChannel[chann_idx]._users.erase(it);
-			// }
-			std::cout << "Channel name = " << channel_name << std::endl;
+			for (std::vector<Client>::iterator it = g_vChannel[chann_idx]._users.begin();
+					it != g_vChannel[chann_idx]._users.end(); )
+			{
+				if (it->get_nickname() == g_aClient[client_idx].second.get_nickname())
+				{
+					g_vChannel[chann_idx]._users.erase(it);
+				}
+				else
+					it++;
+			}
 		}
-		// for (auto it = g_vChannel.begin(); it != g_vChannel.end(); it++)
-		// {
-		// 	for (auto it2 = it->_users.begin(); it2 != it->_users.end(); it2++)
-		// 		std::cout << it2->get_nickname() << std::endl;
-		// }
 	}
 	catch(const std::exception& e) { return ; }	
 }
