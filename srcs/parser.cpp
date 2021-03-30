@@ -41,7 +41,8 @@ bool	can_execute(const std::string command, const size_t &client_idx, const MySe
 	bool ret = false;
 
 	//ptet opti le search
-	if ((g_aClient[client_idx].second.is_registered() == false && (command == "PASS" || command == "NICK" || command == "USER" || command == "CAP" || command == "SERVER"))
+	if ((g_aClient[client_idx].second.is_registered() == false && (command == "PASS" || command == "NICK"
+				|| command == "USER" || command == "CAP" || command == "SERVER" || command == "QUIT" || command == "PONG"))
 		|| g_aClient[client_idx].second.is_registered() == true)
 		ret = true;
 	try
