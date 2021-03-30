@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+typedef int	SOCKET;
+
 class Connection
 {
 	protected:
