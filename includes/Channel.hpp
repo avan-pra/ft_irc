@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/30 14:40:37 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/30 16:17:59 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ class Channel
 		Client			_operator;
 		std::string		_mode;
 
+	public:
 		std::vector<Client>		_users;
 		std::vector<Client>		_invite;
-		
-	public:
+
 		Channel() {}
 
 		Channel(std::string name, std::string pass)
@@ -52,10 +52,8 @@ class Channel
 		std::string				get_password() const { return (_password); }
 		std::string				get_name() const { return _name; }
 		std::string				get_topic() const { return _topic; }
-		std::vector<Client>		get_users() const { return _users; }
 		std::string				get_mode() const { return _mode; }
 		Client					get_operator() const { return _operator; }
-		std::vector<Client>		get_invite() const { return _invite; }
 
 		/*
 		 ** setter
@@ -66,32 +64,13 @@ class Channel
 		void			set_operator(Client op) { _operator = op; }
 		void			set_mode(std::string mode) { _mode = mode; }
 
-		void			add_user(Client user)
-		{
-			_users.push_back(user);
-		}
-
-		void			add_invite(Client user)
-		{
-			_invite.push_back(user);
-		}
-
-		void			remove_invite(std::vector<Client>::iterator user)
-		{
-			_invite.erase(user);
-		}
-
-
-		std::vector<Client>::iterator	users_begin() { return _users.begin(); }
-		std::vector<Client>::iterator	users_end() { return _users.end(); }
-
 
 		Channel			&operator=(const Channel &other)
 		{
 			_name = other.get_name();
 			_password = other.get_password();
 			_topic = other.get_topic();
-			_users = other.get_users();
+			_users = other._users;
 			return (*this);
 		}
 		Client			&operator[](int idx)
