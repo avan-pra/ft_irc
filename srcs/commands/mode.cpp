@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/29 22:49:16 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/30 13:10:53 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ static void		check_nickname(const std::string str, const size_t &client_idx, con
 	}
 }
 
-static int		check_channel_name(const std::string str, const size_t &client_idx, const MyServ &serv)
+static int		check_channel_exists(const std::string str, const size_t &client_idx, const MyServ &serv)
 {
 	for (int i = 0; i < g_vChannel.size(); i++)
 		if (str == g_vChannel[i].get_name())
 			return i;
-	g_aClient[client_idx].second.send_reply(create_msg(401, client_idx, serv, str));
+	g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, str));
 	throw std::exception();
 	return 0;
 }
@@ -91,7 +91,7 @@ void			mode_command(const std::string &line, const size_t &client_idx, const MyS
 		{
 			int	channel_idx = 0;
 
-			channel_idx = check_channel_name(str, client_idx, serv);
+			channel_idx = check_channel_exists(str, client_idx, serv);
 			check_usr_in_channel(channel_idx, client_idx, serv);
 			if (params.size() == 2)
 				g_aClient[client_idx].second.send_reply(create_msg(324, client_idx, serv, g_vChannel[channel_idx].get_name(), g_vChannel[channel_idx].get_mode(), ""));

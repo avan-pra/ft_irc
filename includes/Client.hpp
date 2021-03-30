@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/29 13:39:32 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/30 12:52:29 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,19 @@ class Client
 		/*
 		 ** Getter
 		*/
-		std::string		get_unended_packet() { return (_unended_packet); }
-		std::string		get_username() const { return (_username); }
-		std::string		get_hostname() const { return (_hostname); }
-		std::string		get_realname() const { return (_realname); }
-		std::string		get_nickname() const { return (_nickname); }
-		std::string		get_servername() {return (_servername); }
-		std::string		get_mode(){ return (_mode);}
-		bool			is_registered() { return (_is_register); }
-		bool			is_good_password() { return (_has_good_password); }
-		// bool			is_cap() { return (_is_cap); }
-		time_t			&get_last_activity() { return _last_activity; }
-		bool			get_ping_status() { return _ping_sended; }
+		std::string				get_unended_packet() { return (_unended_packet); }
+		std::string				get_username() const { return (_username); }
+		std::string				get_hostname() const { return (_hostname); }
+		std::string				get_realname() const { return (_realname); }
+		std::string				get_nickname() const { return (_nickname); }
+		std::string				get_servername() {return (_servername); }
+		std::string				get_mode(){ return (_mode);}
+		bool					is_registered() { return (_is_register); }
+		bool					is_good_password() { return (_has_good_password); }
+		// bool					is_cap() { return (_is_cap); }
+		time_t					&get_last_activity() { return _last_activity; }
+		bool					get_ping_status() { return _ping_sended; }
+		std::vector<Channel>	get_channels() { return _channels; }
 
 		/*
 		 ** Setter
