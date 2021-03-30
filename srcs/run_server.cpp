@@ -1,5 +1,6 @@
 #include "../includes/IRCserv.hpp"
 #include "../includes/MyServ.hpp"
+#include "../includes/Connection.hpp"
 #include <ctime>
 
 //called at each message received

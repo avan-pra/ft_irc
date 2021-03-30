@@ -23,12 +23,13 @@
 # include <sys/types.h>
 # include <cerrno>
 # include "./Channel.hpp"
+# include "./Connection.hpp"
 
 typedef int	SOCKET;
 
 class Channel;
 
-class Client
+class Client : public Connection
 {
 	private:
 
@@ -37,13 +38,11 @@ class Client
 		std::string		_hostname;
 		std::string		_realname;
 		std::string		_servername;
-		std::string		_unended_packet;
 		std::string		_mode;
 		bool			_is_register;
 		bool			_has_good_password;
 		bool			_has_try_password;
 		// bool			_is_cap;
-		time_t			_last_activity;
 		bool			_ping_sended;
 		//int			_status;
 
@@ -64,7 +63,6 @@ class Client
 		/*
 		 ** Getter
 		*/
-		std::string				get_unended_packet() { return (_unended_packet); }
 		std::string				get_username() const { return (_username); }
 		std::string				get_hostname() const { return (_hostname); }
 		std::string				get_realname() const { return (_realname); }
@@ -74,7 +72,6 @@ class Client
 		bool					is_registered() { return (_is_register); }
 		bool					is_good_password() { return (_has_good_password); }
 		// bool					is_cap() { return (_is_cap); }
-		time_t					&get_last_activity() { return _last_activity; }
 		bool					get_ping_status() { return _ping_sended; }
 		bool					get_pass_try() { return _has_try_password; }
 		std::vector<Channel>	get_channels() { return _channels; }
@@ -82,7 +79,6 @@ class Client
 		/*
 		 ** Setter
 		*/
-		void			set_unended_packet(std::string packet) { _unended_packet = packet; }
 		void			set_username(std::string user) { _username = user; }
 		void			set_hostname(std::string host) { _hostname = host; }
 		void			set_realname(std::string real) { _realname = real; }
