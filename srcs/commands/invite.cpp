@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:22:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/30 16:43:37 by lucas            ###   ########.fr       */
+/*   Updated: 2021/03/30 17:28:05 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,17 @@ void	check_line(const std::vector<std::string> &params, const size_t &client_idx
 
 	if (params.size() < 3)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, params[0]));
+		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, " " + params[0]));
 		return ;
 	}
 	if ((chan_id = find_channel(params[2])) == -1)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, params[2]));
+		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, " " + params[2]));
 		return ;
 	}
 	if ((nick_id = find_user_by_nick(params[1])) == -1)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(401, client_idx, serv, params[1]));
+		g_aClient[client_idx].second.send_reply(create_msg(401, client_idx, serv, " " + params[1]));
 		return ;
 	}
 }
@@ -57,9 +57,9 @@ int		check_if_are_on(const std::vector<std::string> &params, const size_t &clien
 			find = 2;
 	}
 	if (!find)
-		g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
+		g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, " " + g_aClient[client_idx].second.get_nickname()));
 	if (find == 2)
-		g_aClient[client_idx].second.send_reply(create_msg(443, client_idx, serv, params[1], params[2]));
+		g_aClient[client_idx].second.send_reply(create_msg(443, client_idx, serv, " " + params[1], params[2]));
 	if (!find || find == 2)
 		return (0);
 	return (1);
