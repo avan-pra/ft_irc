@@ -139,4 +139,12 @@ class	QuitCommandException: public std::exception
 	};
 };
 
+class   NewServerException: public std::exception
+{
+	virtual const char *what() const throw()
+	{
+		return "";
+	};
+};
+
 #endif

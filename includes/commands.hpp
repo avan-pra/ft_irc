@@ -167,5 +167,6 @@ void	cap_command(const std::string &line, const size_t &client_idx, const MyServ
 void	quit_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	names_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	list_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	server_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 
 #endif
