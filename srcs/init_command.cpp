@@ -21,7 +21,7 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["QUIT"] = quit_command; 
 	cmd["SQUIT"] = NULL; 
 	cmd["JOIN"] = join_command; 
-	cmd["PART"] = NULL; 
+	cmd["PART"] = part_command; 
 	cmd["MODE"] = mode_command; 
 	cmd["TOPIC"] = NULL;
 	cmd["NAMES"] = names_command;
