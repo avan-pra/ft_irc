@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/29 22:55:21 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/30 16:21:26 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const
 {
 	int		i = find_channel(it->first);
 
-	for (std::vector<Client>::iterator it = g_vChannel[i].users_begin(); it != g_vChannel[i].users_end(); it++)
+	for (std::vector<Client>::iterator it = g_vChannel[i]._users.begin(); it != g_vChannel[i]._users.end(); it++)
 	{
 		if (*it == g_aClient[client_idx].second)
 		{
@@ -100,11 +100,11 @@ int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const
 	return (0);
 }
 
-void	create_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter, const MyServ &serv)
+void	create_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter)
 {
 	Channel		chan(it->first, it->second);
 
-	chan.add_user(g_aClient[client_idx].second);
+	chan._users.push_back(g_aClient[client_idx].second);
 	chan.set_operator(g_aClient[client_idx].second);
 	chan.set_mode("+nt");
 	g_vChannel.push_back(chan);
@@ -115,7 +115,7 @@ void	add_client_to_channel(const std::map<std::string, std::string>::iterator it
 {
 	int		i = find_channel(it->first);
 
-	g_vChannel[i].add_user(g_aClient[client_idx].second);
+	g_vChannel[i]._users.push_back(g_aClient[client_idx].second);
 	enter = true;
 }
 
@@ -160,7 +160,7 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 	{
 		if (find_channel(it->first) == -1)
 		{
-			create_channel(it, client_idx, enter, serv);
+			create_channel(it, client_idx, enter);
 			names_command("names " + it->first, client_idx, serv);
 		}
 		else
