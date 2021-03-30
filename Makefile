@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/03/30 12:47:41 by lucas            ###   ########.fr        #
+#    Updated: 2021/03/30 16:01:31 by jvaquer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ SRC_CMD = nick.cpp user.cpp time.cpp \
 		  motd.cpp info.cpp version.cpp \
 		  pass.cpp join.cpp mode.cpp cap.cpp \
 		  ping.cpp pong.cpp quit.cpp names.cpp \
-		  list.cpp invite.cpp \
+		  list.cpp invite.cpp part.cpp\
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 

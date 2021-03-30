@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:11:18 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/30 13:10:04 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/30 17:00:17 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,10 @@ static int		check_channel_exists(const std::string str, const size_t &client_idx
 
 static void		check_usr_in_channel(const int channel_idx, const size_t &client_idx, const MyServ &serv)
 {
-	std::vector<Client> vect = g_vChannel[channel_idx].get_users();
-	for (int i = 0; i < vect.size(); i++)
-		if (g_aClient[client_idx].second .get_nickname() == vect[i].get_nickname())
+	for (int i = 0; i < g_vChannel[channel_idx]._users.size(); i++)
+		if (g_aClient[client_idx].second .get_nickname() == g_vChannel[channel_idx]._users[i].get_nickname())
 			return ;
-	g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, g_vChannel[channel_idx].get_name());
+	g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, g_vChannel[channel_idx].get_name()));
 }
 
 void		part_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
@@ -37,26 +36,40 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 	std::vector<std::string>	params;
 	std::string					channel_name;
 
-	params = ft_split(line);
+	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
 		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "PART"));
 		return ;
 	}
-	channel_name = params[1];
-	if (std::strchr(CHANNEL_VALID_CHAR, check_channel_name[0])
-	{
-		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, channel_name));
-		return ;
-	}
 	try
 	{
 		int chann_idx = 0;
-		
-		chann_idx = check_channel_exists(channel_name, client_idx, serv);
-		check_usr_in_channel(chann_idx, client_idx, serv);
 
+		params = ft_split(params[1], ",");
+		for (int i = 0; i < params.size(); i++)
+		{
+			channel_name = params[i];
+			if (!std::strchr(CHANNEL_VALID_CHAR, channel_name[0]))
+			{
+				g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, channel_name));
+				return ;
+			}	
+			chann_idx = check_channel_exists(channel_name, client_idx, serv);
+			check_usr_in_channel(chann_idx, client_idx, serv);
+			// for (std::vector<Client>::iterator it = g_vChannel[chann_idx]._users.begin(); 
+			// 	it != g_vChannel[chann_idx]._users.end(); it++)
+			// {
+			// 	if (it->get_nickname() == g_aClient[client_idx].second.get_nickname())
+			// 		g_vChannel[chann_idx]._users.erase(it);
+			// }
+			std::cout << "Channel name = " << channel_name << std::endl;
+		}
+		// for (auto it = g_vChannel.begin(); it != g_vChannel.end(); it++)
+		// {
+		// 	for (auto it2 = it->_users.begin(); it2 != it->_users.end(); it2++)
+		// 		std::cout << it2->get_nickname() << std::endl;
+		// }
 	}
-	catch(const std::exception& e) { return ; }
-	
+	catch(const std::exception& e) { return ; }	
 }
