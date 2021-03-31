@@ -73,6 +73,7 @@ void		run_server(MyServ &serv);
 bool 		kick_if_away(Connection &co, const MyServ &serv);
 void 		ping_if_away(Connection &co, const MyServ &serv);
 void		disconnect_client(size_t &i);
+void		disconnect_server(size_t &i);
 
 /*
 ** iterate_client.cpp
@@ -83,7 +84,7 @@ void		iterate_client(MyServ &serv);
 /*
 ** iterate_server.cpp
 */
-
+void		iterate_server(MyServ &serv);
 
 /*
 ** get_client.cpp

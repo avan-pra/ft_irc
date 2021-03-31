@@ -13,6 +13,7 @@ class Connection
 		std::string		_servername;
 		bool			_ping_sended;
 		bool			_is_register;
+
 	public:
 
 		SOCKET			_fd;

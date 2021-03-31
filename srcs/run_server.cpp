@@ -39,7 +39,16 @@ void		disconnect_client(size_t &i)
 	i--;
 }
 
-void ping_if_away(Connection &co, const MyServ &serv)
+void		disconnect_server(size_t &i)
+{
+	closesocket(g_aServer[i].first);
+	std::cout << "* Server disconnected from: " << inet_ntoa(g_aServer[i].second.sock_addr.sin_addr)
+		<< ":" << ntohs(g_aServer[i].second.sock_addr.sin_port) << std::endl;
+	g_aServer.erase(g_aServer.begin() + i);
+	i--;
+}
+
+void		ping_if_away(Connection &co, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
 
@@ -52,7 +61,7 @@ void ping_if_away(Connection &co, const MyServ &serv)
 	}
 }
 
-bool kick_if_away(Connection &co, const MyServ &serv)
+bool		kick_if_away(Connection &co, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
 
@@ -75,5 +84,6 @@ void run_server(MyServ &serv)
 
 		try_accept_user(&serv);
 		iterate_client(serv);
+		iterate_server(serv);
 	}
 }
