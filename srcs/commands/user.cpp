@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/24 17:25:27 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/31 14:35:56 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void			check_user_registered(const std::string str, const std::vector<std
 static void			set_user(const std::string username, const std::string host_name, std::string mode, const std::string server_name, const std::string realname, const size_t &client_idx)
 {
 	g_aClient[client_idx].second.set_username(username);
-	g_aClient[client_idx].second.set_hostname(host_name);
+	g_aClient[client_idx].second.set_hostname(inet_ntoa(g_aClient[client_idx].second.sock_addr.sin_addr));
 	g_aClient[client_idx].second.set_mode(mode);
 	g_aClient[client_idx].second.set_realname(realname);
 	g_aClient[client_idx].second.set_servername(server_name);

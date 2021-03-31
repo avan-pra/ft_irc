@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:11:18 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/30 20:12:51 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/31 14:23:19 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 				else
 					it++;
 			}
+			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() +
+				"@" + g_aClient[client_idx].second.get_hostname() + " PART " + channel_name + "\r\n");
 		}
 	}
 	catch(const std::exception& e) { return ; }	
