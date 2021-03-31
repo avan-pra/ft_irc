@@ -23,7 +23,7 @@
 
 # define PING 300
 
-# define TIMEOUT 45
+# define TIMEOUT 315
 
 # define FILE_NAME "./irc.conf"
 
