@@ -21,9 +21,9 @@
 
 # define BUFF_SIZE 512
 
-# define PING 300
+# define PING 5
 
-# define TIMEOUT 315
+# define TIMEOUT 7
 
 # define FILE_NAME "./irc.conf"
 
@@ -70,8 +70,8 @@ int			setup_server();
 ** run_server.cpp
 */
 void		run_server(MyServ &serv);
-bool 		kick_if_away(size_t &client_idx, const MyServ &serv);
-void 		ping_if_away(const size_t &client_idx, const MyServ &serv);
+bool 		kick_if_away(Connection &co, const MyServ &serv);
+void 		ping_if_away(Connection &co, const MyServ &serv);
 void		disconnect_client(size_t &i);
 
 /*

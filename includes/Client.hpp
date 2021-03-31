@@ -82,11 +82,6 @@ class Client : public Connection
 		** Methods
 		*/
 
-		void			send_reply(const std::string &s)
-		{
-			send(_fd, s.c_str(), s.size(), 0);
-		}
-
 	bool	operator==(const Client &a) const
 	{
 		if (a.get_username() != get_username() || _fd != a._fd)

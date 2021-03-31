@@ -39,29 +39,26 @@ void		disconnect_client(size_t &i)
 	i--;
 }
 
-void ping_if_away(const size_t &client_idx, const MyServ &serv)
+void ping_if_away(Connection &co, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
 
 	time(&time_compare);
 	//si je lui ai pas deja envoye un ping et si ca fait plus de 30sec que je l'ai pas ping
-	if (g_aClient[client_idx].second.get_ping_status() == false && time_compare - g_aClient[client_idx].second.get_last_activity() > PING)
+	if (co.get_ping_status() == false && time_compare - co.get_last_activity() > PING)
 	{
-		g_aClient[client_idx].second.send_reply("PING :" + serv.get_hostname() + "\r\n");
-		g_aClient[client_idx].second.set_ping_status(true);
+		co.send_reply("PING :" + serv.get_hostname() + "\r\n");
+		co.set_ping_status(true);
 	}
 }
 
-bool kick_if_away(size_t &client_idx, const MyServ &serv)
+bool kick_if_away(Connection &co, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
 
 	time(&time_compare);
-	if (g_aClient[client_idx].second.get_ping_status() == true && time_compare - g_aClient[client_idx].second.get_last_activity() > TIMEOUT)
-	{
-		disconnect_client(client_idx);
+	if (co.get_ping_status() == true && time_compare - co.get_last_activity() > TIMEOUT)
 		return true;
-	}
 	return false;
 }
 
