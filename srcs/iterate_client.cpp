@@ -16,6 +16,7 @@ void	iterate_client(MyServ &serv)
 		{
 			ft_bzero((char *)c, sizeof(c));
 			int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
+			// std::cout << "recv" << std::endl;
 			if (ret <= 0)
 				disconnect_client(i);
 			else if (ret > 0)

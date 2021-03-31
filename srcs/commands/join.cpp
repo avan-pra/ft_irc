@@ -160,7 +160,10 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 	{
 		if (find_channel(it->first) == -1)
 		{
+			// std::cout << "executed" << std::endl;
 			create_channel(it, client_idx, enter);
+			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
+				+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " JOIN " + it->first + "\r\n");
 			names_command("names " + it->first, client_idx, serv);
 		}
 		else
