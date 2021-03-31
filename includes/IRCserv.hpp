@@ -21,9 +21,9 @@
 
 # define BUFF_SIZE 512
 
-# define PING 5
+# define PING 100
 
-# define TIMEOUT 7
+# define TIMEOUT 115
 
 # define FILE_NAME "./irc.conf"
 
