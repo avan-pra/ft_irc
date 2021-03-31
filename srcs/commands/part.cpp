@@ -77,7 +77,6 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() +
 				"@" + g_aClient[client_idx].second.get_hostname() + " PART " + channel_name + "\r\n");
 		}
-		std::cout << "executed" << std::endl;
 		// for (auto it = g_vChannel.begin(); it < g_vChannel.end(); ++it)
 		// 	std::cout << it->get_name() << std::endl;
 	}
