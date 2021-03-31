@@ -35,7 +35,7 @@
 # define ERR_USERSDISABLED() (":USERS has been disabled\r\n")
 # define ERR_NOTREGISTERED() (" :You have not registered\r\n")
 # define ERR_NEEDMOREPARAMS(command) (" " + command + " :Not enough parameters\r\n")
-# define ERR_ALREADYREGISTRED() (":Unauthorized command (already registered)\r\n")
+# define ERR_ALREADYREGISTRED() (" :Unauthorized command (already registered)\r\n")
 # define ERR_NOPERMFORHOST() (":Your host isn't among the privileged\r\n")
 # define ERR_PASSWDMISMATCH() (":Password incorrect\r\n")
 # define ERR_YOUREBANNEDCREEP() (":You are banned from this server\r\n")

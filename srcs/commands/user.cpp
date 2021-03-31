@@ -114,7 +114,7 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 		}
 		check_realname(realname, client_idx, serv);
 		check_2nd_arg(args[2], host_name, mode, client_idx, serv);
-		check_user_registered(realname, args, client_idx, serv);
+		// check_user_registered(realname, args, client_idx, serv);
 		set_user(args[1], host_name, mode, args[3], realname, client_idx);
 		g_aClient[client_idx].second.send_reply(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
 		motd_command("", client_idx, serv);

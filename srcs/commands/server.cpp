@@ -14,5 +14,7 @@ void	server_command(const std::string &line, const size_t &client_idx, const MyS
 	new_serv.get_last_activity() = g_aClient[client_idx].second.get_last_activity();
 	//push de <fd, User> sur le vecteur
 	g_aServer.push_back(std::make_pair(new_serv._fd, new_serv));
+	std::cout << "* Connection from: " << inet_ntoa(new_serv.sock_addr.sin_addr)<< ":"
+		<< ntohs(new_serv.sock_addr.sin_port) << " upgraded to server connection !" << std::endl;
 	throw NewServerException();
 }
