@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:11:18 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/31 14:23:19 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/01 11:47:44 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static int		check_channel_exists(const std::string str, const size_t &client_idx, const MyServ &serv)
 {
-	for (int i = 0; i < g_vChannel.size(); i++)
+	for (size_t i = 0; i < g_vChannel.size(); i++)
 		if (str == g_vChannel[i].get_name())
 			return i;
 	g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, str));
@@ -25,7 +25,7 @@ static int		check_channel_exists(const std::string str, const size_t &client_idx
 
 static void		check_usr_in_channel(const int channel_idx, const size_t &client_idx, const MyServ &serv)
 {
-	for (int i = 0; i < g_vChannel[channel_idx]._users.size(); i++)
+	for (size_t i = 0; i < g_vChannel[channel_idx]._users.size(); i++)
 		if (g_aClient[client_idx].second .get_nickname() == g_vChannel[channel_idx]._users[i].get_nickname())
 			return ;
 	g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, g_vChannel[channel_idx].get_name()));
@@ -47,7 +47,7 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 		int chann_idx = 0;
 
 		params = ft_split(params[1], ",");
-		for (int i = 0; i < params.size(); i++)
+		for (size_t i = 0; i < params.size(); i++)
 		{
 			channel_name = params[i];
 			if (!std::strchr(CHANNEL_VALID_CHAR, channel_name[0]))
@@ -67,7 +67,7 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 				else
 					it++;
 			}
-			for (auto it = g_vChannel.begin(); it < g_vChannel.end();)
+			for (std::vector<Channel>::iterator it = g_vChannel.begin(); it < g_vChannel.end();)
 			{
 				if (it->get_name() == channel_name && it->_users.size() == 0)
 					g_vChannel.erase(it);
