@@ -36,7 +36,7 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 	std::vector<std::string>	params;
 	std::string					channel_name, output = "";
 
-	params = ft_split(line, ":")
+	params = ft_split(line, ":");
 	if (params.size() > 1)
 		output = params[1];
 	params = ft_split(line, " ");
