@@ -45,14 +45,6 @@ bool error_chan_key(const std::string::iterator it_k)
 	return (true);
 }
 
-int		find_channel(std::string name)
-{
-	for (size_t i = 0; i < g_vChannel.size(); i++)
-		if (name == g_vChannel[i].get_name())
-			return (i);
-	return (-1);
-}
-
 int		check_name_and_key(std::map<std::string, std::string> &chan)
 {
 	std::map<std::string, std::string>::iterator	it = chan.begin();

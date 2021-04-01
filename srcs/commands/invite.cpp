@@ -15,16 +15,6 @@
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
-int		find_user_by_nick(const std::string &nickname)
-{
-	for (size_t i = 0; i < g_aClient.size(); i++)
-	{
-		if (g_aClient[i].second.get_nickname() == nickname)
-			return (i);
-	}
-	return (-1);
-}
-
 void	check_line(const std::vector<std::string> &params, const size_t &client_idx, const MyServ &serv, int &chan_id, int &nick_id)
 {
 
