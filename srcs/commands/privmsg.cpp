@@ -60,7 +60,7 @@ std::string		create_full_msg(const std::vector<std::string> &params, const size_
 	return (full_msg);
 }
 
-void	send_to_channel(const std::vector<std::string> params, const size_t &client_idx, const MyServ &serv, const int &chan_id)
+void	send_privmsg_to_channel(const std::vector<std::string> params, const size_t &client_idx, const MyServ &serv, const int &chan_id)
 {
 	std::string		full_msg = create_full_msg(params, client_idx);
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
@@ -79,7 +79,7 @@ void	privmsg_command(const std::string &line, const size_t &client_idx, const My
 	if (!check_params(params, client_idx, serv))
 		return ;
 	if ((i = find_channel(params[1])) != -1)
-		send_to_channel(params, client_idx, serv, i);
+		send_privmsg_to_channel(params, client_idx, serv, i);
 	else if ((i = find_user_by_nick(params[1])) != -1)
 		g_aClient[i].second.send_reply(create_full_msg(params, client_idx));
 }

@@ -62,6 +62,7 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 			{
 				if (it->get_nickname() == g_aClient[client_idx].second.get_nickname())
 				{
+					send_to_channel(("PART " + g_vChannel[chann_idx].get_name()), client_idx, serv, chann_idx, true);
 					g_vChannel[chann_idx]._users.erase(it);
 				}
 				else
@@ -70,12 +71,13 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 			for (std::vector<Channel>::iterator it = g_vChannel.begin(); it < g_vChannel.end();)
 			{
 				if (it->get_name() == channel_name && it->_users.size() == 0)
+				{
+					send_to_channel(("PART " + g_vChannel[chann_idx].get_name()), client_idx, serv, chann_idx, true);
 					g_vChannel.erase(it);
+				}
 				else
 					++it;	
 			}
-			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() +
-				"@" + g_aClient[client_idx].second.get_hostname() + " PART " + channel_name + "\r\n");
 		}
 		// for (auto it = g_vChannel.begin(); it < g_vChannel.end(); ++it)
 		// 	std::cout << it->get_name() << std::endl;

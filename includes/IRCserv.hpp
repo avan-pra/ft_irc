@@ -122,6 +122,11 @@ int		char2hex(char input);
 */
 void            parser(char *line, const size_t &client_idx, const MyServ &server);
 
+/*
+** send_msg_to.cpp
+*/
+void	send_to_channel(const std::string &msg, const size_t &client_idx, const MyServ &serv, const int &chan_id, bool to_sender = false);
+
 int		find_channel(const std::string &name);
 
 int		find_user_by_nick(const std::string &nickname);

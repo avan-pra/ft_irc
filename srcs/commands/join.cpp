@@ -154,8 +154,7 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 		{
 			// std::cout << "executed" << std::endl;
 			create_channel(it, client_idx, enter);
-			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
-				+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " JOIN " + it->first + "\r\n");
+			send_to_channel(("JOIN " + it->first), client_idx, serv, find_channel(it->first), true);
 			names_command("names " + it->first, client_idx, serv);
 		}
 		else
@@ -163,6 +162,7 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 			if (try_enter_chan(it, client_idx, enter))
 			{
 				add_client_to_channel(it, client_idx, enter);
+				send_to_channel(("JOIN " + it->first), client_idx, serv, find_channel(it->first), true);
 				names_command("names " + it->first, client_idx, serv);
 			}
 		}
