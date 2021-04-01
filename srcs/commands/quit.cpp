@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/01 15:49:28 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/01 15:51:13 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	quit_command(const std::string &line, const size_t &client_idx, const MySer
 		{
 			if (it->get_nickname() == g_aClient[client_idx].second.get_nickname())
 			{
-				part_string += g_vChannel[channel_idx].get_name() + ",";
+				part_string += g_vChannel[chann_idx].get_name() + ",";
 			}
 			else
 				it++;
