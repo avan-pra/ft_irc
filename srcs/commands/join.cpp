@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/30 16:21:26 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/01 15:24:20 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,47 @@ int		check_name_and_key(std::map<std::string, std::string> &chan)
 	return (chan.size());
 }
 
+int		check_invite(const int &chan_id, const size_t &client_idx, const MyServ &serv)
+{
+	if (g_vChannel[chan_id].get_mode().find("i") == std::string::npos)
+		return (1);
+	for (size_t i = 0; i < g_vChannel[chan_id]._invite.size(); i++)
+	{
+		if (g_aClient[client_idx].second == g_vChannel[chan_id]._invite[i])
+			return (1);
+	}
+	g_aClient[client_idx].second.send_reply(create_msg(473, client_idx, serv, " " + g_vChannel[chan_id].get_name()));
+	return (0);
+}
+
+int		check_password(const size_t &client_idx, const MyServ &serv, const int &chan_id, const std::string &pass)
+{
+	if (g_vChannel[chan_id].get_mode().find("k") == std::string::npos)
+		return (1);
+	if (pass == g_vChannel[chan_id].get_password())
+		return (1);
+	g_aClient[client_idx].second.send_reply(create_msg(475, client_idx, serv, " " + g_vChannel[chan_id].get_name()));
+	return (0);
+}
+
 int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const size_t &client_idx,
-															bool &enter)
+													bool &enter, const MyServ &serv)
 {
 	int		i = find_channel(it->first);
 
-	for (std::vector<Client>::iterator it = g_vChannel[i]._users.begin(); it != g_vChannel[i]._users.end(); it++)
+	for (std::vector<Client>::iterator ite = g_vChannel[i]._users.begin(); ite != g_vChannel[i]._users.end(); ite++)
 	{
-		if (*it == g_aClient[client_idx].second)
+		if (*ite == g_aClient[client_idx].second)
 		{
 			enter = true;
 			return (0);
 		}
 	}
-	if (it->second == g_vChannel[i].get_password())
-		return (1);
-	return (0);
+	if (!check_invite(i, client_idx, serv))
+		return (0);
+	if (!check_password(client_idx, serv, i, it->second))
+		return (0);
+	return (1);
 }
 
 void	create_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter)
@@ -97,7 +122,7 @@ void	create_channel(const std::map<std::string, std::string>::iterator it, const
 	Channel		chan(it->first, it->second);
 
 	chan._users.push_back(g_aClient[client_idx].second);
-	chan.set_operator(g_aClient[client_idx].second);
+	chan._operator.push_back(g_aClient[client_idx].second);
 	chan.set_mode("+nt");
 	g_vChannel.push_back(chan);
 	enter = true;
@@ -152,14 +177,13 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 	{
 		if (find_channel(it->first) == -1)
 		{
-			// std::cout << "executed" << std::endl;
 			create_channel(it, client_idx, enter);
 			send_to_channel(("JOIN " + it->first), client_idx, serv, find_channel(it->first), true);
 			names_command("names " + it->first, client_idx, serv);
 		}
 		else
 		{
-			if (try_enter_chan(it, client_idx, enter))
+			if (try_enter_chan(it, client_idx, enter, serv))
 			{
 				add_client_to_channel(it, client_idx, enter);
 				send_to_channel(("JOIN " + it->first), client_idx, serv, find_channel(it->first), true);

@@ -83,6 +83,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + ERR_NEEDMOREPARAMS(arg1);
 		case 462:
 			return sample + ERR_ALREADYREGISTRED();
+		case 473:
+			return sample + ERR_INVITEONLYCHAN(arg1);
 		case 476:
 			return sample + ERR_BADCHANMASK(arg1);
 		case 482:

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/30 16:17:59 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/01 14:22:09 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ class Channel
 		std::string		_name;
 		std::string		_topic;
 		std::string		_password;
-		Client			_operator;
 		std::string		_mode;
 
 	public:
+		std::vector<Client>		_operator;
 		std::vector<Client>		_users;
 		std::vector<Client>		_invite;
 
@@ -53,7 +53,6 @@ class Channel
 		std::string				get_name() const { return _name; }
 		std::string				get_topic() const { return _topic; }
 		std::string				get_mode() const { return _mode; }
-		Client					get_operator() const { return _operator; }
 
 		/*
 		 ** setter
@@ -61,7 +60,6 @@ class Channel
 
 		void			set_password(std::string pass) { _password = pass; }
 		void			set_name(std::string name) { _name = name; }
-		void			set_operator(Client op) { _operator = op; }
 		void			set_mode(std::string mode) { _mode = mode; }
 
 

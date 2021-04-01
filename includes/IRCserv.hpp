@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/01 10:08:56 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/01 15:28:17 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ void	send_to_all_channel(const std::string &msg, const size_t &client_idx, const
 int		find_channel(const std::string &name);
 int		find_user_by_nick(const std::string &nickname);
 bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname);
+std::vector<Client>::iterator	find_operator(const int &chan_id, const size_t &client_idx);
 
 class	IncorrectPassException: public std::exception
 {

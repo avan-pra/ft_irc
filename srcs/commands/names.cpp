@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/26 11:14:49 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/30 16:26:36 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/01 14:28:32 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ std::string		set_nick_list(const int &chan_id)
 
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
-		if (g_vChannel[chan_id].get_operator() == g_vChannel[chan_id][i])
+		if (find_operator(chan_id, find_user_by_nick(g_vChannel[chan_id][i].get_nickname())) != g_vChannel[chan_id]._operator.end())
 			lst += "@";
 		else
 			lst += "+";
