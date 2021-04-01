@@ -13,6 +13,9 @@
 NAME = Serv
 
 C++ = clang++
+
+CXX = clang++
+
 CUR_DIR = $(shell pwd)
 
 FLAG = -Wall -Werror -Wextra -std=c++98
