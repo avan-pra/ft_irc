@@ -29,3 +29,13 @@ int		find_user_by_nick(const std::string &nickname)
 	}
 	return (-1);
 }
+
+bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname)
+{
+	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); ++i)
+	{
+		if (g_vChannel[chan_id]._users[i].get_nickname() == nickname)
+			return true;
+	}
+	return false;
+}

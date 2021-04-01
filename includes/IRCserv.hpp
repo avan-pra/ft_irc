@@ -126,10 +126,14 @@ void            parser(char *line, const size_t &client_idx, const MyServ &serve
 ** send_msg_to.cpp
 */
 void	send_to_channel(const std::string &msg, const size_t &client_idx, const MyServ &serv, const int &chan_id, bool to_sender = false);
+void	send_to_all_channel(const std::string &msg, const size_t &client_idx, const MyServ &serv, bool to_sender = false);
 
+/*
+** find_client_or_channel.cpp
+*/
 int		find_channel(const std::string &name);
-
 int		find_user_by_nick(const std::string &nickname);
+bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname);
 
 class	IncorrectPassException: public std::exception
 {
