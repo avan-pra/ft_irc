@@ -85,9 +85,7 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 	std::string realname, line_new;
 
 	//Check get_need_pass --> if true --> check if pass is true if not do nothing
-	if (!g_aClient[client_idx].second.get_nickname().size())
-		return ;
-	if (serv.get_need_pass() == true && g_aClient[client_idx].second.is_good_password() == false)
+	if (serv.get_need_pass() == true && g_aClient[client_idx].second.is_good_password() == false && g_aClient[client_idx].second.get_nickname().size() > 0)
 	{
 		throw IncorrectPassException(); 
 		return ;
@@ -116,9 +114,14 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 		check_2nd_arg(args[2], host_name, mode, client_idx, serv);
 		// check_user_registered(realname, args, client_idx, serv);
 		set_user(args[1], host_name, mode, args[3], realname, client_idx);
-		g_aClient[client_idx].second.send_reply(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
-		motd_command("", client_idx, serv);
-		g_aClient[client_idx].second.set_register(true);
+
+		if (g_aClient[client_idx].second.get_nickname().size() > 0)		
+		{
+			g_aClient[client_idx].second.send_reply(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
+			motd_command("", client_idx, serv);
+			g_aClient[client_idx].second.set_register(true);
+		}
+
 	}
 	catch(const std::exception &e) {return ; }
 }

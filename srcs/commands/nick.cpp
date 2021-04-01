@@ -63,9 +63,20 @@ void	nick_command(const std::string &line, const size_t &client_idx, const MySer
 
 		// if all check has passed set his username
 		if (g_aClient[client_idx].second.is_registered() == true)
+		{
 			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
 				+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " NICK " + name + "\r\n");
+		}
 		g_aClient[client_idx].second.set_nickname(name);
+		if (g_aClient[client_idx].second.is_registered() == false
+			&& g_aClient[client_idx].second.get_username().size() > 0
+			&& g_aClient[client_idx].second.get_hostname().size() > 0
+			&& g_aClient[client_idx].second.get_realname().size() > 0)
+		{
+			g_aClient[client_idx].second.send_reply(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
+			motd_command("", client_idx, serv);
+			g_aClient[client_idx].second.set_register(true);
+		}
 	}
 	catch(const std::exception& e){ return ; }
 
