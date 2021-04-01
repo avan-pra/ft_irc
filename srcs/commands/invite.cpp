@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:22:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/30 17:28:05 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/01 15:01:38 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	invite_command(const std::string &line, const size_t &client_idx, const MyS
 	if (!check_if_are_on(params, client_idx, serv, chan_id))
 		return ;
 	if (g_vChannel[chan_id].get_mode().find("i") != std::string::npos)
-		if (g_vChannel[chan_id].get_operator() != g_aClient[client_idx].second)
+		if (find_operator(chan_id, client_idx) != g_vChannel[chan_id]._operator.end())
 		{
 			g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, params[2]));
 			return ;

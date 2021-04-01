@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:19:03 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/01 10:08:14 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/01 15:28:49 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,13 @@ bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname)
 			return true;
 	}
 	return false;
+}
+
+std::vector<Client>::iterator	find_operator(const int &chan_id, const size_t &client_idx)
+{
+	for (std::vector<Client>::iterator it = g_vChannel[chan_id]._operator.begin();
+	it != g_vChannel[chan_id]._operator.end(); it++)
+		if (*it == g_aClient[client_idx].second)
+			return (it);
+	return (g_vChannel[chan_id]._operator.end());
 }

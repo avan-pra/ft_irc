@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/25 16:23:23 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/03/30 11:20:13 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	quit_command(const std::string &line, const size_t &client_idx, const MySer
 	}
 	else
 	{
-		for (int i = 1; i < args.size() ; i++)
+		for (size_t i = 1; i < args.size() ; i++)
 			output += args[i] + " ";
 		// std::cout << "QUIT   " << output << std::endl;
 		throw QuitCommandException();
