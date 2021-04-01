@@ -64,8 +64,11 @@ void	nick_command(const std::string &line, const size_t &client_idx, const MySer
 		// if all check has passed set his username
 		if (g_aClient[client_idx].second.is_registered() == true)
 		{
+			//reply to him he changed his nick
 			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
 				+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " NICK " + name + "\r\n");
+			//tell all channel he changed his nick
+			send_to_all_channel("NICK " + name + "\r\n", client_idx, serv);
 		}
 		g_aClient[client_idx].second.set_nickname(name);
 		if (g_aClient[client_idx].second.is_registered() == false
