@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:11:18 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/01 16:55:34 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/01 17:13:45 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 	std::vector<std::string>	params;
 	std::string					channel_name, output = "";
 
-	params = ft_split(line, ":");
-	output = params[1];
+	params = ft_split(line, ":")
+	if (params.size() > 1)
+		output = params[1];
 	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
