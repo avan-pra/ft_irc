@@ -55,8 +55,14 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + ERR_NOSUCHNICK(arg1);
 		case 403:
 			return sample + ERR_NOSUCHCHANNEL(arg1);
+		case 404:
+			return sample + ERR_CANNOTSENDTOCHAN(arg1);
 		case 410:
 			return sample + ERR_INVALIDCAP(arg1);
+		case 411:
+			return sample + ERR_NORECIPIENT(arg1);
+		case 412:
+			return sample + ERR_NOTEXTTOSEND();
 		case 421:
 			return sample + ERR_UNKNOWNCOMMAND(arg1);
 		case 431:

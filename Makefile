@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/03/30 17:53:00 by jvaquer          ###   ########.fr        #
+#    Updated: 2021/03/31 12:25:21 by lucas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ SRCS =			$(addprefix $(DIR_SRCS), $(SRC))
 DIR_SRCS = ./srcs/
 SRC = main.cpp parser.cpp get_client.cpp parse_conf.cpp \
 	  run_server.cpp setup_serv.cpp init_command.cpp \
-	  create_msg.cpp iterate_client.cpp iterate_server.cpp
+	  create_msg.cpp iterate_client.cpp iterate_server.cpp \
+	  find_client_or_channel.cpp \
 
 OBJ = $(SRCS:.cpp=.o)
 
@@ -44,7 +45,8 @@ SRC_CMD = nick.cpp user.cpp time.cpp \
 		  motd.cpp info.cpp version.cpp \
 		  pass.cpp join.cpp mode.cpp cap.cpp \
 		  ping.cpp pong.cpp quit.cpp names.cpp \
-		  list.cpp invite.cpp part.cpp server.cpp\
+		  list.cpp invite.cpp part.cpp server.cpp \
+		  privmsg.cpp \
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 

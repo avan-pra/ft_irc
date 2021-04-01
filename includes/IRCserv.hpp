@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/29 12:24:59 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/01 10:08:56 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,8 @@ int		char2hex(char input);
 */
 void            parser(char *line, const size_t &client_idx, const MyServ &server);
 
-int		find_channel(std::string name);
+int		find_channel(const std::string &name);
+int		find_user_by_nick(const std::string &nickname);
 
 class	IncorrectPassException: public std::exception
 {
