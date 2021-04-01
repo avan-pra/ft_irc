@@ -65,8 +65,8 @@ void	send_privmsg_to_channel(const std::vector<std::string> params, const size_t
 	std::string		full_msg = create_full_msg(params, client_idx);
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
-		if (g_vChannel[chan_id]._users[i] != g_aClient[client_idx].second)
-			g_vChannel[chan_id]._users[i].send_reply(full_msg);
+		if (*g_vChannel[chan_id]._users[i] != g_aClient[client_idx].second)
+			g_vChannel[chan_id]._users[i]->send_reply(full_msg);
 	}
 }
 

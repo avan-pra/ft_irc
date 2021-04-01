@@ -23,10 +23,10 @@ void	quit_command(const std::string &line, const size_t &client_idx, const MySer
 	for (int chann_idx = 0; chann_idx < g_vChannel.size(); chann_idx++)
 	{
 		int j = 0;
-		for (std::vector<Client>::iterator it = g_vChannel[chann_idx]._users.begin();
+		for (std::vector<Client*>::iterator it = g_vChannel[chann_idx]._users.begin();
 			it != g_vChannel[chann_idx]._users.end(); it++)
 		{
-			if (it->get_nickname() == g_aClient[client_idx].second.get_nickname())
+			if ((*it)->get_nickname() == g_aClient[client_idx].second.get_nickname())
 			{
 				part_string += g_vChannel[chann_idx].get_name() + ",";
 			}

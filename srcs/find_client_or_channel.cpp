@@ -34,17 +34,17 @@ bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname)
 {
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); ++i)
 	{
-		if (g_vChannel[chan_id]._users[i].get_nickname() == nickname)
+		if (g_vChannel[chan_id]._users[i]->get_nickname() == nickname)
 			return true;
 	}
 	return false;
 }
 
-std::vector<Client>::iterator	find_operator(const int &chan_id, const size_t &client_idx)
+std::vector<Client*>::iterator	find_operator(const int &chan_id, const size_t &client_idx)
 {
-	for (std::vector<Client>::iterator it = g_vChannel[chan_id]._operator.begin();
+	for (std::vector<Client*>::iterator it = g_vChannel[chan_id]._operator.begin();
 	it != g_vChannel[chan_id]._operator.end(); it++)
-		if (*it == g_aClient[client_idx].second)
+		if (**it == g_aClient[client_idx].second)
 			return (it);
 	return (g_vChannel[chan_id]._operator.end());
 }

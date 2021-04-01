@@ -31,9 +31,9 @@ class Channel
 		std::string		_mode;
 
 	public:
-		std::vector<Client>		_operator;
-		std::vector<Client>		_users;
-		std::vector<Client>		_invite;
+		std::vector<Client*>		_operator;
+		std::vector<Client*>		_users;
+		std::vector<Client*>		_invite;
 
 		Channel() {}
 
@@ -73,7 +73,7 @@ class Channel
 		}
 		Client			&operator[](int idx)
 		{
-			return (_users[idx]);
+			return (*_users[idx]);
 		}
 };
 

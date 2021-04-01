@@ -39,11 +39,11 @@ int		check_if_are_on(const std::vector<std::string> &params, const size_t &clien
 {
 	int		find = 0;
 
-	for (std::vector<Client>::iterator it = g_vChannel[chan_id]._users.begin(); it != g_vChannel[chan_id]._users.end(); it++)
+	for (std::vector<Client*>::iterator it = g_vChannel[chan_id]._users.begin(); it != g_vChannel[chan_id]._users.end(); it++)
 	{
-		if (it->get_nickname() == g_aClient[client_idx].second.get_nickname())
+		if ((*it)->get_nickname() == g_aClient[client_idx].second.get_nickname())
 			find = find == 2 ? 2: 1;
-		if (it->get_nickname() == params[1])
+		if ((*it)->get_nickname() == params[1])
 			find = 2;
 	}
 	if (!find)
@@ -75,15 +75,15 @@ void	invite_command(const std::string &line, const size_t &client_idx, const MyS
 			g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, params[2]));
 			return ;
 		}
-	for (std::vector<Client>::iterator it = g_vChannel[chan_id]._invite.begin();
+	for (std::vector<Client*>::iterator it = g_vChannel[chan_id]._invite.begin();
 		it != g_vChannel[chan_id]._invite.end(); it++)
 	{
-		if (*it == g_aClient[nick_id].second)
+		if (**it == g_aClient[nick_id].second)
 			exist = true;
 	}
 	if (!exist)
-		g_vChannel[chan_id]._invite.push_back(g_aClient[nick_id].second);
+		g_vChannel[chan_id]._invite.push_back(&g_aClient[nick_id].second);
 	for (size_t i = 0; i < g_vChannel[chan_id]._invite.size(); i++)
-		std::cout << g_vChannel[chan_id]._invite[i].get_nickname() << std::endl;
+		std::cout << g_vChannel[chan_id]._invite[i]->get_nickname() << std::endl;
 	g_aClient[client_idx].second.send_reply(create_msg(341, client_idx, serv, params[2], g_aClient[client_idx].second.get_nickname()));
 }

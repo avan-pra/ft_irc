@@ -9,8 +9,8 @@ void	send_to_channel(const std::string &msg, const size_t &client_idx, const MyS
 		+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " " + msg + "\r\n";
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
-		if (to_sender == true || g_vChannel[chan_id]._users[i] != g_aClient[client_idx].second)
-			g_vChannel[chan_id]._users[i].send_reply(full_msg);
+		if (to_sender == true || *g_vChannel[chan_id]._users[i] != g_aClient[client_idx].second)
+			g_vChannel[chan_id]._users[i]->send_reply(full_msg);
 	}
 }
 
@@ -25,8 +25,8 @@ void	send_to_all_channel(const std::string &msg, const size_t &client_idx, const
 		{
 			for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 			{
-				if (to_sender == true || g_vChannel[chan_id]._users[i] != g_aClient[client_idx].second)
-					g_vChannel[chan_id]._users[i].send_reply(full_msg);
+				if (to_sender == true || *g_vChannel[chan_id]._users[i] != g_aClient[client_idx].second)
+					g_vChannel[chan_id]._users[i]->send_reply(full_msg);
 			}
 		}
 	}

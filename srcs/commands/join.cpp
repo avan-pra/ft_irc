@@ -80,7 +80,7 @@ int		check_invite(const int &chan_id, const size_t &client_idx, const MyServ &se
 		return (1);
 	for (size_t i = 0; i < g_vChannel[chan_id]._invite.size(); i++)
 	{
-		if (g_aClient[client_idx].second == g_vChannel[chan_id]._invite[i])
+		if (g_aClient[client_idx].second == *g_vChannel[chan_id]._invite[i])
 			return (1);
 	}
 	g_aClient[client_idx].second.send_reply(create_msg(473, client_idx, serv, " " + g_vChannel[chan_id].get_name()));
@@ -102,9 +102,9 @@ int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const
 {
 	int		i = find_channel(it->first);
 
-	for (std::vector<Client>::iterator ite = g_vChannel[i]._users.begin(); ite != g_vChannel[i]._users.end(); ite++)
+	for (std::vector<Client*>::iterator ite = g_vChannel[i]._users.begin(); ite != g_vChannel[i]._users.end(); ite++)
 	{
-		if (*ite == g_aClient[client_idx].second)
+		if (**ite == g_aClient[client_idx].second)
 		{
 			enter = true;
 			return (0);
@@ -121,8 +121,8 @@ void	create_channel(const std::map<std::string, std::string>::iterator it, const
 {
 	Channel		chan(it->first, it->second);
 
-	chan._users.push_back(g_aClient[client_idx].second);
-	chan._operator.push_back(g_aClient[client_idx].second);
+	chan._users.push_back(&g_aClient[client_idx].second);
+	chan._operator.push_back(&g_aClient[client_idx].second);
 	chan.set_mode("+nt");
 	g_vChannel.push_back(chan);
 	enter = true;
@@ -132,7 +132,7 @@ void	add_client_to_channel(const std::map<std::string, std::string>::iterator it
 {
 	int		i = find_channel(it->first);
 
-	g_vChannel[i]._users.push_back(g_aClient[client_idx].second);
+	g_vChannel[i]._users.push_back(&g_aClient[client_idx].second);
 	enter = true;
 }
 

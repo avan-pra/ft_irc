@@ -34,9 +34,9 @@ static int		check_channel_exists(const std::string str, const size_t &client_idx
 
 static void		check_usr_in_channel(const int channel_idx, const size_t &client_idx, const MyServ &serv)
 {
-	std::vector<Client> vect = g_vChannel[channel_idx]._users;
+	std::vector<Client*> vect = g_vChannel[channel_idx]._users;
 	for (size_t i = 0; i < vect.size(); i++)
-		if (g_aClient[client_idx].second .get_nickname() == vect[i].get_nickname())
+		if (g_aClient[client_idx].second .get_nickname() == vect[i]->get_nickname())
 			return ;
 	g_aClient[client_idx].second.send_reply(create_msg(441, client_idx, serv, g_vChannel[channel_idx].get_name(), g_aClient[client_idx].second.get_nickname()));
 }

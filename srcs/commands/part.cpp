@@ -26,7 +26,7 @@ static int		check_channel_exists(const std::string str, const size_t &client_idx
 static void		check_usr_in_channel(const int channel_idx, const size_t &client_idx, const MyServ &serv)
 {
 	for (size_t i = 0; i < g_vChannel[channel_idx]._users.size(); i++)
-		if (g_aClient[client_idx].second .get_nickname() == g_vChannel[channel_idx]._users[i].get_nickname())
+		if (g_aClient[client_idx].second.get_nickname() == g_vChannel[channel_idx]._users[i]->get_nickname())
 			return ;
 	g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, g_vChannel[channel_idx].get_name()));
 }
@@ -60,10 +60,10 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 			}	
 			chann_idx = check_channel_exists(channel_name, client_idx, serv);
 			check_usr_in_channel(chann_idx, client_idx, serv);
-			for (std::vector<Client>::iterator it = g_vChannel[chann_idx]._users.begin();
+			for (std::vector<Client*>::iterator it = g_vChannel[chann_idx]._users.begin();
 					it != g_vChannel[chann_idx]._users.end(); )
 			{
-				if (it->get_nickname() == g_aClient[client_idx].second.get_nickname())
+				if ((*it)->get_nickname() == g_aClient[client_idx].second.get_nickname())
 				{
 					send_to_channel(("PART " + g_vChannel[chann_idx].get_name() + " :" + output), client_idx, serv, chann_idx, true);
 					g_vChannel[chann_idx]._users.erase(it);
