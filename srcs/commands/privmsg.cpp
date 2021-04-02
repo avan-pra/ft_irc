@@ -95,7 +95,6 @@ void	privmsg_command(const std::string &line, const size_t &client_idx, const My
 	if (!check_params(params, client_idx, serv))
 		return ;
 	i = find_channel(params[1]);
-	std::cout << "coucou\n";
 	if (i != -1)
 		send_privmsg_to_channel(params, client_idx, serv, i);
 	else if ((i = find_user_by_nick(params[1])) != -1)
