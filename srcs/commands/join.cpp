@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/01 15:24:20 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/02 11:44:50 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,15 @@ int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const
 		}
 	}
 	if (!check_invite(i, client_idx, serv))
+	{
+		enter = true;
 		return (0);
+	}
 	if (!check_password(client_idx, serv, i, it->second))
+	{
+		enter = true;
 		return (0);
+	}
 	return (1);
 }
 
