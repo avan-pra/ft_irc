@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/02 14:12:36 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/02 16:47:37 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,57 @@ static void		check_usr_in_channel(const int channel_idx, const size_t &client_id
 	g_aClient[client_idx].second.send_reply(create_msg(441, client_idx, serv, g_vChannel[channel_idx].get_name(), g_aClient[client_idx].second.get_nickname()));
 }
 
-// static void		set_usr_mode(const std::string mode, const size_t &client_idx)
-// {
-// 	std::string curr_mode = g_aClient[client_idx].second.get_mode();
-	
-// 	if (mode[0] == '-')
-// 	{
-		
-// 		g_aClient[client_idx].second.set_mode(mode);
-// 	}
-// 	else
-// 	{
-// 		if (curr_mode.size() < 2)
-// 			g_aClient[client_idx].second.set_mode(mode);
-// 		else
-// 		{
-// 			mode.pop_front();
-// 			g_aClient[client_idx].second.set_mode(curr_mode.append(mode));
-// 		}
-// 	}
-// }
+static void		set_usr_mode(const std::string mode, const size_t &client_idx)
+{
+	bool		minus = false;
+	std::string	new_mode = g_aClient[client_idx].second.get_mode();
+
+	for (size_t i = 0; mode[i] != '\0'; i++)
+	{
+		if (mode[i] == '-')
+			minus = true;
+		else if (mode[i] == '+')
+			minus = false;
+		else
+		{
+			if (minus == true)
+			{
+				new_mode.erase(std::remove(new_mode.begin(), new_mode.end(), mode[i]), new_mode.end());
+			}
+			else
+			{
+				new_mode += mode[i];
+			}
+		}
+	}
+	g_aClient[client_idx].second.set_mode(new_mode);
+}
+
+static void		set_chann_mode(const std::string mode, const size_t &chann_idx)
+{
+	bool		minus = false;
+	std::string	new_mode = g_vChannel[chann_idx].get_mode();
+
+	for (size_t i = 0; i < mode.size(); i++)
+	{
+		if (mode[i] == '-')
+			minus = true;
+		else if (mode[i] == '+')
+			minus = false;
+		else
+		{
+			if (minus == true)
+			{
+				new_mode.erase(std::remove(new_mode.begin(), new_mode.end(), mode[i]), new_mode.end());
+			}
+			else
+			{
+				new_mode.append(std::to_string(mode[i]));
+			}
+		}
+	}
+	g_vChannel[chann_idx].set_mode(new_mode);
+}
 
 static void		check_usr_mode(const std::string mode, const size_t &client_idx, const MyServ &serv)
 {	
@@ -121,7 +152,8 @@ void			mode_command(const std::string &line, const size_t &client_idx, const MyS
 			{
 				mode = params[2];
 				check_chann_mode(mode, channel_idx, client_idx, serv);
-				g_aClient[client_idx].second.send_reply(create_msg(324, client_idx, serv, g_vChannel[channel_idx].get_name(), g_vChannel[channel_idx].get_mode()));
+				set_chann_mode(mode, client_idx);
+				send_to_channel("MODE " + g_vChannel[channel_idx].get_name() + " " + g_vChannel[channel_idx].get_mode(), client_idx, serv, channel_idx, true);
 			}
 		}
 		else
@@ -133,6 +165,7 @@ void			mode_command(const std::string &line, const size_t &client_idx, const MyS
 			{
 				mode = params[2];
 				check_usr_mode(mode, client_idx, serv);
+				set_usr_mode(mode, client_idx);
 				g_aClient[client_idx].second.send_reply(create_msg(221, client_idx, serv, g_aClient[client_idx].second.get_mode()));
 			}
 		}

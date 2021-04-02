@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/31 14:35:56 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/02 16:48:42 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void			check_2nd_arg(const std::string str, std::string &host_name, std::
 		if (str.find("."))
 		{
 			host_name = str;
-			mode = "0";
+			mode = "+";
 		}
 		else
 		{
@@ -51,7 +51,7 @@ static void			check_2nd_arg(const std::string str, std::string &host_name, std::
 	}
 	else
 	{
-		mode = str;
+		mode = "+";
 		host_name = "*";
 	}
 }
