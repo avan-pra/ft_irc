@@ -49,7 +49,7 @@ SRC_CMD = nick.cpp user.cpp time.cpp \
 		  pass.cpp join.cpp mode.cpp cap.cpp \
 		  ping.cpp pong.cpp quit.cpp names.cpp \
 		  list.cpp invite.cpp part.cpp server.cpp \
-		  privmsg.cpp \
+		  privmsg.cpp who.cpp\
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 
