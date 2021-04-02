@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:22:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/01 15:01:38 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/02 12:35:42 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	invite_command(const std::string &line, const size_t &client_idx, const MyS
 	if (!check_if_are_on(params, client_idx, serv, chan_id))
 		return ;
 	if (g_vChannel[chan_id].get_mode().find("i") != std::string::npos)
-		if (find_operator(chan_id, client_idx) != g_vChannel[chan_id]._operator.end())
+		if (find_operator(chan_id, client_idx) == g_vChannel[chan_id]._operator.end())
 		{
 			g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, params[2]));
 			return ;
@@ -83,7 +83,6 @@ void	invite_command(const std::string &line, const size_t &client_idx, const MyS
 	}
 	if (!exist)
 		g_vChannel[chan_id]._invite.push_back(&g_aClient[nick_id].second);
-	for (size_t i = 0; i < g_vChannel[chan_id]._invite.size(); i++)
-		std::cout << g_vChannel[chan_id]._invite[i]->get_nickname() << std::endl;
-	g_aClient[client_idx].second.send_reply(create_msg(341, client_idx, serv, params[2], g_aClient[client_idx].second.get_nickname()));
+	g_aClient[client_idx].second.send_reply(create_msg(341, client_idx, serv, " " + g_aClient[nick_id].second.get_nickname(), params[2]));
+	g_aClient[nick_id].second.send_reply(create_full_msg(params, client_idx));
 }
