@@ -21,3 +21,10 @@ void	who_command(const std::string &line, const size_t &client_idx, const MyServ
 	g_aClient[client_idx].second.send_reply(create_msg(315, client_idx, serv, arg[1]));
 	//352 RPL_WHOREPLY
 }
+/*
+WHO #bonjour
+
+:oragono.test 352 avan-pra #bonjour ~u rnkgc4kxqgj2n.irc oragono.test idk H@r :0 idk
+:oragono.test 352 avan-pra #bonjour ~u s23g99j2hmmg2.irc oragono.test avan-pra H :0 avan-pra
+:oragono.test 315 avan-pra #bonjour :End of WHO list
+*/
