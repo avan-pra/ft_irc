@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/02 16:47:37 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/03 12:10:34 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ static void		set_usr_mode(const std::string mode, const size_t &client_idx)
 			minus = true;
 		else if (mode[i] == '+')
 			minus = false;
+		else if ((mode[i] == 'o' || mode[i] == 'O') &&
+					g_aClient[client_idx].second.get_is_oper() == false)
+			;
 		else
 		{
 			if (minus == true)
