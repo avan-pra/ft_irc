@@ -12,6 +12,10 @@
 
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/commands.hpp"
+#include <string>
+#include <algorithm>
+#include <cstring>
+
 
 static void		check_nickname(const std::string str, const size_t &client_idx, const MyServ &serv)
 {
