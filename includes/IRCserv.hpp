@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/02 12:36:39 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/04 20:15:47 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ int		find_user_by_nick(const std::string &nickname);
 bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname);
 std::vector<Client*>::iterator	find_operator(const int &chan_id, const size_t &client_idx);
 bool	pattern_match(std::string str, std::string pattern);
+bool	is_chann_operator(const int &chan_id, const size_t &client_idx);
 
 std::string		create_full_msg(const std::vector<std::string> &params, const size_t &client_idx);
 
