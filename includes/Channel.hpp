@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/01 14:22:09 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/06 15:15:43 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,12 @@ class Channel
 
 		std::string		_name;
 		std::string		_topic;
-		std::string		_password;
 		std::string		_mode;
-
+		
+		//mode attributes
+		std::string		_password;
+		int				_limit;
+		
 	public:
 		std::vector<Client*>		_operator;
 		std::vector<Client*>		_users;
@@ -53,6 +56,7 @@ class Channel
 		std::string				get_name() const { return _name; }
 		std::string				get_topic() const { return _topic; }
 		std::string				get_mode() const { return _mode; }
+		int						get_limit() const { return _limit; }
 
 		/*
 		 ** setter
@@ -61,7 +65,7 @@ class Channel
 		void			set_password(std::string pass) { _password = pass; }
 		void			set_name(std::string name) { _name = name; }
 		void			set_mode(std::string mode) { _mode = mode; }
-
+		void			set_limit(int limit) { _limit = limit; }
 
 		Channel			&operator=(const Channel &other)
 		{
