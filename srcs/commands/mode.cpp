@@ -16,7 +16,6 @@
 #include <algorithm>
 #include <cstring>
 
-
 static void		check_nickname(const std::string str, const size_t &client_idx, const MyServ &serv)
 {
 	if (str != g_aClient[client_idx].second.get_nickname())

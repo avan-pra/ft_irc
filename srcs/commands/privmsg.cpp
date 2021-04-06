@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/02 13:53:36 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/06 16:55:28 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ std::string		create_full_msg(const std::vector<std::string> &params, const size_
 
 	full_msg += ":";
 	full_msg += g_aClient[client_idx].second.get_nickname();
+	full_msg += "!";
+	full_msg += g_aClient[client_idx].second.get_username();
+	full_msg += "@";
+	full_msg += g_aClient[client_idx].second.get_hostname();
 	full_msg += " ";
 	for (size_t i = 0; i < params.size(); i++)
 		full_msg += " " + params[i];
