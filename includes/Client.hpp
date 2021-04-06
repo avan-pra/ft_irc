@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/30 14:24:40 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/03 12:05:10 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ class Client : public Connection
 		std::string		_mode;
 		bool			_has_good_password;
 		bool			_has_try_password;
+		bool			_is_oper;
 		// bool			_is_cap;
 		//int			_status;
 
 		std::vector<Channel>	_channels;
 	public:
 
-		Client() :_has_good_password(false), _has_try_password(false)//, _is_cap(false)
+		Client() :_has_good_password(false), _has_try_password(false), _is_oper(false) //, _is_cap(false)
 		{
 		}
 
@@ -65,6 +66,7 @@ class Client : public Connection
 		bool					is_good_password() { return (_has_good_password); }
 		// bool					is_cap() { return (_is_cap); }
 		bool					get_pass_try() { return _has_try_password; }
+		bool					get_is_oper() { return _is_oper; }
 		std::vector<Channel>	get_channels() { return _channels; }
 
 		/*
@@ -78,6 +80,8 @@ class Client : public Connection
 		void			set_password_state(bool submit) { _has_good_password = submit; }
 		// void			set_cap(bool cap) { _is_cap = cap; }
 		void			set_pass_try(bool pass) { _has_try_password = pass; }
+		void			set_is_oper(bool oper) { _is_oper = oper; }
+		
 		/*
 		** Methods
 		*/
