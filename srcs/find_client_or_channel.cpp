@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:19:03 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/04 20:14:51 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/07 13:10:42 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,19 @@ int		find_user_by_nick(const std::string &nickname)
 			return (i);
 	}
 	return (-1);
+}
+
+std::vector<Client*>::iterator		find_user_in_channel(const std::string &chan_name,
+													const std::string &nickname)
+{
+	int		chan_id = find_channel(chan_name);
+
+	for (std::vector<Client *>::iterator i = g_vChannel[chan_id]._users.begin(); i != g_vChannel[chan_id]._users.end(); i++)
+	{
+		if ((*i)->get_nickname() == nickname)
+			return (i);
+	}
+	return (g_vChannel[chan_id]._users.end());
 }
 
 bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname)

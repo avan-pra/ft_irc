@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/06 15:15:43 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/06 18:55:16 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,14 @@ class Channel
 		Client			&operator[](int idx)
 		{
 			return (*_users[idx]);
+		}
+
+		bool			is_operator(Client cli)
+		{
+			for (size_t i = 0; i < _operator.size(); i++)
+				if (*_operator[i] == cli)
+					return (true);
+			return (false);
 		}
 };
 
