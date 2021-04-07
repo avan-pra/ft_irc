@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/03/20 11:41:18 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/07 17:02:39 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ enum confID
 	eHOSTNAME,
 	ePORT,
 	eLISTEN_LIMIT,
-	eSERVER_PASSWORD_HASH,
+	eSERVER_PASS_HASH,
+	eOPER_PASS_HASH,
 	eERROR,
 };
 
@@ -27,8 +28,34 @@ confID	hashit_s(const std::string &s)
 	if (s == "HOSTNAME")			return	eHOSTNAME;
 	else if (s == "PORT")			return	ePORT;
 	else if (s == "LISTEN_LIMIT")	return	eLISTEN_LIMIT;
-	else if (s == "SERVER_PASSWORD_HASH") return eSERVER_PASSWORD_HASH;
+	else if (s == "SERVER_PASS_HASH") return eSERVER_PASS_HASH;
+	else if (s == "OPER_PASS_HASH")	return eOPER_PASS_HASH;
 	return	eERROR;
+}
+
+static int		setup_hash_pass(const std::string s, unsigned char *target)
+{
+	std::string password = s.substr(s.find("=") + 1);
+	if (password.empty())
+		return (0);
+	if (password.size() != 64)
+		return (1);
+	for (char i = 0; i < 64; ++i)
+	{
+		if (!std::strchr(HASH_CHAR, password[i]))
+			return (1);
+	}
+	//set up hash in a byte like array
+	int i = 0;
+	int j = 0;
+	while (i < 32)
+	{
+		target[i] = char2hex(password[j]) * 16 + char2hex(password[j + 1]);
+		++i;
+		j += 2;
+	}
+	target[i] = '\0';
+	return	(2);
 }
 
 int		checkline(std::string s, MyServ &serv)
@@ -59,36 +86,36 @@ int		checkline(std::string s, MyServ &serv)
 			serv.set_listen_limit(listen_limit);
 			return	(0);
 		}
-		case eSERVER_PASSWORD_HASH:
+		case eSERVER_PASS_HASH:
 		{
-			std::string password = s.substr(s.find("=") + 1);
-			if (password.empty())
+			unsigned char	target[32];
+			int				check = setup_hash_pass(s, target);
+			
+			if (check == 0)
 				return (0);
-			if (password.size() != 64)
+			if (check == 1)
 			{
-				std::cout << "Password must be a sha256 hash" << std::endl; return (1);
+				std::cout << "Server Password must be a sha256 hash" << std::endl;
+				return (1);
 			}
-			for (char i = 0; i < 64; ++i)
-			{
-				if (!std::strchr(HASH_CHAR, password[i]))
-				{
-					std::cout << "Password must be a sha256 hash" << std::endl; return (1);
-				}
-			}
-			//set up hash in a byte like array
-			{
-				unsigned char target[32];
-				int i = 0;
-				int j = 0;
-				while (i < 32)
-				{
-					target[i] = char2hex(password[j]) * 16 + char2hex(password[j + 1]);
-					++i;
-					j += 2;
-				}
-				serv.set_password(target);
-			}
+			serv.set_password(target);
 			serv.set_need_pass(true);
+			return (0);
+		}
+		case eOPER_PASS_HASH:
+		{
+			unsigned char	target[32];
+			int				check = setup_hash_pass(s, target);
+		
+			if (check == 0)
+				return (0);
+			if (check == 1)
+			{
+				std::cout << "Oper Password must be a sha256 hash" << std::endl;
+				return (1);
+			}
+			serv.set_oper_password(target);
+			serv.set_pass_oper(true);	
 			return (0);
 		}
 		case eERROR:

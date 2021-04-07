@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 10:47:16 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/02 14:09:08 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/07 17:39:07 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,15 @@ void		oper_command(const std::string &line, const size_t &client_idx, const MySe
 	std::vector<std::string>	params;
 	std::string					name;
 
+	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
 		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "OPER"));
+		return ;
+	}
+	if (serv.get_pass_oper() == false)
+	{
+		g_aClient[client_idx].second.send_reply(create_msg(491, client_idx, serv));
 		return ;
 	}
 }
