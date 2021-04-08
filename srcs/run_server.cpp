@@ -10,7 +10,13 @@ static void re_init_serv_class(MyServ &serv)
 	FD_ZERO(&serv.get_writefs());
 	FD_ZERO(&serv.get_exceptfs());
 	{
-		serv.set_max_fd(g_aClient.empty() ? 0 : g_aClient[0].first);
+		int max = 0;
+		for (size_t i = 0; i < g_aClient.size(); ++i)
+		{
+			if (g_aClient[i].first > max)
+				max = g_aClient[i].first;
+		}
+		serv.set_max_fd(max);
 		if (serv.get_max_fd() < g_serv_sock)
 			serv.set_max_fd(g_serv_sock);
 	}

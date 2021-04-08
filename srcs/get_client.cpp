@@ -38,7 +38,7 @@ void accept_user(MyServ &serv)
 	//send motd a l'arrivee du client sur le server
 	// motd_command("", g_aClient.size() - 1, serv);
 	//sort en ordre decroissant en fonction de la key(ou first)
-	std::sort(g_aClient.begin(), g_aClient.end(), sort_dec);
+	// std::sort(g_aClient.begin(), g_aClient.end(), sort_dec);
 }
 
 void try_accept_user(MyServ *serv)
