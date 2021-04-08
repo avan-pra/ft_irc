@@ -196,6 +196,10 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 				names_command("names " + it->first, client_idx, serv);
 			}
 		}
+		// for (size_t i = 0; i < g_vChannel[find_channel(it->first)]._users.size(); ++i)
+		// 	std::cout << g_vChannel[find_channel(it->first)]._users[i]->get_nickname() << ":" << g_vChannel[find_channel(it->first)]._users[i] << std::endl;
+		// for (size_t i = 0; i < g_aClient.size(); ++i)
+		// 	std::cout << g_aClient[i].second.get_nickname() << ":" << &(g_aClient[i].second) << std::endl;
 	}
 	if (enter == false)
 		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, chan_name[0]));
