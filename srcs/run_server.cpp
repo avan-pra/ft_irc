@@ -22,7 +22,7 @@ static void push_fd_to_set(MyServ &serv)
 	//push to server to read set
 	FD_SET(g_serv_sock, &serv.get_readfs());
 	//push all client fd to all 3 set
-	for (std::vector<std::pair<SOCKET, Client> >::iterator ite = g_aClient.begin(); ite != g_aClient.end(); ++ite)
+	for (std::deque<std::pair<SOCKET, Client> >::iterator ite = g_aClient.begin(); ite != g_aClient.end(); ++ite)
 	{
 		FD_SET(ite->first, &serv.get_readfs());
 		// FD_SET(*ite, &serv.get_writefs());

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/07 13:13:12 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/08 16:14:40 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # include <fcntl.h>
 # include <iostream>
 # include <vector>
+# include <deque>
 # include <utility>
 # include <functional>
 # include <fstream>
@@ -54,7 +55,7 @@ typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 
 extern SOCKET									g_serv_sock;
-extern std::vector<std::pair<SOCKET, Client> >	g_aClient;
+extern std::deque<std::pair<SOCKET, Client> >	g_aClient;
 extern std::vector<Channel>						g_vChannel;
 extern std::vector<std::pair<SOCKET, Server> >	g_aServer;
 
