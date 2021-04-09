@@ -45,6 +45,7 @@ class MyServ
 		unsigned char	_password[32];
 		unsigned char	_oper_password[32];
 		bool			_pass_for_connection;
+		bool			_pass_oper;
 
 	public:
 
@@ -56,6 +57,7 @@ class MyServ
 			bzero(_password, 32);
 			_pass_for_connection = false;
 			bzero(_oper_password, 32);
+			_pass_oper = false;
 		}
 
 		~MyServ()
@@ -81,6 +83,7 @@ class MyServ
 		std::vector<Channel>	get_vChannel() const { return _vChannel; }
         const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	&get_command() const { return _command; }
 		bool	get_need_pass() const { return _pass_for_connection; }
+		bool	get_pass_oper() const { return _pass_oper; }
 		
 		/*
 		 ** setter
@@ -97,6 +100,7 @@ class MyServ
 			_timeout.tv_usec = usec;
 		}
 		void	set_need_pass(bool need) { _pass_for_connection = need; }
+		void	set_pass_oper(bool need) { _pass_oper = need; }
 		void	add_channel(Channel channel)
 		{
 			_vChannel.push_back(channel);

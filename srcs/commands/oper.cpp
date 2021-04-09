@@ -24,7 +24,7 @@ void		oper_command(const std::string &line, const size_t &client_idx, const MySe
 		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "OPER"));
 		return ;
 	}
-	if (/*serv.get_pass_oper() == */false)
+	if (serv.get_pass_oper() == false)
 	{
 		g_aClient[client_idx].second.send_reply(create_msg(491, client_idx, serv));
 		return ;

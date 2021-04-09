@@ -115,6 +115,7 @@ int		checkline(std::string s, MyServ &serv)
 				return (1);
 			}
 			serv.set_oper_password(target);
+			serv.set_pass_oper(true);	
 			return (0);
 		}
 		case eERROR:
