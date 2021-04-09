@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:19:03 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/09 18:24:45 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/09 19:49:20 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ bool	is_chann_operator(const int &chan_id, const size_t &client_idx)
 {
 	for (size_t i = 0; i != g_vChannel[chan_id]._operator.size(); i++)
 	{
-		std::cout << g_vChannel[chan_id]._operator[i]->get_nickname() << std::endl;
 		if (g_vChannel[chan_id]._operator[i]->get_nickname() == g_aClient[client_idx].second.get_nickname())
 			return (true);
 	}

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/09 18:42:39 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/09 19:49:46 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ class Channel
 				if ((*it)->get_username() == usr_nickname)
 				{
 					_operator.erase(it);
-					std::cout << "Removed oper " << usr_nickname << std::endl;
 					return ;
 				}
 				else
