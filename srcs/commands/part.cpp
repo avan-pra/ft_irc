@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:11:18 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/01 17:13:45 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/09 15:14:14 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 					++it;	
 			}
 		}
-		// for (auto it = g_vChannel.begin(); it < g_vChannel.end(); ++it)
-		// 	std::cout << it->get_name() << std::endl;
 	}
 	catch(const std::exception& e) { return ; }	
 }

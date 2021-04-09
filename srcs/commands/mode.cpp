@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/07 14:25:45 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/09 16:27:04 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ static void		set_usr_mode(const std::string mode, const size_t &client_idx)
 	g_aClient[client_idx].second.set_mode(new_mode);
 }
 
-static bool		switch_mode(const char c, const std::string arg, const size_t &chann_idx, bool minus, int *j)
+static bool		switch_mode(const char c, const std::string arg, const size_t &chann_idx, const size_t &client_idx, bool minus, 
+							const std::string name)
 {
 	bool ret = false;
 	
@@ -70,6 +71,15 @@ static bool		switch_mode(const char c, const std::string arg, const size_t &chan
 		{
 			minus == false ? g_vChannel[chann_idx].set_limit(ft_atoi(arg)) : g_vChannel[chann_idx].set_limit(-1);
 			ret = true;
+			break;
+		}
+		case 'o':
+		{
+			minus == false ? g_vChannel[chann_idx]._users.push_back(&g_aClient[client_idx].second) : g_vChannel[chann_idx].remove_user_operator(client_idx , arg);
+			ret = true;
+			if (minus == true)
+				g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
+					+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " MODE " + name + " -o " + arg + "\r\n");
 			break;
 		}
 		default:
@@ -91,7 +101,7 @@ static void		set_chann_mode(const std::string mode, const std::vector<std::strin
 			minus = true;
 		else if (mode[i] == '+')
 			minus = false;
-		else if ((std::strchr(CHANNEL_VALID_MODE, mode[i])) && (is_chann_operator(chann_idx, client_idx) == true))
+		else if ((std::strchr(CHANNEL_VALID_MODE, mode[i])) && (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == true))
 		{
 			if (minus == true)
 			{
@@ -99,10 +109,10 @@ static void		set_chann_mode(const std::string mode, const std::vector<std::strin
 			}
 			else
 			{
-				if (!(std::strchr(new_mode.c_str(), mode[i])))
+				if (!(std::strchr(new_mode.c_str(), mode[i])) && mode[i] != 'o')
 					new_mode += mode[i];
 			}
-			if (switch_mode(mode[i], args[j], chann_idx, minus, &j) == true)
+			if (switch_mode(mode[i], args[j], chann_idx, client_idx, minus, args[1]) == true)
 				j++;
 		}
 		else
@@ -114,36 +124,17 @@ static void		set_chann_mode(const std::string mode, const std::vector<std::strin
 	g_vChannel[chann_idx].set_mode(new_mode);
 }
 
-static void		check_usr_mode(const std::string mode, const size_t &client_idx, const MyServ &serv)
+static void		check_mode(const std::string mode, const size_t &client_idx, const MyServ &serv)
 {	
 	//CHECK IF MODE IS VALID
-	if (!(mode[0] == '+' || mode[0] == '-'))
-	{
-		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv));
-		throw std::exception();
-	}
 	for (size_t i = 1; i < mode.size(); i++)
-		if (!std::strchr(USER_VALID_MODE, mode[i]))
+	{
+		if ((!std::strchr(USER_VALID_MODE, mode[i])) && (!std::strchr(CHANNEL_VALID_MODE, mode[i])) && (mode[i] != '+') && (mode[i] != '-'))
 		{
 			g_aClient[client_idx].second.send_reply(create_msg(501, client_idx, serv));
 			throw std::exception();
-		}	
-}
-
-static void		check_chann_mode(const std::string mode, const int channel_idx, const int &client_idx, const MyServ &serv)
-{
-	//CHECK IF MODE IS VALID
-	if (!(mode[0] == '+' || mode[0] == '-'))
-	{
-		g_aClient[client_idx].second.send_reply(create_msg(501, client_idx, serv));
-		throw std::exception();
-	}
-	for (size_t i = 1; i < mode.size(); i++)
-		if (!std::strchr(CHANNEL_VALID_MODE, mode[i]))
-		{
-			g_aClient[client_idx].second.send_reply(create_msg(501, client_idx,serv));
-			throw std::exception();
 		}
+	}
 }
 
 static std::string	set_output_mode(const size_t &chann_idx)
@@ -159,6 +150,20 @@ static std::string	set_output_mode(const size_t &chann_idx)
 			output += " " + std::to_string(g_vChannel[chann_idx].get_limit());
 	}
 	return	output;
+}
+
+static void			check_channel_errors(const size_t &client_idx, size_t &channel_idx, const std::string str, const MyServ &serv)
+{
+	if ((channel_idx = find_channel(str)) == -1)
+	{
+		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, str));
+		throw std::exception();
+	}
+	if (is_user_in_chan(channel_idx, g_aClient[client_idx].second.get_nickname()) == false)
+	{
+		g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, str));
+		throw std::exception();
+	}
 }
 
 void			mode_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
@@ -177,24 +182,15 @@ void			mode_command(const std::string &line, const size_t &client_idx, const MyS
 		str = params[1];
 		if (std::strchr(CHANNEL_VALID_CHAR, str[0]))
 		{
-			int	channel_idx = 0;
-
-			if ((channel_idx = find_channel(str)) == -1)
-			{
-				g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, str));
-				throw std::exception();
-			}
-			if (is_user_in_chan(channel_idx, g_aClient[client_idx].second.get_nickname()) == false)
-			{
-				g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, str));
-				throw std::exception();
-			}
+			size_t	channel_idx = 0;
+			
+			check_channel_errors(client_idx, channel_idx, str, serv);
 			if (params.size() == 2)
 				g_aClient[client_idx].second.send_reply(create_msg(324, client_idx, serv, g_vChannel[channel_idx].get_name(), set_output_mode(channel_idx), ""));
 			else
 			{
 				mode = params[2];
-				check_chann_mode(mode, channel_idx, client_idx, serv);
+				check_mode(mode, client_idx, serv);
 				set_chann_mode(mode, params, channel_idx, client_idx, serv);
 				send_to_channel("MODE " + g_vChannel[channel_idx].get_name() + " " + set_output_mode(channel_idx), client_idx, serv, channel_idx, true);
 			}
@@ -207,7 +203,7 @@ void			mode_command(const std::string &line, const size_t &client_idx, const MyS
 			else
 			{
 				mode = params[2];
-				check_usr_mode(mode, client_idx, serv);
+				check_mode(mode, client_idx, serv);
 				set_usr_mode(mode, client_idx);
 				g_aClient[client_idx].second.send_reply(create_msg(221, client_idx, serv, g_aClient[client_idx].second.get_mode()));
 			}
