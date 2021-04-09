@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/09 16:28:17 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/09 18:42:39 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ class Channel
 		void			set_limit(int limit) { _limit = limit; }
 		void			set_topic(std::string topic) { _topic = topic; }
 
-		void			remove_user_operator(const size_t &client_idx, const std::string usr_nickname)
+		void			remove_user_operator(const std::string usr_nickname)
 		{
 			for (std::vector<Client*>::iterator it = _operator.begin();
 					it != _operator.end(); )
 			{
 				if ((*it)->get_username() == usr_nickname)
 				{
-					_users.erase(it);
+					_operator.erase(it);
 					std::cout << "Removed oper " << usr_nickname << std::endl;
 					return ;
 				}

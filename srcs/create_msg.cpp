@@ -87,6 +87,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + ERR_NEEDMOREPARAMS(arg1);
 		case 462:
 			return sample + ERR_ALREADYREGISTRED();
+		case 472:
+			return sample + ERR_UNKNOWNMODE(arg1);
 		case 473:
 			return sample + ERR_INVITEONLYCHAN(arg1);
 		case 475:

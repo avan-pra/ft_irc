@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:19:03 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/09 10:26:18 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/09 18:24:45 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,12 @@ bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname)
 
 bool	is_chann_operator(const int &chan_id, const size_t &client_idx)
 {
-	for (std::vector<Client*>::iterator it = g_vChannel[chan_id]._operator.begin();
-	it != g_vChannel[chan_id]._operator.end(); it++)
-		if (**it == g_aClient[client_idx].second)
+	for (size_t i = 0; i != g_vChannel[chan_id]._operator.size(); i++)
+	{
+		std::cout << g_vChannel[chan_id]._operator[i]->get_nickname() << std::endl;
+		if (g_vChannel[chan_id]._operator[i]->get_nickname() == g_aClient[client_idx].second.get_nickname())
 			return (true);
+	}
 	return (false);
 }
 
