@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/06 18:55:16 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/09 12:29:58 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ class Channel
 		void			set_name(std::string name) { _name = name; }
 		void			set_mode(std::string mode) { _mode = mode; }
 		void			set_limit(int limit) { _limit = limit; }
+		void			set_topic(std::string topic) { _topic = topic; }
 
 		Channel			&operator=(const Channel &other)
 		{
@@ -86,6 +87,19 @@ class Channel
 				if (*_operator[i] == cli)
 					return (true);
 			return (false);
+		}
+
+		bool			is_mode_t()
+		{
+			if (_mode.find("t") != std::string::npos)
+				return true;
+			return false;
+		}
+
+		void			send_to_all(std::string msg)
+		{
+			for (size_t i = 0; i < _users.size(); i++)
+				_users[i]->send_reply(msg);
 		}
 };
 

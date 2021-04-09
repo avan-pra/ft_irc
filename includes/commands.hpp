@@ -174,5 +174,6 @@ void	privmsg_command(const std::string &line, const size_t &client_idx, const My
 void	who_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	oper_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	kick_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	topic_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 
 #endif

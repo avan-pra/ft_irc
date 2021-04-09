@@ -6,15 +6,13 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 18:16:34 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/09 11:23:24 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/09 12:29:05 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
-
-std::string		create_full_msg(const std::vector<std::string> &params, const size_t &client_idx);
 
 void	delete_of_all_data(const std::string &chan_name, const std::string &kick_name, const size_t &chan_id, const size_t &kick_id)
 {
