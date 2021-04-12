@@ -109,3 +109,17 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return std::string("");
 	}
 }
+
+std::string		create_full_msg(const std::vector<std::string> &params, const size_t &client_idx)
+{
+	std::string		full_msg("");
+
+	full_msg += ":" + g_aClient[client_idx].second.get_nickname();
+	full_msg += "!" + g_aClient[client_idx].second.get_username();
+	full_msg += "@" + g_aClient[client_idx].second.get_hostname();
+	full_msg += " ";
+	for (size_t i = 0; i < params.size(); i++)
+		full_msg += " " + params[i];
+	full_msg += "\r\n";
+	return (full_msg);
+}
