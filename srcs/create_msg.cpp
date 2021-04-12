@@ -40,7 +40,7 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 		case 341:
 			return sample + RPL_INVITING(arg1, arg2);
 		case 352:
-			return sample; //a faire wsh
+			return sample + RPL_WHOREPLY(arg1);
 		case 353:
 			return sample + RPL_NAMREPLY(arg1, arg2);
 		case 366:
