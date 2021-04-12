@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/12 16:23:12 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/12 17:49:52 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,11 @@ static bool		switch_mode(const char c, const std::string arg, const size_t &chan
 					+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " MODE " + chan_name + " +o " + arg + "\r\n");
 			}
 			ret = true;
+			break;
+		}
+		//add case b
+		case 'b':
+		{
 			break;
 		}
 		default:
