@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/09 19:49:03 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/12 15:53:48 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,9 +163,10 @@ static void		set_chann_mode(const std::string mode, const std::vector<std::strin
 	g_vChannel[chann_idx].set_mode(new_mode);
 	if (mode != "-o" && mode != "+o")
 	{
-		send_to_channel("MODE " + g_vChannel[chann_idx].get_name() + " " + set_output_mode(chann_idx), client_idx, serv, chann_idx, false);
-		g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
-			+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " MODE " + g_vChannel[chann_idx].get_name() + " " + set_output_mode(chann_idx) + "\r\n");
+		std::string		msg1 = "MODE " + g_vChannel[chann_idx].get_name() + " " + set_output_mode(chann_idx);
+		std::string		full_msg = 	":" + g_aClient[client_idx].second.get_nickname() + "!"
+		+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " " + msg1 + "\r\n";
+		g_vChannel[chann_idx].send_to_all(full_msg);
 	}
 }
 

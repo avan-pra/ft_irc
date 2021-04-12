@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/12 11:48:09 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/12 12:47:02 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,11 @@ int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const
 	if (!check_password(client_idx, serv, i, it->second))
 	{
 		enter = true;
+		return (0);
+	}
+	if (g_vChannel[i].is_mode('b') && g_vChannel[i].is_ban(g_aClient[client_idx].second))
+	{
+		g_aClient[client_idx].second.send_reply(create_msg(474, client_idx, serv, " " + it->first));
 		return (0);
 	}
 	return (1);

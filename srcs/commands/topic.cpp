@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 11:34:56 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/09 13:11:22 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/12 12:48:41 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	change_topic(std::vector<std::string> params, const size_t &client_idx, con
 	topic = topic.erase(0, 1);
 	if (!check_params(params, client_idx, serv))
 		return ;
-	if (g_vChannel[chan_id].is_mode_t() && !is_chann_operator(chan_id, client_idx))
+	if (g_vChannel[chan_id].is_mode('t') && !is_chann_operator(chan_id, client_idx))
 	{
 		g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + params[1]));
 		return ;
