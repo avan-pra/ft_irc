@@ -40,7 +40,7 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 		case 341:
 			return sample + RPL_INVITING(arg1, arg2);
 		case 352:
-			return sample; //a faire wsh
+			return sample + RPL_WHOREPLY(arg1);
 		case 353:
 			return sample + RPL_NAMREPLY(arg1, arg2);
 		case 366:
@@ -89,10 +89,14 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + ERR_NEEDMOREPARAMS(arg1);
 		case 462:
 			return sample + ERR_ALREADYREGISTRED();
+		case 471:
+			return sample + ERR_CHANNELISFULL(arg1);
 		case 472:
 			return sample + ERR_UNKNOWNMODE(arg1);
 		case 473:
 			return sample + ERR_INVITEONLYCHAN(arg1);
+		case 474:
+			return sample + ERR_BANNEDFROMCHAN(arg1);
 		case 475:
 			return sample + ERR_BADCHANNELKEY(arg1);
 		case 476:

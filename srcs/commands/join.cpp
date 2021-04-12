@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/12 12:47:02 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/12 16:32:34 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,14 @@ int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const
 	}
 	if (g_vChannel[i].is_mode('b') && g_vChannel[i].is_ban(g_aClient[client_idx].second))
 	{
+		enter = true;
 		g_aClient[client_idx].second.send_reply(create_msg(474, client_idx, serv, " " + it->first));
+		return (0);
+	}
+	if (g_vChannel[i].is_mode('l') && g_vChannel[i]._users.size() == g_vChannel[i].get_limit())
+	{
+		enter = true;
+		g_aClient[client_idx].second.send_reply(create_msg(471, client_idx, serv, " " + it->first));
 		return (0);
 	}
 	return (1);
