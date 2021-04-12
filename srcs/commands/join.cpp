@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/02 11:44:50 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/12 11:48:09 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const
 
 void	create_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter)
 {
-	Channel		chan(it->first, it->second);
+	Channel		chan(it->first);
 
 	chan._users.push_back(&g_aClient[client_idx].second);
 	chan._operator.push_back(&g_aClient[client_idx].second);

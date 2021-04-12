@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/09 19:49:46 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/12 11:46:52 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,14 @@ class Channel
 		std::vector<Client*>		_operator;
 		std::vector<Client*>		_users;
 		std::vector<Client*>		_invite;
+		std::vector<Client*>		_ban;
+		std::vector<Client*>		_voice;
 
 		Channel() {}
 
-		Channel(std::string name, std::string pass)
+		Channel(std::string name)
 		{
 			_name = name;
-			_password = pass;
 			_topic = "";
 		}
 
@@ -106,9 +107,52 @@ class Channel
 
 		bool			is_mode_t()
 		{
-			if (_mode.find("t") != std::string::npos)
-				return true;
-			return false;
+			return (_mode.find("t") != std::string::npos ? true : false);
+		}
+
+		bool			is_mode_v()
+		{
+			return (_mode.find("v") != std::string::npos ? true : false);
+		}
+
+		bool			is_mode_b()
+		{
+			return (_mode.find("b") != std::string::npos ? true : false);
+		}
+
+		bool			is_mode_i()
+		{
+			return (_mode.find("i") != std::string::npos ? true : false);
+		}
+
+		bool			is_mode_m()
+		{
+			return (_mode.find("m") != std::string::npos ? true : false);
+		}
+
+		bool			is_mode_s()
+		{
+			return (_mode.find("s") != std::string::npos ? true : false);
+		}
+
+		bool			is_mode_p()
+		{
+			return (_mode.find("p") != std::string::npos ? true : false);
+		}
+
+		bool			is_mode_n()
+		{
+			return (_mode.find("n") != std::string::npos ? true : false);
+		}
+
+		bool			is_mode_l()
+		{
+			return (_mode.find("l") != std::string::npos ? true : false);
+		}
+
+		bool			is_mode_k()
+		{
+			return (_mode.find("k") != std::string::npos ? true : false);
 		}
 
 		void			send_to_all(std::string msg)
