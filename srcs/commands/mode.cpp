@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/12 16:13:53 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/12 16:23:12 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ static void		set_usr_mode(const std::string mode, const size_t &client_idx, cons
 
 static std::string	set_output_mode(const size_t &chann_idx)
 {
-	std::string output = g_vChannel[chann_idx].get_mode();
-	std::string tmp = output;
-				
-	for (int i = 0; i < tmp.size(); i++)
+	std::string		output = g_vChannel[chann_idx].get_mode();
+	std::string		tmp = output;
+
+	for (size_t i = 0; i < tmp.size(); i++)
 	{
 		if (tmp[i] == 'k')
 			output += " " + g_vChannel[chann_idx].get_password();
@@ -85,8 +85,8 @@ static std::string	set_output_mode(const size_t &chann_idx)
 static bool		switch_mode(const char c, const std::string arg, const size_t &chann_idx, const size_t &client_idx, bool minus, 
 							const std::string chan_name, const MyServ &serv)
 {
-	bool ret = false;
-	
+	bool	ret = false;
+
 	switch (c)
 	{
 		case 'k':
@@ -169,12 +169,7 @@ static void		set_chann_mode(const std::string mode, const std::vector<std::strin
 	}
 	g_vChannel[chann_idx].set_mode(new_mode);
 	if (mode != "-o" && mode != "+o")
-	{
-		std::string		msg1 = "MODE " + g_vChannel[chann_idx].get_name() + " " + set_output_mode(chann_idx);
-		std::string		full_msg = 	":" + g_aClient[client_idx].second.get_nickname() + "!"
-		+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " " + msg1 + "\r\n";
-		g_vChannel[chann_idx].send_to_all(full_msg);
-	}
+		g_vChannel[chann_idx].send_to_all(create_full_msg(args, client_idx));
 }
 
 static void			check_channel_errors(const size_t &client_idx, size_t &channel_idx, const std::string str, const MyServ &serv)

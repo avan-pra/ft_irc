@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/12 12:32:51 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/12 16:24:17 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,23 +67,6 @@ int		check_params(const std::vector<std::string> &params, const size_t &client_i
 			return (0);
 		}
 	return (1);
-}
-
-std::string		create_full_msg(const std::vector<std::string> &params, const size_t &client_idx)
-{
-	std::string		full_msg("");
-
-	full_msg += ":";
-	full_msg += g_aClient[client_idx].second.get_nickname();
-	full_msg += "!";
-	full_msg += g_aClient[client_idx].second.get_username();
-	full_msg += "@";
-	full_msg += g_aClient[client_idx].second.get_hostname();
-	full_msg += " ";
-	for (size_t i = 0; i < params.size(); i++)
-		full_msg += " " + params[i];
-	full_msg += "\r\n";
-	return (full_msg);
 }
 
 void	send_privmsg_to_channel(const std::vector<std::string> params, const size_t &client_idx, const int &chan_id)

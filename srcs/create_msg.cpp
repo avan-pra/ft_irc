@@ -89,10 +89,14 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + ERR_NEEDMOREPARAMS(arg1);
 		case 462:
 			return sample + ERR_ALREADYREGISTRED();
+		case 471:
+			return sample + ERR_CHANNELISFULL(arg1);
 		case 472:
 			return sample + ERR_UNKNOWNMODE(arg1);
 		case 473:
 			return sample + ERR_INVITEONLYCHAN(arg1);
+		case 474:
+			return sample + ERR_BANNEDFROMCHAN(arg1);
 		case 475:
 			return sample + ERR_BADCHANNELKEY(arg1);
 		case 476:
@@ -108,4 +112,18 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 		default:
 			return std::string("");
 	}
+}
+
+std::string		create_full_msg(const std::vector<std::string> &params, const size_t &client_idx)
+{
+	std::string		full_msg("");
+
+	full_msg += ":" + g_aClient[client_idx].second.get_nickname();
+	full_msg += "!" + g_aClient[client_idx].second.get_username();
+	full_msg += "@" + g_aClient[client_idx].second.get_hostname();
+	full_msg += " ";
+	for (size_t i = 0; i < params.size(); i++)
+		full_msg += " " + params[i];
+	full_msg += "\r\n";
+	return (full_msg);
 }
