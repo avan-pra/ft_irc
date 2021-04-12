@@ -95,7 +95,7 @@
 # define RPL_MOTDSTART(server) (" :- " + server + " Message of the day - \r\n")
 # define RPL_MOTD(comment) (" :- " + comment + "\r\n")
 # define RPL_ENDOFMOTD() (" :End of /MOTD command\r\n")
-# define RPL_YOUREOPER() (":You are now an IRC operator\r\n")
+# define RPL_YOUREOPER() (" :You are now an IRC operator\r\n")
 # define RPL_REHASHING(config_file) (config_file + " :Rehashing\r\n")
 # define RPL_TIME(server, time_serveur) (server + " :" + time_serveur + "\r\n")
 # define RPL_USERSSTART() (":UserID Terminal Hôte\r\n")
