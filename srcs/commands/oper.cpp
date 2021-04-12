@@ -6,12 +6,14 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 10:47:16 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/09 12:51:07 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/12 15:42:18 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/commands.hpp"
 #include "../../includes/IRCserv.hpp"
+#include <cstring>
+#include <openssl/sha.h>
 
 void		oper_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
@@ -29,8 +31,25 @@ void		oper_command(const std::string &line, const size_t &client_idx, const MySe
 		g_aClient[client_idx].second.send_reply(create_msg(491, client_idx, serv));
 		return ;
 	}
-	if (params[1] != g_aClient[client_idx].second.get_username())
+	if (params[1] != "admin")
 	{
-		
+		return ;
+	}
+	const char *s = params[2].c_str();
+	unsigned char *d = SHA256(reinterpret_cast<unsigned char*> (const_cast<char*> (s)), strlen(s), 0);
+
+	if (memcmp(d, serv.get_oper_password(), 32) == 0)
+	{
+		g_aClient[client_idx].second.set_is_oper(true);
+		//mssg
+		g_aClient[client_idx].second.send_reply(create_msg(381, client_idx, serv));
+		//mode +o
+		mode_command("MODE " + g_aClient[client_idx].second.get_nickname() + " +o", client_idx, serv);
+	}
+	else
+	{
+		g_aClient[client_idx].second.set_is_oper(true);
+		g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
+			+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " QUIT :Password incorrect ERROR: Password incorrect" + "\r\n");
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/09 19:49:03 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/12 15:55:29 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,19 @@ static void		set_usr_mode(const std::string mode, const size_t &client_idx, cons
 			minus = true;
 		else if (mode[i] == '+')
 			minus = false;
-		else if ((mode[i] == 'o' || mode[i] == 'O') &&
-					g_aClient[client_idx].second.get_is_oper() == false)
-			;
+		else if ((mode[i] == 'o' || mode[i] == 'O'))
+		{
+			if (minus ==  false && g_aClient[client_idx].second.get_is_oper() == true)
+				new_mode += mode[i];
+			else
+			{
+				new_mode.erase(std::remove(new_mode.begin(), new_mode.end(), mode[i]), new_mode.end());
+				g_aClient[client_idx].second.set_is_oper(false);
+			}
+		}
 		else
 		{
+			std::cout << "It is bad " << std::endl;
 			if (!(strchr(USER_VALID_MODE, mode[i])))
 			{
 				std::string str = " ";

@@ -55,6 +55,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + RPL_MOTDSTART(arg1);
 		case 376:
 			return sample + RPL_ENDOFMOTD();
+		case 381:
+			return sample + RPL_YOUREOPER();
 		case 401:
 			return sample + ERR_NOSUCHNICK(arg1);
 		case 403:
