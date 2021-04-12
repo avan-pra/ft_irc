@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:19:03 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/09 19:49:20 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/12 15:03:46 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@ int		find_channel(const std::string &name)
 {
 	for (size_t i = 0; i < g_vChannel.size(); i++)
 		if (name == g_vChannel[i].get_name())
+			return (i);
+	return (-1);
+}
+
+int		find_channel_with_pattern(std::string &pattern)
+{
+	for (size_t i = 0; i < g_vChannel.size(); i++)
+		if (pattern_match(g_vChannel[i].get_name(), pattern))
 			return (i);
 	return (-1);
 }
@@ -90,9 +98,7 @@ bool	pattern_match(std::string str, std::string pattern)
 	{
 		if (pattern[j - 1] == '*')
 			T[0][j] = T[0][j - 1];
-		std::cout << T[0][j];
 	}
-	std::cout << std::endl;
 	for (size_t i = 1; i <= n; ++i)
 	{
 		for (size_t j = 1; j <= m; ++j)
@@ -103,9 +109,7 @@ bool	pattern_match(std::string str, std::string pattern)
 				T[i][j] = T[i][j - 1] || T[i - 1][j];
 			else
 				T[i][j] = false;
-			std::cout << T[i][j];
 		}
-		std::cout << std::endl;
 	}
 	return T[n][m];
 }
