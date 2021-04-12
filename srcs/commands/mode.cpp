@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/12 16:01:33 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/12 16:13:53 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static void		set_usr_mode(const std::string mode, const size_t &client_idx, cons
 		}
 		else
 		{
-			std::cout << "It is bad " << std::endl;
 			if (!(strchr(USER_VALID_MODE, mode[i])))
 			{
 				std::string str = " ";

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 10:47:16 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/12 15:42:18 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/12 16:13:27 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ void		oper_command(const std::string &line, const size_t &client_idx, const MySe
 	}
 	else
 	{
-		g_aClient[client_idx].second.set_is_oper(true);
+		g_aClient[client_idx].second.set_is_oper(false);
 		g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
 			+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " QUIT :Password incorrect ERROR: Password incorrect" + "\r\n");
+		throw QuitCommandException();
 	}
 }
