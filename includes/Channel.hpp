@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/12 16:31:10 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/12 17:51:24 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,15 @@ class Channel
 		{
 			for (size_t i = 0; i < _users.size(); i++)
 				_users[i]->send_reply(msg);
+		}
+
+		void			send_to_all_except_one(Client except, const std::string &msg)
+		{
+			for (size_t i = 0; i < _users.size(); i++)
+			{
+				if (*_users[i] != except)
+					_users[i]->send_reply(msg);
+			}
 		}
 };
 

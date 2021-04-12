@@ -69,13 +69,13 @@
 # define RPL_WHOISOPERATOR(pseudo) (pseudo + " :is an IRC operator\r\n")
 # define RPL_WHOISIDLE(pseudo, integer) (pseudo + " " + integer + " :seconds idle\r\n")
 # define RPL_WHOREPLY(arg) (arg + "\r\n")
-# define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of /WHOIS list\r\n")
+# define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of WHOIS list\r\n")
 //# define RPL_WHOISCHANNELS(pseudo, channel) (pseudo + " :{[@|+]<canal><espace>}\r\n")
 //# define RPL_WHOWASUSER(pseudo, user, host) (pseudo + " " + user + " " + host + " * :<vrai nom>\r\n")
 # define RPL_ENDOFWHOWAS(pseudo) (pseudo + " :End of WHOWAS\r\n")
 # define RPL_LISTSTART() ("Channel :Users Name\r\n")
 # define RPL_LIST(channel, topic) (channel + " :" + topic + "\r\n")
-# define RPL_LISTEND() (" :End of /LIST\r\n")
+# define RPL_LISTEND() (" :End of LIST\r\n")
 # define RPL_CHANNELMODEIS(channel, mode, params) (" " +channel + " " + mode + " " + params + "\r\n")
 # define RPL_NOTOPIC(channel) (" " +channel + " :No topic is set\r\n")
 # define RPL_TOPIC(channel, subject) (channel + " :" + subject + "\r\n")
@@ -83,18 +83,18 @@
 # define RPL_SUMMONING(user) (user + " :Summoning user to IRC\r\n")
 # define RPL_VERSION(version, debuglevel, server, comment) (version + "." + debuglevel + " " + server + " :" + comment + "\r\n")
 //# define RPL_WHOREPLY(channel, user, host, server, pseudo) (channel + " " + user + " " + host + " " + server + " " + pseudo + " <H|G>[*][@|+] :<compteur de distance> <vrai nom>\r\n")
-# define RPL_ENDOFWHO(name) (name + " :End of /WHO list\r\n")
+# define RPL_ENDOFWHO(name) (name + " :End of WHO list\r\n")
 # define RPL_NAMREPLY(channel, nick_list) (channel + " :" + nick_list + "\r\n") //modif_ici
-# define RPL_ENDOFNAMES(channel) (" " + channel + " :End of /NAMES list\r\n")
+# define RPL_ENDOFNAMES(channel) (" " + channel + " :End of NAMES list\r\n")
 //# define RPL_LINKS(mask, server) (mask + " " + server + " :<compteur de distance> <info serveur>\r\n")
-# define RPL_ENDOFLINKS(mask) (mask + " :End of /LINKS list\r\n)"
+# define RPL_ENDOFLINKS(mask) (mask + " :End of LINKS list\r\n)"
 //# define RPL_BANLIST(channel) (channel + ": <identification de bannissement>\r\n")
 # define RPL_ENDOFBANLIST(channel) (channel + " :End of channel ban list\r\n")
 # define RPL_INFO(info) (" :" + info + "\r\n")
-# define RPL_ENDOFINFO() (" :End of /INFO list\r\n")
+# define RPL_ENDOFINFO() (" :End of INFO list\r\n")
 # define RPL_MOTDSTART(server) (" :- " + server + " Message of the day - \r\n")
 # define RPL_MOTD(comment) (" :- " + comment + "\r\n")
-# define RPL_ENDOFMOTD() (" :End of /MOTD command\r\n")
+# define RPL_ENDOFMOTD() (" :End of MOTD command\r\n")
 # define RPL_YOUREOPER() (" :You are now an IRC operator\r\n")
 # define RPL_REHASHING(config_file) (config_file + " :Rehashing\r\n")
 # define RPL_TIME(server, time_serveur) (server + " :" + time_serveur + "\r\n")
@@ -118,7 +118,7 @@
 # define RPL_STATSILINE(host, port, classe) ("I " + host + " * " + host + " " + port + " " + classe + "\r\n")
 # define RPL_STATSKLINE(host, user_name, port, classe) ("K " + host + " * " + user_name + " " + port + " " + classe + "\r\n")
 # define RPL_STATSYLINE(classe, frq_ping, frq_connection, sendq_max) ("Y " + classe + " " + frq_ping + " " + frq_connection + " " + sendq_max + "\r\n")
-# define RPL_ENDOFSTATS(stat_letter) (stat_letter + " :End of /STATS report\r\n")
+# define RPL_ENDOFSTATS(stat_letter) (stat_letter + " :End of STATS report\r\n")
 # define RPL_STATSLLINE(host_mask, server_name, max_depth) ("L " + host_mask + " * " + server_name + max_depth "\r\n")
 //# define RPL_STATSUPTIME() (":Server Up %d days %d:%02d:%02d\r\n")
 # define RPL_STATSOLINE(host_mask, name) ("O " + host_mask + " * " + name + "\r\n")
@@ -176,5 +176,6 @@ void	who_command(const std::string &line, const size_t &client_idx, const MyServ
 void	oper_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	kick_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	topic_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	notice_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 
 #endif
