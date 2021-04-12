@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/06 16:55:28 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/12 12:32:51 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,19 @@ int		check_params(const std::vector<std::string> &params, const size_t &client_i
 			g_aClient[client_idx].second.send_reply(create_msg(411, client_idx, serv, params[0] + " " + params[1]));
 		return (0);
 	}
-	if (chan_id != -1 && g_vChannel[chan_id].get_mode().find("n") != std::string::npos &&
+	if (chan_id != -1 && g_vChannel[chan_id].is_mode('n') &&
 	is_user_in_chan(chan_id, g_aClient[client_idx].second.get_nickname()) == false)
 	{
-		//User is not in the channel and the channel isn't set to accept extern messages
+		//User is not in the channel and the channel isn't set to accept extern messages (mode +n)
 		g_aClient[client_idx].second.send_reply(create_msg(404, client_idx, serv, params[1]));
 		return (0);
 	}
+	if (g_vChannel[chan_id].is_mode('m') && !g_vChannel[chan_id].is_operator(g_aClient[client_idx].second))
+		if (!g_vChannel[chan_id].is_mode('v') || !g_vChannel[chan_id].is_voice(g_aClient[client_idx].second))
+		{
+			g_aClient[client_idx].second.send_reply(create_msg(404, client_idx, serv, params[1]));
+			return (0);
+		}
 	return (1);
 }
 
@@ -80,7 +86,7 @@ std::string		create_full_msg(const std::vector<std::string> &params, const size_
 	return (full_msg);
 }
 
-void	send_privmsg_to_channel(const std::vector<std::string> params, const size_t &client_idx, const MyServ &serv, const int &chan_id)
+void	send_privmsg_to_channel(const std::vector<std::string> params, const size_t &client_idx, const int &chan_id)
 {
 	std::string		full_msg = create_full_msg(params, client_idx);
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
@@ -100,7 +106,7 @@ void	privmsg_command(const std::string &line, const size_t &client_idx, const My
 		return ;
 	i = find_channel(params[1]);
 	if (i != -1)
-		send_privmsg_to_channel(params, client_idx, serv, i);
+		send_privmsg_to_channel(params, client_idx, i);
 	else if ((i = find_user_by_nick(params[1])) != -1)
 		g_aClient[i].second.send_reply(create_full_msg(params, client_idx));
 }
