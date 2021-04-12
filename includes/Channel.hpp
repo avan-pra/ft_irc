@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/12 12:46:45 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/12 17:47:32 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,9 @@ class Channel
 
 		void			remove_user_operator(const std::string usr_nickname)
 		{
-			for (std::vector<Client*>::iterator it = _operator.begin();
-					it != _operator.end(); )
+			for (std::vector<Client*>::iterator it = _operator.begin(); it != _operator.end(); )
 			{
-				if ((*it)->get_username() == usr_nickname)
+				if ((*it)->get_nickname() == usr_nickname)
 				{
 					_operator.erase(it);
 					return ;
@@ -82,6 +81,21 @@ class Channel
 				else
 					it++;
 			}
+		}
+
+		void			remove_user_ban(const std::string usr_nickname)
+		{
+			for (std::vector<Client*>::iterator it = _ban.begin(); it != _ban.end)
+			{
+				if ((*it)->get_nickname() == usr)
+				{
+					_ban.erase(it);
+					return ;
+				}
+				else
+					it++;
+			}
+			
 		}
 
 		Channel			&operator=(const Channel &other)
