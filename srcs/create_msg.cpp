@@ -47,6 +47,10 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + RPL_NAMREPLY(arg1, arg2);
 		case 366:
 			return sample + RPL_ENDOFNAMES(arg1);
+		case 367:
+			return sample + RPL_BANLIST(arg1);
+		case 368:
+			return sample + RPL_ENDOFBANLIST();
 		case 371:
 			return sample + RPL_INFO(arg1);
 		case 372:

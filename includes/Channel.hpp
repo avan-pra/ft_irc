@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/13 14:31:01 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/13 17:49:07 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct Ban_id
 	std::string		nickname;
 	std::string		username;
 	std::string		hostname;
+	time_t			ban_date;
 }		t_ban_id;
 
 class Channel

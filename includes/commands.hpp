@@ -88,7 +88,7 @@
 # define RPL_ENDOFNAMES(channel) (" " + channel + " :End of NAMES list\r\n")
 //# define RPL_LINKS(mask, server) (mask + " " + server + " :<compteur de distance> <info serveur>\r\n")
 # define RPL_ENDOFLINKS(mask) (mask + " :End of LINKS list\r\n)"
-//# define RPL_BANLIST(channel) (channel + ": <identification de bannissement>\r\n")
+# define RPL_BANLIST(mssg) (" " + mssg + "\r\n")
 # define RPL_ENDOFBANLIST(channel) (channel + " :End of channel ban list\r\n")
 # define RPL_INFO(info) (" :" + info + "\r\n")
 # define RPL_ENDOFINFO() (" :End of INFO list\r\n")

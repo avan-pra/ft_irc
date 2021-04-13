@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/13 16:38:34 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/13 18:11:26 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ static void		set_chann_mode(const std::string mode, const std::vector<std::strin
 			minus = true;
 		else if (mode[i] == '+')
 			minus = false;
-		else if (is_chann_operator(chann_idx, client_idx) == true)
+		else
 		{
 			if (!(strchr(CHANNEL_VALID_MODE, mode[i])))
 			{
@@ -156,11 +156,11 @@ static void		set_chann_mode(const std::string mode, const std::vector<std::strin
 			if (switch_mode(mode[i], args[j], chann_idx, client_idx, minus, args[1], serv) == true)
 				j++;
 		}
-		else
-		{
-			g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
-			throw std::exception();	
-		}
+		// else
+		// {
+		// 	g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
+		// 	throw std::exception();	
+		// }
 	}
 	g_vChannel[chann_idx].set_mode(new_mode);
 	if (mode != "-o" && mode != "+o")
