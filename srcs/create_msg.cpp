@@ -33,6 +33,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + RPL_LISTEND();
 		case 324:
 			return sample + RPL_CHANNELMODEIS(arg1, arg2, arg3);
+		case 329:
+			return sample + RPL_CREATIONTIME(arg1, arg2);
 		case 331:
 			return sample + ERR_NOTOPIC(arg1);
 		case 332:

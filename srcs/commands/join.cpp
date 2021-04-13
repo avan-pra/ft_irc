@@ -169,6 +169,11 @@ void	make_channel_pair(const std::vector<std::string> &params, std::map<std::str
 		tmp.insert(std::make_pair(chan_name[i], key[i]));
 }
 
+const void	send_channel_time(const size_t &client_idx, const MyServ &serv, const std::string channel)
+{
+	g_aClient[client_idx].second.send_reply(create_msg(329, client_idx, serv, channel, std::to_string(g_vChannel[find_channel(channel)].get_creation_date())));
+}
+
 void	join_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string>			params;
@@ -198,6 +203,7 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 			create_channel(it, client_idx, enter);
 			send_to_channel(("JOIN " + it->first), client_idx, serv, find_channel(it->first), true);
 			names_command("names " + it->first, client_idx, serv);
+			send_channel_time(client_idx, serv, it->first);
 		}
 		else
 		{
@@ -206,6 +212,7 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 				add_client_to_channel(it, client_idx, enter);
 				send_to_channel(("JOIN " + it->first), client_idx, serv, find_channel(it->first), true);
 				names_command("names " + it->first, client_idx, serv);
+				send_channel_time(client_idx, serv, it->first);
 			}
 		}
 		// for (size_t i = 0; i < g_vChannel[find_channel(it->first)]._users.size(); ++i)

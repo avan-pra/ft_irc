@@ -39,7 +39,8 @@ class Channel
 		
 		//mode attributes
 		std::string		_password;
-		size_t				_limit;
+		size_t			_limit;
+		time_t			_creation;
 		
 	public:
 		std::vector<Client*>		_operator;
@@ -54,6 +55,7 @@ class Channel
 		{
 			_name = name;
 			_topic = "";
+			time(&_creation);
 		}
 
 		~Channel() {}
@@ -65,7 +67,8 @@ class Channel
 		std::string				get_name() const { return _name; }
 		std::string				get_topic() const { return _topic; }
 		std::string				get_mode() const { return _mode; }
-		size_t						get_limit() const { return _limit; }
+		size_t					get_limit() const { return _limit; }
+		time_t					get_creation_date() const { return _creation; }
 
 		/*
 		 ** setter

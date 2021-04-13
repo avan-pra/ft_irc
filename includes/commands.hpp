@@ -133,6 +133,7 @@
 # define RPL_ADMINLOC1() (":<info admin>\r\n")
 # define RPL_ADMINLOC2() (":<info admin>\r\n")
 # define RPL_ADMINEMAIL() (":<info admin>\r\n")
+# define RPL_CREATIONTIME(channel, c_time) (" " + channel + " " + c_time + "\r\n")
 
 //define invalid character as for username
 # define USERNAME_VALID_CHAR "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_[]{}\\`|"
