@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/13 14:32:42 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/13 16:38:34 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,6 @@ static bool		switch_mode(const char c, const std::string arg, const size_t &chan
 		//add case b
 		case 'b':
 		{
-			if (is_user_in_chan(chann_idx, arg) == false)
-				break;
 			mode_b(client_idx, chann_idx, minus, arg, chan_name, serv);
 			ret = true;
 			break;

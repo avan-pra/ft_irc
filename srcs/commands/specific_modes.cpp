@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 12:11:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/13 16:05:08 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/13 16:42:47 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void			mode_o(const size_t &client_idx, const size_t &chann_idx, const bool minu
 
 void		mode_b(const size_t &client_idx, const size_t &chann_idx, const bool minus, const std::string str, const std::string chan_name, const MyServ &serv)
 {
+	
 	if (minus == true)
 	{
 		g_vChannel[chann_idx].remove_user_ban(g_aClient[client_idx].second);
@@ -52,7 +53,7 @@ void		mode_b(const size_t &client_idx, const size_t &chann_idx, const bool minus
 	else
 	{
 		t_ban_id new_ban;
-
+		
 		if (!std::strchr(str.c_str(), '!'))
 		{
 			new_ban.nickname = str;
