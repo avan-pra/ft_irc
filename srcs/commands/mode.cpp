@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/12 17:49:52 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/13 13:50:54 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,29 +105,17 @@ static bool		switch_mode(const char c, const std::string arg, const size_t &chan
 		{
 			if (is_user_in_chan(chann_idx, arg) == false)
 				break;
-			if (minus == true)
-			{
-				g_vChannel[chann_idx].remove_user_operator(arg);
-				send_to_channel("MODE " + chan_name + " -o " + arg, client_idx, serv, chann_idx, false);
-				g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
-					+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " MODE " + chan_name + " -o " + arg + "\r\n");
-			}
-			else
-			{
-				size_t cli_to_add_idx;
-
-				cli_to_add_idx = find_user_by_nick(arg);
-				g_vChannel[chann_idx]._operator.push_back(&g_aClient[cli_to_add_idx].second);
-				send_to_channel("MODE " + chan_name + " +o " + arg, client_idx, serv, chann_idx, false);
-				g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
-					+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " MODE " + chan_name + " +o " + arg + "\r\n");
-			}
+			mode_o(client_idx, chann_idx, minus, arg, chan_name, serv);
 			ret = true;
 			break;
 		}
 		//add case b
 		case 'b':
 		{
+			if (is_user_in_chan(chann_idx, arg) == false)
+				break;
+			mode_b(client_idx, chann_idx, minus, arg, chan_name, serv);
+			ret = true;
 			break;
 		}
 		default:

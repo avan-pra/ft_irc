@@ -178,4 +178,12 @@ void	kick_command(const std::string &line, const size_t &client_idx, const MySer
 void	topic_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	notice_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 
+/*
+** specific_modes_fncts 
+*/
+
+void	mode_o(const size_t &client_idx, const size_t &chann_idx, const bool minus, const std::string name, const std::string chan_name, const MyServ &serv);
+void	mode_b(const size_t &client_idx, const size_t &chann_idx, const bool minus, const std::string name, const std::string chan_name, const MyServ &serv);
+
+
 #endif
