@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/13 18:11:26 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/13 19:57:50 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ static void		set_chann_mode(const std::string mode, const std::vector<std::strin
 	}
 	g_vChannel[chann_idx].set_mode(new_mode);
 	if (mode != "-o" && mode != "+o")
-		g_vChannel[chann_idx].send_to_all(create_full_msg(args, client_idx));
+		g_vChannel[chann_idx].send_to_all_except_one(g_aClient[client_idx].second, create_full_msg(args, client_idx));
 }
 
 static void			check_channel_errors(const size_t &client_idx, size_t &channel_idx, const std::string str, const MyServ &serv)
@@ -208,7 +208,23 @@ void			mode_command(const std::string &line, const size_t &client_idx, const MyS
 			else
 			{
 				mode = params[2];
-				set_chann_mode(mode, params, channel_idx, client_idx, serv);
+				if ((mode == "+b" || mode == "b" || mode == "-b") && params.size() == 3)
+				{
+					for (size_t i = 0; i < g_vChannel[channel_idx]._ban.size(); i++)
+					{
+						std::string mssg;
+						mssg = g_vChannel[channel_idx].get_name() + " ";
+						mssg += g_vChannel[channel_idx]._ban[i].nickname + "!" + g_vChannel[channel_idx]._ban[i].username + "@" + g_vChannel[channel_idx]._ban[channel_idx].hostname + " ";
+						mssg += g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " ";
+						mssg += std::to_string(g_vChannel[channel_idx]._ban[i].ban_date);
+						g_aClient[client_idx].second.send_reply(create_msg(367, client_idx, serv, mssg));
+					}
+					g_aClient[client_idx].second.send_reply(create_msg(368, client_idx, serv, g_vChannel[channel_idx].get_name()));
+				}
+				else
+				{
+					set_chann_mode(mode, params, channel_idx, client_idx, serv);
+				}
 			}
 		}
 		else

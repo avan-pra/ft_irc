@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 12:11:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/13 18:03:42 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/13 19:20:29 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,51 +42,34 @@ void			mode_o(const size_t &client_idx, const size_t &chann_idx, const bool minu
 
 void		mode_b(const size_t &client_idx, const size_t &chann_idx, const bool minus, const std::string str, const std::string chan_name, const MyServ &serv)
 {
-
-	if (str.empty())
+	if (minus == true)
 	{
-		for (size_t i = 0; i < g_vChannel[chann_idx]._ban.size(); i++)
-		{
-			std::string mssg;
-			mssg = g_vChannel[chann_idx].get_name() + " ";
-			mssg += g_vChannel[chann_idx]._ban[i].nickname + "!" + g_vChannel[chann_idx]._ban[i].username + "@" + g_vChannel[chann_idx]._ban[chann_idx].hostname + " ";
-			mssg += g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " ";
-			mssg += std::to_string(g_vChannel[chann_idx]._ban[i].ban_date);
-			g_aClient[client_idx].second.send_reply(create_msg(367, client_idx, serv, mssg));
-		}
-		g_aClient[client_idx].second.send_reply(create_msg(368, client_idx, serv));
+		g_vChannel[chann_idx].remove_user_ban(g_aClient[client_idx].second);
+		send_to_channel("MODE " + chan_name + " -b" + str, client_idx, serv, chann_idx);
+		g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
+			+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " MODE " + chan_name + " -b " + str + "\r\n");
 	}
 	else
 	{
-		if (minus == true)
+		t_ban_id new_ban;
+		
+		if (!std::strchr(str.c_str(), '!'))
 		{
-			g_vChannel[chann_idx].remove_user_ban(g_aClient[client_idx].second);
-			send_to_channel("MODE " + chan_name + " -b" + str, client_idx, serv, chann_idx);
-			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
-				+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " MODE " + chan_name + " -b " + str + "\r\n");
+			new_ban.nickname = str;
+			new_ban.username = "*";
+			new_ban.hostname = "*";
+			time(&new_ban.ban_date);
 		}
 		else
 		{
-			t_ban_id new_ban;
-			
-			if (!std::strchr(str.c_str(), '!'))
-			{
-				new_ban.nickname = str;
-				new_ban.username = "*";
-				new_ban.hostname = "*";
-				time(&new_ban.ban_date);
-			}
-			else
-			{
-				new_ban.nickname = str.substr(0, str.find('!'));
-				new_ban.username = str.substr(str.find('!') + 1, str.find('@'));
-				new_ban.hostname = str.substr(str.find('@') + 1);
-				time(&new_ban.ban_date);
-			}
-			g_vChannel[chann_idx]._ban.push_back(new_ban);
-			send_to_channel("MODE " + chan_name + " +b " + str, client_idx, serv, chann_idx, false);
-			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
-				+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " MODE " + chan_name + " +b " + str + "\r\n");
+			new_ban.nickname = str.substr(0, str.find('!'));
+			new_ban.username = str.substr(str.find('!') + 1, str.find('@'));
+			new_ban.hostname = str.substr(str.find('@') + 1);
+			time(&new_ban.ban_date);
 		}
+		g_vChannel[chann_idx]._ban.push_back(new_ban);
+		send_to_channel("MODE " + chan_name + " +b " + str, client_idx, serv, chann_idx, false);
+		g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
+			+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " MODE " + chan_name + " +b " + str + "\r\n");
 	}
 }

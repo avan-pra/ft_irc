@@ -89,7 +89,7 @@
 //# define RPL_LINKS(mask, server) (mask + " " + server + " :<compteur de distance> <info serveur>\r\n")
 # define RPL_ENDOFLINKS(mask) (mask + " :End of LINKS list\r\n)"
 # define RPL_BANLIST(mssg) (" " + mssg + "\r\n")
-# define RPL_ENDOFBANLIST(channel) (channel + " :End of channel ban list\r\n")
+# define RPL_ENDOFBANLIST(channel) (" " + channel + " :End of list\r\n")
 # define RPL_INFO(info) (" :" + info + "\r\n")
 # define RPL_ENDOFINFO() (" :End of INFO list\r\n")
 # define RPL_MOTDSTART(server) (" :- " + server + " Message of the day - \r\n")

@@ -50,7 +50,7 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 		case 367:
 			return sample + RPL_BANLIST(arg1);
 		case 368:
-			return sample + RPL_ENDOFBANLIST();
+			return sample + RPL_ENDOFBANLIST(arg1);
 		case 371:
 			return sample + RPL_INFO(arg1);
 		case 372:
