@@ -66,7 +66,9 @@ class Client : public Connection
 		bool					is_good_password() { return (_has_good_password); }
 		// bool					is_cap() { return (_is_cap); }
 		bool					get_pass_try() { return _has_try_password; }
+
 		bool					get_is_oper() { return _is_oper; }
+		bool					is_invisble() { return (_mode.find('i', 0) != std::string::npos); }
 		std::vector<Channel>	get_channels() { return _channels; }
 
 		/*
@@ -88,6 +90,8 @@ class Client : public Connection
 
 	bool	operator==(const Client &a) const
 	{
+		if (a.get_nickname() != get_nickname())
+			return (false);	
 		if (a.get_username() != get_username() || _fd != a._fd)
 			return (false);
 		if (a.get_realname() != get_realname() || a.get_hostname() != get_hostname())

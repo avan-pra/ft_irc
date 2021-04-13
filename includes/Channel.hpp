@@ -155,6 +155,16 @@ class Channel
 			return (false);
 		}
 
+		bool	is_user_in_chan(const Client cli)
+		{
+			for (size_t i = 0; i < _users.size(); ++i)
+			{
+				if (*_users[i] == cli)
+					return true;
+			}
+			return false;
+		}
+
 		bool			is_mode(char c)
 		{
 			return (_mode.find(c) != std::string::npos ? true : false);
