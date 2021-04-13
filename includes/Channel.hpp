@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/12 18:05:59 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/13 14:31:01 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@
 # include "./Client.hpp"
 
 class Client;
+bool	pattern_match(std::string str, std::string pattern);
+
+typedef struct Ban_id
+{
+	std::string		nickname;
+	std::string		username;
+	std::string		hostname;
+}		t_ban_id;
 
 class Channel
 {
@@ -37,7 +45,7 @@ class Channel
 		std::vector<Client*>		_operator;
 		std::vector<Client*>		_users;
 		std::vector<Client*>		_invite;
-		std::vector<Client*>		_ban;
+		std::vector<t_ban_id>		_ban;
 		std::vector<Client*>		_voice;
 
 		Channel() {}
@@ -83,17 +91,21 @@ class Channel
 			}
 		}
 
-		void			remove_user_ban(const std::string &usr_nickname)
+		void			remove_user_ban(const Client cli)
 		{
-			for (std::vector<Client*>::iterator it = _ban.begin(); it != _ban.end(); it++)
+			for (std::vector<t_ban_id>::iterator it = _ban.begin(); it != _ban.end(); it++)
 			{
-				if ((*it)->get_nickname() == usr_nickname)
+				if (pattern_match(cli.get_nickname(), (*it).nickname))
 				{
-					_ban.erase(it);
-					return ;
+					if (pattern_match(cli.get_username(), (*it).username))
+					{
+						if (pattern_match(cli.get_hostname(), (*it).hostname))
+						{
+							_ban.erase(it);
+							return ;
+						}
+					}
 				}
-				else
-					it++;
 			}
 			
 		}
@@ -130,8 +142,16 @@ class Channel
 		bool			is_ban(Client cli)
 		{
 			for (size_t i = 0; i < _ban.size(); i++)
-				if (*_ban[i] == cli)
-					return (true);
+			{
+				if (pattern_match(cli.get_nickname(), _ban[i].nickname))
+				{
+					if (pattern_match(cli.get_username(), _ban[i].username))
+					{
+						if (pattern_match(cli.get_hostname(), _ban[0].hostname))
+							return (true);
+					}
+				}
+			}
 			return (false);
 		}
 
