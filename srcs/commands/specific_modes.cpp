@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 12:11:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/14 16:13:01 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/14 21:08:31 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,28 +42,27 @@ void			mode_o(const size_t &client_idx, const size_t &chann_idx, const bool minu
 
 void		mode_b(const size_t &client_idx, const size_t &chann_idx, const bool minus, const std::string str, const std::string chan_name, const MyServ &serv)
 {
-	if (minus == true)
+	t_ban_id user;
+
+	if (!std::strchr(str.c_str(), '!'))
 	{
-		g_vChannel[chann_idx].remove_user_ban(g_aClient[client_idx].second);
+		user.nickname = str;
+		user.username = "*";
+		user.hostname = "*";
 	}
 	else
 	{
-		t_ban_id new_ban;
-		
-		if (!std::strchr(str.c_str(), '!'))
-		{
-			new_ban.nickname = str;
-			new_ban.username = "*";
-			new_ban.hostname = "*";
-			time(&new_ban.ban_date);
-		}
-		else
-		{
-			new_ban.nickname = str.substr(0, str.find('!'));
-			new_ban.username = str.substr(str.find('!') + 1, str.find('@'));
-			new_ban.hostname = str.substr(str.find('@') + 1);
-			time(&new_ban.ban_date);
-		}
-		g_vChannel[chann_idx]._ban.push_back(new_ban);
+		user.nickname = str.substr(0, str.find('!'));
+		user.username = str.substr(str.find('!') + 1, str.find('@'));
+		user.hostname = str.substr(str.find('@') + 1);
+	}
+	if (minus == true)
+	{
+		g_vChannel[chann_idx].remove_user_ban(user);
+	}
+	else
+	{	
+		time(&user.ban_date);
+		g_vChannel[chann_idx]._ban.push_back(user);
 	}
 }

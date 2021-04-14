@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/13 17:49:07 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/14 21:11:53 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,15 @@ class Channel
 			}
 		}
 
-		void			remove_user_ban(const Client cli)
+		void			remove_user_ban(const t_ban_id &cli)
 		{
 			for (std::vector<t_ban_id>::iterator it = _ban.begin(); it != _ban.end(); it++)
 			{
-				if (pattern_match(cli.get_nickname(), (*it).nickname))
+				if (pattern_match(cli.nickname, (*it).nickname))
 				{
-					if (pattern_match(cli.get_username(), (*it).username))
+					if (pattern_match(cli.username, (*it).username))
 					{
-						if (pattern_match(cli.get_hostname(), (*it).hostname))
+						if (pattern_match(cli.hostname, (*it).hostname))
 						{
 							_ban.erase(it);
 							return ;
@@ -151,7 +151,7 @@ class Channel
 				{
 					if (pattern_match(cli.get_username(), _ban[i].username))
 					{
-						if (pattern_match(cli.get_hostname(), _ban[0].hostname))
+						if (pattern_match(cli.get_hostname(), _ban[i].hostname))
 							return (true);
 					}
 				}
