@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/12 13:14:37 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/14 16:24:40 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ bool	is_chann_operator(const int &chan_id, const size_t &client_idx);
 int		find_channel_with_pattern(std::string &pattern);
 
 std::string		create_full_msg(const std::vector<std::string> &params, const size_t &client_idx);
+std::string		create_full_msg_mode(const std::string &mode, const std::vector<std::string> &params, const size_t &client_idx, const size_t &chann_idx);
 
 class	IncorrectPassException: public std::exception
 {

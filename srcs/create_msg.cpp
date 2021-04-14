@@ -133,3 +133,20 @@ std::string		create_full_msg(const std::vector<std::string> &params, const size_
 	full_msg += "\r\n";
 	return (full_msg);
 }
+
+std::string		create_full_msg_mode(const std::string &mode, const std::vector<std::string> &params,
+									const size_t &client_idx, const size_t &chann_idx)
+{
+	std::string		full_msg("");
+
+	full_msg += ":" + g_aClient[client_idx].second.get_nickname();
+	full_msg += "!" + g_aClient[client_idx].second.get_username();
+	full_msg += "@" + g_aClient[client_idx].second.get_hostname();
+	full_msg += " ";
+	full_msg += "MODE " + g_vChannel[chann_idx].get_name() + " ";
+	full_msg += mode + " ";
+	for (size_t i = 3; i < params.size(); i++)
+		full_msg += " " + params[i];
+	full_msg += "\r\n";
+	return (full_msg);
+}
