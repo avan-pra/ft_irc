@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/14 21:11:53 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/15 12:29:25 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,20 @@ class Channel
 				}
 			}
 			
+		}
+
+		void			remove_user_voice(const std::string usr_nickname)
+		{
+			for (std::vector<Client*>::iterator it = _voice.begin(); it != _voice.end(); )
+			{
+				if ((*it)->get_nickname() == usr_nickname)
+				{
+					_voice.erase(it);
+					return ;
+				}
+				else
+					it++;				
+			}
 		}
 
 		Channel			&operator=(const Channel &other)

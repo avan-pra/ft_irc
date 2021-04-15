@@ -27,7 +27,8 @@
 # define ERR_ERRONEUSNICKNAME(pseudo) (" " + pseudo + " :Erroneus nickname\r\n")
 # define ERR_NICKNAMEINUSE(nick) (" " + nick + " :Nickname is already in use\r\n")
 # define ERR_NICKCOLLISION(nick) (nick + " :Nickname collision KILL\r\n")
-# define ERR_USERNOTINCHANNEL(pseudo, channel) (pseudo + " " + channel + " :They aren't on that channel\r\n")
+//mssg originel claque au sol, du coup on modifie le mssg
+# define ERR_USERNOTINCHANNEL(pseudo, channel) (" " + pseudo + " :Is not on channel " + channel + "\r\n")
 # define ERR_NOTONCHANNEL(channel) (channel + " :You're not on that channel\r\n")
 # define ERR_USERONCHANNEL(user, channel) (user + " " + channel + " :User is already on that channel\r\n")
 # define ERR_NOLOGIN(user) (user + " :User not logged in\r\n")
@@ -183,8 +184,9 @@ void	notice_command(const std::string &line, const size_t &client_idx, const MyS
 ** specific_modes_fncts 
 */
 
-void	mode_o(const size_t &client_idx, const size_t &chann_idx, const bool minus, const std::string name, const std::string chan_name, const MyServ &serv);
-void	mode_b(const size_t &client_idx, const size_t &chann_idx, const bool minus, const std::string name, const std::string chan_name, const MyServ &serv);
+void	mode_o(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &name);
+void	mode_b(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &str);
+void	mode_v(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &name);
 
 
 #endif

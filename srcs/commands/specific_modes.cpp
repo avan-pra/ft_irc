@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 12:11:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/14 21:08:31 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/15 19:56:48 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,13 @@
 #include <algorithm>
 #include <cstring>
 
-void			mode_o(const size_t &client_idx, const size_t &chann_idx, const bool minus, const std::string name, const std::string chan_name, const MyServ &serv)
+void		mode_o(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &name)
 {
 	if (minus == true)
 	{
 		g_vChannel[chann_idx].remove_user_operator(name);
-		send_to_channel("MODE " + chan_name + " -o " + name, client_idx, serv, chann_idx, false);
-		g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
-			+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " MODE " + chan_name + " -o " + name + "\r\n");
+		g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + 
+											" MODE " + g_vChannel[chann_idx].get_name() + " -o " + name + "\r\n");
 	}
 	else
 	{
@@ -33,14 +32,13 @@ void			mode_o(const size_t &client_idx, const size_t &chann_idx, const bool minu
 		if (cli_to_add_idx != -1)
 		{
 			g_vChannel[chann_idx]._operator.push_back(&g_aClient[cli_to_add_idx].second);
-			send_to_channel("MODE " + chan_name + " +o " + name, client_idx, serv, chann_idx, false);
-			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
-				+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " MODE " + chan_name + " +o " + name + "\r\n");
+			g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() +
+				" MODE " + g_vChannel[chann_idx].get_name() + " +o " + name + "\r\n");
 		}
 	}
 }
 
-void		mode_b(const size_t &client_idx, const size_t &chann_idx, const bool minus, const std::string str, const std::string chan_name, const MyServ &serv)
+void		mode_b(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &str)
 {
 	t_ban_id user;
 
@@ -59,10 +57,36 @@ void		mode_b(const size_t &client_idx, const size_t &chann_idx, const bool minus
 	if (minus == true)
 	{
 		g_vChannel[chann_idx].remove_user_ban(user);
+		g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + 
+			" MODE " + g_vChannel[chann_idx].get_name() + " -b " + user.nickname + "!" + user.username + "@" + user.hostname + "\r\n");
 	}
 	else
 	{	
 		time(&user.ban_date);
 		g_vChannel[chann_idx]._ban.push_back(user);
+		g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + 
+			" MODE " + g_vChannel[chann_idx].get_name() + " +b " + user.nickname + "!" + user.username + "@" + user.hostname + "\r\n");
+	}
+}
+
+void		mode_v(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &name)
+{
+	if (minus == true)
+	{
+		g_vChannel[chann_idx].remove_user_voice(name);
+		g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + 
+											" MODE " + g_vChannel[chann_idx].get_name() + " -v " + name + "\r\n");
+	}
+	else
+	{
+		size_t cli_to_add_idx;
+
+		cli_to_add_idx = find_user_by_nick(name);
+		if (cli_to_add_idx != -1)
+		{
+			g_vChannel[chann_idx]._operator.push_back(&g_aClient[cli_to_add_idx].second);
+			g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + 
+											" MODE " + g_vChannel[chann_idx].get_name() + " +v " + name + "\r\n");	
+		}
 	}
 }
