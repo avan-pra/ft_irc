@@ -2,6 +2,14 @@
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
+const size_t	who_switch(char c)
+{
+	if (c == '#' || c == '&' || c == '!' || c == '+')
+		return 1;
+	else
+		return 0;
+}
+
 //return -1 si il y a eu un prblm
 int	who_channel(const std::string &channel, const size_t &client_idx, const MyServ &serv)
 {
@@ -47,13 +55,21 @@ const bool user_on_same_channel(Client a, Client b)
 	return false;
 }
 
+static bool has_permission(const std::string &query, const size_t &client_idx, const size_t n)
+{
+	if (pattern_match(g_aClient[n].second.get_nickname(), query)
+			&& ((g_aClient[n].second.is_invisble() == false || user_on_same_channel(g_aClient[n].second, g_aClient[client_idx].second) || g_aClient[n].second == g_aClient[client_idx].second
+				|| query.empty() == true && (g_aClient[n].second.is_invisble() == false && user_on_same_channel(g_aClient[n].second, g_aClient[client_idx].second) == false) || g_aClient[n].second == g_aClient[client_idx].second)
+		|| g_aClient[client_idx].second.get_is_oper() == true))
+		return true;
+	return false;
+}
+
 int	who_client(const std::string &query, const size_t &client_idx, const MyServ &serv)
 {
 	for (size_t n = 0; n < g_aClient.size(); ++n)
 	{
-		if ((pattern_match(g_aClient[n].second.get_nickname(), query)
-			&& (g_aClient[n].second.is_invisble() == false || user_on_same_channel(g_aClient[n].second, g_aClient[client_idx].second) || g_aClient[n].second == g_aClient[client_idx].second))
-			|| g_aClient[client_idx].second.get_is_oper() == true)
+		if (has_permission(query, client_idx, n) == true)
 		{
 			std::string str;
 
@@ -88,20 +104,18 @@ void	who_command(const std::string &line, const size_t &client_idx, const MyServ
 	std::vector<std::string> arg = ft_split(line, " ");
 
 	if (arg.size() < 2)
-		return;
-	switch (arg[1][0])
 	{
-		//query un channel
-		case '#':
+		who_client(std::string(), client_idx, serv);
+		g_aClient[client_idx].second.send_reply(create_msg(315, client_idx, serv, "*!*@*"));
+		return;
+	}
+	switch (who_switch(arg[1][0]))
+	{
+		case 1:
 			who_channel(arg[1], client_idx, serv); break;
-		case '&':
-			who_channel(arg[1], client_idx, serv); break;
-		case '!':
-			who_channel(arg[1], client_idx, serv); break;
-		case '+':
-			who_channel(arg[1], client_idx, serv); break;
-		default:
+		case 0: //aka default
 			who_client(arg[1], client_idx, serv); break;
+		default:
 			break;
 	}
 	g_aClient[client_idx].second.send_reply(create_msg(315, client_idx, serv, arg[1]));
