@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/16 12:21:18 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/16 20:12:24 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,7 @@ void				mode_command(const std::string &line, const size_t &client_idx, const My
 					{
 						std::string mssg;
 						mssg = g_vChannel[channel_idx].get_name() + " ";
-						mssg += g_vChannel[channel_idx]._ban[i].nickname + "!" + g_vChannel[channel_idx]._ban[i].username + "@" + g_vChannel[channel_idx]._ban[channel_idx].hostname + " ";
+						mssg += g_vChannel[channel_idx]._ban[i].nickname + "!" + g_vChannel[channel_idx]._ban[i].username + "@" + g_vChannel[channel_idx]._ban[i].hostname + " ";
 						mssg += g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " ";
 						mssg += std::to_string(g_vChannel[channel_idx]._ban[i].ban_date);
 						g_aClient[client_idx].second.send_reply(create_msg(367, client_idx, serv, mssg));
