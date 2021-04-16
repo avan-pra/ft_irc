@@ -67,7 +67,7 @@ void		ping_if_away(Connection &co, const MyServ &serv)
 	}
 }
 
-bool		kick_if_away(Connection &co, const MyServ &serv)
+bool		kick_if_away(Connection &co)
 {
 	time_t time_compare; //may be optimized better
 

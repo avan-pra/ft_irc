@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/13 14:09:51 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/16 17:53:36 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 //                  ; any 7-bit US_ASCII character,
 //                 ; except NUL, CR, LF, FF, h/v TABs, and " "
 
-bool	error_chan_name(const std::string tmp, const std::string::iterator it_s)
+static bool	error_chan_name(const std::string tmp, const std::string::iterator it_s)
 {
 	std::string::const_iterator it = tmp.begin();
 
@@ -37,7 +37,7 @@ bool	error_chan_name(const std::string tmp, const std::string::iterator it_s)
 	return (false);
 }
 
-bool error_chan_key(const std::string::iterator it_k)
+static bool	error_chan_key(const std::string::iterator it_k)
 {
 	if (!(*it_k > 0 && *it_k < 6) || *it_k == 7 || *it_k == 8 ||
 		*it_k == 12 || *it_k == 14 || *it_k == 31 || (*it_k > 30 && *it_k <= 127))
@@ -45,7 +45,7 @@ bool error_chan_key(const std::string::iterator it_k)
 	return (true);
 }
 
-int		check_name_and_key(std::map<std::string, std::string> &chan)
+static int	check_name_and_key(std::map<std::string, std::string> &chan)
 {
 	std::map<std::string, std::string>::iterator	it = chan.begin();
 	std::string					tmp;
@@ -74,7 +74,7 @@ int		check_name_and_key(std::map<std::string, std::string> &chan)
 	return (chan.size());
 }
 
-int		check_invite(const int &chan_id, const size_t &client_idx, const MyServ &serv)
+static int	check_invite(const int &chan_id, const size_t &client_idx, const MyServ &serv)
 {
 	if (g_vChannel[chan_id].get_mode().find("i") == std::string::npos)
 		return (1);
@@ -97,8 +97,8 @@ int		check_password(const size_t &client_idx, const MyServ &serv, const int &cha
 	return (0);
 }
 
-int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const size_t &client_idx,
-													bool &enter, const MyServ &serv)
+static int	try_enter_chan(const std::map<std::string, std::string>::iterator it, const size_t &client_idx,
+							bool &enter, const MyServ &serv)
 {
 	int		i = find_channel(it->first);
 
@@ -135,7 +135,7 @@ int		try_enter_chan(const std::map<std::string, std::string>::iterator it, const
 	return (1);
 }
 
-void	create_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter)
+static void	create_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter)
 {
 	Channel		chan(it->first);
 
@@ -146,7 +146,7 @@ void	create_channel(const std::map<std::string, std::string>::iterator it, const
 	enter = true;
 }
 
-void	add_client_to_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter)
+static void	add_client_to_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter)
 {
 	int		i = find_channel(it->first);
 
@@ -154,7 +154,7 @@ void	add_client_to_channel(const std::map<std::string, std::string>::iterator it
 	enter = true;
 }
 
-void	make_channel_pair(const std::vector<std::string> &params, std::map<std::string, std::string> &tmp,
+static void	make_channel_pair(const std::vector<std::string> &params, std::map<std::string, std::string> &tmp,
 										std::vector<std::string> &chan_name)
 {
 	std::vector<std::string>	key;
@@ -169,7 +169,7 @@ void	make_channel_pair(const std::vector<std::string> &params, std::map<std::str
 		tmp.insert(std::make_pair(chan_name[i], key[i]));
 }
 
-const void	send_channel_time(const size_t &client_idx, const MyServ &serv, const std::string channel)
+static void	send_channel_time(const size_t &client_idx, const MyServ &serv, const std::string channel)
 {
 	g_aClient[client_idx].second.send_reply(create_msg(329, client_idx, serv, channel, std::to_string(g_vChannel[find_channel(channel)].get_creation_date())));
 }
@@ -201,7 +201,7 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 		if (find_channel(it->first) == -1)
 		{
 			create_channel(it, client_idx, enter);
-			send_to_channel(("JOIN " + it->first), client_idx, serv, find_channel(it->first), true);
+			send_to_channel(("JOIN " + it->first), client_idx, find_channel(it->first), true);
 			names_command("names " + it->first, client_idx, serv);
 			send_channel_time(client_idx, serv, it->first);
 		}
@@ -210,7 +210,7 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 			if (try_enter_chan(it, client_idx, enter, serv))
 			{
 				add_client_to_channel(it, client_idx, enter);
-				send_to_channel(("JOIN " + it->first), client_idx, serv, find_channel(it->first), true);
+				send_to_channel(("JOIN " + it->first), client_idx, find_channel(it->first), true);
 				names_command("names " + it->first, client_idx, serv);
 				send_channel_time(client_idx, serv, it->first);
 			}

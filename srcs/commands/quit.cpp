@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/01 16:59:57 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/16 15:14:59 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ void	quit_command(const std::string &line, const size_t &client_idx, const MySer
 	std::string	part_string;
 	
 	args = ft_split(line, " ");
-	for (int chann_idx = 0; chann_idx < g_vChannel.size(); chann_idx++)
+	for (size_t chann_idx = 0; chann_idx < g_vChannel.size(); chann_idx++)
 	{
-		int j = 0;
 		for (std::vector<Client*>::iterator it = g_vChannel[chann_idx]._users.begin();
 			it != g_vChannel[chann_idx]._users.end(); it++)
 		{

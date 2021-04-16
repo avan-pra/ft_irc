@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 12:11:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/16 12:24:27 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/16 19:47:37 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,77 @@ void		mode_o(const size_t &client_idx, const size_t &chann_idx, const char &sign
 
 void		mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &str)
 {
-	t_ban_id user;
+	t_ban_id		user;
+	size_t			pos;
+	unsigned char	count = 0;
+	
+	user.nickname = "*";
+	user.username = "*";
+	user.hostname = "*";
 
-	if (!std::strchr(str.c_str(), '!'))
+	pos = str.find('!');
+	if (pos != std::string::npos)
 	{
+		if (pos == 0)
+		{
+			user.nickname = "*";
+			user.username = std::strchr(str.c_str(), '@') ? str.substr(1, str.find('@')) : str.substr(1, str.size());
+		}
+		else
+		{
+			user.nickname = str.substr(0, pos);
+			if (std::strchr(str.c_str(), '@'))
+			{
+				user.username = str.substr(pos + 1, str.find('@') - pos - 1);
+			}
+			else
+			{
+				user.username = str.substr(pos + 1, str.size());
+			}
+			if (user.username.empty())
+				user.username = "*";
+		}
+		count += 1;
+	}
+	pos = str.find('@');
+	if (pos != std::string::npos)
+	{
+		if (pos == 0)
+		{
+			user.nickname = "*";
+			user.username = "*";
+			user.hostname = str.substr(1, str.size());
+		}
+		else
+		{
+			if (count == 1)
+			{
+				user.hostname = str.substr(pos + 1, str.size());
+			}
+			else
+			{
+				user.username = str.substr(0, pos);
+				user.hostname = str.substr(pos + 1, str.size());
+				if (user.hostname.empty())
+					user.hostname = "*";
+			}	
+		}
+		count = count * 16 + 1;
+	}
+	if (count == 0)
 		user.nickname = str;
-		user.username = "*";
-		user.hostname = "*";
-	}
-	else
-	{
-		user.nickname = str.substr(0, str.find('!'));
-		user.username = str.substr(str.find('!') + 1, str.find('@'));
-		user.hostname = str.substr(str.find('@') + 1);
-	}
+	// if (!std::strchr(str.c_str(), '!'))
+	// {
+	// 	user.nickname = str;
+	// 	user.username = "*";
+	// 	user.hostname = "*";
+	// }
+	// else
+	// {
+	// 	user.nickname = str.substr(0, str.find('!'));
+	// 	user.username = str.substr(str.find('!') + 1, str.find('@'));
+	// 	user.hostname = str.substr(str.find('@') + 1);
+	// }
 	if (sign == '-')
 	{
 		g_vChannel[chann_idx].remove_user_ban(user);

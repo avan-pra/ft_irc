@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/15 19:54:02 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/16 17:52:22 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int			setup_server();
 ** run_server.cpp
 */
 void		run_server(MyServ &serv);
-bool 		kick_if_away(Connection &co, const MyServ &serv);
+bool 		kick_if_away(Connection &co);
 void 		ping_if_away(Connection &co, const MyServ &serv);
 void		disconnect_client(size_t &i);
 void		disconnect_server(size_t &i);
@@ -127,8 +127,8 @@ void            parser(char *line, const size_t &client_idx, const MyServ &serve
 /*
 ** send_msg_to.cpp
 */
-void	send_to_channel(const std::string &msg, const size_t &client_idx, const MyServ &serv, const int &chan_id, bool to_sender = false);
-void	send_to_all_channel(const std::string &msg, const size_t &client_idx, const MyServ &serv, bool to_sender = false);
+void	send_to_channel(const std::string &msg, const size_t &client_idx, const int &chan_id, bool to_sender = false);
+void	send_to_all_channel(const std::string &msg, const size_t &client_idx, bool to_sender = false);
 
 /*
 ** find_client_or_channel.cpp

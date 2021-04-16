@@ -3,7 +3,7 @@
 #include "../includes/MyServ.hpp"
 #include "../includes/commands.hpp"
 
-void	send_to_channel(const std::string &msg, const size_t &client_idx, const MyServ &serv, const int &chan_id, bool to_sender)
+void	send_to_channel(const std::string &msg, const size_t &client_idx, const int &chan_id, bool to_sender)
 {
 	std::string		full_msg = 	":" + g_aClient[client_idx].second.get_nickname() + "!"
 		+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " " + msg + "\r\n";
@@ -14,7 +14,7 @@ void	send_to_channel(const std::string &msg, const size_t &client_idx, const MyS
 	}
 }
 
-void	send_to_all_channel(const std::string &msg, const size_t &client_idx, const MyServ &serv, bool to_sender)
+void	send_to_all_channel(const std::string &msg, const size_t &client_idx, bool to_sender)
 {
 	std::string		full_msg = 	":" + g_aClient[client_idx].second.get_nickname() + "!"
 		+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " " + msg + "\r\n";

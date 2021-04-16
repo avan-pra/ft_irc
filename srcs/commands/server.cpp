@@ -2,8 +2,8 @@
 
 void	server_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
+	(void)line;
 	Server new_serv;
-
 	if (serv.get_need_pass() == true && g_aClient[client_idx].second.is_good_password() == false)
 	{
 		throw IncorrectPassException(); 
