@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 12:11:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/15 19:56:48 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/16 12:24:27 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #include <algorithm>
 #include <cstring>
 
-void		mode_o(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &name)
+void		mode_o(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &name)
 {
-	if (minus == true)
+	if (sign == '-')
 	{
 		g_vChannel[chann_idx].remove_user_operator(name);
 		g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + 
@@ -38,7 +38,7 @@ void		mode_o(const size_t &client_idx, const size_t &chann_idx, const bool &minu
 	}
 }
 
-void		mode_b(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &str)
+void		mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &str)
 {
 	t_ban_id user;
 
@@ -54,7 +54,7 @@ void		mode_b(const size_t &client_idx, const size_t &chann_idx, const bool &minu
 		user.username = str.substr(str.find('!') + 1, str.find('@'));
 		user.hostname = str.substr(str.find('@') + 1);
 	}
-	if (minus == true)
+	if (sign == '-')
 	{
 		g_vChannel[chann_idx].remove_user_ban(user);
 		g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + 
@@ -69,9 +69,9 @@ void		mode_b(const size_t &client_idx, const size_t &chann_idx, const bool &minu
 	}
 }
 
-void		mode_v(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &name)
+void		mode_v(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &name)
 {
-	if (minus == true)
+	if (sign == '-')
 	{
 		g_vChannel[chann_idx].remove_user_voice(name);
 		g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + 

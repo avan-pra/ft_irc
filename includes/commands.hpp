@@ -184,9 +184,8 @@ void	notice_command(const std::string &line, const size_t &client_idx, const MyS
 ** specific_modes_fncts 
 */
 
-void	mode_o(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &name);
-void	mode_b(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &str);
-void	mode_v(const size_t &client_idx, const size_t &chann_idx, const bool &minus, const std::string &name);
-
+void	mode_o(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &name);
+void	mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &str);
+void	mode_v(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &name);
 
 #endif

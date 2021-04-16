@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/15 20:00:40 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/16 12:21:18 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,64 +82,63 @@ static std::string	set_output_mode(const size_t &chann_idx)
 	return	output;
 }
 
-static bool			switch_mode(const char c, const std::string arg, const size_t &chann_idx, const size_t &client_idx, bool minus, const MyServ &serv)
+static bool			switch_mode(const char c, const std::string arg, const size_t &chann_idx,
+						const size_t &client_idx, const char &sign, const MyServ &serv)
 {
-	bool		ret = true;
-	std::string mode = g_vChannel[chann_idx].get_mode();
+	bool				ret = true;
+	std::string 		mode = g_vChannel[chann_idx].get_mode();
 	const std::string	not_add = "oOvb";
 
 	switch (c)
 	{
 		case 'm':
-		{
-			if (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == false)
-			{
-				g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
-				return false;
-			}
+		{	
 			ret = false;
 			break;
 		}
 		case 'n':
 		{
-			if (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == false)
-			{
-				g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
-				return false;
-			}
 			ret = false;
 			break;
 		}
 		case 't':
 		{
-			if (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == false)
-			{
-				g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
-				return false;
-			}
+			ret = false;
+			break;
+		}
+		case 'i':
+		{
+			ret = false;
+			break;
+		}
+		case 'q':
+		{
+			ret = false;
+			break;
+		}
+		case 'p':
+		{
+			ret = false;
+			break;
+		}
+		case 's':
+		{
+			ret = false;
+			break;
+		}
+		case 'r':
+		{
 			ret = false;
 			break;
 		}
 		case 'k':
 		{
-			if (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == true)
-				minus == false ? g_vChannel[chann_idx].set_password(arg) : g_vChannel[chann_idx].set_password("");
-			else
-			{
-				g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
-				return false;
-			}
+			sign == '+' ? g_vChannel[chann_idx].set_password(arg) : g_vChannel[chann_idx].set_password("");
 			break;
 		}
 		case 'l':
 		{
-			if (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == true)
-				minus == false ? g_vChannel[chann_idx].set_limit(ft_atoi(arg)) : g_vChannel[chann_idx].set_limit(-1);
-			else
-			{
-				g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
-				return false;
-			}
+			sign == '+' ? g_vChannel[chann_idx].set_limit(ft_atoi(arg)) : g_vChannel[chann_idx].set_limit(-1);
 			break;
 		}
 		case 'o':
@@ -149,24 +148,12 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 				g_aClient[client_idx].second.send_reply(create_msg(441, client_idx, serv, arg, g_vChannel[chann_idx].get_name()));
 				return false;
 			}
-			if (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == true)			
-				mode_o(client_idx, chann_idx, minus, arg);
-			else
-			{
-				g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
-				return false;
-			}
+			mode_o(client_idx, chann_idx, sign, arg);
 			break;
 		}
 		case 'b':
 		{
-			if (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == true)
-				mode_b(client_idx, chann_idx, minus, arg);
-			else
-			{
-				g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
-				return false;
-			}
+			mode_b(client_idx, chann_idx, sign, arg);
 			break;
 		}
 		case 'v':
@@ -176,13 +163,7 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 				g_aClient[client_idx].second.send_reply(create_msg(441, client_idx, serv, arg, g_vChannel[chann_idx].get_name()));
 				return false;
 			}
-			if (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == true)
-				mode_v(client_idx, chann_idx, minus, arg);
-			else
-			{
-				g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
-				return false;
-			}
+			mode_v(client_idx, chann_idx, sign, arg);
 			break;
 		}
 		default:
@@ -193,29 +174,34 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 			return false;
 		}
 	}
-	if (minus == true)
+	if (sign == '-')
 	{
 		mode.erase(std::remove(mode.begin(), mode.end(), c), mode.end());
 		g_vChannel[chann_idx].set_mode(mode);
 	}
-	else if (!(std::strchr(g_vChannel[chann_idx].get_mode().c_str(), c)) && !(std::strchr(not_add.c_str(), c)) && minus == false)
+	else if (!(std::strchr(g_vChannel[chann_idx].get_mode().c_str(), c)) && !(std::strchr(not_add.c_str(), c)) && sign == '+')
 		g_vChannel[chann_idx].set_mode(g_vChannel[chann_idx].get_mode() += c);
 	return	(ret);
 }
 
 static void			set_chann_mode(const std::string mode, const std::vector<std::string> args, const size_t &chann_idx, const size_t &client_idx, const MyServ &serv)
 {
-	bool				minus = false;
+	char				sign = '+';
 	std::string			tmp;
 	int					j = 3;
 
+	if (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == false)
+	{
+		g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
+		throw std::exception();
+	}
 	for (size_t i = 0; i < mode.size(); i++)
 	{
 		if (mode[i] == '-')
-			minus = true;
+			sign = '-';
 		else if (mode[i] == '+')
-			minus = false;
-		else if (switch_mode(mode[i], args[j], chann_idx, client_idx, minus, serv) == true)
+			sign = '+';
+		else if (switch_mode(mode[i], args[j], chann_idx, client_idx, sign, serv) == true)
 			j++;
 	}
 	g_vChannel[chann_idx].send_to_all(create_full_msg_mode(g_vChannel[chann_idx].get_mode(), client_idx, chann_idx));
