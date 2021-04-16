@@ -41,76 +41,9 @@ void		mode_o(const size_t &client_idx, const size_t &chann_idx, const char &sign
 void		mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &str)
 {
 	t_ban_id		user;
-	size_t			pos;
-	unsigned char	count = 0;
-	
-	user.nickname = "*";
-	user.username = "*";
-	user.hostname = "*";
 
-	pos = str.find('!');
-	if (pos != std::string::npos)
-	{
-		if (pos == 0)
-		{
-			user.nickname = "*";
-			user.username = std::strchr(str.c_str(), '@') ? str.substr(1, str.find('@')) : str.substr(1, str.size());
-		}
-		else
-		{
-			user.nickname = str.substr(0, pos);
-			if (std::strchr(str.c_str(), '@'))
-			{
-				user.username = str.substr(pos + 1, str.find('@') - pos - 1);
-			}
-			else
-			{
-				user.username = str.substr(pos + 1, str.size());
-			}
-			if (user.username.empty())
-				user.username = "*";
-		}
-		count += 1;
-	}
-	pos = str.find('@');
-	if (pos != std::string::npos)
-	{
-		if (pos == 0)
-		{
-			user.nickname = "*";
-			user.username = "*";
-			user.hostname = str.substr(1, str.size());
-		}
-		else
-		{
-			if (count == 1)
-			{
-				user.hostname = str.substr(pos + 1, str.size());
-			}
-			else
-			{
-				user.username = str.substr(0, pos);
-				user.hostname = str.substr(pos + 1, str.size());
-				if (user.hostname.empty())
-					user.hostname = "*";
-			}	
-		}
-		count = count * 16 + 1;
-	}
-	if (count == 0)
-		user.nickname = str;
-	// if (!std::strchr(str.c_str(), '!'))
-	// {
-	// 	user.nickname = str;
-	// 	user.username = "*";
-	// 	user.hostname = "*";
-	// }
-	// else
-	// {
-	// 	user.nickname = str.substr(0, str.find('!'));
-	// 	user.username = str.substr(str.find('!') + 1, str.find('@'));
-	// 	user.hostname = str.substr(str.find('@') + 1);
-	// }
+	//check mask
+	format_mask(str, user.nickname, user.username, user.hostname);
 	if (sign == '-')
 	{
 		g_vChannel[chann_idx].remove_user_ban(user);

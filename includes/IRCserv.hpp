@@ -145,6 +145,11 @@ int		find_channel_with_pattern(std::string &pattern);
 std::string		create_full_msg(const std::vector<std::string> &params, const size_t &client_idx);
 std::string		create_full_msg_mode(const std::string &mode, const size_t &client_idx, const size_t &chann_idx);
 
+/*
+** mask_parser.cpp
+*/
+void format_mask(const std::string &str, std::string &nickname, std::string &username, std::string &hostname);
+
 class	IncorrectPassException: public std::exception
 {
 	virtual const char	*what() const throw()

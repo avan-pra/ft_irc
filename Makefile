@@ -30,7 +30,7 @@ DIR_SRCS = ./srcs/
 SRC = main.cpp parser.cpp get_client.cpp parse_conf.cpp \
 	  run_server.cpp setup_serv.cpp init_command.cpp \
 	  create_msg.cpp iterate_client.cpp iterate_server.cpp \
-	  find_client_or_channel.cpp send_msg_to.cpp \
+	  find_client_or_channel.cpp send_msg_to.cpp mask_parser.cpp \
 
 OBJ = $(SRCS:.cpp=.o)
 
