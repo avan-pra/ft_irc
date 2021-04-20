@@ -47,9 +47,6 @@ class Client : public Connection
 
 		std::vector<Channel>	_channels;
 	public:
-		SSL			*sslptr;
-		bool		_tls;
-
 		Client() :_has_good_password(false), _has_try_password(false), _is_oper(false) //, _is_cap(false)
 		{
 		}

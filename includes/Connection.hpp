@@ -22,7 +22,7 @@ class Connection
 		SOCKET			_fd;
 		sockaddr_in		sock_addr;
 
-		Connection() : _ping_sended(false), _is_register(false) { }
+		Connection() : _ping_sended(false), _is_register(false) { _tls = false; }
 
 		time_t			&get_last_activity() { return _last_activity; }
 		std::string		get_unended_packet() { return (_unended_packet); }
