@@ -2,7 +2,7 @@
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
-const size_t	who_switch(char c)
+static size_t	who_switch(char c)
 {
 	if (c == '#' || c == '&' || c == '!' || c == '+')
 		return 1;
@@ -11,11 +11,8 @@ const size_t	who_switch(char c)
 }
 
 //return -1 si il y a eu un prblm
-int	who_channel(const std::string &channel, const size_t &client_idx, const MyServ &serv)
+static int	who_channel(const std::string &channel, const size_t &client_idx, const MyServ &serv)
 {
-	if (channel.find("*", 0) != std::string::npos)
-		return (-1);
-
 	int channel_id = find_channel(channel);
 
 	if (channel_id < 0)
@@ -45,7 +42,7 @@ int	who_channel(const std::string &channel, const size_t &client_idx, const MySe
 	return (0);
 }
 
-const bool user_on_same_channel(Client a, Client b)
+static bool user_on_same_channel(Client a, Client b)
 {
 	for (size_t n = 0; n < g_vChannel.size(); ++n)
 	{
@@ -57,10 +54,14 @@ const bool user_on_same_channel(Client a, Client b)
 
 static bool has_permission(const std::string &query, const size_t &client_idx, const size_t n)
 {
-	if (pattern_match(g_aClient[n].second.get_nickname(), query)
-			&& ((g_aClient[n].second.is_invisble() == false || user_on_same_channel(g_aClient[n].second, g_aClient[client_idx].second) || g_aClient[n].second == g_aClient[client_idx].second
-				|| query.empty() == true && (g_aClient[n].second.is_invisble() == false && user_on_same_channel(g_aClient[n].second, g_aClient[client_idx].second) == false) || g_aClient[n].second == g_aClient[client_idx].second)
-		|| g_aClient[client_idx].second.get_is_oper() == true))
+	std::string nick;
+	std::string user;
+	std::string host;
+
+	format_mask(query, nick, user, host);
+	if ((pattern_match(g_aClient[n].second.get_nickname(), nick) && pattern_match(g_aClient[n].second.get_username(), user) && pattern_match(g_aClient[n].second.get_hostname(), host))
+			&& ((g_aClient[n].second.is_invisble() == false || user_on_same_channel(g_aClient[n].second, g_aClient[client_idx].second) || g_aClient[n].second == g_aClient[client_idx].second)
+				|| g_aClient[client_idx].second.get_is_oper() == true))
 		return true;
 	return false;
 }
@@ -99,24 +100,39 @@ WHO #bonjour
 :oragono.test 315 avan-pra #bonjour :End of WHO list
 */
 
+static void is_valid_mask(const std::string &mask)
+{
+	if (mask[0] == '#' && mask.find("*", 0) != std::string::npos)
+		throw std::exception();
+	if (std::count(mask.begin(), mask.end(), '@') > 1 || std::count(mask.begin(), mask.end(), '!') > 1)
+		throw std::exception();
+	size_t host_pos = mask.find("@", 0);
+	size_t user_pos = mask.find("!", 0);
+	if (host_pos == std::string::npos || user_pos == std::string::npos)
+		return;
+	if (user_pos > host_pos)
+		throw std::exception();
+	return;
+}
+
 void	who_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string> arg = ft_split(line, " ");
 
 	if (arg.size() < 2)
-	{
-		who_client(std::string(), client_idx, serv);
-		g_aClient[client_idx].second.send_reply(create_msg(315, client_idx, serv, "*!*@*"));
 		return;
+	try
+	{
+		is_valid_mask(arg[1]);
 	}
+	catch (const std::exception &e) { return; }
+
 	switch (who_switch(arg[1][0]))
 	{
 		case 1:
 			who_channel(arg[1], client_idx, serv); break;
-		case 0: //aka default
-			who_client(arg[1], client_idx, serv); break;
 		default:
-			break;
+			who_client(arg[1], client_idx, serv); break;
 	}
 	g_aClient[client_idx].second.send_reply(create_msg(315, client_idx, serv, arg[1]));
 	//352 RPL_WHOREPLY
