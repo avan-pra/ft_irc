@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/03 12:05:10 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/20 20:21:00 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/socket.h>
 # include <sys/types.h>
 # include <cerrno>
+# include <openssl/ssl.h>
 # include "./Channel.hpp"
 # include "./Connection.hpp"
 
@@ -46,6 +47,8 @@ class Client : public Connection
 
 		std::vector<Channel>	_channels;
 	public:
+		SSL			*sslptr;
+		bool		_tls;
 
 		Client() :_has_good_password(false), _has_try_password(false), _is_oper(false) //, _is_cap(false)
 		{

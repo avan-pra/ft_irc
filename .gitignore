@@ -4,7 +4,7 @@ bircd
 bircd.tar
 bircd.tar.gz
 *.pyc
-serv
+ircserv
 *.o
 openssl-1.1.1j
 Serv

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/07 17:00:22 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/20 19:48:26 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/time.h>
 # include <map>
 # include <cstring>
+# include <openssl/ssl.h>
 # include "./Channel.hpp"
 
 class MyServ;
@@ -48,6 +49,8 @@ class MyServ
 		bool			_pass_oper;
 
 	public:
+		SSL_CTX		*sslctx;
+		SSL			*sslptr;
 
 		MyServ() : _command(fill_command())
 		{
