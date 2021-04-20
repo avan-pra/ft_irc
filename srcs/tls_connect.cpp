@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:58:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/20 17:08:00 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/20 18:38:31 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ bool		InitServerCTX(MyServ &serv)
 	}
 	close(cert);
 
-	/* ERR_free_strings() may be needed if we want to cleanup memory */
-	/* SSL_connect won't work with TLS_server_method	*/
+	OpenSSL_add_all_algorithms();
+
 	serv._ssl_ctx = SSL_CTX_new(TLS_method());
 	if (!(serv._ssl_ctx))
 	{
@@ -65,6 +65,7 @@ int		handShake(const size_t &idx, bool is_server)
 	int		ret = 0;
 	int		error;
 
+	std::cout << g_aClient[idx].second.ssl_ptr << std::endl;
 	if (is_server)
 		ret = SSL_connect(g_aServer[idx].second.ssl_ptr);
 	else
@@ -80,7 +81,7 @@ int		handShake(const size_t &idx, bool is_server)
 		if (error != SSL_ERROR_WANT_READ && error != SSL_ERROR_WANT_WRITE)
 		{
 			// drop the connection if handshake gone wrong
-			std::cerr << "TLS handshake failed for client\n" << std::endl;
+			std::cerr << "TLS handshake failed for client " << error << " \n" << std::endl;
 			// we shouldn't call SSL_shutdown because it's already fatal
 			if (is_server)
 				SSL_free(g_aServer[idx].second.ssl_ptr);
@@ -101,8 +102,9 @@ int		received_message(const MyServ &serv, const size_t &client_idx, char *buf)
 		ret = SSL_read(g_aClient[client_idx].second.ssl_ptr, buf, BUFF_SIZE);
 	}
 	else
+	{
 		ret = recv(g_aClient[client_idx].first, buf, BUFF_SIZE, 0);
-
+	}
 	return (ret);
 
 }

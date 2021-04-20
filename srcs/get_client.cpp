@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 09:49:00 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/20 17:07:16 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/20 18:31:18 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,19 @@ void accept_user(MyServ &serv, bool tls_on)
 		//	ERR_print_errors_cb(SSLErrorCallback, NULL);
 			exit_error("SSL_new failed");
 		}
-		if (SSL_set_fd(new_client.ssl_ptr, new_fd) < 1)
-		{
+	//	if (SSL_set_fd(new_client.ssl_ptr, new_fd) < 1)
+	//	{
 		//	ERR_print_errors_cb(SSLErrorCallback, NULL);
-			exit_error("SSL_set_fd failed");
+	//		exit_error("SSL_set_fd failed");
+	//	}
+		int ret = SSL_accept(new_client.ssl_ptr);
+		if (ret != 1)
+		{
+			if (ret == 0)
+				exit_error("SSL_accept() return 0");
+			else
+				std::cout << "ssl_accept error " << SSL_get_error(new_client.ssl_ptr, ret) << "\n";
+			std::cout << "error :  " << SSL_ERROR_SSL << std::endl;
 		}
 	}
 	new_client._tls_connect = tls_on;

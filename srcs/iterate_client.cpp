@@ -17,16 +17,22 @@ void	iterate_client(MyServ &serv)
 		else if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()))
 		{
 			ft_bzero((char *)c, sizeof(c));
-			if (!(serv.get_tls()) || (serv.get_tls() &&
+
+			//	ret = handShake(i, false);
+		//	std::cout << g_aClient[i].second.ssl_ptr << std::endl;
+			if (!g_aClient[i].second._tls_connect || (g_aClient[i].second.ssl_ptr &&
 						SSL_is_init_finished(g_aClient[i].second.ssl_ptr)))
+			{
 				ret = received_message(serv, i, c);
+			}
 			else
 			{
 				ret = handShake(i, false);
 				std::cout << " ret handshake =" << ret << std::endl;
-			}//int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
+			}
+			std::cout << "recv : " << c << std::endl;;
+			//int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
 			// std::cout << "recv" << std::endl;
-			std::cout << "buf " << c << std::endl;
 			if (ret <= 0)
 				disconnect_client(i);
 			else if (ret > 0)

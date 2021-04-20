@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/15 15:56:51 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/19 14:11:35 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/20 18:36:46 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@
 
 bool		InitServerCTX(MyServ &serv);
 int			handShake(const size_t &client_idx, bool is_server);
-int		received_message(const MyServ &serv, const size_t &client_idx, char *buf);
+int			received_message(const MyServ &serv, const size_t &client_idx, char *buf);
 
 #endif
