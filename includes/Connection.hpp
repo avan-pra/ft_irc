@@ -2,6 +2,7 @@
 # define CONNECTION_HPP
 
 #include <iostream>
+#include <openssl/ssl.h>
 
 typedef int	SOCKET;
 
@@ -15,6 +16,8 @@ class Connection
 		bool			_is_register;
 
 	public:
+		bool		_tls;
+		SSL			*sslptr;
 
 		SOCKET			_fd;
 		sockaddr_in		sock_addr;
@@ -36,7 +39,10 @@ class Connection
 
 		void			send_reply(const std::string &s)
 		{
-			send(_fd, s.c_str(), s.size(), 0);
+			if (_tls)
+				SSL_write(sslptr, s.c_str(), s.size());
+			else
+				send(_fd, s.c_str(), s.size(), 0);
 		}
 };
 
