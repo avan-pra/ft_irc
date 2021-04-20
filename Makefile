@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/04/20 19:51:32 by lucas            ###   ########.fr        #
+#    Updated: 2021/04/21 00:36:09 by lucas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,10 @@ NAME = ircserv
 C++ = clang++
 
 CXX = clang++
+
+CERT = godirc.crt
+
+KEY = godirc.key
 
 CUR_DIR = $(shell pwd)
 
@@ -59,6 +63,14 @@ all : $(NAME)
 
 $(NAME) : $(OBJ) $(OBJ_LIB) $(OBJ_CMD)
 		$(C++) $(FLAGS) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) -o $(NAME)
+
+certs :
+		openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
+		-keyout ./$(KEY) -out ./$(CERT) \
+		-subj "/C=FR/ST=Paris/L=Paris/O=42/OU=21/CN=ircserv"
+
+del_certs :
+		rm -rf $(CERT) $(KEY)
 
 clean :
 		rm -rf $(OBJ) $(OBJ_CMD) $(OBJ_LIB)

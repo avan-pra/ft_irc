@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 19:45:37 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/20 20:56:30 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/21 00:36:55 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	error_exit(const std::string &exit_msg)
 void	InitSSLCTX(MyServ &serv)
 {
 	/* check if cert exists */
-	int	fd = open("./ircserv.crt", O_RDONLY);
+	int	fd = open("./godirc.crt", O_RDONLY);
 	if (fd < 0)
 	{
 		serv.sslctx = NULL;
@@ -45,12 +45,12 @@ void	InitSSLCTX(MyServ &serv)
 
 	/* Set the key and cert */
 	if (SSL_CTX_use_certificate_file(serv.sslctx,
-		"./ircserv.crt", SSL_FILETYPE_PEM) <= 0)
+		"./godirc.crt", SSL_FILETYPE_PEM) <= 0)
 	{
 		error_exit("Failed to load a certificate");
 	}
 	if (SSL_CTX_use_PrivateKey_file(serv.sslctx,
-		"./ircserv.key", SSL_FILETYPE_PEM) <= 0)
+		"./godirc.key", SSL_FILETYPE_PEM) <= 0)
 	{
 		error_exit("Failed to load a private key");
 	}
