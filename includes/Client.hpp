@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/03 12:05:10 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/20 17:06:42 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ class Client : public Connection
 
 		std::vector<Channel>	_channels;
 	public:
+		bool			_tls_connect;
 
 		Client() :_has_good_password(false), _has_try_password(false), _is_oper(false) //, _is_cap(false)
 		{

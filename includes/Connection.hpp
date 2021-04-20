@@ -1,7 +1,8 @@
 #ifndef CONNECTION_HPP
 # define CONNECTION_HPP
 
-#include <iostream>
+# include <iostream>
+# include <openssl/ssl.h>
 
 typedef int	SOCKET;
 
@@ -18,8 +19,9 @@ class Connection
 
 		SOCKET			_fd;
 		sockaddr_in		sock_addr;
+		SSL				*ssl_ptr;
 
-		Connection() : _ping_sended(false), _is_register(false) { }
+		Connection() : _ping_sended(false), _is_register(false), ssl_ptr(NULL) { }
 
 		time_t			&get_last_activity() { return _last_activity; }
 		std::string		get_unended_packet() { return (_unended_packet); }
@@ -36,7 +38,10 @@ class Connection
 
 		void			send_reply(const std::string &s)
 		{
-			send(_fd, s.c_str(), s.size(), 0);
+			if (ssl_ptr != NULL)
+				SSL_write(ssl_ptr, s.c_str(), s.size());
+			else
+				send(_fd, s.c_str(), s.size(), 0);
 		}
 };
 

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/07 17:00:22 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/19 13:38:08 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <map>
 # include <cstring>
 # include "./Channel.hpp"
+# include <openssl/ssl.h>
 
 class MyServ;
 class Channel;
@@ -47,7 +48,10 @@ class MyServ
 		bool			_pass_for_connection;
 		bool			_pass_oper;
 
+		bool			_tls;
+
 	public:
+		SSL_CTX			*_ssl_ctx;
 
 		MyServ() : _command(fill_command())
 		{
@@ -84,7 +88,9 @@ class MyServ
         const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	&get_command() const { return _command; }
 		bool	get_need_pass() const { return _pass_for_connection; }
 		bool	get_pass_oper() const { return _pass_oper; }
-		
+		SSL_CTX	*get_ssl_ctx() const { return _ssl_ctx; }
+		bool	get_tls() const { return _tls; }
+
 		/*
 		 ** setter
 		 */
@@ -105,6 +111,8 @@ class MyServ
 		{
 			_vChannel.push_back(channel);
 		}
+		void	set_ssl_ctx(SSL_CTX *ctx) { _ssl_ctx = ctx; }
+		void	set_tls(bool setter) { _tls = setter; }
 };
 
 #endif

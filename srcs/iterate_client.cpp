@@ -1,10 +1,12 @@
 #include "../includes/IRCserv.hpp"
 #include "../includes/MyServ.hpp"
+#include "../includes/tls_server.hpp"
 #include <ctime>
 
 void	iterate_client(MyServ &serv)
 {
-	char c[BUFF_SIZE + 1];
+	char	c[BUFF_SIZE + 1];
+	int		ret;
 
 	for (size_t i = 0; i != g_aClient.size(); ++i)
 	{
@@ -15,8 +17,16 @@ void	iterate_client(MyServ &serv)
 		else if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()))
 		{
 			ft_bzero((char *)c, sizeof(c));
-			int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
+			if (!(serv.get_tls()) || (serv.get_tls() &&
+						SSL_is_init_finished(g_aClient[i].second.ssl_ptr)))
+				ret = received_message(serv, i, c);
+			else
+			{
+				ret = handShake(i, false);
+				std::cout << " ret handshake =" << ret << std::endl;
+			}//int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
 			// std::cout << "recv" << std::endl;
+			std::cout << "buf " << c << std::endl;
 			if (ret <= 0)
 				disconnect_client(i);
 			else if (ret > 0)

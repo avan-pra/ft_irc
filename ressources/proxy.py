@@ -81,7 +81,8 @@ class Proxy(Thread):
 
 port_server = 6667
 port_proxy = 8000
-ip = '0.0.0.0'
+ip = '46.101.34.200'
+#ip = '127.0.0.1'
 
-master_server = Proxy('0.0.0.0', ip, port_server, port_proxy)
+master_server = Proxy('localhost', ip, port_server, port_proxy)
 master_server.start()

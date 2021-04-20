@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/16 17:52:22 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/20 16:39:33 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 
 # define PORT 6667
 
+# define TLS_PORT 6697
+
 # define BUFF_SIZE 512
 
 # define PING 100
@@ -28,6 +30,7 @@
 # define FILE_NAME "./irc.conf"
 
 # define HASH_CHAR "0123456789abcdefABCDEF"
+
 
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -55,7 +58,7 @@ typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 
-extern SOCKET									g_serv_sock;
+extern SOCKET									g_serv_sock[2];
 extern std::deque<std::pair<SOCKET, Client> >	g_aClient;
 extern std::vector<Channel>						g_vChannel;
 extern std::vector<std::pair<SOCKET, Server> >	g_aServer;
@@ -149,6 +152,12 @@ std::string		create_full_msg_mode(const std::string &mode, const size_t &client_
 ** mask_parser.cpp
 */
 void format_mask(const std::string &str, std::string &nickname, std::string &username, std::string &hostname);
+
+/*
+ ** error.cpp
+*/
+void	exit_error(const std::string &error);
+
 
 class	IncorrectPassException: public std::exception
 {
