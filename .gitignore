@@ -10,3 +10,5 @@ openssl-1.1.1j
 Serv
 Dockerfile
 *.py
+godirc.crt
+godirc.key

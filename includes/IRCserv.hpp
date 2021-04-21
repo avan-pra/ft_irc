@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/21 14:32:59 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/21 16:11:19 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void format_mask(const std::string &str, std::string &nickname, std::string &use
 void	InitSSLCTX(MyServ &serv);
 void	error_exit(const std::string &exit_msg);
 int		receive_message(const size_t &client_idx, char *buf);
-int		DoHandshakeTLS(const size_t &idx);
+int		DoHandshakeTLS(size_t &idx);
 
 
 class	IncorrectPassException: public std::exception

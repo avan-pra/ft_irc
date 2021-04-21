@@ -16,13 +16,12 @@ class Connection
 		std::string		_servername;
 		bool			_ping_sended;
 		bool			_is_register;
-
-		bool		_tls;
-		SSL			*_sslptr;
+		bool			_tls;
 
 	public:
 
 		SOCKET			_fd;
+		SSL				*_sslptr;
 		sockaddr_in		sock_addr;
 
 		Connection() : _ping_sended(false), _is_register(false) { _tls = false; }
@@ -33,7 +32,6 @@ class Connection
 		bool			get_ping_status() { return _ping_sended; }
 		bool			is_registered() { return (_is_register); }
 		bool			get_tls() { return _tls; }
-		SSL				*get_sslptr() { return _sslptr; }
 
 
 
@@ -42,7 +40,6 @@ class Connection
 		void			set_unended_packet(std::string packet) { _unended_packet = packet; }
 		void			set_register(bool registered) { _is_register = registered; }
 		void			set_tls(bool tls_state) { _tls = tls_state; }
-		bool			set_sslptr(SSL *ptr) { _sslptr = ptr; return (ptr ? true: false); }
 
 		void			send_reply(const std::string &s)
 		{

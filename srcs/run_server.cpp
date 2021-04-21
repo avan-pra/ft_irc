@@ -41,6 +41,11 @@ static void push_fd_to_set(MyServ &serv)
 
 void		disconnect_client(size_t &i)
 {
+	if (g_aClient[i].second.get_tls())
+	{
+		SSL_shutdown(g_aClient[i].second._sslptr);
+		SSL_free(g_aClient[i].second._sslptr);
+	}
 	closesocket(g_aClient[i].first);
 	std::cout << "* User disconnected from: " << inet_ntoa(g_aClient[i].second.sock_addr.sin_addr)
 		<< ":" << ntohs(g_aClient[i].second.sock_addr.sin_port) << std::endl;

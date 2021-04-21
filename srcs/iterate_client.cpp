@@ -17,7 +17,7 @@ void	iterate_client(MyServ &serv)
 		{
 			ft_bzero((char *)c, sizeof(c));
 			if (!(g_aClient[i].second.get_tls()) || (g_aClient[i].second.get_tls() &&
-						SSL_is_init_finished(g_aClient[i].second.get_sslptr())))
+						SSL_is_init_finished(g_aClient[i].second._sslptr)))
 					ret = receive_message(i, c);
 			else
 					ret = DoHandshakeTLS(i);
