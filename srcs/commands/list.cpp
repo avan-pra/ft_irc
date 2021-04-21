@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 13:51:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/12 15:22:37 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/21 13:43:46 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,36 +15,13 @@
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
-template <class T>
-std::string		to_string(T value)
-{
-	std::string output;
-	std::string sign;
-	char		nb[2];
-
-	if (value < 0)
-	{
-		sign + "-";
-		value = -value;
-	}
-	nb[1] = '\0';
-	while (output.empty() || (value > 0))
-	{
-		nb[0] = value % 10 + '0';
-		output.insert(0, std::string(nb));
-		value /= 10;
-	}
-
-	return (sign + output);
-}
-
 bool	create_list(const std::string &it, size_t chan_id, const size_t &client_idx, const MyServ &serv, std::string &msg)
 {
 	std::string		topic;
 
 	if ((chan_id = find_channel(it)) != -1)
 	{
-		topic = to_string(g_vChannel[chan_id]._users.size()) + g_vChannel[chan_id].get_topic();
+		topic = ft_to_string(g_vChannel[chan_id]._users.size()) + g_vChannel[chan_id].get_topic();
 		msg += create_msg(322, client_idx, serv, " " + it, topic);
 		return (true);
 	}
@@ -112,7 +89,7 @@ void	list_command(const std::string &line, const size_t &client_idx, const MySer
 			find = true;
 			if (!g_vChannel[chan_id].is_mode('s') && !g_vChannel[chan_id].is_mode('p'))
 			{
-				topic = to_string(g_vChannel[chan_id]._users.size()) + g_vChannel[chan_id].get_topic();
+				topic = ft_to_string(g_vChannel[chan_id]._users.size()) + g_vChannel[chan_id].get_topic();
 				g_aClient[client_idx].second.send_reply(create_msg(322, client_idx, serv, " " + *it, topic));
 			}
 		}

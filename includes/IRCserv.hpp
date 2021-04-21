@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/20 20:35:15 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/21 13:53:51 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,12 @@ std::vector<std::string>	ft_split(std::string s, std::string splitter);
 ** char2hex.cpp
 */
 int		char2hex(char input);
+
+/*
+** to_string 
+*/
+//template <typename T>
+std::string		ft_to_string(size_t value);
 
 /*
 ** parser.cpp

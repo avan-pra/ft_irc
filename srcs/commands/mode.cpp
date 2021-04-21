@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/16 20:12:24 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/21 13:43:56 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static std::string	set_output_mode(const size_t &chann_idx)
 		if (tmp[i] == 'k')
 			output += " " + g_vChannel[chann_idx].get_password();
 		if (tmp[i] == 'l')
-			output += " " + std::to_string(g_vChannel[chann_idx].get_limit());
+			output += " " + ft_to_string(g_vChannel[chann_idx].get_limit());
 	}
 	return	output;
 }
@@ -256,7 +256,7 @@ void				mode_command(const std::string &line, const size_t &client_idx, const My
 						mssg = g_vChannel[channel_idx].get_name() + " ";
 						mssg += g_vChannel[channel_idx]._ban[i].nickname + "!" + g_vChannel[channel_idx]._ban[i].username + "@" + g_vChannel[channel_idx]._ban[i].hostname + " ";
 						mssg += g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " ";
-						mssg += std::to_string(g_vChannel[channel_idx]._ban[i].ban_date);
+						mssg += ft_to_string(g_vChannel[channel_idx]._ban[i].ban_date);
 						g_aClient[client_idx].second.send_reply(create_msg(367, client_idx, serv, mssg));
 					}
 					g_aClient[client_idx].second.send_reply(create_msg(368, client_idx, serv, g_vChannel[channel_idx].get_name()));

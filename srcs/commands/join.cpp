@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/17 17:52:50 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/21 13:42:49 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ static void	make_channel_pair(const std::vector<std::string> &params, std::map<s
 
 static void	send_channel_time(const size_t &client_idx, const MyServ &serv, const std::string channel)
 {
-	g_aClient[client_idx].second.send_reply(create_msg(329, client_idx, serv, channel, std::to_string(g_vChannel[find_channel(channel)].get_creation_date())));
+	g_aClient[client_idx].second.send_reply(create_msg(329, client_idx, serv, channel, ft_to_string((int)g_vChannel[find_channel(channel)].get_creation_date())));
 }
 
 void	join_command(const std::string &line, const size_t &client_idx, const MyServ &serv)

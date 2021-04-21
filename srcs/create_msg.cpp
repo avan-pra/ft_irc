@@ -1,7 +1,6 @@
 #include <iostream>
 #include "../includes/MyServ.hpp"
 #include "../includes/IRCserv.hpp"
-#include <string>
 #include "../includes/commands.hpp"
 
 std::string create_msg(const int &code, const size_t &client_idx, const MyServ &serv, const std::string &arg1, const std::string &arg2, const std::string &arg3)
@@ -9,11 +8,11 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 	std::string sample;
 	std::string true_code;
 
-	true_code = std::to_string(code);
+	true_code = ft_to_string(code);
 	if (code < 10)
-		true_code = std::string(2, '0').append(std::to_string(code));
+		true_code = std::string(2, '0').append(ft_to_string(code));
 	else if (code < 100)
-		true_code = std::string(1, '0').append(std::to_string(code));
+		true_code = std::string(1, '0').append(ft_to_string(code));
 	if (g_aClient[client_idx].second.get_nickname().empty())
 		sample = std::string(":" + serv.get_hostname() + " " + true_code + " *");
 	else

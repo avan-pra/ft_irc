@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/04/21 12:55:32 by jvaquer          ###   ########.fr        #
+#    Updated: 2021/04/21 13:45:01 by jvaquer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ OBJ = $(SRCS:.cpp=.o)
 #libft file
 SRCS_LIB = $(addprefix $(DIR_LIB), $(SRC_LIB))
 DIR_LIB = ./srcs/libft/
-SRC_LIB = ft_atoi.cpp ft_bzero.cpp ft_split.cpp char2hex.cpp
+SRC_LIB = ft_atoi.cpp ft_bzero.cpp ft_split.cpp char2hex.cpp ft_to_string.cpp
 
 OBJ_LIB = $(SRCS_LIB:.cpp=.o)
 

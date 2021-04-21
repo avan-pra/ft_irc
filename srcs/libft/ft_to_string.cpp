@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.cpp                                        :+:      :+:    :+:   */
+/*   ft_to_string.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 17:45:53 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/21 13:13:34 by jvaquer          ###   ########.fr       */
+/*   Created: 2021/04/21 13:13:18 by jvaquer           #+#    #+#             */
+/*   Updated: 2021/04/21 13:53:02 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/IRCserv.hpp"
+#include <string>
 
-int		ft_atoi(std::string str)
+//template <typename T>
+std::string		ft_to_string(size_t value)
 {
-	int		result;
-	int		i;
+	std::string output;
+	std::string sign;
+	char		nb[2];
 
-	result = 0;
-	i = 0;
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
+	if (value < 0)
 	{
-		result = result * 10 + (str[i] - '0');
-		i++;
+		sign + "-";
+		value = -value;
 	}
-	if (str[i] != '\0')
-		return (-1);
-	return (result);
+	nb[1] = '\0';
+	while (output.empty() || (value > 0))
+	{
+		nb[0] = value % 10 + '0';
+		output.insert(0, std::string(nb));
+		value /= 10;
+	}
+
+	return (sign + output);
 }
