@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/02 16:48:42 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/21 13:01:50 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void			check_realname(const std::string str, const size_t &client_idx, co
 	}
 }
 
-static void			check_2nd_arg(const std::string str, std::string &host_name, std::string &mode, const size_t &client_idx, const MyServ &serv)
+static void			check_2nd_arg(const std::string str, std::string &host_name, std::string &mode)
 {
 	if (!is_number(str))
 	{
@@ -56,20 +56,7 @@ static void			check_2nd_arg(const std::string str, std::string &host_name, std::
 	}
 }
 
-static void			check_user_registered(const std::string str, const std::vector<std::string> vect, const size_t &client_idx, const MyServ &serv)
-{
-	for (size_t i = 0; i != g_aClient.size(); i++)
-	{
-		if (g_aClient[i].second.get_username() == vect[1] ||
-			g_aClient[i].second.get_realname() == str)
-		{
-			g_aClient[client_idx].second.send_reply(create_msg(462, client_idx, serv, str));
-			throw std::exception();
-		}
-	}
-}
-
-static void			set_user(const std::string username, const std::string host_name, std::string mode, const std::string server_name, const std::string realname, const size_t &client_idx)
+static void			set_user(const std::string username, std::string mode, const std::string server_name, const std::string realname, const size_t &client_idx)
 {
 	g_aClient[client_idx].second.set_username(username);
 	g_aClient[client_idx].second.set_hostname(inet_ntoa(g_aClient[client_idx].second.sock_addr.sin_addr));
@@ -111,9 +98,9 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 			throw std::exception();
 		}
 		check_realname(realname, client_idx, serv);
-		check_2nd_arg(args[2], host_name, mode, client_idx, serv);
+		check_2nd_arg(args[2], host_name, mode);
 		// check_user_registered(realname, args, client_idx, serv);
-		set_user(args[1], host_name, mode, args[3], realname, client_idx);
+		set_user(args[1], host_name, mode, args[3], client_idx);
 
 		if (g_aClient[client_idx].second.get_nickname().size() > 0)		
 		{

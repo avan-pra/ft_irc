@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 12:11:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/16 20:12:32 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/21 12:57:11 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		mode_o(const size_t &client_idx, const size_t &chann_idx, const char &sign
 		size_t cli_to_add_idx;
 
 		cli_to_add_idx = find_user_by_nick(name);
-		if (cli_to_add_idx != -1)
+		if ((int)cli_to_add_idx != -1)
 		{
 			g_vChannel[chann_idx]._operator.push_back(&g_aClient[cli_to_add_idx].second);
 			g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() +
@@ -72,7 +72,7 @@ void		mode_v(const size_t &client_idx, const size_t &chann_idx, const char &sign
 		size_t cli_to_add_idx;
 
 		cli_to_add_idx = find_user_by_nick(name);
-		if (cli_to_add_idx != -1)
+		if ((int)cli_to_add_idx != -1)
 		{
 			g_vChannel[chann_idx]._operator.push_back(&g_aClient[cli_to_add_idx].second);
 			g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + 
