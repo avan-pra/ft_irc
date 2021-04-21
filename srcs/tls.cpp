@@ -6,18 +6,11 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 19:45:37 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/21 16:35:12 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/21 16:51:52 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/IRCserv.hpp"
-
-
-void	error_exit(const std::string &exit_msg)
-{
-	std::cerr << exit_msg << std::endl;
-	exit(1);
-}
 
 void	InitSSLCTX(MyServ &serv)
 {
@@ -48,11 +41,13 @@ void	InitSSLCTX(MyServ &serv)
 	if (SSL_CTX_use_certificate_file(serv.sslctx,
 		"./godirc.crt", SSL_FILETYPE_PEM) <= 0)
 	{
+		SSL_CTX_free(serv.sslctx);
 		error_exit("Failed to load a certificate");
 	}
 	if (SSL_CTX_use_PrivateKey_file(serv.sslctx,
 		"./godirc.key", SSL_FILETYPE_PEM) <= 0)
 	{
+		SSL_CTX_free(serv.sslctx);
 		error_exit("Failed to load a private key");
 	}
 }
@@ -67,29 +62,6 @@ int		receive_message(const size_t &client_idx, char *buf)
 		ret = SSL_read(g_aClient[client_idx].second._sslptr, buf, BUFF_SIZE);
 	return (ret);
 }
-
-void	print_error_SLL(int error_code)
-{
-	if (error_code == SSL_ERROR_NONE)
-		std::cerr << "SSL_ERROR_NONE\n";
-	if (error_code == SSL_ERROR_ZERO_RETURN)
-		std::cerr << "SSL_ERROR_ZERO_RETURN\n";
-	if (error_code == SSL_ERROR_WANT_READ)
-		std::cerr << "SSL_ERROR_WANT_READ\n";
-	if (error_code == SSL_ERROR_WANT_WRITE)
-		std::cerr << "SSL_ERROR_WANT_WRITE\n";
-	if (error_code == SSL_ERROR_WANT_CONNECT)
-		std::cerr << "SSL_ERROR_WANT_CONNECT\n";
-	if (error_code == SSL_ERROR_WANT_ACCEPT)
-		std::cerr << "SSL_ERROR_WANT_ACCEPT\n";
-	if (error_code == SSL_ERROR_WANT_X509_LOOKUP)
-		std::cerr << "SSL_ERROR_WANT_X509_LOOKUP\n";
-	if (error_code == SSL_ERROR_SYSCALL)
-		std::cerr << "SSL_ERROR_SYSCALL\n";
-	if (error_code == SSL_ERROR_SSL)
-		std::cerr << "SSL_ERROR_SSL\n";
-}
-
 
 int		DoHandshakeTLS(size_t &idx)
 {

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/21 16:11:19 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/21 16:49:52 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,12 @@ void	InitSSLCTX(MyServ &serv);
 void	error_exit(const std::string &exit_msg);
 int		receive_message(const size_t &client_idx, char *buf);
 int		DoHandshakeTLS(size_t &idx);
+
+/*
+ ** error.cpp
+*/
+void	print_error_SLL(int error_code);
+void	error_exit(const std::string &exit_msg);
 
 
 class	IncorrectPassException: public std::exception

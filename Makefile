@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/04/21 13:45:01 by jvaquer          ###   ########.fr        #
+#    Updated: 2021/04/21 17:08:03 by lucas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ CUR_DIR = $(shell pwd)
 
 FLAG = -Wall -Werror -Wextra -std=c++98
 
-#CXXFLAGS = $(FLAG)
+CXXFLAGS = $(FLAG)
 
 FLAGS = -lssl -lcrypto -ldl -L$(CUR_DIR)/openssl-1.1.1j
 
@@ -35,7 +35,7 @@ SRC = main.cpp parser.cpp get_client.cpp parse_conf.cpp \
 	  run_server.cpp setup_serv.cpp init_command.cpp \
 	  create_msg.cpp iterate_client.cpp iterate_server.cpp \
 	  find_client_or_channel.cpp send_msg_to.cpp mask_parser.cpp \
-	  tls.cpp \
+	  tls.cpp error.cpp \
 
 OBJ = $(SRCS:.cpp=.o)
 
