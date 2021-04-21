@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/12 16:24:17 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/21 14:15:06 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ void	privmsg_command(const std::string &line, const size_t &client_idx, const My
 	std::vector<std::string>	params;
 	int							i;
 
-	params = ft_split(line, " ");
+	params = ft_split(line.substr(0, line.find_first_of(':')), " ");
+	params.push_back(line.substr(line.find_first_of(':')));
 	if (!check_params(params, client_idx, serv))
 		return ;
 	i = find_channel(params[1]);

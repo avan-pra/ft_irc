@@ -2,6 +2,8 @@
 # define CONNECTION_HPP
 
 #include <iostream>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <openssl/ssl.h>
 
 typedef int	SOCKET;
@@ -15,9 +17,10 @@ class Connection
 		bool			_ping_sended;
 		bool			_is_register;
 
-	public:
 		bool		_tls;
-		SSL			*sslptr;
+		SSL			*_sslptr;
+
+	public:
 
 		SOCKET			_fd;
 		sockaddr_in		sock_addr;
@@ -29,6 +32,8 @@ class Connection
 		std::string		get_servername() {return (_servername); }
 		bool			get_ping_status() { return _ping_sended; }
 		bool			is_registered() { return (_is_register); }
+		bool			get_tls() { return _tls; }
+		SSL				*get_sslptr() { return _sslptr; }
 
 
 
@@ -36,11 +41,13 @@ class Connection
 		void			set_servername(std::string servername) { _servername = servername; }
 		void			set_unended_packet(std::string packet) { _unended_packet = packet; }
 		void			set_register(bool registered) { _is_register = registered; }
+		void			set_tls(bool tls_state) { _tls = tls_state; }
+		bool			set_sslptr(SSL *ptr) { _sslptr = ptr; return (ptr ? true: false); }
 
 		void			send_reply(const std::string &s)
 		{
 			if (_tls)
-				SSL_write(sslptr, s.c_str(), s.size());
+				SSL_write(_sslptr, s.c_str(), s.size());
 			else
 				send(_fd, s.c_str(), s.size(), 0);
 		}

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/20 20:21:00 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/21 14:32:41 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ class Client : public Connection
 		// bool			_is_cap;
 		//int			_status;
 
-		std::vector<Channel>	_channels;
+		//std::vector<Channel>	_channels;
 	public:
 		Client() :_has_good_password(false), _has_try_password(false), _is_oper(false) //, _is_cap(false)
 		{
@@ -69,7 +69,7 @@ class Client : public Connection
 
 		bool					get_is_oper() { return _is_oper; }
 		bool					is_invisble() { return (_mode.find('i', 0) != std::string::npos); }
-		std::vector<Channel>	get_channels() { return _channels; }
+		//std::vector<Channel>	get_channels() { return _channels; }
 
 		/*
 		 ** Setter

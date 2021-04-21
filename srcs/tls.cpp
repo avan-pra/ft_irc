@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 19:45:37 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/21 00:36:55 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/21 15:06:23 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ int		receive_message(const size_t &client_idx, char *buf)
 {
 	int	ret = 0;
 
-	if (!g_aClient[client_idx].second._tls)
+	if (!g_aClient[client_idx].second.get_tls())
 		ret = recv(g_aClient[client_idx].first, buf, BUFF_SIZE, 0);
 	else
-		ret = SSL_read(g_aClient[client_idx].second.sslptr, buf, BUFF_SIZE);
+		ret = SSL_read(g_aClient[client_idx].second.get_sslptr(), buf, BUFF_SIZE);
 	return (ret);
 }
 
@@ -95,13 +95,13 @@ int		DoHandshakeTLS(const size_t &idx)
 	int		ret;
 	int		error;
 
-	ret = SSL_accept(g_aClient[idx].second.sslptr);
+	ret = SSL_accept(g_aClient[idx].second.get_sslptr());
 	if (ret != 1)
 	{
-		error = SSL_get_error(g_aClient[idx].second.sslptr, ret);
+		error = SSL_get_error(g_aClient[idx].second.get_sslptr(), ret);
 		if (error != SSL_ERROR_WANT_WRITE && error != SSL_ERROR_WANT_READ)
 		{
-			print_error_SLL(SSL_get_error(g_aClient[idx].second.sslptr, ret));
+			print_error_SLL(SSL_get_error(g_aClient[idx].second.get_sslptr(), ret));
 			exit(1);
 		}
 	}
