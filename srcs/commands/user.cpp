@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/21 13:01:50 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/21 15:16:11 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 		}
 		check_realname(realname, client_idx, serv);
 		check_2nd_arg(args[2], host_name, mode);
-		// check_user_registered(realname, args, client_idx, serv);
-		set_user(args[1], host_name, mode, args[3], client_idx);
+		set_user(args[1], mode, args[3], realname, client_idx);
 
 		if (g_aClient[client_idx].second.get_nickname().size() > 0)		
 		{
