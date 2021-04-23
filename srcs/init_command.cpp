@@ -39,7 +39,7 @@ std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx
 	cmd["PRIVMSG"] = privmsg_command;
 	cmd["NOTICE"] = notice_command;
 	cmd["WHO"] = who_command;
-	cmd["WHOIS"] = NULL;
+	cmd["WHOIS"] = whois_command;
 	cmd["WHOWAS"] = NULL;
 	cmd["KILL"] = NULL;
 	cmd["PING"] = ping_command;

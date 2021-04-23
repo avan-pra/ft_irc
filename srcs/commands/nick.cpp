@@ -23,7 +23,7 @@ static std::string	check_username(const std::string &str, const size_t &client_i
 	//check si la string contient des char interdit (les chars valides sont au dessus)
 	for (size_t i = 0; i < str.length(); ++i)
 	{
-		if (!std::strchr(USERNAME_VALID_CHAR, str[i]))
+		if (!std::strchr(NICKNAME_VALID_CHAR, str[i]))
 		{
 			g_aClient[client_idx].second.send_reply(create_msg(432, client_idx, serv, str)); throw std::exception();
 		}

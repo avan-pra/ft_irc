@@ -65,12 +65,12 @@
 # define RPL_AWAY(pseudo) (pseudo + " :<message d'absence>\r\n")
 # define RPL_UNAWAY() (":You are no longer marked as being away\r\n")
 # define RPL_NOWAWAY() (":You have been marked as being away\r\n")
-# define RPL_WHOISUSER(pseudo, user, host) (pseudo + " " + user + " " + host + " * :<vrai nom>\r\n")
+# define RPL_WHOISUSER(pseudo, user, host, realname) ( " " + pseudo + " " + user + " " + host + " * :" + realname + "\r\n")
 //# define RPL_WHOISSERVER(pseudo, server) (pseudo + " " + server + " :<info serveur>\r\n")
 # define RPL_WHOISOPERATOR(pseudo) (pseudo + " :is an IRC operator\r\n")
-# define RPL_WHOISIDLE(pseudo, integer) (pseudo + " " + integer + " :seconds idle\r\n")
+# define RPL_WHOISIDLE(pseudo, idle, signon) (" " + pseudo + " " + idle + " " + signon + " :seconds idle, signon time\r\n")
 # define RPL_WHOREPLY(arg) (" " + arg + "\r\n")
-# define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of WHOIS list\r\n")
+# define RPL_ENDOFWHOIS(pseudo) (" " + pseudo + " :End of WHOIS list\r\n")
 //# define RPL_WHOISCHANNELS(pseudo, channel) (pseudo + " :{[@|+]<canal><espace>}\r\n")
 //# define RPL_WHOWASUSER(pseudo, user, host) (pseudo + " " + user + " " + host + " * :<vrai nom>\r\n")
 # define RPL_ENDOFWHOWAS(pseudo) (pseudo + " :End of WHOWAS\r\n")
@@ -137,7 +137,7 @@
 # define RPL_CREATIONTIME(channel, c_time) (" " + channel + " " + c_time + "\r\n")
 
 //define invalid character as for username
-# define USERNAME_VALID_CHAR "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_[]{}\\`|"
+# define NICKNAME_VALID_CHAR "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_[]{}\\`|"
 
 //define channel chars
 # define CHANNEL_VALID_CHAR "#&!+"
@@ -146,7 +146,7 @@
 # define USER_VALID_MODE "aiwroOs"
 # define CHANNEL_VALID_MODE "OovaimnqpsrtklbeI"
 
-std::string create_msg(const int &code, const size_t &client_idx, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string());
+std::string create_msg(const int &code, const size_t &client_idx, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string(), const std::string &arg4 = std::string());
 
 /*
 **  end of error
@@ -179,6 +179,7 @@ void	oper_command(const std::string &line, const size_t &client_idx, const MySer
 void	kick_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	topic_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	notice_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	whois_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 
 /*
 ** specific_modes_fncts 
