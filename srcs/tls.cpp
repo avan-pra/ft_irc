@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 19:45:37 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/21 16:51:52 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/23 12:48:00 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	InitSSLCTX(MyServ &serv)
 			std::cerr << "Certificate not found. Skipping SSL_CTX creation" << std::endl;
 		if (key < 0)
 			std::cerr << "Key not found. Skipping SSL_CTX creation" << std::endl;
-		return ;
+		error_exit("Error: Certs not found");
 	}
 	close(cert);
 	close(key);
