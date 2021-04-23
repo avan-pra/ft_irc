@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/21 16:49:52 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/23 17:29:52 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@
 # include "./Server.hpp"
 
 typedef int	SOCKET;
-typedef struct sockaddr_in SOCKADDR_IN;
+typedef struct sockaddr_in6 SOCKADDR_IN6;
 typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 typedef struct s_Sock

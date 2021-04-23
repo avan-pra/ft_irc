@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:27:54 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/04/21 15:53:31 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/23 17:36:44 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,26 @@ void		sig_handler(int signal)
 
 int			setup_server_socket(int port, bool is_tls)
 {
-	SOCKADDR_IN sin;
+	SOCKADDR_IN6 sin;
 	t_sock		sock;
 
-	sock.sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	sock.sockfd = socket(AF_INET6, SOCK_STREAM, 0);
 	fcntl(sock.sockfd, F_SETFL, O_NONBLOCK);
 
 	if (sock.sockfd == INVALID_SOCKET)
 		throw std::exception();
 	std::cout << "Socket created" << std::endl;
 
-	sin.sin_addr.s_addr = INADDR_ANY;
-	sin.sin_family = AF_INET;
-	sin.sin_port = htons(port);
+//	sin.sin_addr.s_addr = INADDR_ANY;
+//	sin.sin_family = AF_INET;
+//	sin.sin_port = htons(port);
 
-	if (bind(sock.sockfd, (SOCKADDR*)&sin, sizeof(sin)) == SOCKET_ERROR)
+	memset(&sin, 0, sizeof(sin));
+	sin.sin6_family = AF_INET6;
+	sin.sin6_port = htons(port);
+	sin.sin6_addr = in6addr_any;
+
+	if (bind(sock.sockfd, (struct sockaddr *)&sin, sizeof(sin)) < 0)
 		throw std::exception();
 	std::cout << "Socket successfully binded to port number " << port << std::endl;
 
