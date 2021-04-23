@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 19:42:41 by lucas             #+#    #+#             */
-/*   Updated: 2021/03/22 22:34:04 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/23 12:15:26 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	info_command(const std::string &line, const size_t &client_idx, const MySer
 	{
 		fstat(fd, &file_info);
 		time = ctime(&file_info.st_mtime);
-		if (time.back() == '\n')
-			time.pop_back();
+		if (time[time.size() - 1] == '\n')
+			time.resize(time.size() - 1);
 	}
 	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string("--------------------INFO--------------------")));
 	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" Server name : ") + serv.get_hostname()));

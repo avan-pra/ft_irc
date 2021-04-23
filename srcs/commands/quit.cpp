@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/16 15:14:59 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/23 12:18:22 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	quit_command(const std::string &line, const size_t &client_idx, const MySer
 		}
 	}
 	if (part_string.size() > 0)
-		part_string.pop_back();
+		part_string.resize(part_string.size() - 1);
 	if (args.size() == 1)
 	{
 		part_command("PART " + part_string, client_idx, serv);
@@ -43,7 +43,7 @@ void	quit_command(const std::string &line, const size_t &client_idx, const MySer
 		for (size_t i = 1; i < args.size() ; i++)
 			output += args[i] + " ";
 		if (output.size() > 0)
-			output.pop_back();
+			output.resize(output.size() - 1);
 		part_command("PART " + part_string + " " + output, client_idx, serv);
 		throw QuitCommandException();
 	}
