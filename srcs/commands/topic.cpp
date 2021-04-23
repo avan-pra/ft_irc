@@ -68,7 +68,7 @@ void	topic_command(const std::string &line, const size_t &client_idx, const MySe
 {
 	std::vector<std::string>	params = ft_split(line, " ");
 
-	if (params.size() < 2 || (params.size() > 2 && params[2].front() != ':'))
+	if (params.size() < 2 || (params.size() > 2 && params[2].size() > 0 && params[2][0] != ':'))
 	{
 		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, " " + params[0]));
 		return;

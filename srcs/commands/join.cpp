@@ -57,7 +57,6 @@ static int	check_name_and_key(std::map<std::string, std::string> &chan)
 		{
 			if (error_chan_name(tmp, it_s))
 			{
-				it = chan.erase(it);
 				return (0);
 			}
 		}
@@ -65,7 +64,6 @@ static int	check_name_and_key(std::map<std::string, std::string> &chan)
 		{
 			if (it->second.compare("") && error_chan_key(it_k))
 			{
-				it = chan.erase(it);
 				return (0);
 			}
 		};
