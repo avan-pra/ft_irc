@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 19:42:41 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/23 12:15:26 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/23 12:20:41 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../../includes/commands.hpp"
 #include <sys/stat.h>
 
-void	info_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void			info_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	(void)line;
 	struct stat	file_info;
@@ -34,8 +34,8 @@ void	info_command(const std::string &line, const size_t &client_idx, const MySer
 	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" Server name : ") + serv.get_hostname()));
 	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" ") + serv.get_hostname() + " compiled on " + time));
 	time = ctime(&tmp);
-	if (time.back() == '\n')
-		time.pop_back();
+	if (time[time.size() - 1] == '\n')
+		time.resize(time.size() - 1);
 	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" ") + serv.get_hostname() + " started on " + time));
 	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" Project : FT_IRC of 42")));
 	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, std::string(" Version : beta 1.0")));
