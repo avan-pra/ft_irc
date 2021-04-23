@@ -27,6 +27,8 @@
 
 # define HASH_CHAR "0123456789abcdefABCDEF"
 
+# define DEBUG
+
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <netinet/in.h>

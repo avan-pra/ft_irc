@@ -12,12 +12,32 @@
 
 #include "../includes/IRCserv.hpp"
 
+int		get_tls_socket_binded()
+{
+	int ret = 0;
+
+	for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it != g_serv_sock.end(); ++it)
+	{
+		if (it->is_tls == true)
+			++ret;
+	}
+	return (ret);
+}
+
 void	InitSSLCTX(MyServ &serv)
 {
 	/* check if cert exists */
 	int		cert = open("./godirc.crt", O_RDONLY);
 	int		key = open("./godirc.key", O_RDONLY);
+	int		has_tls = get_tls_socket_binded();
 
+	if (has_tls == 0)
+	{
+		#ifdef DEBUG
+			std::cout << "No tls port specified, stopping certificate handler." << std::endl;
+		#endif
+		return ;
+	}
 	if (cert < 0 || key < 0)
 	{
 		serv.sslctx = NULL;

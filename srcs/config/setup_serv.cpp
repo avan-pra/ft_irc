@@ -35,11 +35,9 @@ int			setup_server_socket(int port, bool is_tls)
 
 	if (sock.sockfd == INVALID_SOCKET)
 		throw std::exception();
-	std::cout << "Socket created" << std::endl;
-
-//	sin.sin_addr.s_addr = INADDR_ANY;
-//	sin.sin_family = AF_INET;
-//	sin.sin_port = htons(port);
+	#ifdef DEBUG
+		std::cout << "Socket created" << std::endl;
+	#endif
 
 	memset(&sin, 0, sizeof(sin));
 	sin.sin6_family = AF_INET6;
@@ -48,11 +46,13 @@ int			setup_server_socket(int port, bool is_tls)
 
 	if (bind(sock.sockfd, (struct sockaddr *)&sin, sizeof(sin)) < 0)
 		throw std::exception();
-	std::cout << "Socket successfully binded to port number " << port << std::endl;
+	std::cout << "Server binded to port number " << port << (is_tls == true ? " (tls)" : "") << std::endl;
 
 	if (listen(sock.sockfd, 5) == SOCKET_ERROR)
 		throw std::exception();
-	std::cout << "Started listening for connection on port number " << port << "...\n";
+	#ifdef DEBUG
+		std::cout << "Listening for connection on port " << port << "...\n";
+	#endif
 
 	sock.is_tls = is_tls;
 
