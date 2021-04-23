@@ -79,7 +79,7 @@ class Proxy(Thread):
             self.g2p.start()
             self.p2s.start()
 
-port_server = 6667
+port_server = 6697
 port_proxy = 8000
 ip = '0.0.0.0'
 

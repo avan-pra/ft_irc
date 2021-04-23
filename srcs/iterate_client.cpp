@@ -2,6 +2,18 @@
 #include "../includes/MyServ.hpp"
 #include <ctime>
 
+void	get_client_message(char *c, const size_t &i, int &ret)
+{
+	ft_bzero((char *)c, sizeof(c));
+	if (!(g_aClient[i].second.get_tls()) || (g_aClient[i].second.get_tls() &&
+				SSL_is_init_finished(g_aClient[i].second._sslptr)))
+			ret = receive_message(i, c);
+	else
+			ret = DoHandshakeTLS(i);
+	//int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
+	// std::cout << "recv" << std::endl;
+}
+
 void	iterate_client(MyServ &serv)
 {
 	char	c[BUFF_SIZE + 1];
@@ -15,14 +27,7 @@ void	iterate_client(MyServ &serv)
 			disconnect_client(i);
 		else if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()))
 		{
-			ft_bzero((char *)c, sizeof(c));
-			if (!(g_aClient[i].second.get_tls()) || (g_aClient[i].second.get_tls() &&
-						SSL_is_init_finished(g_aClient[i].second._sslptr)))
-					ret = receive_message(i, c);
-			else
-					ret = DoHandshakeTLS(i);
-			//int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
-			// std::cout << "recv" << std::endl;
+			get_client_message(c, i, ret);
 			if (ret <= 0)
 				disconnect_client(i);
 			else if (ret > 0)

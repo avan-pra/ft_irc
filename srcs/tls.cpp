@@ -63,7 +63,7 @@ int		receive_message(const size_t &client_idx, char *buf)
 	return (ret);
 }
 
-int		DoHandshakeTLS(size_t &idx)
+int		DoHandshakeTLS(const size_t &idx)
 {
 	int		ret;
 	int		error;

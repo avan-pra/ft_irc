@@ -166,7 +166,7 @@ void format_mask(const std::string &str, std::string &nickname, std::string &use
 void	InitSSLCTX(MyServ &serv);
 void	error_exit(const std::string &exit_msg);
 int		receive_message(const size_t &client_idx, char *buf);
-int		DoHandshakeTLS(size_t &idx);
+int		DoHandshakeTLS(const size_t &idx);
 
 /*
  ** error.cpp
