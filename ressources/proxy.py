@@ -2,6 +2,7 @@ import socket
 import os
 from threading import Thread
 import parser as parser
+import sys
 
 class Proxy2Server(Thread):
 
@@ -79,9 +80,13 @@ class Proxy(Thread):
             self.g2p.start()
             self.p2s.start()
 
-port_server = 6697
-port_proxy = 8000
-ip = '0.0.0.0'
+if len(sys.argv) is not 4:
+    print("---------------------------------------------------\nUsage: python proxy.py <ip> <port> <port_to_listen>\n---------------------------------------------------")
+    sys.exit(1)
+else:
+    ip = sys.argv[1]
+    port_server = int(sys.argv[2])
+    port_proxy = int(sys.argv[3])
 
-master_server = Proxy('0.0.0.0', ip, port_server, port_proxy)
-master_server.start()
+    master_server = Proxy('0.0.0.0', ip, port_server, port_proxy)
+    master_server.start()
