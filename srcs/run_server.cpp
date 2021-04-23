@@ -17,10 +17,11 @@ static void re_init_serv_class(MyServ &serv)
 				max = g_aClient[i].first;
 		}
 		serv.set_max_fd(max);
-		if (serv.get_max_fd() < g_serv_sock[0])
-			serv.set_max_fd(g_serv_sock[0]);
-		if (serv.get_max_fd() < g_serv_sock[1])
-			serv.set_max_fd(g_serv_sock[1]);
+		for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it < g_serv_sock.end(); ++it)
+		{
+			if (serv.get_max_fd() < it->sockfd)
+				serv.set_max_fd(it->sockfd);
+		}
 	}
 	serv.set_timeout(3);
 }
@@ -28,8 +29,10 @@ static void re_init_serv_class(MyServ &serv)
 static void push_fd_to_set(MyServ &serv)
 {
 	//push to server to read set
-	FD_SET(g_serv_sock[0], &serv.get_readfs());
-	FD_SET(g_serv_sock[1], &serv.get_readfs());
+	for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it < g_serv_sock.end(); ++it)
+	{
+		FD_SET(it->sockfd, &serv.get_readfs());
+	}
 	//push all client fd to all 3 set
 	for (std::deque<std::pair<SOCKET, Client> >::iterator ite = g_aClient.begin(); ite != g_aClient.end(); ++ite)
 	{

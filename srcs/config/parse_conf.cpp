@@ -10,13 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/IRCserv.hpp"
+# include "../../includes/IRCserv.hpp"
 # include <cstring>
 
 enum confID
 {
 	eHOSTNAME,
 	ePORT,
+	ePORT_TLS,
 	eLISTEN_LIMIT,
 	eSERVER_PASS_HASH,
 	eOPER_PASS_HASH,
@@ -25,11 +26,12 @@ enum confID
 
 confID	hashit_s(const std::string &s)
 {
-	if (s == "HOSTNAME")			return	eHOSTNAME;
-	else if (s == "PORT")			return	ePORT;
-	else if (s == "LISTEN_LIMIT")	return	eLISTEN_LIMIT;
-	else if (s == "SERVER_PASS_HASH") return eSERVER_PASS_HASH;
-	else if (s == "OPER_PASS_HASH")	return eOPER_PASS_HASH;
+	if (s == "HOSTNAME")				return	eHOSTNAME;
+	else if (s == "PORT")				return	ePORT;
+	else if (s == "PORT_TLS")			return	ePORT_TLS;
+	else if (s == "LISTEN_LIMIT")		return	eLISTEN_LIMIT;
+	else if (s == "SERVER_PASS_HASH")	return eSERVER_PASS_HASH;
+	else if (s == "OPER_PASS_HASH")		return eOPER_PASS_HASH;
 	return	eERROR;
 }
 
@@ -70,9 +72,22 @@ int		checkline(std::string s, MyServ &serv)
 		}
 		case ePORT:
 		{
-			std::string port = s.substr(s.find("=") + 1);
-			//parse port + mssg
-			serv.set_port(port);
+			std::string port_list = s.substr(s.find("=") + 1);
+			std::vector<std::string> port = ft_split(port_list, ","); 
+			for (std::vector<std::string>::iterator it = port.begin(); it < port.end(); ++it)
+			{
+				setup_server_socket(ft_atoi(*it), false);
+			}
+			return	(0);
+		}
+		case ePORT_TLS:
+		{
+			std::string port_list = s.substr(s.find("=") + 1);
+			std::vector<std::string> port = ft_split(port_list, ","); 
+			for (std::vector<std::string>::iterator it = port.begin(); it < port.end(); ++it)
+			{
+				setup_server_socket(ft_atoi(*it), true);
+			}
 			return	(0);
 		}
 		case eLISTEN_LIMIT:

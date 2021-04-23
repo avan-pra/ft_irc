@@ -92,7 +92,7 @@ class MyServ
 		 ** setter
 		 */
 		void	set_hostname(const std::string hostname) { _hostname = hostname; }
-		void	set_port(const std::string port) {_port = port; }
+		void	set_port(const std::string port) { _port = port; }
 		void	set_listen_limit(int listen_limit) { _listen_limit = listen_limit; }
 		void	set_password(const unsigned char *password) { std::memcpy(_password, password, 32); }
 		void	set_oper_password(const unsigned char *password) { std::memcpy(_oper_password, password, 32); }

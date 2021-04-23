@@ -12,7 +12,7 @@
 
 #include "../includes/IRCserv.hpp"
 
-SOCKET									g_serv_sock[2];
+std::deque<t_sock>						g_serv_sock;
 std::deque<std::pair<SOCKET, Client> >	g_aClient;
 std::vector<Channel>					g_vChannel;
 std::vector<std::pair<SOCKET, Server> >	g_aServer;
@@ -26,9 +26,9 @@ int			main(void)
 
 	try
 	{
+		signal(SIGINT, sig_handler);
 		parse_conf(serv);
 		InitSSLCTX(serv);
-		setup_server();
 	}
 	catch(const std::exception& e) { exit(1); }
 	run_server(serv);

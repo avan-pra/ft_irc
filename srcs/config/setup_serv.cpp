@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/IRCserv.hpp"
+#include "../../includes/IRCserv.hpp"
 #include <stdio.h>
 
 void		sig_handler(int signal)
@@ -19,41 +19,38 @@ void		sig_handler(int signal)
 	{
 		for (std::deque<std::pair<SOCKET, Client> >::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
 			closesocket(it->first);
-		closesocket(g_serv_sock[0]);
-		closesocket(g_serv_sock[1]);
+		for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it != g_serv_sock.end(); ++it)
+			closesocket(it->sockfd);
 		exit(0);
 	}
 }
 
-int			setup_server()
+int			setup_server_socket(int port, bool is_tls)
 {
-	SOCKET		sock;
 	SOCKADDR_IN sin;
+	t_sock		sock;
 
-	signal(SIGINT, sig_handler);
+	sock.sockfd = socket(AF_INET, SOCK_STREAM, 0);
+	fcntl(sock.sockfd, F_SETFL, O_NONBLOCK);
 
-	for (int i = 0; i < 2; i++)
-	{
-		sock = socket(AF_INET, SOCK_STREAM, 0);
-		fcntl(sock, F_SETFL, O_NONBLOCK);
+	if (sock.sockfd == INVALID_SOCKET)
+		throw std::exception();
+	std::cout << "Socket created" << std::endl;
 
-		if (sock == INVALID_SOCKET)
-			throw std::exception();
-		std::cout << "Socket created" << std::endl;
+	sin.sin_addr.s_addr = INADDR_ANY;
+	sin.sin_family = AF_INET;
+	sin.sin_port = htons(port);
 
-		sin.sin_addr.s_addr = INADDR_ANY;
-		sin.sin_family = AF_INET;
-		sin.sin_port = htons(i == 0 ? PORT : TLS_PORT);
+	if (bind(sock.sockfd, (SOCKADDR*)&sin, sizeof(sin)) == SOCKET_ERROR)
+		throw std::exception();
+	std::cout << "Socket successfully binded to port number " << port << std::endl;
 
-		if (bind(sock, (SOCKADDR*)&sin, sizeof(sin)) == SOCKET_ERROR)
-			throw std::exception();
-		std::cout << "Socket successfully binded to port number " << (i == 0 ? PORT : TLS_PORT) << std::endl;
+	if (listen(sock.sockfd, 5) == SOCKET_ERROR)
+		throw std::exception();
+	std::cout << "Started listening for connection on port number " << port << "...\n";
 
-		if (listen(sock, 5) == SOCKET_ERROR)
-			throw std::exception();
-		std::cout << "Started listening for connection on port number " << (i == 0 ? PORT : TLS_PORT) << "...\n";
+	sock.is_tls = is_tls;
 
-		g_serv_sock[i] = sock;
-	}
+	g_serv_sock.push_back(sock);
 	return (0);
 }

@@ -31,8 +31,8 @@ FLAGS = -lssl -lcrypto -ldl -L$(CUR_DIR)/openssl-1.1.1j
 #srcs file
 SRCS =			$(addprefix $(DIR_SRCS), $(SRC)) 
 DIR_SRCS = ./srcs/
-SRC = main.cpp parser.cpp get_client.cpp parse_conf.cpp \
-	  run_server.cpp setup_serv.cpp init_command.cpp \
+SRC = main.cpp parser.cpp get_client.cpp \
+	  run_server.cpp init_command.cpp \
 	  create_msg.cpp iterate_client.cpp iterate_server.cpp \
 	  find_client_or_channel.cpp send_msg_to.cpp mask_parser.cpp \
 	  tls.cpp error.cpp \
@@ -59,10 +59,17 @@ SRC_CMD = nick.cpp user.cpp time.cpp \
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 
+#config folder
+SRCS_CONF = $(addprefix $(DIR_CONF), $(SRC_CONF))
+DIR_CONF = ./srcs/config/
+SRC_CONF = parse_conf.cpp setup_serv.cpp
+
+OBJ_CONF = $(SRCS_CONF:.cpp=.o)
+
 all : $(NAME)
 
-$(NAME) : $(OBJ) $(OBJ_LIB) $(OBJ_CMD)
-		$(C++) $(FLAGS) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) -o $(NAME)
+$(NAME) : $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF)
+		$(C++) $(FLAGS) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) -o $(NAME)
 
 certs :
 		openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
@@ -73,7 +80,7 @@ del_certs :
 		rm -rf $(CERT) $(KEY)
 
 clean :
-		rm -rf $(OBJ) $(OBJ_CMD) $(OBJ_LIB)
+		rm -rf $(OBJ) $(OBJ_CMD) $(OBJ_LIB) $(OBJ_CONF)
 
 fclean : clean
 		rm -rf $(NAME)
