@@ -19,9 +19,9 @@ bool	sort_dec(const std::pair<SOCKET,Client> &a,  const std::pair<SOCKET,Client>
   return (a.first > b.first); 
 }
 
-void	accept_user(MyServ &serv, t_sock &sock)
+void	accept_connection(MyServ &serv, t_sock &sock)
 {
-	Client		new_client;
+	Connection		new_connection;
 	FD_CLR(sock.sockfd, &serv.get_readfs());
 	SOCKET 		new_fd;
 	sockaddr_in	clSock;
@@ -34,34 +34,34 @@ void	accept_user(MyServ &serv, t_sock &sock)
 		<< ntohs(clSock.sin_port) << std::endl;
 	if (sock.is_tls)
 	{
-		if (!(new_client._sslptr = SSL_new(serv.sslctx)))
+		if (!(new_connection._sslptr = SSL_new(serv.sslctx)))
 		{
 			std::cerr << "Error: SSL_NEW\n";
 		}
-		if (SSL_set_fd(new_client._sslptr, new_fd) < 1)
+		if (SSL_set_fd(new_connection._sslptr, new_fd) < 1)
 		{
 			std::cerr << "Error: SSL_fd_set\n";
 		}
 	}
-	new_client.set_tls(sock.is_tls);
-	new_client._fd = new_fd;
-	new_client.sock_addr = clSock;
-	time(&new_client.get_last_activity());
+	new_connection.set_tls(sock.is_tls);
+	new_connection._fd = new_fd;
+	new_connection.sock_addr = clSock;
+	time(&new_connection.get_last_activity());
 	//push de <fd, User> sur le vecteur
-	g_aClient.push_back(std::make_pair(new_fd, new_client));
+	g_aUnregistered.push_back(std::make_pair(new_fd, new_connection));
 	//send motd a l'arrivee du client sur le server
 	// motd_command("", g_aClient.size() - 1, serv);
 	//sort en ordre decroissant en fonction de la key(ou first)
 	// std::sort(g_aClient.begin(), g_aClient.end(), sort_dec);
 }
 
-void	try_accept_user(MyServ &serv)
+void	try_accept_connection(MyServ &serv)
 {
 	for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it < g_serv_sock.end(); ++it)
 	{
 		if (FD_ISSET(it->sockfd, &serv.get_readfs()))
 		{
-			accept_user(serv, *it);
+			accept_connection(serv, *it);
 		}
 	}
 }

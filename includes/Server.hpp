@@ -22,9 +22,6 @@ class Server : public Connection
 
 	public:
 		
-		SOCKET			_fd;
-		sockaddr_in		sock_addr;
-		
 		Server(/* args */) {};
 		~Server() {};
 
@@ -38,6 +35,20 @@ class Server : public Connection
 		void	set_token(size_t name) { _token = name; }
 		void	set_info(std::string info) { _info = info; }
 		void	set_unended_packet(std::string packet) { _unended_packet = packet; }
+	
+	Server(Connection co)
+	{
+		_unended_packet = co.get_unended_packet();
+		_fd = co._fd;
+		_last_activity = co.get_last_activity();
+		_servername = co.get_servername();
+		_ping_sended = co.get_ping_status();
+		_is_register = false;
+		_tls = co.get_tls();
+		_sslptr = co._sslptr;
+		sock_addr = co.sock_addr;
+		_fresh = true;
+	}
 };
 
 #endif

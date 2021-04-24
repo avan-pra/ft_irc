@@ -14,8 +14,9 @@
 
 std::deque<t_sock>						g_serv_sock;
 std::deque<std::pair<SOCKET, Client> >	g_aClient;
-std::vector<Channel>					g_vChannel;
+std::vector<std::pair<SOCKET, Connection> >	g_aUnregistered;
 std::vector<std::pair<SOCKET, Server> >	g_aServer;
+std::vector<Channel>					g_vChannel;
 
 int			main(void)
 {

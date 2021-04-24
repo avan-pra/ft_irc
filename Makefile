@@ -33,7 +33,7 @@ SRCS =			$(addprefix $(DIR_SRCS), $(SRC))
 DIR_SRCS = ./srcs/
 SRC = main.cpp parser.cpp get_client.cpp \
 	  run_server.cpp init_command.cpp \
-	  create_msg.cpp iterate_client.cpp iterate_server.cpp \
+	  create_msg.cpp iterate_client.cpp iterate_server.cpp iterate_connection.cpp\
 	  find_client_or_channel.cpp send_msg_to.cpp mask_parser.cpp \
 	  tls.cpp error.cpp \
 

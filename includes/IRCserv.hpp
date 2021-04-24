@@ -64,8 +64,9 @@ typedef struct s_Sock
 
 extern std::deque<t_sock>						g_serv_sock;
 extern std::deque<std::pair<SOCKET, Client> >	g_aClient;
-extern std::vector<Channel>						g_vChannel;
+extern std::vector<std::pair<SOCKET, Connection> >	g_aUnregistered;
 extern std::vector<std::pair<SOCKET, Server> >	g_aServer;
+extern std::vector<Channel>						g_vChannel;
 
 class MyServ;
 
@@ -82,6 +83,7 @@ void		run_server(MyServ &serv);
 bool 		kick_if_away(Connection &co);
 void 		ping_if_away(Connection &co, const MyServ &serv);
 void		disconnect_client(size_t &i);
+void		disconnect_connection(size_t &i);
 void		disconnect_server(size_t &i);
 
 /*
@@ -96,10 +98,15 @@ void		iterate_client(MyServ &serv);
 void		iterate_server(MyServ &serv);
 
 /*
+** iterate_connection.cpp
+*/
+void	iterate_connection(MyServ &serv);
+
+/*
 ** get_client.cpp
 */
-void		accept_user(MyServ &serv);
-void		try_accept_user(MyServ &serv);
+void		accept_connection(MyServ &serv);
+void		try_accept_connection(MyServ &serv);
 
 /*
 ** parse_conf.cpp
@@ -136,6 +143,8 @@ std::string		ft_to_string(size_t value);
 ** parser.cpp
 */
 void            parser(char *line, const size_t &client_idx, const MyServ &server);
+void	build_unfinished_packet(const std::string &true_line, Connection &co, std::string &last);
+void	clear_empty_packet(std::vector<std::string> &packet);
 
 /*
 ** send_msg_to.cpp
@@ -168,7 +177,7 @@ void format_mask(const std::string &str, std::string &nickname, std::string &use
 */
 void	InitSSLCTX(MyServ &serv);
 void	error_exit(const std::string &exit_msg);
-int		receive_message(const size_t &client_idx, char *buf);
+int		receive_message(Connection &co, char *buf);
 int		DoHandshakeTLS(const size_t &idx);
 
 /*
@@ -195,6 +204,14 @@ class	QuitCommandException: public std::exception
 };
 
 class   NewServerException: public std::exception
+{
+	virtual const char *what() const throw()
+	{
+		return "";
+	};
+};
+
+class   NewClientException: public std::exception
 {
 	virtual const char *what() const throw()
 	{

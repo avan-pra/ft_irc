@@ -16,12 +16,17 @@ static void re_init_serv_class(MyServ &serv)
 			if (g_aClient[i].first > max)
 				max = g_aClient[i].first;
 		}
-		serv.set_max_fd(max);
 		for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it < g_serv_sock.end(); ++it)
 		{
-			if (serv.get_max_fd() < it->sockfd)
-				serv.set_max_fd(it->sockfd);
+			if (max < it->sockfd)
+				max = it->sockfd;
 		}
+		for (size_t i = 0; i < g_aUnregistered.size(); ++i)
+		{
+			if (g_aUnregistered[i].first > max)
+				max = g_aUnregistered[i].first;
+		}
+		serv.set_max_fd(max);
 	}
 	serv.set_timeout(3);
 }
@@ -32,6 +37,13 @@ static void push_fd_to_set(MyServ &serv)
 	for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it < g_serv_sock.end(); ++it)
 	{
 		FD_SET(it->sockfd, &serv.get_readfs());
+	}
+	//push all connection fd to all 3 set
+	for (std::vector<std::pair<SOCKET, Connection> >::iterator ite = g_aUnregistered.begin(); ite != g_aUnregistered.end(); ++ite)
+	{
+		FD_SET(ite->first, &serv.get_readfs());
+		// FD_SET(*ite, &serv.get_writefs());
+		// FD_SET(*ite, &serv.get_exceptfs());
 	}
 	//push all client fd to all 3 set
 	for (std::deque<std::pair<SOCKET, Client> >::iterator ite = g_aClient.begin(); ite != g_aClient.end(); ++ite)
@@ -53,6 +65,20 @@ void		disconnect_client(size_t &i)
 	std::cout << "* User disconnected from: " << inet_ntoa(g_aClient[i].second.sock_addr.sin_addr)
 		<< ":" << ntohs(g_aClient[i].second.sock_addr.sin_port) << std::endl;
 	g_aClient.erase(g_aClient.begin() + i);
+	i--;
+}
+
+void		disconnect_connection(size_t &i)
+{
+	if (g_aUnregistered[i].second.get_tls())
+	{
+		SSL_shutdown(g_aClient[i].second._sslptr);
+		SSL_free(g_aClient[i].second._sslptr);
+	}
+	closesocket(g_aUnregistered[i].first);
+	std::cout << "* Connection disconnected from: " << inet_ntoa(g_aUnregistered[i].second.sock_addr.sin_addr)
+		<< ":" << ntohs(g_aUnregistered[i].second.sock_addr.sin_port) << std::endl;
+	g_aUnregistered.erase(g_aUnregistered.begin() + i);
 	i--;
 }
 
@@ -99,7 +125,8 @@ void run_server(MyServ &serv)
 
 		readyfd = select(serv.get_max_fd() + 1, &serv.get_readfs(), &serv.get_writefs(), &serv.get_exceptfs(), &serv.get_timeout());
 
-		try_accept_user(serv);
+		try_accept_connection(serv);
+		iterate_connection(serv);
 		iterate_client(serv);
 		iterate_server(serv);
 	}

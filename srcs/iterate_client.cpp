@@ -2,12 +2,12 @@
 #include "../includes/MyServ.hpp"
 #include <ctime>
 
-void	get_client_message(char *c, const size_t &i, int &ret)
+static void	get_client_message(char *c, const size_t &i, int &ret)
 {
 	ft_bzero((char *)c, sizeof(c));
 	if (!(g_aClient[i].second.get_tls()) || (g_aClient[i].second.get_tls() &&
 				SSL_is_init_finished(g_aClient[i].second._sslptr)))
-			ret = receive_message(i, c);
+			ret = receive_message(g_aClient[i].second, c);
 	else
 			ret = DoHandshakeTLS(i);
 	//int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
@@ -27,8 +27,16 @@ void	iterate_client(MyServ &serv)
 			disconnect_client(i);
 		else if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()))
 		{
-			get_client_message(c, i, ret);
-			if (ret <= 0)
+			if (g_aClient[i].second._fresh == false)
+				get_client_message(c, i, ret);
+			else
+			{
+				strncpy(c, g_aClient[i].second.get_unended_packet().c_str(), g_aClient[i].second.get_unended_packet().size());
+				ret = g_aClient[i].second.get_unended_packet().size();
+				g_aClient[i].second.set_unended_packet("");
+				g_aClient[i].second._fresh = false;
+			}
+			if (ret <= 0 )
 				disconnect_client(i);
 			else if (ret > 0)
 			{

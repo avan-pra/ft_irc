@@ -99,6 +99,20 @@ class Client : public Connection
 		return (true);
 	}
 
+	Client(Connection co)
+	{
+		_unended_packet = co.get_unended_packet();
+		_fd = co._fd;
+		_last_activity = co.get_last_activity();
+		_servername = co.get_servername();
+		_ping_sended = co.get_ping_status();
+		_is_register = false;
+		_tls = co.get_tls();
+		_sslptr = co._sslptr;
+		sock_addr = co.sock_addr;
+		_fresh = true;
+	}
+
 	bool	operator!=(const Client &a) const
 	{
 		return (!(a == *this));

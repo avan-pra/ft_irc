@@ -72,14 +72,14 @@ void	InitSSLCTX(MyServ &serv)
 	}
 }
 
-int		receive_message(const size_t &client_idx, char *buf)
+int		receive_message(Connection &co, char *buf)
 {
 	int	ret = 0;
 
-	if (!g_aClient[client_idx].second.get_tls())
-		ret = recv(g_aClient[client_idx].first, buf, BUFF_SIZE, 0);
+	if (co.get_tls() == false)
+		ret = recv(co._fd, buf, BUFF_SIZE, 0);
 	else
-		ret = SSL_read(g_aClient[client_idx].second._sslptr, buf, BUFF_SIZE);
+		ret = SSL_read(co._sslptr, buf, BUFF_SIZE);
 	return (ret);
 }
 

@@ -4,15 +4,15 @@
 #include <algorithm>
 #include <cstring>
 
-static void	build_unfinished_packet(const std::string &true_line, const size_t &client_idx, std::string &last)
+void	build_unfinished_packet(const std::string &true_line, Connection &co, std::string &last)
 {
 	// si il y a un crlf en fin de string alors c'est good, on stock R
 	// si il n'y a pas de crlf meme apres concatenation alors on stock et on enleve le dernier du ft_split (qui n'est donc pas un packet complet)
 	if (true_line.size() > 2 && *(true_line.end() - 1) == '\n' && *(true_line.end() - 2) == '\r')
-		g_aClient[client_idx].second.set_unended_packet("");
+		co.set_unended_packet("");
 	else
 	{
-		g_aClient[client_idx].second.set_unended_packet(last);
+		co.set_unended_packet(last);
 		last = std::string("");
 	}
 }
@@ -77,7 +77,7 @@ void	parser(char *line, const size_t &client_idx, const MyServ &serv)
 
 	if (packet.size() != 0)
 	{
-		build_unfinished_packet(true_line, client_idx, packet.back());
+		build_unfinished_packet(true_line, g_aClient[client_idx].second, packet.back());
 		clear_empty_packet(packet);
 		for (std::vector<std::string>::iterator str = packet.begin(); str != packet.end(); ++str)
 		{
