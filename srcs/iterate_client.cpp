@@ -24,11 +24,13 @@ void	iterate_client(MyServ &serv)
 		ping_if_away(g_aClient[i].second, serv);
 		//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes
 		if (kick_if_away(g_aClient[i].second) == true)
+		{
 			disconnect_client(i);
+		}
 		else if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()))
 		{
 			get_client_message(c, i, ret);
-			if (ret <= 0 )
+			if (ret <= 0)
 				disconnect_client(i);
 			else if (ret > 0)
 			{

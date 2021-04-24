@@ -98,7 +98,7 @@ void	iterate_connection(MyServ &serv)
 					connection_parser(c, i, serv);
 				}
 				catch (NewServerException) { g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
-				catch (NewClientException) { g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
+				catch (NewClientException) { FD_CLR(g_aClient[g_aClient.size() - 1].first, &serv.get_readfs());g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
 				catch (QuitCommandException) { disconnect_connection(i); }
 			}
 		}
