@@ -3,7 +3,7 @@
 #include "../includes/IRCserv.hpp"
 #include "../includes/commands.hpp"
 
-std::string create_msg(const int &code, const size_t &client_idx, const MyServ &serv, const std::string &arg1, const std::string &arg2, const std::string &arg3)
+std::string create_msg(const int &code, const size_t &client_idx, const MyServ &serv, const std::string &arg1, const std::string &arg2, const std::string &arg3, const std::string &arg4)
 {
 	std::string sample;
 	std::string true_code;
@@ -24,8 +24,14 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + RPL_WELCOME(arg1);
 		case 221:
 			return sample + RPL_UMODEIS(arg1);
+		case 311:
+			return sample + RPL_WHOISUSER(arg1, arg2, arg3, arg4);
 		case 315:
 			return sample + RPL_ENDOFWHO(arg1);
+		case 317:
+			return sample + RPL_WHOISIDLE(arg1, arg2, arg3);
+		case 318:
+			return sample + RPL_ENDOFWHOIS(arg1);
 		case 322:
 			return sample + RPL_LIST(arg1, arg2);
 		case 323:
