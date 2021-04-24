@@ -25,7 +25,6 @@ class Connection
 		SOCKET			_fd;
 		SSL				*_sslptr;
 		sockaddr_in		sock_addr;
-		bool			_fresh;
 
 		Connection() : _ping_sended(false), _is_register(false)
 		{ 

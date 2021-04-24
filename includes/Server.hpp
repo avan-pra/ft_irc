@@ -47,7 +47,6 @@ class Server : public Connection
 		_tls = co.get_tls();
 		_sslptr = co._sslptr;
 		sock_addr = co.sock_addr;
-		_fresh = true;
 	}
 };
 

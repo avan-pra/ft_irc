@@ -27,15 +27,7 @@ void	iterate_client(MyServ &serv)
 			disconnect_client(i);
 		else if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()))
 		{
-			if (g_aClient[i].second._fresh == false)
-				get_client_message(c, i, ret);
-			else
-			{
-				strncpy(c, g_aClient[i].second.get_unended_packet().c_str(), g_aClient[i].second.get_unended_packet().size());
-				ret = g_aClient[i].second.get_unended_packet().size();
-				g_aClient[i].second.set_unended_packet("");
-				g_aClient[i].second._fresh = false;
-			}
+			get_client_message(c, i, ret);
 			if (ret <= 0 )
 				disconnect_client(i);
 			else if (ret > 0)

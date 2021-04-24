@@ -37,10 +37,12 @@ void	connection_parser(char *line, const size_t &connection_idx, const MyServ &s
 				*it = std::toupper(*it);
 			if (command == "NICK" || command == "USER" || (command == "PASS" && ft_split(*str, " ").size() <= 2))
 			{
+				char test[1] = { '\0' };
 				co.set_unended_packet(true_line);
 				// std::cout << co.get_unended_packet() << std::endl;
 				Client cli = co;
 				g_aClient.push_back(std::make_pair(cli._fd, cli));
+				parser(test, g_aClient.size() - 1, serv);
 				throw NewClientException();
 			}
 			if (command == "SERVER" || (command == "PASS" && ft_split(*str, " ").size() > 2))
