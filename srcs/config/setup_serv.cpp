@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:27:54 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/04/23 17:36:44 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/26 13:45:05 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void		sig_handler(int signal)
 	}
 }
 
-int			setup_server_socket(int port, bool is_tls)
+int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 {
 	SOCKADDR_IN6 sin;
 	t_sock		sock;
@@ -48,7 +48,7 @@ int			setup_server_socket(int port, bool is_tls)
 		throw std::exception();
 	std::cout << "Server binded to port number " << port << (is_tls == true ? " (tls)" : "") << std::endl;
 
-	if (listen(sock.sockfd, 5) == SOCKET_ERROR)
+	if (listen(sock.sockfd, serv.get_listen_limit()) == SOCKET_ERROR)
 		throw std::exception();
 	#ifdef DEBUG
 		std::cout << "Listening for connection on port " << port << "...\n";

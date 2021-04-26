@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/23 17:29:52 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/26 13:46:50 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ class MyServ;
 ** setup_server.cpp
 */
 void		sig_handler(int signal);
-int			setup_server_socket(int port, bool is_tls);
+int			setup_server_socket(const MyServ &serv, int port, bool is_tls);
 
 /*
 ** run_server.cpp

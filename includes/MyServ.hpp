@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/20 19:48:26 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/26 14:03:00 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,13 @@ class MyServ
 		SSL_CTX		*sslctx;
 		SSL			*sslptr;
 
-		MyServ() : _command(fill_command())
+		MyServ() : _listen_limit(0), _max_fd(0), _command(fill_command()),
+					_pass_for_connection(false), _pass_oper(false)
 		{
 			time(&_start_time);
 			set_timeout(3);
-			_max_fd = 0;
 			bzero(_password, 32);
-			_pass_for_connection = false;
 			bzero(_oper_password, 32);
-			_pass_oper = false;
 		}
 
 		~MyServ()
