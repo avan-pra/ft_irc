@@ -4,6 +4,13 @@
 
 static void	get_client_message(char *c, const size_t &i, int &ret)
 {
+	if (g_aClient[i].second._readable == true)
+	{
+		g_aClient[i].second._readable = false;
+		c[0] = '\0';
+		ret = 1;
+		return ;
+	}
 	ft_bzero((char *)c, sizeof(c));
 	if (!(g_aClient[i].second.get_tls()) || (g_aClient[i].second.get_tls() &&
 				SSL_is_init_finished(g_aClient[i].second._sslptr)))
@@ -27,7 +34,7 @@ void	iterate_client(MyServ &serv)
 		{
 			disconnect_client(i);
 		}
-		else if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()))
+		else if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()) || g_aClient[i].second._readable == true)
 		{
 			get_client_message(c, i, ret);
 			if (ret <= 0)

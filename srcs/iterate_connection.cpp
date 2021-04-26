@@ -31,18 +31,17 @@ void	connection_parser(char *line, const size_t &connection_idx, const MyServ &s
 		{
 			std::string command = std::string(str->substr(0, str->find(" ", 0)));
 
-			// true_line.erase(0, str->size());
+			true_line.erase(0, str->size() + 2);
 			//put to uppercase letter the command (irssi send in lower case for example)
 			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 				*it = std::toupper(*it);
 			if (command == "NICK" || command == "USER" || (command == "PASS" && ft_split(*str, " ").size() <= 2))
 			{
-				char test[1] = { '\0' };
-				co.set_unended_packet(true_line);
+				co.set_unended_packet(*str + "\r\n" + true_line + co.get_unended_packet());
 				// std::cout << co.get_unended_packet() << std::endl;
 				Client cli = co;
+				cli._readable = true;
 				g_aClient.push_back(std::make_pair(cli._fd, cli));
-				parser(test, g_aClient.size() - 1, serv);
 				throw NewClientException();
 			}
 			if (command == "SERVER" || (command == "PASS" && ft_split(*str, " ").size() > 2))
@@ -69,7 +68,7 @@ void	connection_parser(char *line, const size_t &connection_idx, const MyServ &s
 				catch (const std::exception &e) 
 				{
 					std::string err = ":" + serv.get_hostname() + " " + ft_to_string(421) + " * " + command + " :Unknown command\r\n";
-					g_aUnregistered[connection_idx].second.send_reply("not found");
+					g_aUnregistered[connection_idx].second.send_reply(err);
 				}
 			}
 		}
@@ -108,7 +107,7 @@ void	iterate_connection(MyServ &serv)
 					connection_parser(c, i, serv);
 				}
 				catch (NewServerException) { g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
-				catch (NewClientException) { FD_CLR(g_aClient[g_aClient.size() - 1].first, &serv.get_readfs());g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
+				catch (NewClientException) { FD_CLR(g_aClient[g_aClient.size() - 1].first, &serv.get_readfs()); g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
 				catch (QuitCommandException) { disconnect_connection(i); }
 			}
 		}

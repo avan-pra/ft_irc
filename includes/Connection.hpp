@@ -25,12 +25,14 @@ class Connection
 		SOCKET			_fd;
 		SSL				*_sslptr;
 		sockaddr_in		sock_addr;
+		bool			_readable;
 
 		Connection() : _ping_sended(false), _is_register(false)
 		{ 
 			_tls = false;
 			time(&_t_idle);
 			time(&_t_signon);
+			_readable = false;
 		}
 
 		time_t			&get_last_activity() { return _last_activity; }
