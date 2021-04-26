@@ -83,19 +83,18 @@ int		receive_message(Connection &co, char *buf)
 	return (ret);
 }
 
-int		DoHandshakeTLS(const size_t &idx)
+int		DoHandshakeTLS(Connection &co)
 {
 	int		ret;
 	int		error;
 
-	ret = SSL_accept(g_aClient[idx].second._sslptr);
+	ret = SSL_accept(co._sslptr);
 	if (ret != 1)
 	{
-		error = SSL_get_error(g_aClient[idx].second._sslptr, ret);
-		std::cout << error << std::endl;
+		error = SSL_get_error(co._sslptr, ret);
 		if (error != SSL_ERROR_WANT_WRITE && error != SSL_ERROR_WANT_READ)
 		{
-			print_error_SLL(SSL_get_error(g_aClient[idx].second._sslptr, ret));
+			print_error_SLL(SSL_get_error(co._sslptr, ret));
 			return (0);
 		}
 	}

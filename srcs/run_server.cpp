@@ -62,7 +62,7 @@ void		disconnect_client(size_t &i)
 		SSL_free(g_aClient[i].second._sslptr);
 	}
 	closesocket(g_aClient[i].first);
-	std::cout << "* User disconnected from: " << inet_ntoa(g_aClient[i].second.sock_addr.sin_addr)
+	std::cout << "* Client disconnected from: " << inet_ntoa(g_aClient[i].second.sock_addr.sin_addr)
 		<< ":" << ntohs(g_aClient[i].second.sock_addr.sin_port) << std::endl;
 	g_aClient.erase(g_aClient.begin() + i);
 	i--;
@@ -76,7 +76,7 @@ void		disconnect_connection(size_t &i)
 		SSL_free(g_aClient[i].second._sslptr);
 	}
 	closesocket(g_aUnregistered[i].first);
-	std::cout << "* Connection disconnected from: " << inet_ntoa(g_aUnregistered[i].second.sock_addr.sin_addr)
+	std::cout << "* Connection lost to: " << inet_ntoa(g_aUnregistered[i].second.sock_addr.sin_addr)
 		<< ":" << ntohs(g_aUnregistered[i].second.sock_addr.sin_port) << std::endl;
 	g_aUnregistered.erase(g_aUnregistered.begin() + i);
 	i--;

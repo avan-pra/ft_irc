@@ -23,6 +23,8 @@
 
 # define TIMEOUT 115
 
+# define TIMEOUT_REGISTER 60
+
 # define FILE_NAME "./irc.conf"
 
 # define HASH_CHAR "0123456789abcdefABCDEF"
@@ -178,7 +180,7 @@ void format_mask(const std::string &str, std::string &nickname, std::string &use
 void	InitSSLCTX(MyServ &serv);
 void	error_exit(const std::string &exit_msg);
 int		receive_message(Connection &co, char *buf);
-int		DoHandshakeTLS(const size_t &idx);
+int		DoHandshakeTLS(Connection &co);
 
 /*
  ** error.cpp

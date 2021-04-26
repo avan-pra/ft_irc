@@ -59,7 +59,6 @@ void	kick_on_multiple_channel(std::vector<std::string> params, std::vector<std::
 	std::vector<std::string>	tmp_params = params;
 	size_t						i = 0;
 
-	std::cout << std::endl;
 	while (i < channels.size())
 	{
 		tmp_params[1] = channels[i];

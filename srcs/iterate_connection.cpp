@@ -9,7 +9,7 @@ static void	get_connection_message(char *c, const size_t &i, int &ret)
 				SSL_is_init_finished(g_aUnregistered[i].second._sslptr)))
 			ret = receive_message(g_aUnregistered[i].second, c);
 	else
-			ret = DoHandshakeTLS(i);
+			ret = DoHandshakeTLS(g_aUnregistered[i].second);
 	//int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
 	// std::cout << "recv" << std::endl;
 }
@@ -76,6 +76,16 @@ void	connection_parser(char *line, const size_t &connection_idx, const MyServ &s
 	}
 }
 
+static bool	check_register_timeout(Connection &co)
+{
+	time_t time_compare; //may be optimized better
+
+	time(&time_compare);
+	if (time_compare - co.get_last_activity() > TIMEOUT_REGISTER)
+		return true;
+	return false;
+}
+
 void	iterate_connection(MyServ &serv)
 {
 	char	c[BUFF_SIZE + 1];
@@ -83,7 +93,7 @@ void	iterate_connection(MyServ &serv)
 
 	for (size_t i = 0; i != g_aUnregistered.size(); ++i)
 	{
-		if (kick_if_away(g_aUnregistered[i].second) == true)
+		if (check_register_timeout(g_aUnregistered[i].second) == true)
 			disconnect_connection(i);
 		else if (FD_ISSET(g_aUnregistered[i].first, &serv.get_readfs()))
 		{

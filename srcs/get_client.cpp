@@ -30,8 +30,8 @@ void	accept_connection(MyServ &serv, t_sock &sock)
 	new_fd = accept(sock.sockfd, (sockaddr*)&clSock, &clSock_len);
 	if (fcntl(new_fd, F_SETFL, O_NONBLOCK) < 0)
 		error_exit("fcntl error: failed to set nonblock fd");
-	std::cout << "* New user connected from: " << inet_ntoa(clSock.sin_addr)<< ":"
-		<< ntohs(clSock.sin_port) << std::endl;
+	std::cout << "* New connection from: " << inet_ntoa(clSock.sin_addr)<< ":"
+		<< ntohs(clSock.sin_port) << (sock.is_tls ? " (tls)" : "") << std::endl;
 	if (sock.is_tls)
 	{
 		if (!(new_connection._sslptr = SSL_new(serv.sslctx)))

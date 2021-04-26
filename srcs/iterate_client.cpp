@@ -9,7 +9,7 @@ static void	get_client_message(char *c, const size_t &i, int &ret)
 				SSL_is_init_finished(g_aClient[i].second._sslptr)))
 			ret = receive_message(g_aClient[i].second, c);
 	else
-			ret = DoHandshakeTLS(i);
+			ret = DoHandshakeTLS(g_aClient[i].second);
 	//int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
 	// std::cout << "recv" << std::endl;
 }
