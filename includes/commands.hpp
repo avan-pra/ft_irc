@@ -55,7 +55,7 @@
 # define ERR_INVALIDCAP(command) (" " + command + " :Invalid CAP command\r\n")
 # define ERR_NOTOPIC(channel) (channel + " :No topic is set\r\n")
 # define ERR_BADCHANMASK(channel) (channel + " :Bad Channel Mask\r\n")
-# define ERR_ALREADYBAN(channel, user) (" " + channel + " " + user + " b :Channel " + channel + " list already contains " + user + "\r\n")
+# define ERR_ALREADYBAN(channel, user) (channel + " " + user + " b :Channel " + channel + " list already contains " + user + "\r\n")
 /*
 **  reponse for command file
 */
