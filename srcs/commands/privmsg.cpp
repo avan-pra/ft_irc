@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/26 19:48:34 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/26 19:51:46 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	privmsg_command(const std::string &line, const size_t &client_idx, const My
 {
 	std::vector<std::string>	params;
 	int							i;
+	time_t						new_time;
 
 	params = ft_split(line.substr(0, line.find_first_of(':')), " ");
 	params.push_back(line.substr(line.find_first_of(':')));
@@ -95,5 +96,9 @@ void	privmsg_command(const std::string &line, const size_t &client_idx, const My
 	if (i != -1)
 		send_privmsg_to_channel(params, client_idx, i);
 	else if ((i = find_user_by_nick(params[1])) != -1)
+	{
 		g_aClient[i].second.send_reply(create_full_msg(params, client_idx));
+	}
+	time(&new_time);
+	g_aClient[client_idx].second.set_t_idle(new_time);
 }

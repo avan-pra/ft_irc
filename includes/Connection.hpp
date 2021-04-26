@@ -40,16 +40,14 @@ class Connection
 		bool			is_registered() { return (_is_register); }
 		bool			get_tls() { return _tls; }
 		time_t			&get_t_idle() { return _t_idle; }
-		time_t			&get_t_signon()
-		{
-			return _t_signon;
-		}
+		time_t			&get_t_signon() { return _t_signon; }
 
 		void			set_ping_status(bool ping) { _ping_sended = ping; }
 		void			set_servername(std::string servername) { _servername = servername; }
 		void			set_unended_packet(std::string packet) { _unended_packet = packet; }
 		void			set_register(bool registered) { _is_register = registered; }
 		void			set_tls(bool tls_state) { _tls = tls_state; }
+		void			set_t_idle(time_t time) { _t_idle = time; }
 
 		void			send_reply(const std::string &s)
 		{
