@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 12:11:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/26 17:55:37 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/26 18:36:20 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,11 @@ void		mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign
 				" MODE " + g_vChannel[chann_idx].get_name() + " +b " + user.nickname + "!" + user.username + "@" + user.hostname + "\r\n");
 		}
 		else
-			g_aClient[client_idx].second.send_reply(create_msg(691, client_idx, serv, g_vChannel[chann_idx].get_name(), str));
+		{
+			std::string output;
+			output = user.nickname + "!" + user.username + "@" + user.hostname;
+			g_aClient[client_idx].second.send_reply(create_msg(697, client_idx, serv, g_vChannel[chann_idx].get_name(), output));
+		}
 	}
 }
 
