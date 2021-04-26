@@ -42,14 +42,14 @@ static void push_fd_to_set(MyServ &serv)
 	for (std::vector<std::pair<SOCKET, Connection> >::iterator ite = g_aUnregistered.begin(); ite != g_aUnregistered.end(); ++ite)
 	{
 		FD_SET(ite->first, &serv.get_readfs());
-		// FD_SET(*ite, &serv.get_writefs());
+		// FD_SET(ite->first, &serv.get_writefs());
 		// FD_SET(*ite, &serv.get_exceptfs());
 	}
 	//push all client fd to all 3 set
 	for (std::deque<std::pair<SOCKET, Client> >::iterator ite = g_aClient.begin(); ite != g_aClient.end(); ++ite)
 	{
 		FD_SET(ite->first, &serv.get_readfs());
-		// FD_SET(*ite, &serv.get_writefs());
+		// FD_SET(ite->first, &serv.get_writefs());
 		// FD_SET(*ite, &serv.get_exceptfs());
 	}
 }

@@ -56,7 +56,7 @@ class Connection
 			if (_tls)
 				SSL_write(_sslptr, s.c_str(), s.size());
 			else
-				send(_fd, s.c_str(), s.size(), 0);
+				send(_fd, s.c_str(), s.size(), MSG_NOSIGNAL);
 		}
 };
 
