@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/21 14:56:02 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/26 17:56:42 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,18 +100,13 @@ class Channel
 			for (std::vector<t_ban_id>::iterator it = _ban.begin(); it != _ban.end(); it++)
 			{
 				if (pattern_match(cli.nickname, (*it).nickname))
-				{
 					if (pattern_match(cli.username, (*it).username))
-					{
 						if (pattern_match(cli.hostname, (*it).hostname))
 						{
 							_ban.erase(it);
 							return ;
 						}
-					}
-				}
 			}
-			
 		}
 
 		void			remove_user_voice(const std::string usr_nickname)
@@ -162,18 +157,26 @@ class Channel
 			for (size_t i = 0; i < _ban.size(); i++)
 			{
 				if (pattern_match(cli.get_nickname(), _ban[i].nickname))
-				{
 					if (pattern_match(cli.get_username(), _ban[i].username))
-					{
 						if (pattern_match(cli.get_hostname(), _ban[i].hostname))
 							return (true);
-					}
-				}
 			}
 			return (false);
 		}
 
-		bool	is_user_in_chan(const Client cli)
+		bool			is_ban_struct(const t_ban_id &cli)
+		{
+			for (std::vector<t_ban_id>::iterator it = _ban.begin(); it != _ban.end(); it++)
+			{
+				if (pattern_match(cli.nickname, (*it).nickname))
+					if (pattern_match(cli.username, (*it).username))
+						if (pattern_match(cli.hostname, (*it).hostname))
+							return true;
+			}
+			return false;
+		}
+		
+		bool			is_user_in_chan(const Client cli)
 		{
 			for (size_t i = 0; i < _users.size(); ++i)
 			{

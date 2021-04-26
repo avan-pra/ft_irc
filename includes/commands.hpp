@@ -55,6 +55,7 @@
 # define ERR_INVALIDCAP(command) (" " + command + " :Invalid CAP command\r\n")
 # define ERR_NOTOPIC(channel) (channel + " :No topic is set\r\n")
 # define ERR_BADCHANMASK(channel) (channel + " :Bad Channel Mask\r\n")
+# define ERR_ALREADYBAN(channel, user) (channel + " " + user + " b :Channel " + channel + " list already contains " + user + "\r\n")
 /*
 **  reponse for command file
 */
@@ -186,7 +187,7 @@ void	whois_command(const std::string &line, const size_t &client_idx, const MySe
 */
 
 void	mode_o(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &name);
-void	mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &str);
+void	mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &str, const MyServ &serv);
 void	mode_v(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &name);
 
 #endif

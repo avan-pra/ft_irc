@@ -15,6 +15,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 		true_code = std::string(1, '0').append(ft_to_string(code));
 	if (g_aClient[client_idx].second.get_nickname().empty())
 		sample = std::string(":" + serv.get_hostname() + " " + true_code + " *");
+	else if (code == 691)
+		sample = std::string(":" + serv.get_hostname() + " " + true_code + " ");
 	else
 		sample = std::string(":" + serv.get_hostname() + " " + true_code + " " + g_aClient[client_idx].second.get_nickname());
 
@@ -120,6 +122,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + ERR_UMODEUNKNOWNFLAG();
 		case 502:
 			return sample + ERR_USERSDONTMATCH();
+		case 691:
+			return sample + ERR_ALREADYBAN(arg1, arg2);
 		default:
 			return std::string("");
 	}

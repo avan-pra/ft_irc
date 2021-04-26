@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/26 14:03:00 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/26 16:36:45 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,8 @@
 # include <map>
 # include <cstring>
 # include <openssl/ssl.h>
-# include "./Channel.hpp"
 
 class MyServ;
-class Channel;
 std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)> fill_command(void);
 
 class MyServ
@@ -41,7 +39,6 @@ class MyServ
 		int			_max_fd;
 		timeval		_timeout;
 		time_t		_start_time;
-		std::vector<Channel>	_vChannel;
         const std::map<std::string, void (*)(const std::string &line, const size_t &client_idx, const MyServ &serv)> _command;
 		unsigned char	_password[32];
 		unsigned char	_oper_password[32];
@@ -81,7 +78,6 @@ class MyServ
 		int		get_max_fd() { return _max_fd; }
 		timeval	&get_timeout() { return _timeout; }
 		time_t	get_start_time() const { return _start_time; }
-		std::vector<Channel>	get_vChannel() const { return _vChannel; }
         const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	&get_command() const { return _command; }
 		bool	get_need_pass() const { return _pass_for_connection; }
 		bool	get_pass_oper() const { return _pass_oper; }
@@ -102,10 +98,6 @@ class MyServ
 		}
 		void	set_need_pass(bool need) { _pass_for_connection = need; }
 		void	set_pass_oper(bool need) { _pass_oper = need; }
-		void	add_channel(Channel channel)
-		{
-			_vChannel.push_back(channel);
-		}
 };
 
 #endif

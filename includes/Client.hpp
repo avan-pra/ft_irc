@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/21 14:32:41 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/26 18:12:13 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,9 @@
 # include <sys/types.h>
 # include <cerrno>
 # include <openssl/ssl.h>
-# include "./Channel.hpp"
 # include "./Connection.hpp"
 
 typedef int	SOCKET;
-
-class Channel;
 
 class Client : public Connection
 {
