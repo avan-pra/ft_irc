@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 12:11:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/21 12:57:11 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/26 17:55:37 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void		mode_o(const size_t &client_idx, const size_t &chann_idx, const char &sign
 	}
 }
 
-void		mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &str)
+void		mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &str, const MyServ &serv)
 {
 	t_ban_id		user;
 
@@ -51,11 +51,16 @@ void		mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign
 			" MODE " + g_vChannel[chann_idx].get_name() + " -b " + user.nickname + "!" + user.username + "@" + user.hostname + "\r\n");
 	}
 	else
-	{	
+	{
 		time(&user.ban_date);
-		g_vChannel[chann_idx]._ban.push_back(user);
-		g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + 
-			" MODE " + g_vChannel[chann_idx].get_name() + " +b " + user.nickname + "!" + user.username + "@" + user.hostname + "\r\n");
+		if (g_vChannel[chann_idx].is_ban_struct(user) == false)
+		{
+			g_vChannel[chann_idx]._ban.push_back(user);
+			g_vChannel[chann_idx].send_to_all(":" + g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + 
+				" MODE " + g_vChannel[chann_idx].get_name() + " +b " + user.nickname + "!" + user.username + "@" + user.hostname + "\r\n");
+		}
+		else
+			g_aClient[client_idx].second.send_reply(create_msg(691, client_idx, serv, g_vChannel[chann_idx].get_name(), str));
 	}
 }
 

@@ -120,6 +120,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + ERR_UMODEUNKNOWNFLAG();
 		case 502:
 			return sample + ERR_USERSDONTMATCH();
+		case 691:
+			return sample + ERR_ALREADYBAN(arg1, arg2);
 		default:
 			return std::string("");
 	}
