@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:27:54 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/04/26 13:45:05 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/26 20:22:51 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ void		sig_handler(int signal)
 		for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it != g_serv_sock.end(); ++it)
 			closesocket(it->sockfd);
 		exit(0);
+	}
+	else if (signal == SIGPIPE)
+	{
+		#ifdef DEBUG
+			std::cout << signal << ": SIGPIPE\n";
+		#endif
 	}
 }
 

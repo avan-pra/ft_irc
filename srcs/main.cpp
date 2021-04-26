@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:04 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/04/20 19:52:29 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/26 20:18:45 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int			main(void)
 	try
 	{
 		signal(SIGINT, sig_handler);
+		signal(SIGPIPE, sig_handler);
 		parse_conf(serv);
 		InitSSLCTX(serv);
 	}
