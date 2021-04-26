@@ -2,25 +2,6 @@
 #include "../includes/MyServ.hpp"
 #include <ctime>
 
-static void	get_client_message(char *c, const size_t &i, int &ret)
-{
-	if (g_aClient[i].second._readable == true)
-	{
-		g_aClient[i].second._readable = false;
-		c[0] = '\0';
-		ret = 1;
-		return ;
-	}
-	ft_bzero((char *)c, sizeof(c));
-	if (!(g_aClient[i].second.get_tls()) || (g_aClient[i].second.get_tls() &&
-				SSL_is_init_finished(g_aClient[i].second._sslptr)))
-			ret = receive_message(g_aClient[i].second, c);
-	else
-			ret = DoHandshakeTLS(g_aClient[i].second);
-	//int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
-	// std::cout << "recv" << std::endl;
-}
-
 void	iterate_client(MyServ &serv)
 {
 	char	c[BUFF_SIZE + 1];
@@ -31,17 +12,14 @@ void	iterate_client(MyServ &serv)
 		ping_if_away(g_aClient[i].second, serv);
 		//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes
 		if (kick_if_away(g_aClient[i].second) == true)
-		{
 			disconnect_client(i);
-		}
-		else if (FD_ISSET(g_aClient[i].first, &serv.get_readfs()) || g_aClient[i].second._readable == true)
+		else if (is_readable(serv, g_aClient[i].second))
 		{
-			get_client_message(c, i, ret);
+			get_message(c, g_aClient[i].second, ret);
 			if (ret <= 0)
 				disconnect_client(i);
 			else if (ret > 0)
 			{
-				c[ret] = '\0';
 				try
 				{
 					parser(c, i, serv);
