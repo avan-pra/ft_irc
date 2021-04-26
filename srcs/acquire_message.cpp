@@ -4,11 +4,12 @@ void packet_awaiting(Connection &co, int &ret, bool &_read)
 {
 	size_t tmp = co.get_unended_packet().size();
 
+	_read = true;
 	if (tmp > 2 && co.get_unended_packet()[tmp - 1] == '\n' && co.get_unended_packet()[tmp - 2] == '\r')
 	{
 		ret = 1;
 		_read = false;
-	}
+	}	
 }
 
 void check_packet_len_error(char *c, Connection &co, int &ret)
@@ -21,7 +22,7 @@ void check_packet_len_error(char *c, Connection &co, int &ret)
 
 void	get_message(char *c, Connection &co, int &ret)
 {
-	bool _read = true;
+	bool _read;
 
 	ft_bzero((char *)c, BUFF_SIZE + 1);
 	packet_awaiting(co, ret, _read);
@@ -34,8 +35,6 @@ void	get_message(char *c, Connection &co, int &ret)
 			ret = DoHandshakeTLS(co);
 	}
 	check_packet_len_error(c, co, ret);
-	//int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
-	// std::cout << "recv" << std::endl;
 }
 
 bool	is_readable(MyServ &serv, Connection &co)
