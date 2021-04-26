@@ -6,6 +6,10 @@
 #include <sys/socket.h>
 #include <openssl/ssl.h>
 
+# ifndef MSG_NOSIGNAL
+       # define MSG_NOSIGNAL 0
+# endif
+
 typedef int	SOCKET;
 
 class Connection
