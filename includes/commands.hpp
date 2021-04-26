@@ -9,7 +9,7 @@
 */
 # define ERR_NOSUCHNICK(pseudo) (pseudo + " :No such nick/channel\r\n") //401
 # define ERR_NOSUCHSERVER(server) (server + " :No such server\r\n") //402
-# define ERR_NOSUCHCHANNEL(channel) (channel + " :No such channel\r\n") //403
+# define ERR_NOSUCHCHANNEL(channel) (" " + channel + " :No such channel\r\n") //403
 # define ERR_CANNOTSENDTOCHAN(channel) (channel + " :Cannot send to channel\r\n") //404
 # define ERR_TOOMANYCHANNELS(channel) (channel + " :You have joined too many channels\r\n") //405
 # define ERR_WASNOSUCHNICK(channel) (channel + " :There was no such nickname\r\n") //406
