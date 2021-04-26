@@ -73,6 +73,14 @@ extern std::vector<Channel>						g_vChannel;
 class MyServ;
 
 /*
+** acquire_message.cpp
+*/
+bool	is_readable(MyServ &serv, Connection &co);
+void	get_message(char *c, Connection &co, int &ret);
+void	check_packet_len_error(char *c, Connection &co, int &ret);
+void	packet_awaiting(Connection &co, int &ret, bool &_read);
+
+/*
 ** setup_server.cpp
 */
 void		sig_handler(int signal);

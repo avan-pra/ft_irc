@@ -2,18 +2,6 @@
 #include "../includes/MyServ.hpp"
 #include <ctime>
 
-static void	get_connection_message(char *c, const size_t &i, int &ret)
-{
-	ft_bzero((char *)c, sizeof(c));
-	if (!(g_aUnregistered[i].second.get_tls()) || (g_aUnregistered[i].second.get_tls() &&
-				SSL_is_init_finished(g_aUnregistered[i].second._sslptr)))
-			ret = receive_message(g_aUnregistered[i].second, c);
-	else
-			ret = DoHandshakeTLS(g_aUnregistered[i].second);
-	//int ret = recv(g_aClient[i].first, &c, BUFF_SIZE, 0);
-	// std::cout << "recv" << std::endl;
-}
-
 void	connection_parser(char *line, const size_t &connection_idx, const MyServ &serv)
 {
 	std::vector<std::string>	packet;
@@ -40,7 +28,6 @@ void	connection_parser(char *line, const size_t &connection_idx, const MyServ &s
 				co.set_unended_packet(*str + "\r\n" + true_line + co.get_unended_packet());
 				// std::cout << co.get_unended_packet() << std::endl;
 				Client cli = co;
-				cli._readable = true;
 				g_aClient.push_back(std::make_pair(cli._fd, cli));
 				throw NewClientException();
 			}
@@ -94,20 +81,19 @@ void	iterate_connection(MyServ &serv)
 	{
 		if (check_register_timeout(g_aUnregistered[i].second) == true)
 			disconnect_connection(i);
-		else if (FD_ISSET(g_aUnregistered[i].first, &serv.get_readfs()))
+		else if (is_readable(serv, g_aUnregistered[i].second))
 		{
-			get_connection_message(c, i, ret);
+			get_message(c, g_aUnregistered[i].second, ret);
 			if (ret <= 0)
 				disconnect_connection(i);
 			else if (ret > 0)
 			{
-				c[ret] = '\0';
 				try
 				{
 					connection_parser(c, i, serv);
 				}
 				catch (NewServerException) { g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
-				catch (NewClientException) { FD_CLR(g_aClient[g_aClient.size() - 1].first, &serv.get_readfs()); g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
+				catch (NewClientException) { g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
 				catch (QuitCommandException) { disconnect_connection(i); }
 			}
 		}
