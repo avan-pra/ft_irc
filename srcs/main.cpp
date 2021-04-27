@@ -32,7 +32,7 @@ int			main(void)
 		parse_conf(serv);
 		InitSSLCTX(serv);
 	}
-	catch(const std::exception& e) { exit(1); }
+	catch (const std::exception& e) { std::cerr << e.what() << std::endl; exit(1); }
 	run_server(serv);
 	return (0);
 }

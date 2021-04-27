@@ -230,4 +230,28 @@ class   NewClientException: public std::exception
 	};
 };
 
+class   CantInitSocket: public std::exception
+{
+	virtual const char *what() const throw()
+	{
+		return "Socket could not be created";
+	};
+};
+
+class   UnbindableSocket: public std::exception
+{
+	virtual const char *what() const throw()
+	{
+		return "Socket could not be binded to interface, maybe one of the port is already taken ?";
+	};
+};
+
+class   ListenError: public std::exception
+{
+	virtual const char *what() const throw()
+	{
+		return "Socket can;t listen on the binded port";
+	};
+};
+
 #endif

@@ -26,7 +26,7 @@ void		sig_handler(int signal)
 	else if (signal == SIGPIPE)
 	{
 		#ifdef DEBUG
-			std::cout << signal << ": SIGPIPE\n";
+			std::cerr << signal << ": SIGPIPE (probably caused by tls)" << std::endl;
 		#endif
 	}
 }
@@ -40,9 +40,9 @@ int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 	fcntl(sock.sockfd, F_SETFL, O_NONBLOCK);
 
 	if (sock.sockfd == INVALID_SOCKET)
-		throw std::exception();
+		throw CantInitSocket();
 	#ifdef DEBUG
-		std::cout << "Socket created" << std::endl;
+		std::cerr << "Socket created" << std::endl;
 	#endif
 
 	memset(&sin, 0, sizeof(sin));
@@ -51,13 +51,13 @@ int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 	sin.sin6_addr = in6addr_any;
 
 	if (bind(sock.sockfd, (struct sockaddr *)&sin, sizeof(sin)) < 0)
-		throw std::exception();
+		throw UnbindableSocket();
 	std::cout << "Server binded to port number " << port << (is_tls == true ? " (tls)" : "") << std::endl;
 
 	if (listen(sock.sockfd, serv.get_listen_limit()) == SOCKET_ERROR)
-		throw std::exception();
+		throw ListenError();
 	#ifdef DEBUG
-		std::cout << "Listening for connection on port " << port << "...\n";
+		std::cerr << "Listening for connection on port " << port << "...\n";
 	#endif
 
 	sock.is_tls = is_tls;
