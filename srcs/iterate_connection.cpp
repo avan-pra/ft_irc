@@ -1,5 +1,6 @@
 #include "../includes/IRCserv.hpp"
 #include "../includes/MyServ.hpp"
+#include "../includes/Disconnect.hpp"
 #include <ctime>
 
 static void	handle_wrong_command(std::string &command, const size_t connection_idx, const MyServ &serv)
@@ -89,13 +90,13 @@ void	iterate_connection(MyServ &serv)
 	for (size_t i = 0; i != g_aUnregistered.size(); ++i)
 	{
 		if (check_register_timeout(g_aUnregistered[i].second) == true)
-			disconnect_connection(i);
+			disconnect(&g_aUnregistered[i].second, i);
 		else if (is_readable(serv, g_aUnregistered[i].second))
 		{
 			get_message(c, g_aUnregistered[i].second, ret);
 			check_message_problem(c, g_aUnregistered[i].second, serv, ret);
 			if (ret <= 0)
-				disconnect_connection(i);
+				disconnect(&g_aUnregistered[i].second, i);
 			else if (ret > 0)
 			{
 				try
@@ -104,7 +105,7 @@ void	iterate_connection(MyServ &serv)
 				}
 				catch (NewServerException) { g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
 				catch (NewClientException) { g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
-				catch (QuitCommandException) { disconnect_connection(i); }
+				catch (QuitCommandException) { disconnect(&g_aUnregistered[i].second, i); }
 			}
 		}
 	}

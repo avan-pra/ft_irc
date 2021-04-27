@@ -94,9 +94,6 @@ void		launch_all_socket(MyServ &serv, const std::map<int, bool> &m_port);
 void		run_server(MyServ &serv);
 bool 		kick_if_away(Connection &co);
 void 		ping_if_away(Connection &co, const MyServ &serv);
-void		disconnect_client(size_t &i);
-void		disconnect_connection(size_t &i);
-void		disconnect_server(size_t &i);
 
 /*
 ** iterate_client.cpp

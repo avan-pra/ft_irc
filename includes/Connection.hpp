@@ -36,6 +36,7 @@ class Connection
 			time(&_t_idle);
 			time(&_t_signon);
 		}
+		virtual ~Connection() { }
 
 		time_t			&get_last_activity() { return _last_activity; }
 		std::string		get_unended_packet() { return (_unended_packet); }

@@ -54,45 +54,6 @@ static void push_fd_to_set(MyServ &serv)
 	}
 }
 
-void		disconnect_client(size_t &i)
-{
-	if (g_aClient[i].second.get_tls())
-	{
-		if (g_aClient[i].second._sslptr != NULL)
-			SSL_shutdown(g_aClient[i].second._sslptr);
-		SSL_free(g_aClient[i].second._sslptr);
-	}
-	closesocket(g_aClient[i].first);
-	std::cout << "* Client disconnected from: " << inet_ntoa(g_aClient[i].second.sock_addr.sin_addr)
-		<< ":" << ntohs(g_aClient[i].second.sock_addr.sin_port) << std::endl;
-	g_aClient.erase(g_aClient.begin() + i);
-	i--;
-}
-
-void		disconnect_connection(size_t &i)
-{
-	if (g_aUnregistered[i].second.get_tls())
-	{
-		if (g_aClient[i].second._sslptr != NULL)
-			SSL_shutdown(g_aClient[i].second._sslptr);
-		SSL_free(g_aClient[i].second._sslptr);
-	}
-	closesocket(g_aUnregistered[i].first);
-	std::cout << "* Connection lost to: " << inet_ntoa(g_aUnregistered[i].second.sock_addr.sin_addr)
-		<< ":" << ntohs(g_aUnregistered[i].second.sock_addr.sin_port) << std::endl;
-	g_aUnregistered.erase(g_aUnregistered.begin() + i);
-	i--;
-}
-
-void		disconnect_server(size_t &i)
-{
-	closesocket(g_aServer[i].first);
-	std::cout << "* Server disconnected from: " << inet_ntoa(g_aServer[i].second.sock_addr.sin_addr)
-		<< ":" << ntohs(g_aServer[i].second.sock_addr.sin_port) << std::endl;
-	g_aServer.erase(g_aServer.begin() + i);
-	i--;
-}
-
 void		ping_if_away(Connection &co, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
