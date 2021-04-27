@@ -28,6 +28,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + RPL_UMODEIS(arg1);
 		case 311:
 			return sample + RPL_WHOISUSER(arg1, arg2, arg3, arg4);
+		case 314:
+			return sample + RPL_WHOWASUSER(arg1, arg2, arg3, arg4);
 		case 315:
 			return sample + RPL_ENDOFWHO(arg1);
 		case 317:
@@ -58,6 +60,8 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 			return sample + RPL_BANLIST(arg1);
 		case 368:
 			return sample + RPL_ENDOFBANLIST(arg1);
+		case 369:
+			return sample + RPL_ENDOFWHOWAS(arg1);
 		case 371:
 			return sample + RPL_INFO(arg1);
 		case 372:

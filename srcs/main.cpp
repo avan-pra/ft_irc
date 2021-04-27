@@ -6,18 +6,19 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:04 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/04/27 17:53:10 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/27 19:14:14 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/IRCserv.hpp"
 #include "../includes/Disconnect.hpp"
 
-std::deque<t_sock>						g_serv_sock;
-std::deque<std::pair<SOCKET, Client> >	g_aClient;
+std::deque<t_sock>							g_serv_sock;
+std::deque<std::pair<SOCKET, Client> >		g_aClient;
 std::vector<std::pair<SOCKET, Connection> >	g_aUnregistered;
-std::vector<std::pair<SOCKET, Server> >	g_aServer;
-std::vector<Channel>					g_vChannel;
+std::vector<std::pair<SOCKET, Server> >		g_aServer;
+std::vector<Channel>						g_vChannel;
+std::deque<t_discon_id>						g_aDisconnectedCli;
 
 void		sig_handler(int signal)
 {

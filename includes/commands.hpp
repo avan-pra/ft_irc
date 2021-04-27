@@ -66,15 +66,15 @@
 # define RPL_AWAY(pseudo) (pseudo + " :<message d'absence>\r\n")
 # define RPL_UNAWAY() (":You are no longer marked as being away\r\n")
 # define RPL_NOWAWAY() (":You have been marked as being away\r\n")
-# define RPL_WHOISUSER(pseudo, user, host, realname) ( " " + pseudo + " " + user + " " + host + " * :" + realname + "\r\n")
+# define RPL_WHOISUSER(nick, user, host, realname) ( " " + nick + " " + user + " " + host + " * :" + realname + "\r\n")
 //# define RPL_WHOISSERVER(pseudo, server) (pseudo + " " + server + " :<info serveur>\r\n")
 # define RPL_WHOISOPERATOR(pseudo) (pseudo + " :is an IRC operator\r\n")
 # define RPL_WHOISIDLE(pseudo, idle, signon) (" " + pseudo + " " + idle + " " + signon + " :seconds idle, signon time\r\n")
 # define RPL_WHOREPLY(arg) (" " + arg + "\r\n")
 # define RPL_ENDOFWHOIS(pseudo) (" " + pseudo + " :End of WHOIS list\r\n")
 //# define RPL_WHOISCHANNELS(pseudo, channel) (pseudo + " :{[@|+]<canal><espace>}\r\n")
-//# define RPL_WHOWASUSER(pseudo, user, host) (pseudo + " " + user + " " + host + " * :<vrai nom>\r\n")
-# define RPL_ENDOFWHOWAS(pseudo) (pseudo + " :End of WHOWAS\r\n")
+# define RPL_WHOWASUSER(nick, user, host, realname) ( " " + nick + " " + user + " " + host + " * :" + realname + "\r\n")
+# define RPL_ENDOFWHOWAS(nick) ( " " + nick + " :End of WHOWAS\r\n")
 # define RPL_LISTSTART() ("Channel :Users Name\r\n")
 # define RPL_LIST(channel, topic) (channel + " :" + topic + "\r\n")
 # define RPL_LISTEND() (" :End of LIST\r\n")
@@ -181,6 +181,7 @@ void	kick_command(const std::string &line, const size_t &client_idx, const MySer
 void	topic_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	notice_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	whois_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	whowas_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 
 /*
 ** specific_modes_fncts 

@@ -64,6 +64,14 @@ void	nick_command(const std::string &line, const size_t &client_idx, const MySer
 		// if all check has passed set his username
 		if (g_aClient[client_idx].second.is_registered() == true)
 		{
+			//Add nick to disconnected user deque
+			t_discon_id	new_id;
+
+			new_id.nickname = g_aClient[client_idx].second.get_nickname();
+			new_id.username = g_aClient[client_idx].second.get_username();
+			new_id.hostname = g_aClient[client_idx].second.get_hostname();
+			new_id.realname = g_aClient[client_idx].second.get_realname();
+			g_aDisconnectedCli.push_back(new_id);
 			//reply to him he changed his nick
 			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
 				+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " NICK " + name + "\r\n");

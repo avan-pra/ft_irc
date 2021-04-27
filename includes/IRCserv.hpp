@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/27 14:49:06 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/27 20:35:50 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,27 @@ typedef int	SOCKET;
 typedef struct sockaddr_in6 SOCKADDR_IN6;
 typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
-typedef struct s_Sock
+typedef struct	s_Sock
 {
 	SOCKET	sockfd;
 	bool	is_tls;
 }				t_sock;
 
-extern std::deque<t_sock>						g_serv_sock;
-extern std::deque<std::pair<SOCKET, Client> >	g_aClient;
+typedef struct	s_discon_id
+{
+	std::string	nickname;
+	std::string	username;
+	std::string	hostname;
+	std::string	realname;
+}				t_discon_id;
+
+
+extern std::deque<t_sock>							g_serv_sock;
+extern std::deque<std::pair<SOCKET, Client> >		g_aClient;
 extern std::vector<std::pair<SOCKET, Connection> >	g_aUnregistered;
-extern std::vector<std::pair<SOCKET, Server> >	g_aServer;
-extern std::vector<Channel>						g_vChannel;
+extern std::vector<std::pair<SOCKET, Server> >		g_aServer;
+extern std::vector<Channel>							g_vChannel;
+extern std::deque<t_discon_id>						g_aDisconnectedCli;
 
 class MyServ;
 
@@ -152,7 +162,7 @@ std::string		ft_to_string(size_t value);
 /*
 ** parser.cpp
 */
-void            parser(char *line, const size_t &client_idx, const MyServ &server);
+void	parser(char *line, const size_t &client_idx, const MyServ &server);
 void	build_unfinished_packet(const std::string &true_line, Connection &co, std::string &last);
 void	clear_empty_packet(std::vector<std::string> &packet);
 
