@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:27:54 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/04/26 20:22:51 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/27 14:40:52 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,10 @@ int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 
 	g_serv_sock.push_back(sock);
 	return (0);
+}
+
+void		launch_all_socket(MyServ &serv, const std::map<int, bool> &m_port)
+{
+	for (std::map<int, bool>::const_iterator it = m_port.begin(); it != m_port.end(); it++)
+		setup_server_socket(serv, it->first, it->second);
 }

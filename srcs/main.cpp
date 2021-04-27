@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:04 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/04/26 20:18:45 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/27 14:48:43 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ std::vector<Channel>					g_vChannel;
 
 int			main(void)
 {
-	MyServ serv;
+	MyServ				serv;
+	std::map<int, bool>	m_port;
 
 	SSL_library_init();
 	SSL_load_error_strings();
@@ -29,8 +30,9 @@ int			main(void)
 	{
 		signal(SIGINT, sig_handler);
 		signal(SIGPIPE, sig_handler);
-		parse_conf(serv);
 		InitSSLCTX(serv);
+		start_parse_conf(serv, m_port);
+		launch_all_socket(serv, m_port);
 	}
 	catch (const std::exception& e) { std::cerr << e.what() << std::endl; exit(1); }
 	run_server(serv);

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/27 12:51:31 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/27 14:23:15 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,23 @@
 class MyServ;
 std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)> fill_command(void);
 
-typedef struct s_networkID
+struct t_networkID
 {
 	std::string		name;
-	int				port;
 	std::string		pass;
-}				t_networkID;
+	int				port;
+	int				port_tls;
+	bool			is_tls;
+
+	t_networkID()
+	{
+		name = "";
+		pass = "";
+		port = -1;
+		port_tls = -1;
+		is_tls = false;
+	}
+};
 
 class MyServ
 {
@@ -52,6 +63,7 @@ class MyServ
 		unsigned char	_oper_password[32];
 		bool			_pass_for_connection;
 		bool			_pass_oper;
+		bool			_accept_tls;
 
 	public:
 		SSL_CTX						*sslctx;
@@ -90,6 +102,7 @@ class MyServ
         const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	&get_command() const { return _command; }
 		bool	get_need_pass() const { return _pass_for_connection; }
 		bool	get_pass_oper() const { return _pass_oper; }
+		bool	get_accept_tls() { return _accept_tls; }
 		
 		/*
 		 ** setter
@@ -107,6 +120,7 @@ class MyServ
 		}
 		void	set_need_pass(bool need) { _pass_for_connection = need; }
 		void	set_pass_oper(bool need) { _pass_oper = need; }
+		void	set_accept_tls(bool tls) {_accept_tls = tls; }
 };
 
 #endif

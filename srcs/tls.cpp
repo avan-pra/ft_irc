@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 19:45:37 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/23 12:48:00 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/27 14:23:39 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,26 @@ void	InitSSLCTX(MyServ &serv)
 	/* check if cert exists */
 	int		cert = open("./godirc.crt", O_RDONLY);
 	int		key = open("./godirc.key", O_RDONLY);
-	int		has_tls = get_tls_socket_binded();
+//	int		has_tls = get_tls_socket_binded();
 
-	if (has_tls == 0)
+/*	if (has_tls == 0)
 	{
 		#ifdef DEBUG
 			std::cout << "No tls port specified, stopping certificate handler." << std::endl;
 		#endif
 		return ;
 	}
-	if (cert < 0 || key < 0)
+*/	if (cert < 0 || key < 0)
 	{
 		serv.sslctx = NULL;
 		if (cert < 0)
 			std::cerr << "Certificate not found. Skipping SSL_CTX creation" << std::endl;
 		if (key < 0)
 			std::cerr << "Key not found. Skipping SSL_CTX creation" << std::endl;
-		error_exit("Error: Certs not found");
+		std::cout << "IRCSERV only classic connection" << std::endl;
+		serv.set_accept_tls(false);
+		return ;
+		//error_exit("Error: Certs not found");
 	}
 	close(cert);
 	close(key);
@@ -70,6 +73,7 @@ void	InitSSLCTX(MyServ &serv)
 		SSL_CTX_free(serv.sslctx);
 		error_exit("Failed to load a private key");
 	}
+	serv.set_accept_tls(true);
 }
 
 int		receive_message(Connection &co, char *buf)

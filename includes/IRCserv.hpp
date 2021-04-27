@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/26 13:46:50 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/27 14:49:06 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	check_message_problem(char *c, Connection &co, MyServ &serv, int &ret);
 */
 void		sig_handler(int signal);
 int			setup_server_socket(const MyServ &serv, int port, bool is_tls);
+void		launch_all_socket(MyServ &serv, const std::map<int, bool> &m_port);
 
 /*
 ** run_server.cpp
@@ -122,7 +123,8 @@ void		try_accept_connection(MyServ &serv);
 /*
 ** parse_conf.cpp
 */
-void		parse_conf(MyServ &serv);
+void		parse_conf(MyServ &serv, std::map<int, bool> &m_port, std::fstream &file, int &nb_line);
+void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port);
 
 /*
  ** ft_bzero.cpp
@@ -250,8 +252,18 @@ class   ListenError: public std::exception
 {
 	virtual const char *what() const throw()
 	{
-		return "Socket can;t listen on the binded port";
+		return "Socket can't listen on the binded port";
 	};
 };
+
+class	ConfigFileException: public std::exception
+{
+	public:
+	virtual const char	*what() const throw()
+	{
+		return "Config file has syntax error";
+	};
+};
+
 
 #endif
