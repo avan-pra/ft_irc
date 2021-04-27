@@ -44,13 +44,14 @@ class Client : public Connection
 
 		//std::vector<Channel>	_channels;
 	public:
-		Client() :_has_good_password(false), _has_try_password(false), _is_oper(false) //, _is_cap(false)
+		Client() //, _is_cap(false)
 		{
+			_has_good_password = false;
+			_has_try_password = false;
+			_is_oper = false;
 		}
 
-		~Client()
-		{
-		}
+		~Client();
 
 		/*
 		 ** Getter
@@ -107,6 +108,7 @@ class Client : public Connection
 		_tls = co.get_tls();
 		_sslptr = co._sslptr;
 		sock_addr = co.sock_addr;
+		_is_oper = false;
 	}
 
 	bool	operator!=(const Client &a) const
