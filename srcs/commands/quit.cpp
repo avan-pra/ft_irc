@@ -6,14 +6,27 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/27 21:16:32 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/27 23:57:42 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/commands.hpp"
 #include "../../includes/IRCserv.hpp"
 
-void	quit_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+static bool	is_user_in_any_channel(const std::string nickname)
+{
+	for (size_t i = 0; i < g_vChannel.size(); i++)
+	{
+		for (size_t j = 0; j < g_vChannel[i]._users.size(); j++)
+		{
+			if (g_vChannel[i]._users[j]->get_nickname() == nickname)
+				return	true;
+		}
+	}
+	return	false;
+}
+
+void		quit_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
 {
 	std::vector<std::string>	args;
 	std::string					output;
@@ -36,20 +49,20 @@ void	quit_command(const std::string &line, const size_t &client_idx, const MySer
 			}
 		}
 	}
-	if (part_string.size() > 0)
-		part_string.resize(part_string.size() - 1);
-	if (args.size() == 1)
+	if (is_user_in_any_channel(g_aClient[client_idx].second.get_nickname()) == true)
 	{
-		part_command("PART " + part_string, client_idx, serv);
-		throw QuitCommandException();
+		if (part_string.size() > 0)
+			part_string.resize(part_string.size() - 1);
+		if (args.size() == 1)
+			part_command("PART " + part_string, client_idx, serv);
+		else
+		{
+			for (size_t i = 1; i < args.size() ; i++)
+				output += args[i] + " ";
+			if (output.size() > 0)
+				output.resize(output.size() - 1);
+			part_command("PART " + part_string + " " + output, client_idx, serv);
+		}
 	}
-	else
-	{
-		for (size_t i = 1; i < args.size() ; i++)
-			output += args[i] + " ";
-		if (output.size() > 0)
-			output.resize(output.size() - 1);
-		part_command("PART " + part_string + " " + output, client_idx, serv);
-		throw QuitCommandException();
-	}
+	throw QuitCommandException();
 }
