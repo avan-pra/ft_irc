@@ -6,30 +6,12 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:27:54 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/04/27 14:40:52 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/27 17:43:01 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/IRCserv.hpp"
 #include <stdio.h>
-
-void		sig_handler(int signal)
-{
-	if (signal == SIGINT)
-	{
-		for (std::deque<std::pair<SOCKET, Client> >::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
-			closesocket(it->first);
-		for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it != g_serv_sock.end(); ++it)
-			closesocket(it->sockfd);
-		exit(0);
-	}
-	else if (signal == SIGPIPE)
-	{
-		#ifdef DEBUG
-			std::cerr << signal << ": SIGPIPE (probably caused by tls)" << std::endl;
-		#endif
-	}
-}
 
 int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 {
