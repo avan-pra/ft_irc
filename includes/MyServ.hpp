@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/26 16:36:45 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/27 12:51:31 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <iostream>
 # include <string>
 # include <vector>
+# include <deque>
 # include <sys/select.h>
 # include <sys/time.h>
 # include <map>
@@ -25,6 +26,13 @@
 
 class MyServ;
 std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)> fill_command(void);
+
+typedef struct s_networkID
+{
+	std::string		name;
+	int				port;
+	std::string		pass;
+}				t_networkID;
 
 class MyServ
 {
@@ -46,8 +54,9 @@ class MyServ
 		bool			_pass_oper;
 
 	public:
-		SSL_CTX		*sslctx;
-		SSL			*sslptr;
+		SSL_CTX						*sslctx;
+		SSL							*sslptr;
+		std::deque<t_networkID>	network;
 
 		MyServ() : _listen_limit(0), _max_fd(0), _command(fill_command()),
 					_pass_for_connection(false), _pass_oper(false)
