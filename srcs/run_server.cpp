@@ -58,7 +58,8 @@ void		disconnect_client(size_t &i)
 {
 	if (g_aClient[i].second.get_tls())
 	{
-		SSL_shutdown(g_aClient[i].second._sslptr);
+		if (g_aClient[i].second._sslptr != NULL)
+			SSL_shutdown(g_aClient[i].second._sslptr);
 		SSL_free(g_aClient[i].second._sslptr);
 	}
 	closesocket(g_aClient[i].first);
@@ -72,7 +73,8 @@ void		disconnect_connection(size_t &i)
 {
 	if (g_aUnregistered[i].second.get_tls())
 	{
-		SSL_shutdown(g_aClient[i].second._sslptr);
+		if (g_aClient[i].second._sslptr != NULL)
+			SSL_shutdown(g_aClient[i].second._sslptr);
 		SSL_free(g_aClient[i].second._sslptr);
 	}
 	closesocket(g_aUnregistered[i].first);
