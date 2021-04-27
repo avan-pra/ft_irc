@@ -17,9 +17,9 @@ static int	who_channel(const std::string &channel, const size_t &client_idx, con
 
 	if (channel_id < 0)
 		return (1);
-	if (g_aClient[client_idx].second.get_is_oper() == false && find_user_in_channel(channel, g_aClient[client_idx].second.get_nickname()) == g_vChannel[channel_id]._users.end())
+	if (g_aClient[client_idx].second.get_is_oper() == false && !is_user_in_chan(channel_id, g_aClient[client_idx].second.get_nickname()))
 		return (1);
-	//std::cout << "who passed" << std::endl;
+	// std::cout << "who passed" << std::endl;
 	for (size_t n = 0; n < g_vChannel[channel_id]._users.size(); ++n)
 	{
 		std::string str;
@@ -31,7 +31,10 @@ static int	who_channel(const std::string &channel, const size_t &client_idx, con
 		str += g_vChannel[channel_id]._users[n]->get_nickname() + " ";
 		{
 			str += "H";
-			str += g_vChannel[channel_id].is_operator(*(g_vChannel[channel_id]._users[n])) ? "@" : "+";
+			if (g_vChannel[channel_id].is_operator(g_vChannel[channel_id]._users[n]))
+				str += "@";
+			else
+				str += "+";
 			str += " ";
 		}
 		str += std::string(":0") + " ";

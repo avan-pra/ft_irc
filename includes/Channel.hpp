@@ -143,6 +143,13 @@ class Channel
 					return (true);
 			return (false);
 		}
+		bool			is_operator(Client *cli)
+		{
+			for (size_t i = 0; i < _operator.size(); i++)
+				if (_operator[i]->get_nickname() == cli->get_nickname())
+					return (true);
+			return (false);
+		}
 
 		bool			is_voice(Client cli)
 		{
