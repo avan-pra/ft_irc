@@ -93,6 +93,7 @@ void	iterate_connection(MyServ &serv)
 		else if (is_readable(serv, g_aUnregistered[i].second))
 		{
 			get_message(c, g_aUnregistered[i].second, ret);
+			check_message_problem(c, g_aUnregistered[i].second, serv, ret);
 			if (ret <= 0)
 				disconnect_connection(i);
 			else if (ret > 0)
