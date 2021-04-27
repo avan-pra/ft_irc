@@ -2,13 +2,36 @@
 #include "../includes/MyServ.hpp"
 #include <ctime>
 
+static void	handle_wrong_command(std::string &command, const size_t connection_idx, const MyServ &serv)
+{
+	if (command == "QUIT")
+	{
+		throw QuitCommandException();
+	}
+	if (command == "CAP")
+		;
+	else
+	{
+		try
+		{
+			serv.get_command().at(command);
+			std::string err = ":" + serv.get_hostname() + " " + ft_to_string(451) + " * :You have not registered\r\n";
+			g_aUnregistered[connection_idx].second.send_reply(err);
+		}
+		catch (const std::exception &e) 
+		{
+			std::string err = ":" + serv.get_hostname() + " " + ft_to_string(421) + " * " + command + " :Unknown command\r\n";
+			g_aUnregistered[connection_idx].second.send_reply(err);
+		}
+	}
+}
+
 void	connection_parser(char *line, const size_t &connection_idx, const MyServ &serv)
 {
 	std::vector<std::string>	packet;
 	std::string					true_line;
 	Connection					&co = g_aUnregistered[connection_idx].second;
 
-	//add old unfinished packet if any exist
 	true_line = g_aUnregistered[connection_idx].second.get_unended_packet() + std::string(line);
 	packet = ft_split(true_line, std::string("\r\n"));
 	if (packet.size() != 0)
@@ -19,45 +42,31 @@ void	connection_parser(char *line, const size_t &connection_idx, const MyServ &s
 		{
 			std::string command = std::string(str->substr(0, str->find(" ", 0)));
 
-			true_line.erase(0, str->size() + 2);
-			//put to uppercase letter the command (irssi send in lower case for example)
+			true_line.erase(0, str->size() + 2); //erase the current packet from the starting string
+
 			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 				*it = std::toupper(*it);
 			if (command == "NICK" || command == "USER" || (command == "PASS" && ft_split(*str, " ").size() <= 2))
 			{
-				co.set_unended_packet(*str + "\r\n" + true_line + co.get_unended_packet());
-				// std::cout << co.get_unended_packet() << std::endl;
 				Client cli = co;
+
+				cli.set_unended_packet(*str + "\r\n" + true_line + co.get_unended_packet());
 				g_aClient.push_back(std::make_pair(cli._fd, cli));
 				throw NewClientException();
 			}
 			if (command == "SERVER" || (command == "PASS" && ft_split(*str, " ").size() > 2))
 			{
-				co.set_unended_packet(*str + true_line + co.get_unended_packet());
 				Server srv = co;
+
+				srv.set_unended_packet(*str + "\r\n" + true_line + co.get_unended_packet());
 				g_aServer.push_back(std::make_pair(srv._fd, srv));
 				throw NewServerException();
 			}
-			if (command == "QUIT")
+			try
 			{
-				throw QuitCommandException();
+				handle_wrong_command(command, connection_idx, serv);
 			}
-			if (command == "CAP")
-				;
-			else
-			{
-				try
-				{
-					serv.get_command().at(command);
-					std::string err = ":" + serv.get_hostname() + " " + ft_to_string(451) + " * :You have not registered\r\n";
-					g_aUnregistered[connection_idx].second.send_reply(err);
-				}
-				catch (const std::exception &e) 
-				{
-					std::string err = ":" + serv.get_hostname() + " " + ft_to_string(421) + " * " + command + " :Unknown command\r\n";
-					g_aUnregistered[connection_idx].second.send_reply(err);
-				}
-			}
+			catch (QuitCommandException) { throw QuitCommandException(); }
 		}
 	}
 }

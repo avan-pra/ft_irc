@@ -79,6 +79,7 @@ bool	is_readable(MyServ &serv, Connection &co);
 void	get_message(char *c, Connection &co, int &ret);
 void	check_packet_len_error(char *c, Connection &co, int &ret);
 void	packet_awaiting(Connection &co, int &ret, bool &_read);
+void	check_message_problem(char *c, Connection &co, MyServ &serv, int &ret);
 
 /*
 ** setup_server.cpp

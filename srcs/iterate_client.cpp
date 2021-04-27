@@ -16,6 +16,11 @@ void	iterate_client(MyServ &serv)
 		else if (is_readable(serv, g_aClient[i].second))
 		{
 			get_message(c, g_aClient[i].second, ret);
+			check_message_problem(c, g_aClient[i].second, serv, ret);
+			/*
+			** get_message & check_message_problem may set ret to -1 which indicate an critical error such as a too big packet size
+			** an ssl handshake error, read error or if the client isnt writeable
+			*/
 			if (ret <= 0)
 				disconnect_client(i);
 			else if (ret > 0)
@@ -26,7 +31,6 @@ void	iterate_client(MyServ &serv)
 				}
 				catch(const IncorrectPassException &e) { disconnect_client(i); }
 				catch(const QuitCommandException &e) { disconnect_client(i); }
-				catch(const NewServerException &e) { g_aClient.erase(g_aClient.begin() + i); i--; }
 			}
 		}
 	}

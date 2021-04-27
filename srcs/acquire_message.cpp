@@ -14,9 +14,15 @@ void packet_awaiting(Connection &co, int &ret, bool &_read)
 
 void check_packet_len_error(char *c, Connection &co, int &ret)
 {
-	if (strlen(c) + co.get_unended_packet().size() > 512)
+	std::vector<std::string> tmp = ft_split(co.get_unended_packet() + c, "\r\n");
+
+	for (std::vector<std::string>::iterator it = tmp.begin(); it < tmp.end(); ++it)
 	{
-		ret = -1;
+		if (it->size() + 2 > 512)
+		{
+			ret = -1;
+			return;
+		}
 	}
 }
 
@@ -34,12 +40,19 @@ void	get_message(char *c, Connection &co, int &ret)
 		else
 			ret = DoHandshakeTLS(co);
 	}
+}
+
+void	check_message_problem(char *c, Connection &co, MyServ &serv, int &ret)
+{
+	(void)serv;
+	if (/*!(FD_ISSET(co._fd, &serv.get_writefs()))*/false)
+		ret = -1;
 	check_packet_len_error(c, co, ret);
 }
 
 bool	is_readable(MyServ &serv, Connection &co)
 {
-	if (FD_ISSET(co._fd, &serv.get_readfs())/* && FD_ISSET(g_aClient[i].first, &serv.get_writefs())*/)
+	if (FD_ISSET(co._fd, &serv.get_readfs()))
 		return true;
 	return false;
 }
