@@ -7,7 +7,7 @@
 #include <openssl/ssl.h>
 
 # ifndef MSG_NOSIGNAL
-       # define MSG_NOSIGNAL 0
+		# define MSG_NOSIGNAL 0
 # endif
 
 typedef int	SOCKET;
@@ -30,9 +30,14 @@ class Connection
 		SSL				*_sslptr;
 		sockaddr_in		sock_addr;
 
-		Connection() : _ping_sended(false), _is_register(false)
-		{ 
+		Connection()
+		{
+			_last_activity = 0;
+			_ping_sended = false;
+			_is_register = false;
 			_tls = false;
+			_fd = -1;
+			_sslptr = NULL;
 			time(&_t_idle);
 			time(&_t_signon);
 		}

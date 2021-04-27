@@ -22,16 +22,14 @@ std::deque<t_discon_id>						g_aDisconnectedCli;
 
 void		sig_handler(int signal)
 {
-	size_t i = 0;
 	if (signal == SIGINT)
 	{
-		for (std::deque<std::pair<SOCKET, Client> >::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
+		for (size_t i = 0; i < g_aClient.size(); ++i)
 		{
-			disconnect(&(it->second), i);
-			i++;
+			disconnect(&g_aClient[i].second, i);
 		}
-		for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it != g_serv_sock.end(); ++it)
-			closesocket(it->sockfd);
+		// for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it != g_serv_sock.end(); ++it)
+		// 	closesocket(it->sockfd);
 		for (size_t i = 0; i < g_serv_sock.size(); i++)
 		{
 			closesocket(g_serv_sock[i].sockfd);
