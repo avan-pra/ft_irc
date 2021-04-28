@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/21 13:42:49 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/28 16:46:35 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	check_invite(const int &chan_id, const size_t &client_idx, const MySe
 		if (g_aClient[client_idx].second == *g_vChannel[chan_id]._invite[i])
 			return (1);
 	}
-	g_aClient[client_idx].second.send_reply(create_msg(473, client_idx, serv, " " + g_vChannel[chan_id].get_name()));
+	g_aClient[client_idx].second.send_reply(create_msg(473, client_idx, serv, g_vChannel[chan_id].get_name()));
 	return (0);
 }
 
@@ -91,7 +91,7 @@ int		check_password(const size_t &client_idx, const MyServ &serv, const int &cha
 		return (1);
 	if (pass == g_vChannel[chan_id].get_password())
 		return (1);
-	g_aClient[client_idx].second.send_reply(create_msg(475, client_idx, serv, " " + g_vChannel[chan_id].get_name()));
+	g_aClient[client_idx].second.send_reply(create_msg(475, client_idx, serv, g_vChannel[chan_id].get_name()));
 	return (0);
 }
 
@@ -121,13 +121,13 @@ static int	try_enter_chan(const std::map<std::string, std::string>::iterator it,
 	if (g_vChannel[i].is_mode('b') && g_vChannel[i].is_ban(g_aClient[client_idx].second))
 	{
 		enter = true;
-		g_aClient[client_idx].second.send_reply(create_msg(474, client_idx, serv, " " + it->first));
+		g_aClient[client_idx].second.send_reply(create_msg(474, client_idx, serv, it->first));
 		return (0);
 	}
 	if (g_vChannel[i].is_mode('l') && g_vChannel[i]._users.size() == g_vChannel[i].get_limit())
 	{
 		enter = true;
-		g_aClient[client_idx].second.send_reply(create_msg(471, client_idx, serv, " " + it->first));
+		g_aClient[client_idx].second.send_reply(create_msg(471, client_idx, serv, it->first));
 		return (0);
 	}
 	return (1);

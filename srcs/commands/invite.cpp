@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:22:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/23 18:01:19 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/28 16:45:20 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ void	check_line(const std::vector<std::string> &params, const size_t &client_idx
 
 	if (params.size() < 3)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, " " + params[0]));
+		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, params[0]));
 		return ;
 	}
 	if ((chan_id = find_channel(params[2])) == -1)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, " " + params[2]));
+		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, params[2]));
 		return ;
 	}
 	if ((nick_id = find_user_by_nick(params[1])) == -1)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(401, client_idx, serv, " " + params[1]));
+		g_aClient[client_idx].second.send_reply(create_msg(401, client_idx, serv, params[1]));
 		return ;
 	}
 }
@@ -47,9 +47,9 @@ int		check_if_are_on(const std::vector<std::string> &params, const size_t &clien
 			find = 2;
 	}
 	if (!find)
-		g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, " " + g_aClient[client_idx].second.get_nickname()));
+		g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
 	if (find == 2)
-		g_aClient[client_idx].second.send_reply(create_msg(443, client_idx, serv, " " + params[1], params[2]));
+		g_aClient[client_idx].second.send_reply(create_msg(443, client_idx, serv, params[1], params[2]));
 	if (!find || find == 2)
 		return (0);
 	return (1);
@@ -83,6 +83,6 @@ void	invite_command(const std::string &line, const size_t &client_idx, const MyS
 	}
 	if (!exist)
 		g_vChannel[chan_id]._invite.push_back(&g_aClient[nick_id].second);
-	g_aClient[client_idx].second.send_reply(create_msg(341, client_idx, serv, " " + g_aClient[nick_id].second.get_nickname(), params[2]));
+	g_aClient[client_idx].second.send_reply(create_msg(341, client_idx, serv, g_aClient[nick_id].second.get_nickname(), params[2]));
 	g_aClient[nick_id].second.send_reply(create_full_msg(params, client_idx));
 }

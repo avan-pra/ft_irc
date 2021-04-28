@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 18:16:34 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/09 12:29:05 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/28 16:45:55 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ void	kick_on_one_channel(std::vector<std::string> params, std::vector<std::strin
 	for (size_t i = 0; i < users.size(); i++)
 	{
 		if (!is_user_in_chan(chan_id, g_aClient[client_idx].second.get_nickname()))
-			g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, " " + params[1]));
+			g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, params[1]));
 		else if (!is_user_in_chan(chan_id, users[i]))
-			g_aClient[client_idx].second.send_reply(create_msg(441, client_idx, serv, " " + users[i], params[1]));
+			g_aClient[client_idx].second.send_reply(create_msg(441, client_idx, serv, users[i], params[1]));
 		else if (!is_chann_operator(chan_id, client_idx))
-			g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, " " + params[1]));
+			g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, params[1]));
 		else
 		{
 			kick_cli_id = find_user_by_nick(users[i]);
