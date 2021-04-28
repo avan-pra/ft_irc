@@ -20,6 +20,7 @@ class Connection
 		time_t			_t_signon;
 		std::string		_unended_packet;
 		std::string		_servername;
+		std::string		_buff;
 		bool			_ping_sended;
 		bool			_is_register;
 		bool			_tls;
@@ -65,6 +66,17 @@ class Connection
 				SSL_write(_sslptr, s.c_str(), s.size());
 			else
 				send(_fd, s.c_str(), s.size(), MSG_NOSIGNAL);
+		}
+
+		void			set_buffer(const std::string &s) { _buff = s; }
+		void			push_to_buffer(const std::string &s) { _buff += s; }
+		std::string		get_buffer() { return _buff; }
+		void			send_packets()
+		{
+			if (_tls)
+				SSL_write(_sslptr, _buff.c_str(), _buff.size());
+			else
+				send(_fd, _buff.c_str(), _buff.size(), MSG_NOSIGNAL);
 		}
 };
 

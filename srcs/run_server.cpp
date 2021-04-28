@@ -77,6 +77,16 @@ bool		kick_if_away(Connection &co)
 	return false;
 }
 
+void	send_bufferised_packet()
+{
+	for (std::vector<std::pair<int, Connection> >::iterator it = g_aUnregistered.begin(); it < g_aUnregistered.end(); ++it)
+		it->second.send_packets();
+	for (std::deque<std::pair<int, Client> >::iterator it = g_aClient.begin(); it < g_aClient.end(); ++it)
+		it->second.send_packets();
+	for (std::vector<std::pair<int, Server> >::iterator it = g_aServer.begin(); it < g_aServer.end(); ++it)
+		it->second.send_packets();
+}
+
 void run_server(MyServ &serv)
 {
 	int readyfd;
@@ -92,5 +102,6 @@ void run_server(MyServ &serv)
 		iterate_connection(serv);
 		iterate_client(serv);
 		iterate_server(serv);
+		send_bufferised_packet();
 	}
 }
