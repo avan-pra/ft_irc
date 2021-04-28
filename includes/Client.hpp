@@ -52,7 +52,7 @@ class Client : public Connection
 			_is_oper = false;
 		}
 		
-		Client(Connection co)
+		Client(Connection &co)
 		{
 			_unended_packet = co.get_unended_packet();
 			_fd = co._fd;

@@ -27,7 +27,7 @@ class Server : public Connection
 		*/
 		Server() {};
 			
-		Server(Connection co)
+		Server(Connection &co)
 		{
 			_unended_packet = co.get_unended_packet();
 			_fd = co._fd;

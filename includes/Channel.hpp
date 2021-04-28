@@ -144,14 +144,14 @@ class Channel
 			return (*_users[idx]);
 		}
 
-		bool			is_operator(Client cli)
+		bool			is_operator(const Client &cli)
 		{
 			for (size_t i = 0; i < _operator.size(); i++)
 				if (*_operator[i] == cli)
 					return (true);
 			return (false);
 		}
-		bool			is_operator(Client *cli)
+		bool			is_operator(const Client *cli)
 		{
 			for (size_t i = 0; i < _operator.size(); i++)
 				if (_operator[i]->get_nickname() == cli->get_nickname())
@@ -159,7 +159,7 @@ class Channel
 			return (false);
 		}
 
-		bool			is_voice(Client cli)
+		bool			is_voice(const Client &cli)
 		{
 			for (size_t i = 0; i < _voice.size(); i++)
 				if (*_voice[i] == cli)
@@ -167,7 +167,7 @@ class Channel
 			return (false);
 		}
 
-		bool			is_ban(Client cli)
+		bool			is_ban(const Client &cli)
 		{
 			for (size_t i = 0; i < _ban.size(); i++)
 			{
@@ -191,7 +191,7 @@ class Channel
 			return false;
 		}
 		
-		bool			is_user_in_chan(const Client cli)
+		bool			is_user_in_chan(const Client &cli)
 		{
 			for (size_t i = 0; i < _users.size(); ++i)
 			{
@@ -212,7 +212,7 @@ class Channel
 				_users[i]->push_to_buffer(msg);
 		}
 
-		void			send_to_all_except_one(Client except, const std::string &msg)
+		void			send_to_all_except_one(const Client &except, const std::string &msg)
 		{
 			for (size_t i = 0; i < _users.size(); i++)
 			{
