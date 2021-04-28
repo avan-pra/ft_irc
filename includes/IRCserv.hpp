@@ -53,6 +53,7 @@
 # include "./Client.hpp"
 # include "./Channel.hpp"
 # include "./Server.hpp"
+# include "Exception.hpp"
 
 typedef int	SOCKET;
 typedef struct sockaddr_in6 SOCKADDR_IN6;
@@ -205,72 +206,5 @@ int		DoHandshakeTLS(Connection &co);
 */
 void	print_error_SLL(int error_code);
 void	error_exit(const std::string &exit_msg);
-
-
-class	IncorrectPassException: public std::exception
-{
-	virtual const char	*what() const throw()
-	{
-		return "";
-	};
-};
-
-class	QuitCommandException: public std::exception
-{
-	virtual const char *what() const throw()
-	{
-		return "";
-	};
-};
-
-class   NewServerException: public std::exception
-{
-	virtual const char *what() const throw()
-	{
-		return "";
-	};
-};
-
-class   NewClientException: public std::exception
-{
-	virtual const char *what() const throw()
-	{
-		return "";
-	};
-};
-
-class   CantInitSocket: public std::exception
-{
-	virtual const char *what() const throw()
-	{
-		return "Socket could not be created";
-	};
-};
-
-class   UnbindableSocket: public std::exception
-{
-	virtual const char *what() const throw()
-	{
-		return "Socket could not be binded to interface, maybe one of the port is already taken ?";
-	};
-};
-
-class   ListenError: public std::exception
-{
-	virtual const char *what() const throw()
-	{
-		return "Socket can't listen on the binded port";
-	};
-};
-
-class	ConfigFileException: public std::exception
-{
-	public:
-	virtual const char	*what() const throw()
-	{
-		return "Config file has syntax error";
-	};
-};
-
 
 #endif
