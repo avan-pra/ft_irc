@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/27 23:57:42 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/28 17:21:42 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,9 @@ void		quit_command(const std::string &line, const size_t &client_idx, const MySe
 	std::vector<std::string>	args;
 	std::string					output;
 	std::string					part_string;
-	t_discon_id					new_id;
 
-	new_id.nickname = g_aClient[client_idx].second.get_nickname();
-	new_id.username = g_aClient[client_idx].second.get_username();
-	new_id.hostname = g_aClient[client_idx].second.get_hostname();
-	new_id.realname = g_aClient[client_idx].second.get_realname();
+	//Add nick to disconnected user deque
+	add_disconnected_nick(client_idx);
 	args = ft_split(line, " ");
 	for (size_t chann_idx = 0; chann_idx < g_vChannel.size(); chann_idx++)
 	{

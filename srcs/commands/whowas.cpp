@@ -6,12 +6,23 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 19:32:09 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/27 21:08:17 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/28 17:10:05 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/commands.hpp"
+
+void		add_disconnected_nick(const size_t &client_idx)
+{
+	t_discon_id	new_id;
+
+	new_id.nickname = g_aClient[client_idx].second.get_nickname();
+	new_id.username = g_aClient[client_idx].second.get_username();
+	new_id.hostname = g_aClient[client_idx].second.get_hostname();
+	new_id.realname = g_aClient[client_idx].second.get_realname();
+	g_aDisconnectedCli.push_back(new_id);
+}
 
 static bool	is_in_list(const std::string nickname)
 {
