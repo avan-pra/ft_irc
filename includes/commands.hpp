@@ -7,6 +7,7 @@
 /*
 **  error for command file
 */
+
 # define ERR_NOSUCHNICK(pseudo) (pseudo + " :No such nick/channel\r\n") //401
 # define ERR_NOSUCHSERVER(server) (server + " :No such server\r\n") //402
 # define ERR_NOSUCHCHANNEL(channel) (channel + " :No such channel\r\n") //403
@@ -155,6 +156,10 @@ std::string create_msg(const int &code, const size_t &client_idx, const MyServ &
 
 class MyServ;
 
+/*
+** commands
+*/
+
 void	pass_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	ping_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 void	pong_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
@@ -184,7 +189,7 @@ void	whois_command(const std::string &line, const size_t &client_idx, const MySe
 void	whowas_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
 
 /*
-** specific_modes_fncts 
+** specific_modes.cpp
 */
 
 void	mode_o(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &name);

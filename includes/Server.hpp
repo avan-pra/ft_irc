@@ -17,37 +17,47 @@ class Server : public Connection
 		size_t		_token;
 		std::string _info;
 
-		time_t			_last_activity;
+		time_t		_last_activity;
 		std::string _unended_packet;
 
 	public:
-		
-		Server(/* args */) {};
+
+		/*
+		** Constructor/Destructor
+		*/
+		Server() {};
+			
+		Server(Connection co)
+		{
+			_unended_packet = co.get_unended_packet();
+			_fd = co._fd;
+			_last_activity = co.get_last_activity();
+			_servername = co.get_servername();
+			_ping_sended = co.get_ping_status();
+			_is_register = false;
+			_tls = co.get_tls();
+			_sslptr = co._sslptr;
+			sock_addr = co.sock_addr;
+		}
+
 		~Server() {};
 
-		size_t		get_hopcount() { return _hopcount; }
-		size_t		get_token() { return _token; }
-		std::string	get_info() { return _info; }
-		time_t		&get_last_activity() { return _last_activity; }
-		std::string	get_unended_packet() { return (_unended_packet); }
+		/*
+		** Getter
+		*/
+		size_t			get_hopcount() { return _hopcount; }
+		size_t			get_token() { return _token; }
+		std::string		get_info() { return _info; }
+		time_t			&get_last_activity() { return _last_activity; }
+		std::string		get_unended_packet() { return (_unended_packet); }
 
-		void	set_hopcount(size_t n) { _hopcount = n; }
-		void	set_token(size_t name) { _token = name; }
-		void	set_info(std::string info) { _info = info; }
-		void	set_unended_packet(std::string packet) { _unended_packet = packet; }
-	
-	Server(Connection co)
-	{
-		_unended_packet = co.get_unended_packet();
-		_fd = co._fd;
-		_last_activity = co.get_last_activity();
-		_servername = co.get_servername();
-		_ping_sended = co.get_ping_status();
-		_is_register = false;
-		_tls = co.get_tls();
-		_sslptr = co._sslptr;
-		sock_addr = co.sock_addr;
-	}
+		/*
+		** Setter
+		*/
+		void			set_hopcount(size_t n) { _hopcount = n; }
+		void			set_token(size_t name) { _token = name; }
+		void			set_info(std::string info) { _info = info; }
+		void			set_unended_packet(std::string packet) { _unended_packet = packet; }
 };
 
 #endif

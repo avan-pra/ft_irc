@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/26 17:56:42 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/28 18:00:29 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,24 @@ class Channel
 		std::string		_topic;
 		std::string		_mode;
 		
-		//mode attributes
+		/*
+		** mode attributes
+		*/
 		std::string		_password;
 		size_t			_limit;
 		time_t			_creation;
 		
 	public:
-		std::vector<Client*>		_operator;
-		std::vector<Client*>		_users;
-		std::vector<Client*>		_invite;
-		std::vector<t_ban_id>		_ban;
-		std::vector<Client*>		_voice;
 
+		std::vector<Client*>	_operator;
+		std::vector<Client*>	_users;
+		std::vector<Client*>	_invite;
+		std::vector<t_ban_id>	_ban;
+		std::vector<Client*>	_voice;
+
+		/*
+		** Constructor/Destructor
+		*/
 		Channel() {}
 
 		Channel(std::string name)
@@ -62,7 +68,7 @@ class Channel
 		~Channel() {}
 
 		/*
-		 ** getter
+		 ** Getter
 		*/
 		std::string				get_password() const { return (_password); }
 		std::string				get_name() const { return _name; }
@@ -72,15 +78,17 @@ class Channel
 		time_t					get_creation_date() const { return _creation; }
 
 		/*
-		 ** setter
+		 ** Setter
 		*/
-
 		void			set_password(std::string pass) { _password = pass; }
 		void			set_name(std::string name) { _name = name; }
 		void			set_mode(std::string mode) { _mode = mode; }
 		void			set_limit(size_t limit) { _limit = limit; }
 		void			set_topic(std::string topic) { _topic = topic; }
 
+		/*
+		** Methods
+		*/
 		void			remove_user_operator(const std::string usr_nickname)
 		{
 			for (std::vector<Client*>::iterator it = _operator.begin(); it != _operator.end(); )

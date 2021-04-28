@@ -15,6 +15,7 @@ typedef int	SOCKET;
 class Connection
 {
 	protected:
+
 		time_t			_last_activity;
 		time_t			_t_idle;
 		time_t			_t_signon;
@@ -31,6 +32,9 @@ class Connection
 		SSL				*_sslptr;
 		sockaddr_in		sock_addr;
 
+		/*
+		** Constructor/Destructor
+		*/
 		Connection()
 		{
 			_last_activity = 0;
@@ -44,6 +48,9 @@ class Connection
 		}
 		virtual ~Connection() { }
 
+		/*
+		** Getter
+		*/
 		time_t			&get_last_activity() { return _last_activity; }
 		std::string		get_unended_packet() { return (_unended_packet); }
 		std::string		get_servername() {return (_servername); }
@@ -53,6 +60,9 @@ class Connection
 		time_t			&get_t_idle() { return _t_idle; }
 		time_t			&get_t_signon() { return _t_signon; }
 
+		/*
+		** Setter 
+		*/
 		void			set_ping_status(bool ping) { _ping_sended = ping; }
 		void			set_servername(std::string servername) { _servername = servername; }
 		void			set_unended_packet(std::string packet) { _unended_packet = packet; }
@@ -60,6 +70,9 @@ class Connection
 		void			set_tls(bool tls_state) { _tls = tls_state; }
 		void			set_t_idle(time_t time) { _t_idle = time; }
 
+		/*
+		** Methods
+		*/
 		void			send_reply(const std::string &s)
 		{
 			if (_tls)

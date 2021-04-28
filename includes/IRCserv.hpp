@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/28 17:21:22 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/28 17:55:59 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ class MyServ;
 /*
 ** acquire_message.cpp
 */
-bool	is_readable(MyServ &serv, Connection &co);
-void	get_message(char *c, Connection &co, int &ret);
-void	check_packet_len_error(char *c, Connection &co, int &ret);
-void	packet_awaiting(Connection &co, int &ret, bool &_read);
-void	check_message_problem(char *c, Connection &co, MyServ &serv, int &ret);
+bool		is_readable(MyServ &serv, Connection &co);
+void		get_message(char *c, Connection &co, int &ret);
+void		check_packet_len_error(char *c, Connection &co, int &ret);
+void		packet_awaiting(Connection &co, int &ret, bool &_read);
+void		check_message_problem(char *c, Connection &co, MyServ &serv, int &ret);
 
 /*
 ** setup_server.cpp
@@ -120,7 +120,7 @@ void		iterate_server(MyServ &serv);
 /*
 ** iterate_connection.cpp
 */
-void	iterate_connection(MyServ &serv);
+void		iterate_connection(MyServ &serv);
 
 /*
 ** get_client.cpp
@@ -157,7 +157,6 @@ int		char2hex(char input);
 /*
 ** to_string 
 */
-//template <typename T>
 std::string		ft_to_string(size_t value);
 
 /*
@@ -194,21 +193,21 @@ std::string		create_full_msg_mode(const std::string &mode, const size_t &client_
 /*
 ** mask_parser.cpp
 */
-void format_mask(const std::string &str, std::string &nickname, std::string &username, std::string &hostname);
+void		format_mask(const std::string &str, std::string &nickname, std::string &username, std::string &hostname);
 
 /*
  ** tls.cpp
 */
-void	InitSSLCTX(MyServ &serv);
-void	error_exit(const std::string &exit_msg);
-int		receive_message(Connection &co, char *buf);
-int		DoHandshakeTLS(Connection &co);
+void		InitSSLCTX(MyServ &serv);
+void		error_exit(const std::string &exit_msg);
+int			receive_message(Connection &co, char *buf);
+int			DoHandshakeTLS(Connection &co);
 
 /*
  ** error.cpp
 */
-void	print_error_SLL(int error_code);
-void	error_exit(const std::string &exit_msg);
+void		print_error_SLL(int error_code);
+void		error_exit(const std::string &exit_msg);
 
 /*
 ** who_was.cpp
