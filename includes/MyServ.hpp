@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/28 17:58:43 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/28 18:16:56 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ class MyServ
 		/*
 		** Constructor/Destructor
 		*/
-		MyServ() : _listen_limit(0), _max_fd(0), _command(fill_command()),
-					_pass_for_connection(false), _pass_oper(false)
+		MyServ() : _listen_limit(0), _max_fd(0), _pass_for_connection(false),
+					_pass_oper(false),  _command(fill_command())
 		{
 			time(&_start_time);
 			set_timeout(3);
