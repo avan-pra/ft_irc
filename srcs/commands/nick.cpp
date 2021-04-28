@@ -7,7 +7,7 @@ static void		check_empty_line(const std::vector<std::string> &arg, const size_t 
 {
 	if (arg.size() < 2 || arg[1].find_first_not_of(' ') == arg[1].npos)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(431, client_idx, serv));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(431, client_idx, serv));
 		throw std::exception();
 	}
 }
@@ -18,14 +18,14 @@ static std::string	check_username(const std::string &str, const size_t &client_i
 	//check si la taille de l'username > 9 si oui envoie une erreur
 	if (str.length() > 9)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(432, client_idx, serv, str)); throw std::exception();
+		g_aClient[client_idx].second.push_to_buffer(create_msg(432, client_idx, serv, str)); throw std::exception();
 	}
 	//check si la string contient des char interdit (les chars valides sont au dessus)
 	for (size_t i = 0; i < str.length(); ++i)
 	{
 		if (!std::strchr(NICKNAME_VALID_CHAR, str[i]))
 		{
-			g_aClient[client_idx].second.send_reply(create_msg(432, client_idx, serv, str)); throw std::exception();
+			g_aClient[client_idx].second.push_to_buffer(create_msg(432, client_idx, serv, str)); throw std::exception();
 		}
 	}
 	return str;
@@ -39,7 +39,7 @@ static void	check_username_ownership(std::string str, const size_t &client_idx, 
 		{
 			if (g_aClient[i].second.get_nickname() == str)
 			{
-				g_aClient[client_idx].second.send_reply(create_msg(433, client_idx, serv, str)); throw std::exception();
+				g_aClient[client_idx].second.push_to_buffer(create_msg(433, client_idx, serv, str)); throw std::exception();
 			}
 		}
 	}
@@ -73,7 +73,7 @@ void	nick_command(const std::string &line, const size_t &client_idx, const MySer
 			new_id.realname = g_aClient[client_idx].second.get_realname();
 			g_aDisconnectedCli.push_back(new_id);
 			//reply to him he changed his nick
-			g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
+			g_aClient[client_idx].second.push_to_buffer(":" + g_aClient[client_idx].second.get_nickname() + "!"
 				+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " NICK " + name + "\r\n");
 			//tell all channel he changed his nick
 			send_to_all_channel("NICK " + name + "\r\n", client_idx);
@@ -84,7 +84,7 @@ void	nick_command(const std::string &line, const size_t &client_idx, const MySer
 			&& g_aClient[client_idx].second.get_hostname().size() > 0
 			&& g_aClient[client_idx].second.get_realname().size() > 0)
 		{
-			g_aClient[client_idx].second.send_reply(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
 			motd_command("", client_idx, serv);
 			g_aClient[client_idx].second.set_register(true);
 		}

@@ -20,17 +20,17 @@ void	check_line(const std::vector<std::string> &params, const size_t &client_idx
 
 	if (params.size() < 3)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, " " + params[0]));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, " " + params[0]));
 		return ;
 	}
 	if ((chan_id = find_channel(params[2])) == -1)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, " " + params[2]));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, " " + params[2]));
 		return ;
 	}
 	if ((nick_id = find_user_by_nick(params[1])) == -1)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(401, client_idx, serv, " " + params[1]));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(401, client_idx, serv, " " + params[1]));
 		return ;
 	}
 }
@@ -47,9 +47,9 @@ int		check_if_are_on(const std::vector<std::string> &params, const size_t &clien
 			find = 2;
 	}
 	if (!find)
-		g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, " " + g_aClient[client_idx].second.get_nickname()));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(442, client_idx, serv, " " + g_aClient[client_idx].second.get_nickname()));
 	if (find == 2)
-		g_aClient[client_idx].second.send_reply(create_msg(443, client_idx, serv, " " + params[1], params[2]));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(443, client_idx, serv, " " + params[1], params[2]));
 	if (!find || find == 2)
 		return (0);
 	return (1);
@@ -72,7 +72,7 @@ void	invite_command(const std::string &line, const size_t &client_idx, const MyS
 	if (g_vChannel[chan_id].get_mode().find("i") != std::string::npos)
 		if (find_operator(chan_id, client_idx) == g_vChannel[chan_id]._operator.end())
 		{
-			g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(482, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
 			return ;
 		}
 	for (std::vector<Client*>::iterator it = g_vChannel[chan_id]._invite.begin();
@@ -83,6 +83,6 @@ void	invite_command(const std::string &line, const size_t &client_idx, const MyS
 	}
 	if (!exist)
 		g_vChannel[chan_id]._invite.push_back(&g_aClient[nick_id].second);
-	g_aClient[client_idx].second.send_reply(create_msg(341, client_idx, serv, " " + g_aClient[nick_id].second.get_nickname(), params[2]));
-	g_aClient[nick_id].second.send_reply(create_full_msg(params, client_idx));
+	g_aClient[client_idx].second.push_to_buffer(create_msg(341, client_idx, serv, " " + g_aClient[nick_id].second.get_nickname(), params[2]));
+	g_aClient[nick_id].second.push_to_buffer(create_full_msg(params, client_idx));
 }

@@ -63,7 +63,7 @@ void		mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign
 		{
 			std::string output;
 			output = user.nickname + "!" + user.username + "@" + user.hostname;
-			g_aClient[client_idx].second.send_reply(create_msg(691, client_idx, serv, g_vChannel[chann_idx].get_name(), output));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(691, client_idx, serv, g_vChannel[chann_idx].get_name(), output));
 		}
 	}
 }

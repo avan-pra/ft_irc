@@ -44,7 +44,7 @@ void	notice_command(const std::string &line, const size_t &client_idx, const MyS
 
 	if (params.size() < 3)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(4161, client_idx, serv, params[0]));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(4161, client_idx, serv, params[0]));
 		return ;
 	}
 	if ((id = find_channel(params[1])) != -1)
@@ -53,5 +53,5 @@ void	notice_command(const std::string &line, const size_t &client_idx, const MyS
 			g_vChannel[id].send_to_all_except_one(g_aClient[client_idx].second, create_full_msg(params, client_idx));
 	}
 	else if ((id = find_user_by_nick(params[1])) != -1)
-		g_aClient[id].second.send_reply(create_full_msg(params, client_idx));
+		g_aClient[id].second.push_to_buffer(create_full_msg(params, client_idx));
 }

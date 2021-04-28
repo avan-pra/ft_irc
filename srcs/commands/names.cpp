@@ -64,7 +64,7 @@ void	names_command(const std::string &line, const size_t &client_idx, const MySe
 		chan_id = find_channel(channel_names[i]);
 		flag = set_flag(chan_id) + g_vChannel[chan_id].get_name();
 		nick_list = set_nick_list(chan_id);
-		g_aClient[client_idx].second.send_reply(create_msg(353, client_idx, serv, flag, nick_list));
-		g_aClient[client_idx].second.send_reply(create_msg(366, client_idx, serv, g_vChannel[chan_id].get_name()));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(353, client_idx, serv, flag, nick_list));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(366, client_idx, serv, g_vChannel[chan_id].get_name()));
 	}
 }

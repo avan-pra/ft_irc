@@ -7,14 +7,14 @@ void	pass_command(const std::string &line, const size_t &client_idx, const MySer
 {
 	if (g_aClient[client_idx].second.is_registered() == true)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(462, client_idx, serv)); return;
+		g_aClient[client_idx].second.push_to_buffer(create_msg(462, client_idx, serv)); return;
 	}
 	if (g_aClient[client_idx].second.get_nickname().empty() == false || g_aClient[client_idx].second.get_pass_try() == true)
 		return;
 	std::vector<std::string> arg = ft_split(line, " ");
 	if (arg.size() < 2)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "PASS")); return;
+		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "PASS")); return;
 	}
 
 	const char *s = arg[1].c_str();

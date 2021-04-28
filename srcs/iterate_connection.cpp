@@ -17,12 +17,12 @@ static void	handle_wrong_command(std::string &command, const size_t connection_i
 		{
 			serv.get_command().at(command);
 			std::string err = ":" + serv.get_hostname() + " " + ft_to_string(451) + " * :You have not registered\r\n";
-			g_aUnregistered[connection_idx].second.send_reply(err);
+			g_aUnregistered[connection_idx].second.push_to_buffer(err);
 		}
 		catch (const std::exception &e) 
 		{
 			std::string err = ":" + serv.get_hostname() + " " + ft_to_string(421) + " * " + command + " :Unknown command\r\n";
-			g_aUnregistered[connection_idx].second.send_reply(err);
+			g_aUnregistered[connection_idx].second.push_to_buffer(err);
 		}
 	}
 }

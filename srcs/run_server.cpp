@@ -62,7 +62,7 @@ void		ping_if_away(Connection &co, const MyServ &serv)
 	//si je lui ai pas deja envoye un ping et si ca fait plus de 30sec que je l'ai pas ping
 	if (co.get_ping_status() == false && time_compare - co.get_last_activity() > PING)
 	{
-		co.send_reply("PING :" + serv.get_hostname() + "\r\n");
+		co.push_to_buffer("PING :" + serv.get_hostname() + "\r\n");
 		co.set_ping_status(true);
 	}
 }
@@ -80,11 +80,20 @@ bool		kick_if_away(Connection &co)
 void	send_bufferised_packet()
 {
 	for (std::vector<std::pair<int, Connection> >::iterator it = g_aUnregistered.begin(); it < g_aUnregistered.end(); ++it)
+	{
 		it->second.send_packets();
+		it->second.reset_buffer();
+	}
 	for (std::deque<std::pair<int, Client> >::iterator it = g_aClient.begin(); it < g_aClient.end(); ++it)
+	{
 		it->second.send_packets();
+		it->second.reset_buffer();
+	}
 	for (std::vector<std::pair<int, Server> >::iterator it = g_aServer.begin(); it < g_aServer.end(); ++it)
+	{
 		it->second.send_packets();
+		it->second.reset_buffer();
+	}
 }
 
 void run_server(MyServ &serv)

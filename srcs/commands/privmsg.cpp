@@ -22,17 +22,17 @@ int		check_params(const std::vector<std::string> &params, const size_t &client_i
 	if (params.size() == 1)
 	{
 		//only command PRIVMSG had send
-		g_aClient[client_idx].second.send_reply(create_msg(411, client_idx, serv, params[0]));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(411, client_idx, serv, params[0]));
 		return (0);
 	}
 	else if (params.size() == 2)
 	{
 		// No target had send
 		if (params[1][0] == ':')
-			g_aClient[client_idx].second.send_reply(create_msg(411, client_idx, serv, params[0] + " " + params[1]));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(411, client_idx, serv, params[0] + " " + params[1]));
 		// No msg had send
 		else
-			g_aClient[client_idx].second.send_reply(create_msg(412, client_idx, serv));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(412, client_idx, serv));
 		return (0);
 	}
 	if ((chan_id = find_channel(params[1])) == -1 && find_user_by_nick(params[1]) == -1)
@@ -40,17 +40,17 @@ int		check_params(const std::vector<std::string> &params, const size_t &client_i
 		// No such channel
 		if (find_channel(params[1]) == -1 && (params[1][0] == '&' || params[1][0] == '#' ||
 			params[1][0] == '!' || params[1][0] == '+'))
-			g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, " " + params[1]));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, " " + params[1]));
 		// No such nickname
 		else
-			g_aClient[client_idx].second.send_reply(create_msg(401, client_idx, serv, " " + params[1]));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(401, client_idx, serv, " " + params[1]));
 		return (0);
 	}
 	if (params[2][0] != ':')
 	{
 		//Msg not started by ':'
 		if (params[1][0] == ':')
-			g_aClient[client_idx].second.send_reply(create_msg(411, client_idx, serv, params[0] + " " + params[1]));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(411, client_idx, serv, params[0] + " " + params[1]));
 		return (0);
 	}
 	if (chan_id != -1)
@@ -59,13 +59,13 @@ int		check_params(const std::vector<std::string> &params, const size_t &client_i
 		is_user_in_chan(chan_id, g_aClient[client_idx].second.get_nickname()) == false)
 		{
 			//User is not in the channel and the channel isn't set to accept extern messages (mode +n)
-			g_aClient[client_idx].second.send_reply(create_msg(404, client_idx, serv, params[1]));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(404, client_idx, serv, params[1]));
 			return (0);
 		}
 		if (chan_id != -1 && g_vChannel[chan_id].is_mode('m') && !g_vChannel[chan_id].is_operator(g_aClient[client_idx].second))
 			if (!g_vChannel[chan_id].is_mode('v') || !g_vChannel[chan_id].is_voice(g_aClient[client_idx].second))
 			{
-				g_aClient[client_idx].second.send_reply(create_msg(404, client_idx, serv, params[1]));
+				g_aClient[client_idx].second.push_to_buffer(create_msg(404, client_idx, serv, params[1]));
 				return (0);
 			}
 	}
@@ -78,7 +78,7 @@ void	send_privmsg_to_channel(const std::vector<std::string> params, const size_t
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
 		if (*g_vChannel[chan_id]._users[i] != g_aClient[client_idx].second)
-			g_vChannel[chan_id]._users[i]->send_reply(full_msg);
+			g_vChannel[chan_id]._users[i]->push_to_buffer(full_msg);
 	}
 }
 
@@ -97,7 +97,7 @@ void	privmsg_command(const std::string &line, const size_t &client_idx, const My
 		send_privmsg_to_channel(params, client_idx, i);
 	else if ((i = find_user_by_nick(params[1])) != -1)
 	{
-		g_aClient[i].second.send_reply(create_full_msg(params, client_idx));
+		g_aClient[i].second.push_to_buffer(create_full_msg(params, client_idx));
 	}
 	time(&new_time);
 	g_aClient[client_idx].second.set_t_idle(new_time);

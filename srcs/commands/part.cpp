@@ -18,7 +18,7 @@ static int		check_channel_exists(const std::string str, const size_t &client_idx
 	for (size_t i = 0; i < g_vChannel.size(); i++)
 		if (str == g_vChannel[i].get_name())
 			return i;
-	g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, str));
+	g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, str));
 	throw std::exception();
 	return 0;
 }
@@ -28,7 +28,7 @@ static void		check_usr_in_channel(const int channel_idx, const size_t &client_id
 	for (size_t i = 0; i < g_vChannel[channel_idx]._users.size(); i++)
 		if (g_aClient[client_idx].second.get_nickname() == g_vChannel[channel_idx]._users[i]->get_nickname())
 			return ;
-	g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, g_vChannel[channel_idx].get_name()));
+	g_aClient[client_idx].second.push_to_buffer(create_msg(442, client_idx, serv, g_vChannel[channel_idx].get_name()));
 }
 
 void		part_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
@@ -42,7 +42,7 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "PART"));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "PART"));
 		return ;
 	}
 	try
@@ -55,7 +55,7 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 			channel_name = params[i];
 			if (!std::strchr(CHANNEL_VALID_CHAR, channel_name[0]))
 			{
-				g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, channel_name));
+				g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, channel_name));
 				return ;
 			}	
 			chann_idx = check_channel_exists(channel_name, client_idx, serv);

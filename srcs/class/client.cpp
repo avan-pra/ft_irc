@@ -8,7 +8,7 @@ static void tmp_send_to_channel(const std::string &msg, Client &cli, Channel &ch
 		+ cli.get_username() + "@" + cli.get_hostname() + " " + msg + "\r\n";
 	for (size_t i = 0; i < chann._users.size(); i++)
 	{
-		chann._users[i]->send_reply(full_msg);
+		chann._users[i]->push_to_buffer(full_msg);
 	}
 }
 

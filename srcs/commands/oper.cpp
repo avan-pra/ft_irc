@@ -23,17 +23,17 @@ void		oper_command(const std::string &line, const size_t &client_idx, const MySe
 	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "OPER"));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "OPER"));
 		return ;
 	}
 	if (serv.get_pass_oper() == false)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(491, client_idx, serv));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(491, client_idx, serv));
 		return ;
 	}
 	if (params[1] != "admin")
 	{
-		g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
+		g_aClient[client_idx].second.push_to_buffer(":" + g_aClient[client_idx].second.get_nickname() + "!"
 			+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " QUIT :Password incorrect ERROR: Password incorrect" + "\r\n");
 		throw QuitCommandException();
 	}
@@ -44,13 +44,13 @@ void		oper_command(const std::string &line, const size_t &client_idx, const MySe
 	{
 		g_aClient[client_idx].second.set_is_oper(true);
 		//mssg
-		g_aClient[client_idx].second.send_reply(create_msg(381, client_idx, serv));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(381, client_idx, serv));
 		//mode +o
 		mode_command("MODE " + g_aClient[client_idx].second.get_nickname() + " +o", client_idx, serv);
 	}
 	else
 	{
-		g_aClient[client_idx].second.send_reply(":" + g_aClient[client_idx].second.get_nickname() + "!"
+		g_aClient[client_idx].second.push_to_buffer(":" + g_aClient[client_idx].second.get_nickname() + "!"
 			+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " QUIT :Password incorrect ERROR: Password incorrect" + "\r\n");
 		throw QuitCommandException();
 	}

@@ -56,6 +56,6 @@ void			info_command(const std::string &line, const size_t &client_idx, const MyS
 		if (time[time.size() - 1] == '\n')
 			time.resize(time.size() - 1);
 	}
-	g_aClient[client_idx].second.send_reply(create_msg(371, client_idx, serv, make_info_str(serv, time)));
-	g_aClient[client_idx].second.send_reply(create_msg(374, client_idx, serv));
+	g_aClient[client_idx].second.push_to_buffer(create_msg(371, client_idx, serv, make_info_str(serv, time)));
+	g_aClient[client_idx].second.push_to_buffer(create_msg(374, client_idx, serv));
 }

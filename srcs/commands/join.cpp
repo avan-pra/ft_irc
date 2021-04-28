@@ -81,7 +81,7 @@ static int	check_invite(const int &chan_id, const size_t &client_idx, const MySe
 		if (g_aClient[client_idx].second == *g_vChannel[chan_id]._invite[i])
 			return (1);
 	}
-	g_aClient[client_idx].second.send_reply(create_msg(473, client_idx, serv, " " + g_vChannel[chan_id].get_name()));
+	g_aClient[client_idx].second.push_to_buffer(create_msg(473, client_idx, serv, " " + g_vChannel[chan_id].get_name()));
 	return (0);
 }
 
@@ -91,7 +91,7 @@ int		check_password(const size_t &client_idx, const MyServ &serv, const int &cha
 		return (1);
 	if (pass == g_vChannel[chan_id].get_password())
 		return (1);
-	g_aClient[client_idx].second.send_reply(create_msg(475, client_idx, serv, " " + g_vChannel[chan_id].get_name()));
+	g_aClient[client_idx].second.push_to_buffer(create_msg(475, client_idx, serv, " " + g_vChannel[chan_id].get_name()));
 	return (0);
 }
 
@@ -121,13 +121,13 @@ static int	try_enter_chan(const std::map<std::string, std::string>::iterator it,
 	if (g_vChannel[i].is_mode('b') && g_vChannel[i].is_ban(g_aClient[client_idx].second))
 	{
 		enter = true;
-		g_aClient[client_idx].second.send_reply(create_msg(474, client_idx, serv, " " + it->first));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(474, client_idx, serv, " " + it->first));
 		return (0);
 	}
 	if (g_vChannel[i].is_mode('l') && g_vChannel[i]._users.size() == g_vChannel[i].get_limit())
 	{
 		enter = true;
-		g_aClient[client_idx].second.send_reply(create_msg(471, client_idx, serv, " " + it->first));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(471, client_idx, serv, " " + it->first));
 		return (0);
 	}
 	return (1);
@@ -169,7 +169,7 @@ static void	make_channel_pair(const std::vector<std::string> &params, std::map<s
 
 static void	send_channel_time(const size_t &client_idx, const MyServ &serv, const std::string channel)
 {
-	g_aClient[client_idx].second.send_reply(create_msg(329, client_idx, serv, channel, ft_to_string((int)g_vChannel[find_channel(channel)].get_creation_date())));
+	g_aClient[client_idx].second.push_to_buffer(create_msg(329, client_idx, serv, channel, ft_to_string((int)g_vChannel[find_channel(channel)].get_creation_date())));
 }
 
 void	join_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
@@ -182,13 +182,13 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, params[0]));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, params[0]));
 		return ;
 	}
 	make_channel_pair(params, tmp, chan_name);
 	if (!check_name_and_key(tmp))
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(476, client_idx, serv, chan_name[0]));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(476, client_idx, serv, chan_name[0]));
 		return ;
 	}
 	enter = false;
@@ -219,5 +219,5 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 		// 	std::cout << g_aClient[i].second.get_nickname() << ":" << &(g_aClient[i].second) << std::endl;
 	}
 	if (enter == false)
-		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, chan_name[0]));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, chan_name[0]));
 }
