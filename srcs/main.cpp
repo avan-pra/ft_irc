@@ -65,7 +65,7 @@ int			main(void)
 		if (serv.sslctx != NULL)
 			SSL_CTX_free(serv.sslctx);
 		std::cerr << e.what() << std::endl;
-		exit(1);
+		return (1);
 	}
 	run_server(serv);
 	return (0);
