@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/26 19:51:46 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/28 16:54:52 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ int		check_params(const std::vector<std::string> &params, const size_t &client_i
 		// No such channel
 		if (find_channel(params[1]) == -1 && (params[1][0] == '&' || params[1][0] == '#' ||
 			params[1][0] == '!' || params[1][0] == '+'))
-			g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, " " + params[1]));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, params[1]));
 		// No such nickname
 		else
-			g_aClient[client_idx].second.push_to_buffer(create_msg(401, client_idx, serv, " " + params[1]));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(401, client_idx, serv, params[1]));
 		return (0);
 	}
 	if (params[2][0] != ':')

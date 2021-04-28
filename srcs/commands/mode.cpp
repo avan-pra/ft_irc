@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/26 18:55:16 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/28 16:51:10 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ static void			set_chann_mode(const std::string mode, const std::vector<std::stri
 
 	if (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == false)
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(482, client_idx, serv, " " + g_vChannel[chann_idx].get_name()));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(482, client_idx, serv, g_vChannel[chann_idx].get_name()));
 		throw std::exception();
 	}
 	for (size_t i = 0; i < mode.size(); i++)

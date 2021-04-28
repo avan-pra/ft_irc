@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/21 15:16:11 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/28 16:56:44 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 		check_2nd_arg(args[2], host_name, mode);
 		set_user(args[1], mode, args[3], realname, client_idx);
 
-		if (g_aClient[client_idx].second.get_nickname().size() > 0)		
+		if (g_aClient[client_idx].second.get_nickname().size() > 0)
 		{
 			g_aClient[client_idx].second.push_to_buffer(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
 			motd_command("", client_idx, serv);
