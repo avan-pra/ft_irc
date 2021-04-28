@@ -355,6 +355,11 @@ void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port)
 	int					nb_line = 0;
 
 	file.open(FILE_NAME);
+	if (file.is_open() == false)
+	{
+		std::cerr << "Could not open irc.conf file" << std::endl;
+		throw ConfigFileException();
+	}
 	while (file)
 	{
 		try
