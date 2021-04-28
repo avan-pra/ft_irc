@@ -21,11 +21,11 @@ std::string	set_flag(const int &chan_id)
 {
 	std::string flag = g_vChannel[chan_id].get_mode();
 	if (flag.find("p") != std::string::npos)
-		return (" * ");
+		return ("* ");
 	else if (flag.find("s") != std::string::npos)
-		return (" @ ");
+		return ("@ ");
 	else
-		return (" = ");
+		return ("= ");
 }
 
 std::string		set_nick_list(const int &chan_id)
