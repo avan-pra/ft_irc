@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/27 20:35:50 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/28 17:21:22 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,15 +176,18 @@ void	send_to_all_channel(const std::string &msg, const size_t &client_idx, bool 
 /*
 ** find_client_or_channel.cpp
 */
-int		find_channel(const std::string &name);
-int		find_user_by_nick(const std::string &nickname);
-bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname);
-std::vector<Client*>::iterator	find_operator(const int &chan_id, const size_t &client_idx);
+int									find_channel(const std::string &name);
+int									find_user_by_nick(const std::string &nickname);
+bool								is_user_in_chan(const size_t &chan_id, const std::string &nickname);
+std::vector<Client*>::iterator		find_operator(const int &chan_id, const size_t &client_idx);
 std::vector<Client*>::iterator		find_user_in_channel(const std::string &chan_name, const std::string &nickname);
-bool	pattern_match(std::string str, std::string pattern);
-bool	is_chann_operator(const int &chan_id, const size_t &client_idx);
-int		find_channel_with_pattern(std::string &pattern);
+bool								pattern_match(std::string str, std::string pattern);
+bool								is_chann_operator(const int &chan_id, const size_t &client_idx);
+int									find_channel_with_pattern(std::string &pattern);
 
+/*
+** create_msg .cpp
+*/
 std::string		create_full_msg(const std::vector<std::string> &params, const size_t &client_idx);
 std::string		create_full_msg_mode(const std::string &mode, const size_t &client_idx, const size_t &chann_idx);
 
@@ -206,5 +209,10 @@ int		DoHandshakeTLS(Connection &co);
 */
 void	print_error_SLL(int error_code);
 void	error_exit(const std::string &exit_msg);
+
+/*
+** who_was.cpp
+*/
+void		add_disconnected_nick(const size_t &client_idx);
 
 #endif
