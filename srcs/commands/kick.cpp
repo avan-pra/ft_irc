@@ -31,24 +31,32 @@ void	kick_on_one_channel(std::vector<std::string> params, std::vector<std::strin
 
 	if (chan_id == -1)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, params[1]));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, params[1]));
 		return ;
 	}
 	for (size_t i = 0; i < users.size(); i++)
 	{
 		if (!is_user_in_chan(chan_id, g_aClient[client_idx].second.get_nickname()))
+<<<<<<< HEAD
 			g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, params[1]));
 		else if (!is_user_in_chan(chan_id, users[i]))
 			g_aClient[client_idx].second.send_reply(create_msg(441, client_idx, serv, users[i], params[1]));
 		else if (!is_chann_operator(chan_id, client_idx))
 			g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, params[1]));
+=======
+			g_aClient[client_idx].second.push_to_buffer(create_msg(442, client_idx, serv, " " + params[1]));
+		else if (!is_user_in_chan(chan_id, users[i]))
+			g_aClient[client_idx].second.push_to_buffer(create_msg(441, client_idx, serv, " " + users[i], params[1]));
+		else if (!is_chann_operator(chan_id, client_idx))
+			g_aClient[client_idx].second.push_to_buffer(create_msg(482, client_idx, serv, " " + params[1]));
+>>>>>>> 4cffd4f34daca539a44e9399a6a75c9e6d3ba425
 		else
 		{
 			kick_cli_id = find_user_by_nick(users[i]);
 			if (params[3] == "" || params[3] == ":")
 				params[3] = g_aClient[kick_cli_id].second.get_nickname();
 			for (size_t k = 0; k < g_vChannel[chan_id]._users.size(); k++)
-				g_vChannel[chan_id]._users[k]->send_reply(create_full_msg(params, client_idx));
+				g_vChannel[chan_id]._users[k]->push_to_buffer(create_full_msg(params, client_idx));
 			delete_of_all_data(params[1], users[i], chan_id, kick_cli_id);
 		}
 	}
@@ -76,7 +84,7 @@ void	kick_command(const std::string &line, const size_t &client_idx, const MySer
 	params = ft_split(line, " ");
 	if (params.size() < 3)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv));
 		return ;
 	}
 	channels = ft_split(params[1], ",");

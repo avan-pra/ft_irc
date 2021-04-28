@@ -68,7 +68,7 @@ class Connection
 				send(_fd, s.c_str(), s.size(), MSG_NOSIGNAL);
 		}
 
-		void			set_buffer(const std::string &s) { _buff = s; }
+		void			reset_buffer() { _buff = ""; }
 		void			push_to_buffer(const std::string &s) { _buff += s; }
 		std::string		get_buffer() { return _buff; }
 		void			send_packets()

@@ -30,7 +30,7 @@ static void			check_realname(const std::string str, const size_t &client_idx, co
 {
 	if (str.size() < 1)
 	{
-		g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "USER"));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "USER"));
 		throw std::exception();
 	}
 }
@@ -89,12 +89,12 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 		args = ft_split(line_new, " ");
 		if (args.size() < 4)
 		{
-			g_aClient[client_idx].second.send_reply(create_msg(461, client_idx, serv, "USER"));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "USER"));
 			throw std::exception();
 		}
 		if (g_aClient[client_idx].second.is_registered())
 		{
-			g_aClient[client_idx].second.send_reply(create_msg(462, client_idx, serv, realname));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(462, client_idx, serv, realname));
 			throw std::exception();
 		}
 		check_realname(realname, client_idx, serv);
@@ -103,7 +103,7 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 
 		if (g_aClient[client_idx].second.get_nickname().size() > 0)		
 		{
-			g_aClient[client_idx].second.send_reply(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
 			motd_command("", client_idx, serv);
 			g_aClient[client_idx].second.set_register(true);
 		}

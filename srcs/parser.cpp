@@ -52,7 +52,7 @@ bool	can_execute(const std::string command, const size_t &client_idx, const MySe
 	}
 	catch (const std::exception &e) { throw std::exception(); }
 	if (ret == false)
-		g_aClient[client_idx].second.send_reply(create_msg(451, client_idx, serv));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(451, client_idx, serv));
 	return ret;
 }
 
@@ -88,7 +88,7 @@ void	parser(char *line, const size_t &client_idx, const MyServ &serv)
 			}
 			catch (const IncorrectPassException &e) { throw IncorrectPassException(); }
 			catch (const QuitCommandException &e) { throw QuitCommandException(); }
-			catch (const std::exception &e) { g_aClient[client_idx].second.send_reply(create_msg(421, client_idx, serv, command)); } //il faut envoyer ca au client
+			catch (const std::exception &e) { g_aClient[client_idx].second.push_to_buffer(create_msg(421, client_idx, serv, command)); } //il faut envoyer ca au client
 		}
 	}
 }

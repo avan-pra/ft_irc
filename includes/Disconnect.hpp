@@ -6,6 +6,8 @@
 template <class T>
 void	disconnect(T *co, size_t &i)
 {
+	co->send_packets();
+	co->reset_buffer();
 	if (co->get_tls())
 	{
 		if (co->_sslptr != NULL)

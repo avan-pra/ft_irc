@@ -19,5 +19,5 @@ void	version_command(const std::string &line, const size_t &client_idx, const My
 {
 	(void)line;
 	(void)serv;
-	g_aClient[client_idx].second.send_reply(RPL_VERSION(std::string("beta 1.0"), "0", serv.get_hostname(), std::string("Actually in beta 1.0")));
+	g_aClient[client_idx].second.push_to_buffer(RPL_VERSION(std::string("beta 1.0"), "0", serv.get_hostname(), std::string("Actually in beta 1.0")));
 }

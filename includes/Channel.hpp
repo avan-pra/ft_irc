@@ -201,7 +201,7 @@ class Channel
 		void			send_to_all(std::string msg)
 		{
 			for (size_t i = 0; i < _users.size(); i++)
-				_users[i]->send_reply(msg);
+				_users[i]->push_to_buffer(msg);
 		}
 
 		void			send_to_all_except_one(Client except, const std::string &msg)
@@ -209,7 +209,7 @@ class Channel
 			for (size_t i = 0; i < _users.size(); i++)
 			{
 				if (*_users[i] != except)
-					_users[i]->send_reply(msg);
+					_users[i]->push_to_buffer(msg);
 			}
 		}
 };

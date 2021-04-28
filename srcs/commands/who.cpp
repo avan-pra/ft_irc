@@ -40,7 +40,7 @@ static int	who_channel(const std::string &channel, const size_t &client_idx, con
 		str += std::string(":0") + " ";
 		str += g_vChannel[channel_id]._users[n]->get_realname();
 	
-		g_aClient[client_idx].second.send_reply(create_msg(352, client_idx, serv, str));
+		g_aClient[client_idx].second.push_to_buffer(create_msg(352, client_idx, serv, str));
 	}
 	return (0);
 }
@@ -89,7 +89,7 @@ int	who_client(const std::string &query, const size_t &client_idx, const MyServ 
 			str += std::string(":0") + " ";
 			str += g_aClient[n].second.get_realname();
 		
-			g_aClient[client_idx].second.send_reply(create_msg(352, client_idx, serv, str));
+			g_aClient[client_idx].second.push_to_buffer(create_msg(352, client_idx, serv, str));
 		}
 	}
 	return (0);
@@ -137,6 +137,6 @@ void	who_command(const std::string &line, const size_t &client_idx, const MyServ
 		default:
 			who_client(arg[1], client_idx, serv); break;
 	}
-	g_aClient[client_idx].second.send_reply(create_msg(315, client_idx, serv, arg[1]));
+	g_aClient[client_idx].second.push_to_buffer(create_msg(315, client_idx, serv, arg[1]));
 	//352 RPL_WHOREPLY
 }
