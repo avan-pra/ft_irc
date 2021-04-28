@@ -90,20 +90,12 @@ void	list_command(const std::string &line, const size_t &client_idx, const MySer
 			if (!g_vChannel[chan_id].is_mode('s') && !g_vChannel[chan_id].is_mode('p'))
 			{
 				topic = ft_to_string(g_vChannel[chan_id]._users.size()) + g_vChannel[chan_id].get_topic();
-<<<<<<< HEAD
 				g_aClient[client_idx].second.send_reply(create_msg(322, client_idx, serv, *it, topic));
-=======
-				g_aClient[client_idx].second.push_to_buffer(create_msg(322, client_idx, serv, " " + *it, topic));
->>>>>>> 4cffd4f34daca539a44e9399a6a75c9e6d3ba425
 			}
 		}
 	}
 	if (find == false)
-<<<<<<< HEAD
 		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, chan_name[0]));
-=======
-		g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, " " + chan_name[0]));
->>>>>>> 4cffd4f34daca539a44e9399a6a75c9e6d3ba425
 	else
 		g_aClient[client_idx].second.push_to_buffer(create_msg(323, client_idx, serv));
 }

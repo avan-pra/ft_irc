@@ -37,19 +37,11 @@ void	kick_on_one_channel(std::vector<std::string> params, std::vector<std::strin
 	for (size_t i = 0; i < users.size(); i++)
 	{
 		if (!is_user_in_chan(chan_id, g_aClient[client_idx].second.get_nickname()))
-<<<<<<< HEAD
 			g_aClient[client_idx].second.send_reply(create_msg(442, client_idx, serv, params[1]));
 		else if (!is_user_in_chan(chan_id, users[i]))
 			g_aClient[client_idx].second.send_reply(create_msg(441, client_idx, serv, users[i], params[1]));
 		else if (!is_chann_operator(chan_id, client_idx))
 			g_aClient[client_idx].second.send_reply(create_msg(482, client_idx, serv, params[1]));
-=======
-			g_aClient[client_idx].second.push_to_buffer(create_msg(442, client_idx, serv, " " + params[1]));
-		else if (!is_user_in_chan(chan_id, users[i]))
-			g_aClient[client_idx].second.push_to_buffer(create_msg(441, client_idx, serv, " " + users[i], params[1]));
-		else if (!is_chann_operator(chan_id, client_idx))
-			g_aClient[client_idx].second.push_to_buffer(create_msg(482, client_idx, serv, " " + params[1]));
->>>>>>> 4cffd4f34daca539a44e9399a6a75c9e6d3ba425
 		else
 		{
 			kick_cli_id = find_user_by_nick(users[i]);

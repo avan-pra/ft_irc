@@ -81,11 +81,7 @@ static int	check_invite(const int &chan_id, const size_t &client_idx, const MySe
 		if (g_aClient[client_idx].second == *g_vChannel[chan_id]._invite[i])
 			return (1);
 	}
-<<<<<<< HEAD
 	g_aClient[client_idx].second.send_reply(create_msg(473, client_idx, serv, g_vChannel[chan_id].get_name()));
-=======
-	g_aClient[client_idx].second.push_to_buffer(create_msg(473, client_idx, serv, " " + g_vChannel[chan_id].get_name()));
->>>>>>> 4cffd4f34daca539a44e9399a6a75c9e6d3ba425
 	return (0);
 }
 
@@ -95,11 +91,7 @@ int		check_password(const size_t &client_idx, const MyServ &serv, const int &cha
 		return (1);
 	if (pass == g_vChannel[chan_id].get_password())
 		return (1);
-<<<<<<< HEAD
 	g_aClient[client_idx].second.send_reply(create_msg(475, client_idx, serv, g_vChannel[chan_id].get_name()));
-=======
-	g_aClient[client_idx].second.push_to_buffer(create_msg(475, client_idx, serv, " " + g_vChannel[chan_id].get_name()));
->>>>>>> 4cffd4f34daca539a44e9399a6a75c9e6d3ba425
 	return (0);
 }
 
@@ -129,21 +121,13 @@ static int	try_enter_chan(const std::map<std::string, std::string>::iterator it,
 	if (g_vChannel[i].is_mode('b') && g_vChannel[i].is_ban(g_aClient[client_idx].second))
 	{
 		enter = true;
-<<<<<<< HEAD
 		g_aClient[client_idx].second.send_reply(create_msg(474, client_idx, serv, it->first));
-=======
-		g_aClient[client_idx].second.push_to_buffer(create_msg(474, client_idx, serv, " " + it->first));
->>>>>>> 4cffd4f34daca539a44e9399a6a75c9e6d3ba425
 		return (0);
 	}
 	if (g_vChannel[i].is_mode('l') && g_vChannel[i]._users.size() == g_vChannel[i].get_limit())
 	{
 		enter = true;
-<<<<<<< HEAD
 		g_aClient[client_idx].second.send_reply(create_msg(471, client_idx, serv, it->first));
-=======
-		g_aClient[client_idx].second.push_to_buffer(create_msg(471, client_idx, serv, " " + it->first));
->>>>>>> 4cffd4f34daca539a44e9399a6a75c9e6d3ba425
 		return (0);
 	}
 	return (1);
