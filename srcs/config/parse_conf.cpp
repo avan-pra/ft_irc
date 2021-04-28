@@ -373,4 +373,5 @@ void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port)
 			throw ConfigFileException();
 		}
 	}
+	file.close();
 }

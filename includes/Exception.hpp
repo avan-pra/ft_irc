@@ -62,7 +62,7 @@ class	ConfigFileException: public std::exception
 	public:
 	virtual const char	*what() const throw()
 	{
-		return "Problem with config file, fix the irc.conf";
+		return "Problem with config file, fix irc.conf";
 	};
 };
 

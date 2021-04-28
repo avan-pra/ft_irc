@@ -60,7 +60,13 @@ int			main(void)
 		start_parse_conf(serv, m_port);
 		launch_all_socket(serv, m_port);
 	}
-	catch (const std::exception& e) { std::cerr << e.what() << std::endl; exit(1); }
+	catch (const std::exception& e)
+	{
+		if (serv.sslctx != NULL)
+			SSL_CTX_free(serv.sslctx);
+		std::cerr << e.what() << std::endl;
+		exit(1);
+	}
 	run_server(serv);
 	return (0);
 }
