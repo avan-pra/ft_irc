@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/28 16:51:10 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/29 16:42:51 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 	std::string 		mode = g_vChannel[chann_idx].get_mode();
 	const std::string	not_add = "oOvb";
 
+	//On agit differemment en fonction du nouveau mode qui doit etre set
+	//d'une part p.ex. m,etc. vont juste etre rajoutés a la string des modes
+	//d'autre part o,etc. vont rajouter un user dans la liste de operateurs (dans ce cas la)
 	switch (c)
 	{
 		case 'm':
@@ -249,25 +252,31 @@ void				mode_command(const std::string &line, const size_t &client_idx, const My
 	try
 	{
 		str = params[1];
+		//La query concerne un channel
 		if (std::strchr(CHANNEL_VALID_CHAR, str[0]))
 		{
 			size_t	channel_idx = 0;
 			
 			check_channel_errors(client_idx, channel_idx, str, serv);
+			//Pas de arguments, on renvoie le mode actuel du channel
 			if (params.size() == 2)
 			{
 				g_aClient[client_idx].second.push_to_buffer(create_msg(324, client_idx, serv, g_vChannel[channel_idx].get_name(), set_output_mode(channel_idx), ""));
 				return ;
 			}
+			//Un nouveau mode doit etre set OU la list des ban est demandée
 			else
 			{
 				mode = params[2];
+				//L'argument est +b, du coup on affiche la liste des users ban du channel
 				if ((mode == "+b" || mode == "b" || mode == "-b") && params.size() == 3)
 					ban_list(channel_idx, client_idx, serv);
+				//On set le(s) nouveaux modes
 				else
 					set_chann_mode(mode, params, channel_idx, client_idx, serv);
 			}
 		}
+		//La query concerne un user
 		else
 		{
 			check_nickname(str, client_idx, serv);

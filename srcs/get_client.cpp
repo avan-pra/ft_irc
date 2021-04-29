@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 09:49:00 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/21 16:28:43 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/29 22:29:02 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,14 @@ void	accept_connection(MyServ &serv, t_sock &sock)
 	new_fd = accept(sock.sockfd, (sockaddr*)&clSock6, &clSock_len);
 	if (fcntl(new_fd, F_SETFL, O_NONBLOCK) < 0)
 		error_exit("fcntl error: failed to set nonblock fd");
-	std::cout << "* New connection from: " << custom_ntoa(clSock6.sin6_addr.__in6_u.__u6_addr32[3]) << ":"
-		<< ntohs(clSock6.sin6_port) << (sock.is_tls ? " (tls)" : "") << std::endl;
+	#ifdef __APPLE__
+		std::cout << "* New connection from: " << custom_ntoa(clSock6.sin6_addr.__u6_addr.__u6_addr32[3]) << ":"
+			<< ntohs(clSock6.sin6_port) << (sock.is_tls ? " (tls)" : "") << std::endl;
+	#endif
+	#ifdef __linux__
+		std::cout << "* New connection from: " << custom_ntoa(clSock6.sin6_addr.__in6_u.__u6_addr32[3]) << ":"
+			<< ntohs(clSock6.sin6_port) << (sock.is_tls ? " (tls)" : "") << std::endl;
+	#endif
 	if (sock.is_tls)
 	{
 		if (!(new_connection._sslptr = SSL_new(serv.sslctx)))
