@@ -59,7 +59,7 @@ static void			check_2nd_arg(const std::string str, std::string &host_name, std::
 static void			set_user(const std::string username, std::string mode, const std::string server_name, const std::string realname, const size_t &client_idx)
 {
 	g_aClient[client_idx].second.set_username(username);
-	g_aClient[client_idx].second.set_hostname(inet_ntoa(g_aClient[client_idx].second.sock_addr.sin_addr));
+	g_aClient[client_idx].second.set_hostname(custom_ntoa(g_aClient[client_idx].second.sock_addr.sin6_addr.__in6_u.__u6_addr32[3]));
 	g_aClient[client_idx].second.set_mode(mode);
 	g_aClient[client_idx].second.set_realname(realname);
 	g_aClient[client_idx].second.set_servername(server_name);

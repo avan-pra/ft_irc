@@ -12,6 +12,8 @@
 
 typedef int	SOCKET;
 
+
+
 class Connection
 {
 	protected:
@@ -30,7 +32,8 @@ class Connection
 
 		SOCKET			_fd;
 		SSL				*_sslptr;
-		sockaddr_in		sock_addr;
+		sockaddr_in6	sock_addr;
+		// sockaddr_in		sock_addr;
 
 		/*
 		** Constructor/Destructor

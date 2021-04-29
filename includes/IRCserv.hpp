@@ -126,6 +126,7 @@ void		iterate_connection(MyServ &serv);
 */
 void		accept_connection(MyServ &serv);
 void		try_accept_connection(MyServ &serv);
+std::string	custom_ntoa(uint32_t in);
 
 /*
 ** parse_conf.cpp

@@ -19,19 +19,29 @@ bool	sort_dec(const std::pair<SOCKET,Client> &a,  const std::pair<SOCKET,Client>
   return (a.first > b.first); 
 }
 
+std::string custom_ntoa(uint32_t in)
+{
+	std::string buffer;
+
+	unsigned char *bytes = (unsigned char *) &in;
+	buffer = ft_to_string((int)bytes[0]) + "." + ft_to_string((int)bytes[1]) + "." + ft_to_string((int)bytes[2]) + "." + ft_to_string((int)bytes[3]);
+	return buffer;
+}
+
 void	accept_connection(MyServ &serv, t_sock &sock)
 {
 	Connection		new_connection;
 	FD_CLR(sock.sockfd, &serv.get_readfs());
 	SOCKET 		new_fd;
-	sockaddr_in	clSock;
-	socklen_t	clSock_len = sizeof(clSock);
+	SOCKADDR_IN6	clSock6;
+	socklen_t	clSock_len = sizeof(clSock6);
 
-	new_fd = accept(sock.sockfd, (sockaddr*)&clSock, &clSock_len);
+	memset(&clSock6, 0, sizeof(clSock6));
+	new_fd = accept(sock.sockfd, (sockaddr*)&clSock6, &clSock_len);
 	if (fcntl(new_fd, F_SETFL, O_NONBLOCK) < 0)
 		error_exit("fcntl error: failed to set nonblock fd");
-	std::cout << "* New connection from: " << inet_ntoa(clSock.sin_addr)<< ":"
-		<< ntohs(clSock.sin_port) << (sock.is_tls ? " (tls)" : "") << std::endl;
+	std::cout << "* New connection from: " << custom_ntoa(clSock6.sin6_addr.__in6_u.__u6_addr32[3]) << ":"
+		<< ntohs(clSock6.sin6_port) << (sock.is_tls ? " (tls)" : "") << std::endl;
 	if (sock.is_tls)
 	{
 		if (!(new_connection._sslptr = SSL_new(serv.sslctx)))
@@ -45,7 +55,7 @@ void	accept_connection(MyServ &serv, t_sock &sock)
 	}
 	new_connection.set_tls(sock.is_tls);
 	new_connection._fd = new_fd;
-	new_connection.sock_addr = clSock;
+	new_connection.sock_addr = clSock6;
 	time(&new_connection.get_last_activity());
 	//push de <fd, User> sur le vecteur
 	g_aUnregistered.push_back(std::make_pair(new_fd, new_connection));
