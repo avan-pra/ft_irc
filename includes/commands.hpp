@@ -24,7 +24,7 @@
 # define ERR_NOMOTD() (":MOTD File is missing\r\n")
 # define ERR_NOADMININFO(server) (server + " :No administrative info available\r\n")
 # define ERR_FILEERROR(operation, file) (":File error doing " + operation + " on " + file + "\r\n")
-# define ERR_NONICKNAMEGIVEN() (" :No nickname given\r\n")
+# define ERR_NONICKNAMEGIVEN() (":No nickname given\r\n")
 # define ERR_ERRONEUSNICKNAME(pseudo) (pseudo + " :Erroneus nickname\r\n")
 # define ERR_NICKNAMEINUSE(nick) (nick + " :Nickname is already in use\r\n")
 # define ERR_NICKCOLLISION(nick) (nick + " :Nickname collision KILL\r\n")
