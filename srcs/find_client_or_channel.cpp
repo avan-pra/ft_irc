@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:19:03 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/29 13:39:18 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/29 14:15:42 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,30 +28,6 @@ std::deque<Channel>::iterator	find_channel_by_iterator(const std::string &chan_n
 	return (g_vChannel.end());
 }
 
-std::deque<std::pair<SOCKET, Client> >::iterator	find_client_by_iterator(const std::string &nickname)
-{
-	for (std::deque<std::pair<SOCKET, Client> >::iterator it = g_aClient.begin(); it != g_aClient.end(); it++)
-		if (nickname == it->second.get_nickname())
-			return (it);
-	return (g_aClient.end());
-}
-
-std::deque<std::pair<SOCKET, Server> >::iterator	find_server_by_iterator(const SOCKET &fd)
-{
-	for (std::deque<std::pair<SOCKET, Server> >::iterator it = g_aServer.begin(); it != g_aServer.end(); it++)
-		if (fd == it->second._fd)
-			return (it);
-	return (g_aServer.end());
-}
-
-std::deque<std::pair<SOCKET, Connection> >::iterator	find_connection_by_iterator(const SOCKET &fd)
-{
-	for (std::deque<std::pair<SOCKET, Connection> >::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); it++)
-		if (fd == it->second._fd)
-			return (it);
-	return (g_aUnregistered.end());
-}
-
 int		find_channel_with_pattern(std::string &pattern)
 {
 	for (size_t i = 0; i < g_vChannel.size(); i++)
@@ -68,19 +44,6 @@ int		find_user_by_nick(const std::string &nickname)
 			return (i);
 	}
 	return (-1);
-}
-
-std::vector<Client*>::iterator		find_user_in_channel(const std::string &chan_name,
-													const std::string &nickname)
-{
-	int		chan_id = find_channel(chan_name);
-
-	for (std::vector<Client *>::iterator i = g_vChannel[chan_id]._users.begin(); i != g_vChannel[chan_id]._users.end(); i++)
-	{
-		if ((*i)->get_nickname() == nickname)
-			return (i);
-	}
-	return (g_vChannel[chan_id]._users.end());
 }
 
 bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname)
@@ -103,9 +66,9 @@ bool	is_chann_operator(const int &chan_id, const size_t &client_idx)
 	return (false);
 }
 
-std::vector<Client*>::iterator	find_operator(const int &chan_id, const size_t &client_idx)
+std::deque<Client*>::iterator	find_operator(const int &chan_id, const size_t &client_idx)
 {
-	for (std::vector<Client*>::iterator it = g_vChannel[chan_id]._operator.begin();
+	for (std::deque<Client*>::iterator it = g_vChannel[chan_id]._operator.begin();
 	it != g_vChannel[chan_id]._operator.end(); it++)
 		if (**it == g_aClient[client_idx].second)
 			return (it);

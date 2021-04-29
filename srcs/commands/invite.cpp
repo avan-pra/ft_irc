@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:22:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/28 16:45:20 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/29 14:23:15 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int		check_if_are_on(const std::vector<std::string> &params, const size_t &clien
 {
 	int		find = 0;
 
-	for (std::vector<Client*>::iterator it = g_vChannel[chan_id]._users.begin(); it != g_vChannel[chan_id]._users.end(); it++)
+	for (std::deque<Client*>::iterator it = g_vChannel[chan_id]._users.begin(); it != g_vChannel[chan_id]._users.end(); it++)
 	{
 		if ((*it)->get_nickname() == g_aClient[client_idx].second.get_nickname())
 			find = find == 2 ? 2: 1;
@@ -75,7 +75,7 @@ void	invite_command(const std::string &line, const size_t &client_idx, const MyS
 			g_aClient[client_idx].second.push_to_buffer(create_msg(482, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
 			return ;
 		}
-	for (std::vector<Client*>::iterator it = g_vChannel[chan_id]._invite.begin();
+	for (std::deque<Client*>::iterator it = g_vChannel[chan_id]._invite.begin();
 		it != g_vChannel[chan_id]._invite.end(); it++)
 	{
 		if (**it == g_aClient[nick_id].second)

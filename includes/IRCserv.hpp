@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/29 13:39:13 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/29 14:16:10 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,12 +177,15 @@ void	send_to_all_channel(const std::string &msg, const size_t &client_idx, bool 
 int														find_channel(const std::string &name);
 int														find_user_by_nick(const std::string &nickname);
 bool													is_user_in_chan(const size_t &chan_id, const std::string &nickname);
-std::vector<Client*>::iterator							find_operator(const int &chan_id, const size_t &client_idx);
-std::vector<Client*>::iterator							find_user_in_channel(const std::string &chan_name, const std::string &nickname);
+std::deque<Client*>::iterator							find_operator(const int &chan_id, const size_t &client_idx);
 bool													pattern_match(std::string str, std::string pattern);
 bool													is_chann_operator(const int &chan_id, const size_t &client_idx);
 int														find_channel_with_pattern(std::string &pattern);
 std::deque<Channel>::iterator							find_channel_by_iterator(const std::string &chan_name);
+
+/*
+** find_connection.cpp 
+*/
 std::deque<std::pair<SOCKET, Client> >::iterator		find_client_by_iterator(const std::string &nickname);
 std::deque<std::pair<SOCKET, Server> >::iterator		find_server_by_iterator(const SOCKET &fd);
 std::deque<std::pair<SOCKET, Connection> >::iterator	find_connection_by_iterator(const SOCKET &fd);

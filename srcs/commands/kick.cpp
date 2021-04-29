@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/06 18:16:34 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/28 16:45:55 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/29 14:16:16 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
-void	delete_of_all_data(const std::string &chan_name, const std::string &kick_name, const size_t &chan_id, const size_t &kick_id)
+void	delete_of_all_data(const std::string &kick_name, const size_t &chan_id, const size_t &kick_id)
 {
-	std::vector<Client*>::iterator	it;
+	std::deque<Client*>::iterator	it;
 
-	if ((it = find_user_in_channel(chan_name, kick_name)) != g_vChannel[chan_id]._users.end())
+	if ((it = g_vChannel[chan_id].find_user_in_channel(kick_name)) != g_vChannel[chan_id]._users.end())
 		g_vChannel[chan_id]._users.erase(it);
 	if ((it = find_operator(chan_id, kick_id)) != g_vChannel[chan_id]._operator.end())
 		g_vChannel[chan_id]._operator.erase(it);
@@ -49,7 +49,7 @@ void	kick_on_one_channel(std::vector<std::string> params, std::vector<std::strin
 				params[3] = g_aClient[kick_cli_id].second.get_nickname();
 			for (size_t k = 0; k < g_vChannel[chan_id]._users.size(); k++)
 				g_vChannel[chan_id]._users[k]->push_to_buffer(create_full_msg(params, client_idx));
-			delete_of_all_data(params[1], users[i], chan_id, kick_cli_id);
+			delete_of_all_data(users[i], chan_id, kick_cli_id);
 		}
 	}
 }

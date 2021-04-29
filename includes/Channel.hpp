@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/28 18:00:29 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/29 14:31:26 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <iostream>
 # include <string>
 # include <vector>
+# include <deque>
 # include "./Client.hpp"
 
 class Client;
@@ -47,11 +48,11 @@ class Channel
 		
 	public:
 
-		std::vector<Client*>	_operator;
-		std::vector<Client*>	_users;
-		std::vector<Client*>	_invite;
-		std::vector<t_ban_id>	_ban;
-		std::vector<Client*>	_voice;
+		std::deque<Client*>		_operator;
+		std::deque<Client*>		_users;
+		std::deque<Client*>		_invite;
+		std::deque<t_ban_id>	_ban;
+		std::deque<Client*>		_voice;
 
 		/*
 		** Constructor/Destructor
@@ -89,46 +90,49 @@ class Channel
 		/*
 		** Methods
 		*/
-		void			remove_user_operator(const std::string usr_nickname)
+		bool			remove_user_operator(const std::string usr_nickname)
 		{
-			for (std::vector<Client*>::iterator it = _operator.begin(); it != _operator.end(); )
+			for (std::deque<Client*>::iterator it = _operator.begin(); it != _operator.end(); it++)
 			{
 				if ((*it)->get_nickname() == usr_nickname)
 				{
-					_operator.erase(it);
-					return ;
+					it = _operator.erase(it);
+					return true;
 				}
-				else
-					it++;
 			}
+			return false;
 		}
 
-		void			remove_user_ban(const t_ban_id &cli)
+		bool			remove_user_ban(const t_ban_id &cli)
 		{
-			for (std::vector<t_ban_id>::iterator it = _ban.begin(); it != _ban.end(); it++)
+			for (std::deque<t_ban_id>::iterator it = _ban.begin(); it != _ban.end(); it++)
 			{
 				if (pattern_match(cli.nickname, (*it).nickname))
+				{
 					if (pattern_match(cli.username, (*it).username))
+					{
 						if (pattern_match(cli.hostname, (*it).hostname))
 						{
-							_ban.erase(it);
-							return ;
+							it = _ban.erase(it);
+							return true;
 						}
+					}
+				}
 			}
+			return	false;
 		}
 
-		void			remove_user_voice(const std::string usr_nickname)
+		bool			remove_user_voice(const std::string usr_nickname)
 		{
-			for (std::vector<Client*>::iterator it = _voice.begin(); it != _voice.end(); )
+			for (std::deque<Client*>::iterator it = _voice.begin(); it != _voice.end(); it++)
 			{
 				if ((*it)->get_nickname() == usr_nickname)
 				{
-					_voice.erase(it);
-					return ;
-				}
-				else
-					it++;				
+					it = _voice.erase(it);
+					return true;
+				}			
 			}
+			return false;
 		}
 
 		Channel			&operator=(const Channel &other)
@@ -167,7 +171,7 @@ class Channel
 			return (false);
 		}
 
-		bool			is_ban(const Client &cli)
+		bool								is_ban(const Client &cli)
 		{
 			for (size_t i = 0; i < _ban.size(); i++)
 			{
@@ -179,9 +183,9 @@ class Channel
 			return (false);
 		}
 
-		bool			is_ban_struct(const t_ban_id &cli)
+		bool								is_ban_struct(const t_ban_id &cli)
 		{
-			for (std::vector<t_ban_id>::iterator it = _ban.begin(); it != _ban.end(); it++)
+			for (std::deque<t_ban_id>::iterator it = _ban.begin(); it != _ban.end(); it++)
 			{
 				if (pattern_match(cli.nickname, (*it).nickname))
 					if (pattern_match(cli.username, (*it).username))
@@ -191,7 +195,7 @@ class Channel
 			return false;
 		}
 		
-		bool			is_user_in_chan(const Client &cli)
+		bool								is_user_in_chan(const Client &cli)
 		{
 			for (size_t i = 0; i < _users.size(); ++i)
 			{
@@ -201,24 +205,34 @@ class Channel
 			return false;
 		}
 
-		bool			is_mode(char c)
+		bool								is_mode(char c)
 		{
 			return (_mode.find(c) != std::string::npos ? true : false);
 		}
 
-		void			send_to_all(std::string msg)
+		void								send_to_all(std::string msg)
 		{
 			for (size_t i = 0; i < _users.size(); i++)
 				_users[i]->push_to_buffer(msg);
 		}
 
-		void			send_to_all_except_one(const Client &except, const std::string &msg)
+		void								send_to_all_except_one(const Client &except, const std::string &msg)
 		{
 			for (size_t i = 0; i < _users.size(); i++)
 			{
 				if (*_users[i] != except)
 					_users[i]->push_to_buffer(msg);
 			}
+		}
+
+		std::deque<Client*>::iterator		find_user_in_channel(const std::string &nickname)
+		{
+			for (std::deque<Client *>::iterator i = _users.begin(); i != _users.end(); i++)
+			{
+				if ((*i)->get_nickname() == nickname)
+					return (i);
+			}
+			return (_users.end());
 		}
 };
 

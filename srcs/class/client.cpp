@@ -16,12 +16,12 @@ Client::~Client()
 {
 	for (std::deque<Channel>::iterator cht = g_vChannel.begin(); cht != g_vChannel.end(); ++cht)
 	{
-		for (std::vector<Client*>::iterator it = cht->_users.begin();
+		for (std::deque<Client*>::iterator it = cht->_users.begin();
 			it != cht->_users.end(); it++)
 		{
 			if ((*it)->get_nickname() == this->get_nickname())
 			{
-				cht->_users.erase(it);
+				it = cht->_users.erase(it);
 				tmp_send_to_channel("PART " + cht->get_name() + " :", *this, *cht);
 				--it;
 				if (cht->_users.size() == 0)

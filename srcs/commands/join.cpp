@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/28 16:46:35 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/29 14:37:15 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static int	try_enter_chan(const std::map<std::string, std::string>::iterator it,
 {
 	int		i = find_channel(it->first);
 
-	for (std::vector<Client*>::iterator ite = g_vChannel[i]._users.begin(); ite != g_vChannel[i]._users.end(); ite++)
+	for (std::deque<Client*>::iterator ite = g_vChannel[i]._users.begin(); ite != g_vChannel[i]._users.end(); ite++)
 	{
 		if (**ite == g_aClient[client_idx].second)
 		{
@@ -118,7 +118,7 @@ static int	try_enter_chan(const std::map<std::string, std::string>::iterator it,
 		enter = true;
 		return (0);
 	}
-	if (g_vChannel[i].is_mode('b') && g_vChannel[i].is_ban(g_aClient[client_idx].second))
+	if (g_vChannel[i].is_ban(g_aClient[client_idx].second))
 	{
 		enter = true;
 		g_aClient[client_idx].second.send_reply(create_msg(474, client_idx, serv, it->first));
