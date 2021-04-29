@@ -90,6 +90,19 @@ class Channel
 		/*
 		** Methods
 		*/
+		bool			remove_user(const std::string usr_nickname)
+		{
+			for (std::deque<Client*>::iterator it = _users.begin(); it != _users.end(); it++)
+			{
+				if ((*it)->get_nickname() == usr_nickname)
+				{
+					it = _users.erase(it);
+					return true;
+				}
+			}
+			return false;
+		}
+
 		bool			remove_user_operator(const std::string usr_nickname)
 		{
 			for (std::deque<Client*>::iterator it = _operator.begin(); it != _operator.end(); it++)

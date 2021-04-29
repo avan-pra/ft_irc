@@ -62,7 +62,10 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 			chann_idx = check_channel_exists(channel_name, client_idx, serv);
 			check_usr_in_channel(chann_idx, client_idx, serv);
 			send_to_channel(("PART " + g_vChannel[chann_idx].get_name() + " :" + output), client_idx, chann_idx, true);
-			g_vChannel[chann_idx]._users.erase(g_vChannel[chann_idx].find_user_in_channel(g_aClient[client_idx].second.get_nickname()));
+			// g_vChannel[chann_idx]._users.erase(g_vChannel[chann_idx].find_user_in_channel(g_aClient[client_idx].second.get_nickname()));
+			g_vChannel[chann_idx].remove_user(g_aClient[client_idx].second.get_nickname());
+			g_vChannel[chann_idx].remove_user_operator(g_aClient[client_idx].second.get_nickname());
+			g_vChannel[chann_idx].remove_user_voice(g_aClient[client_idx].second.get_nickname());
 			std::deque<Channel>::iterator	ite = find_channel_by_iterator(g_vChannel[chann_idx].get_name());
 			if (ite != g_vChannel.end() && g_vChannel[chann_idx]._users.empty())
 				g_vChannel.erase(ite);
