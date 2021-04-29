@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:19:03 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/29 12:33:10 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/29 13:39:18 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,30 @@ std::deque<Channel>::iterator	find_channel_by_iterator(const std::string &chan_n
 		if (chan_name == it->get_name())
 			return (it);
 	return (g_vChannel.end());
+}
+
+std::deque<std::pair<SOCKET, Client> >::iterator	find_client_by_iterator(const std::string &nickname)
+{
+	for (std::deque<std::pair<SOCKET, Client> >::iterator it = g_aClient.begin(); it != g_aClient.end(); it++)
+		if (nickname == it->second.get_nickname())
+			return (it);
+	return (g_aClient.end());
+}
+
+std::deque<std::pair<SOCKET, Server> >::iterator	find_server_by_iterator(const SOCKET &fd)
+{
+	for (std::deque<std::pair<SOCKET, Server> >::iterator it = g_aServer.begin(); it != g_aServer.end(); it++)
+		if (fd == it->second._fd)
+			return (it);
+	return (g_aServer.end());
+}
+
+std::deque<std::pair<SOCKET, Connection> >::iterator	find_connection_by_iterator(const SOCKET &fd)
+{
+	for (std::deque<std::pair<SOCKET, Connection> >::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); it++)
+		if (fd == it->second._fd)
+			return (it);
+	return (g_aUnregistered.end());
 }
 
 int		find_channel_with_pattern(std::string &pattern)

@@ -17,26 +17,38 @@ void	disconnect(T *co, size_t &i)
 	closesocket(co->_fd);
 	if (dynamic_cast<Client*> (co) != NULL)
 	{
-	    std::cout << "* Client disconnected from: " << inet_ntoa(co->sock_addr.sin_addr)
-		    << ":" << ntohs(co->sock_addr.sin_port) << (g_aClient[i].second.get_tls() ? " (tls)" : "") << std::endl;
-		g_aClient.erase(g_aClient.begin() + i);
+		std::deque<std::pair<SOCKET, Client> >::iterator	it = find_client_by_iterator(g_aClient[i].second.get_nickname());
+		size_t			sin_port = ntohs(co->sock_addr.sin_port);
+		std::string		tls_str = (g_aClient[i].second.get_tls() ? " (tls)" : "");
+		std::string 	sin_addr = inet_ntoa(co->sock_addr.sin_addr);
+		
+		g_aClient.erase(it);
 		i--;
+	    std::cout << "* Client disconnected from: " << sin_addr << ":" << sin_port << tls_str << std::endl;
 		return ;
 	}
 	if (dynamic_cast<Server*> (co) != NULL)
 	{
-        std::cout << "* Connection lost to: " << inet_ntoa(co->sock_addr.sin_addr)
-		    << ":" << ntohs(co->sock_addr.sin_port) << (g_aServer[i].second.get_tls() ? " (tls)" : "") << std::endl;
-		g_aServer.erase(g_aServer.begin() + i);
+		std::deque<std::pair<SOCKET, Server> >::iterator	it = find_server_by_iterator(g_aServer[i].second._fd);
+		size_t			sin_port = ntohs(co->sock_addr.sin_port);
+		std::string		tls_str = (g_aServer[i].second.get_tls() ? " (tls)" : "");
+		std::string 	sin_addr = inet_ntoa(co->sock_addr.sin_addr);
+
+		g_aServer.erase(it);
 		i--;
+		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << std::endl;
 		return ;
 	}
 	if (dynamic_cast<Connection*> (co) != NULL)
 	{
-        std::cout << "* Connection lost to: " << inet_ntoa(co->sock_addr.sin_addr)
-		    << ":" << ntohs(co->sock_addr.sin_port) << (g_aUnregistered[i].second.get_tls() ? " (tls)" : "") << std::endl;
-		g_aUnregistered.erase(g_aUnregistered.begin() + i);
+		std::deque<std::pair<SOCKET, Connection> >::iterator	it = find_connection_by_iterator(g_aUnregistered[i].second._fd);
+		size_t			sin_port = ntohs(co->sock_addr.sin_port);
+		std::string		tls_str = (g_aUnregistered[i].second.get_tls() ? " (tls)" : "");
+		std::string 	sin_addr = inet_ntoa(co->sock_addr.sin_addr);
+
+		g_aUnregistered.erase(it);
 		i--;
+		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << std::endl;
 		return ;
 	}
 }

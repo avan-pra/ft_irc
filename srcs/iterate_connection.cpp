@@ -103,8 +103,18 @@ void	iterate_connection(MyServ &serv)
 				{
 					connection_parser(c, i, serv);
 				}
-				catch (NewServerException) { g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
-				catch (NewClientException) { g_aUnregistered.erase(g_aUnregistered.begin() + i); i--; }
+				catch (NewServerException)
+				{
+					std::deque<std::pair<SOCKET, Connection> >::iterator	it = find_connection_by_iterator(g_aUnregistered[i].second._fd);
+					g_aUnregistered.erase(it); 
+					i--; 
+				}
+				catch (NewClientException)
+				{
+					std::deque<std::pair<SOCKET, Connection> >::iterator	it = find_connection_by_iterator(g_aUnregistered[i].second._fd);
+					g_aUnregistered.erase(it);
+					i--;
+				}
 				catch (QuitCommandException) { disconnect(&g_aUnregistered[i].second, i); }
 			}
 		}

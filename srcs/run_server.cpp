@@ -39,7 +39,7 @@ static void push_fd_to_set(MyServ &serv)
 		FD_SET(it->sockfd, &serv.get_readfs());
 	}
 	//push all connection fd to all 3 set
-	for (std::vector<std::pair<SOCKET, Connection> >::iterator ite = g_aUnregistered.begin(); ite != g_aUnregistered.end(); ++ite)
+	for (std::deque<std::pair<SOCKET, Connection> >::iterator ite = g_aUnregistered.begin(); ite != g_aUnregistered.end(); ++ite)
 	{
 		FD_SET(ite->first, &serv.get_readfs());
 		// FD_SET(ite->first, &serv.get_writefs());
@@ -79,7 +79,7 @@ bool		kick_if_away(Connection &co)
 
 void	send_bufferised_packet()
 {
-	for (std::vector<std::pair<int, Connection> >::iterator it = g_aUnregistered.begin(); it < g_aUnregistered.end(); ++it)
+	for (std::deque<std::pair<int, Connection> >::iterator it = g_aUnregistered.begin(); it < g_aUnregistered.end(); ++it)
 	{
 		it->second.send_packets();
 		it->second.reset_buffer();
@@ -89,7 +89,7 @@ void	send_bufferised_packet()
 		it->second.send_packets();
 		it->second.reset_buffer();
 	}
-	for (std::vector<std::pair<int, Server> >::iterator it = g_aServer.begin(); it < g_aServer.end(); ++it)
+	for (std::deque<std::pair<int, Server> >::iterator it = g_aServer.begin(); it < g_aServer.end(); ++it)
 	{
 		it->second.send_packets();
 		it->second.reset_buffer();
