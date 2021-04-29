@@ -77,6 +77,14 @@ certs :
 		-keyout ./$(KEY) -out ./$(CERT) \
 		-subj "/C=FR/ST=Paris/L=Paris/O=42/OU=21/CN=ircserv"
 
+install :
+		tar -xf openssl-1.1.1j.tar
+		cd openssl-1.1.1j
+		./config
+		make
+		make install
+		ldconfig
+
 del_certs :
 		rm -rf $(CERT) $(KEY)
 
