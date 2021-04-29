@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/28 17:55:59 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/29 12:36:20 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ std::vector<Client*>::iterator		find_user_in_channel(const std::string &chan_nam
 bool								pattern_match(std::string str, std::string pattern);
 bool								is_chann_operator(const int &chan_id, const size_t &client_idx);
 int									find_channel_with_pattern(std::string &pattern);
+std::deque<Channel>::iterator	find_channel_by_iterator(const std::string &chan_name);
 
 /*
 ** create_msg .cpp

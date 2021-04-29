@@ -14,7 +14,7 @@ static void tmp_send_to_channel(const std::string &msg, Client &cli, Channel &ch
 
 Client::~Client()
 {
-	for (std::deque<Channel>::iterator cht = g_vChannel.begin(); cht < g_vChannel.end(); ++cht)
+	for (std::deque<Channel>::iterator cht = g_vChannel.begin(); cht != g_vChannel.end(); ++cht)
 	{
 		for (std::vector<Client*>::iterator it = cht->_users.begin();
 			it != cht->_users.end(); it++)

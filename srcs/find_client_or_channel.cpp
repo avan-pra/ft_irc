@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 12:19:03 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/12 15:03:46 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/29 12:33:10 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@ int		find_channel(const std::string &name)
 		if (name == g_vChannel[i].get_name())
 			return (i);
 	return (-1);
+}
+
+std::deque<Channel>::iterator	find_channel_by_iterator(const std::string &chan_name)
+{
+	for (std::deque<Channel>::iterator it = g_vChannel.begin(); it != g_vChannel.end(); it++)
+		if (chan_name == it->get_name())
+			return (it);
+	return (g_vChannel.end());
 }
 
 int		find_channel_with_pattern(std::string &pattern)

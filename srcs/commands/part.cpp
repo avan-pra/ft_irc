@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:11:18 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/16 17:54:09 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/29 12:48:03 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 
 static int		check_channel_exists(const std::string str, const size_t &client_idx, const MyServ &serv)
 {
-	for (size_t i = 0; i < g_vChannel.size(); i++)
-		if (str == g_vChannel[i].get_name())
-			return i;
+	int	i;
+
+	if ((i = find_channel(str)) != -1)
+		return (i);
 	g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, str));
 	throw std::exception();
 	return 0;
@@ -57,31 +58,15 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 			{
 				g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, channel_name));
 				return ;
-			}	
+			}
 			chann_idx = check_channel_exists(channel_name, client_idx, serv);
 			check_usr_in_channel(chann_idx, client_idx, serv);
-			for (std::vector<Client*>::iterator it = g_vChannel[chann_idx]._users.begin();
-					it != g_vChannel[chann_idx]._users.end(); )
-			{
-				if ((*it)->get_nickname() == g_aClient[client_idx].second.get_nickname())
-				{
-					send_to_channel(("PART " + g_vChannel[chann_idx].get_name() + " :" + output), client_idx, chann_idx, true);
-					g_vChannel[chann_idx]._users.erase(it);
-				}
-				else
-					it++;
-			}
-			for (std::deque<Channel>::iterator it = g_vChannel.begin(); it < g_vChannel.end();)
-			{
-				if (it->get_name() == channel_name && it->_users.size() == 0)
-				{
-					send_to_channel(("PART " + g_vChannel[chann_idx].get_name() + " :" + output), client_idx, chann_idx, true);
-					g_vChannel.erase(it);
-				}
-				else
-					++it;	
-			}
+			send_to_channel(("PART " + g_vChannel[chann_idx].get_name() + " :" + output), client_idx, chann_idx, true);
+			g_vChannel[chann_idx]._users.erase(find_user_in_channel(channel_name,  g_aClient[client_idx].second.get_nickname()));
+			std::deque<Channel>::iterator	ite = find_channel_by_iterator(g_vChannel[chann_idx].get_name());
+			if (ite != g_vChannel.end() && g_vChannel[chann_idx]._users.empty())
+				g_vChannel.erase(ite);
 		}
 	}
-	catch(const std::exception& e) { return ; }	
+	catch(const std::exception& e) { return ; }
 }
