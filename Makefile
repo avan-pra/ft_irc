@@ -79,11 +79,10 @@ certs :
 
 install :
 		tar -xf openssl-1.1.1j.tar
-		cd openssl-1.1.1j
-		./config
-		make
-		make install
-		ldconfig
+		cd openssl-1.1.1j && ./Configure linux-x86_64
+		cd openssl-1.1.1j && make
+		cd openssl-1.1.1j && sudo make install
+		sudo ldconfig
 
 del_certs :
 		rm -rf $(CERT) $(KEY)
