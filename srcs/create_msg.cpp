@@ -3,10 +3,10 @@
 #include "../includes/IRCserv.hpp"
 #include "../includes/commands.hpp"
 
-std::string create_msg(const int &code, const size_t &client_idx, const MyServ &serv, const std::string &arg1, const std::string &arg2, const std::string &arg3, const std::string &arg4)
+std::string		create_msg(const int &code, const size_t &client_idx, const MyServ &serv, const std::string &arg1, const std::string &arg2, const std::string &arg3, const std::string &arg4)
 {
-	std::string sample;
-	std::string true_code;
+	std::string		sample;
+	std::string		true_code;
 
 	true_code = ft_to_string(code);
 	if (code < 10)
