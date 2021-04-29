@@ -71,7 +71,7 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 				else
 					it++;
 			}
-			for (std::vector<Channel>::iterator it = g_vChannel.begin(); it < g_vChannel.end();)
+			for (std::deque<Channel>::iterator it = g_vChannel.begin(); it < g_vChannel.end();)
 			{
 				if (it->get_name() == channel_name && it->_users.size() == 0)
 				{

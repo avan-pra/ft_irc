@@ -78,7 +78,7 @@ extern std::deque<t_sock>							g_serv_sock;
 extern std::deque<std::pair<SOCKET, Client> >		g_aClient;
 extern std::vector<std::pair<SOCKET, Connection> >	g_aUnregistered;
 extern std::vector<std::pair<SOCKET, Server> >		g_aServer;
-extern std::vector<Channel>							g_vChannel;
+extern std::deque<Channel>							g_vChannel;
 extern std::deque<t_discon_id>						g_aDisconnectedCli;
 
 class MyServ;
