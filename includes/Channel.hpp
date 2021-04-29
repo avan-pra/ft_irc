@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/29 14:31:26 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/29 23:18:19 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,33 +92,37 @@ class Channel
 		*/
 		bool			remove_user(const std::string usr_nickname)
 		{
-			for (std::deque<Client*>::iterator it = _users.begin(); it != _users.end(); it++)
+			for (std::deque<Client*>::iterator it = _users.begin(); it != _users.end(); )
 			{
 				if ((*it)->get_nickname() == usr_nickname)
 				{
 					it = _users.erase(it);
 					return true;
 				}
+				else
+					it++;
 			}
 			return false;
 		}
 
 		bool			remove_user_operator(const std::string usr_nickname)
 		{
-			for (std::deque<Client*>::iterator it = _operator.begin(); it != _operator.end(); it++)
+			for (std::deque<Client*>::iterator it = _operator.begin(); it != _operator.end(); )
 			{
 				if ((*it)->get_nickname() == usr_nickname)
 				{
 					it = _operator.erase(it);
 					return true;
 				}
+				else
+					it++;
 			}
 			return false;
 		}
 
 		bool			remove_user_ban(const t_ban_id &cli)
 		{
-			for (std::deque<t_ban_id>::iterator it = _ban.begin(); it != _ban.end(); it++)
+			for (std::deque<t_ban_id>::iterator it = _ban.begin(); it != _ban.end(); )
 			{
 				if (pattern_match(cli.nickname, (*it).nickname))
 				{
@@ -131,19 +135,23 @@ class Channel
 						}
 					}
 				}
+				else
+					it++;
 			}
 			return	false;
 		}
 
 		bool			remove_user_voice(const std::string usr_nickname)
 		{
-			for (std::deque<Client*>::iterator it = _voice.begin(); it != _voice.end(); it++)
+			for (std::deque<Client*>::iterator it = _voice.begin(); it != _voice.end(); )
 			{
 				if ((*it)->get_nickname() == usr_nickname)
 				{
 					it = _voice.erase(it);
 					return true;
-				}			
+				}
+				else
+					it++;
 			}
 			return false;
 		}
@@ -184,19 +192,19 @@ class Channel
 			return (false);
 		}
 
-		bool								is_ban(const Client &cli)
+		bool			is_ban(const Client &cli)
 		{
 			for (size_t i = 0; i < _ban.size(); i++)
 			{
-				if (pattern_match(cli.get_nickname(), _ban[i].nickname))
-					if (pattern_match(cli.get_username(), _ban[i].username))
-						if (pattern_match(cli.get_hostname(), _ban[i].hostname))
-							return (true);
+				if (pattern_match(cli.get_nickname(), _ban[i].nickname) && 
+						pattern_match(cli.get_username(), _ban[i].username) && 
+							pattern_match(cli.get_hostname(), _ban[i].hostname))
+								return (true);
 			}
 			return (false);
 		}
 
-		bool								is_ban_struct(const t_ban_id &cli)
+		bool			is_ban_struct(const t_ban_id &cli)
 		{
 			for (std::deque<t_ban_id>::iterator it = _ban.begin(); it != _ban.end(); it++)
 			{
@@ -208,7 +216,7 @@ class Channel
 			return false;
 		}
 		
-		bool								is_user_in_chan(const Client &cli)
+		bool			is_user_in_chan(const Client &cli)
 		{
 			for (size_t i = 0; i < _users.size(); ++i)
 			{
@@ -218,18 +226,18 @@ class Channel
 			return false;
 		}
 
-		bool								is_mode(char c)
+		bool			is_mode(char c)
 		{
 			return (_mode.find(c) != std::string::npos ? true : false);
 		}
 
-		void								send_to_all(std::string msg)
+		void			send_to_all(std::string msg)
 		{
 			for (size_t i = 0; i < _users.size(); i++)
 				_users[i]->push_to_buffer(msg);
 		}
 
-		void								send_to_all_except_one(const Client &except, const std::string &msg)
+		void			send_to_all_except_one(const Client &except, const std::string &msg)
 		{
 			for (size_t i = 0; i < _users.size(); i++)
 			{
@@ -238,7 +246,7 @@ class Channel
 			}
 		}
 
-		std::deque<Client*>::iterator		find_user_in_channel(const std::string &nickname)
+		std::deque<Client*>::iterator	find_user_in_channel(const std::string &nickname)
 		{
 			for (std::deque<Client *>::iterator i = _users.begin(); i != _users.end(); i++)
 			{
