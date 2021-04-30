@@ -73,6 +73,8 @@ bool		kick_if_away(Connection &co)
 {
 	time_t time_compare; //may be optimized better
 
+	if (co.is_registered() == false)
+		return false;
 	time(&time_compare);
 	if (co.get_ping_status() == true && time_compare - co.get_last_activity() > TIMEOUT)
 		return true;
