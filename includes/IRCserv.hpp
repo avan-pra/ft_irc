@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/30 14:26:39 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/30 18:45:04 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 typedef struct	s_Sock
 {
-	SOCKET	sockfd;
-	bool	is_tls;
+	SOCKET		sockfd;
+	uint16_t	port;
+	bool		is_tls;
 }				t_sock;
 
 typedef struct	s_discon_id

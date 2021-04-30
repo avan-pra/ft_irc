@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 09:49:00 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/30 16:43:15 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/30 18:33:37 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,12 @@ void		accept_connection(MyServ &serv, t_sock &sock)
 
 		memset(&clSock, 0, sizeof(clSock));
 		new_fd = accept(sock.sockfd, (sockaddr*)&clSock, &clSock_len);
-		clSock6.sin6_addr.__in6_u.__u6_addr32[3] = clSock.sin_addr.s_addr;
+		#ifdef __APPLE__
+			clSock6.sin6_addr.__u6_addr.__u6_addr32[3] = clSock.sin_addr.s_addr;
+		#endif
+		#ifdef __linux__
+			clSock6.sin6_addr.__in6_u.__u6_addr32[3] = clSock.sin_addr.s_addr;
+		#endif
 		clSock6.sin6_family = clSock.sin_family;
 		clSock6.sin6_port = clSock.sin_port;
 	}

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:27:54 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/04/30 14:33:15 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/30 18:48:28 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 
 int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 {
-	SOCKADDR_IN6 sin;
-	t_sock		sock;
+	SOCKADDR_IN6	sin6;
+	SOCKADDR_IN		sin4;
+	t_sock			sock;
 
 	if (serv.get_allow_ipv6())	// if ipv6 enable in config file
 		sock.sockfd = socket(AF_INET6, SOCK_STREAM, 0);
@@ -30,13 +31,24 @@ int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 		std::cerr << "Socket created" << std::endl;
 	#endif
 
-	memset(&sin, 0, sizeof(sin));
-	sin.sin6_family = serv.get_allow_ipv6() ? AF_INET6 : AF_INET;
-	sin.sin6_port = htons(port);
-	sin.sin6_addr = in6addr_any;
-
-	if (bind(sock.sockfd, (struct sockaddr *)&sin, sizeof(sin)) < 0)
-		throw UnbindableSocket();
+	if (serv.get_allow_ipv6())
+	{
+		memset(&sin6, 0, sizeof(sin6));
+		sin6.sin6_addr = in6addr_any;
+		sin6.sin6_family = AF_INET6;
+		sin6.sin6_port = htons(port);
+		if (bind(sock.sockfd, (struct sockaddr *)&sin6, sizeof(sin6)) < 0)
+			throw UnbindableSocket();
+	}
+	else
+	{
+		memset(&sin4, 0, sizeof(sin4));
+		sin4.sin_addr.s_addr = INADDR_ANY;
+		sin4.sin_family = AF_INET;
+		sin4.sin_port = htons(port);
+		if (bind(sock.sockfd, (struct sockaddr *)&sin4, sizeof(sin4)) < 0)
+			throw UnbindableSocket();
+	}
 	std::cout << "Server binded to port number " << GREEN << port << (is_tls == true ? " (tls)" : "") << NC << std::endl;
 
 	if (listen(sock.sockfd, serv.get_listen_limit()) == SOCKET_ERROR)
@@ -46,6 +58,7 @@ int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 	#endif
 
 	sock.is_tls = is_tls;
+	sock.port = port;
 
 	g_serv_sock.push_back(sock);
 	return (0);
