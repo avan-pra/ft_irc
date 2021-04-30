@@ -18,7 +18,10 @@ int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 	SOCKADDR_IN6 sin;
 	t_sock		sock;
 
-	sock.sockfd = socket(AF_INET6, SOCK_STREAM, 0);
+	if (serv.get_allow_ipv6())	// if ipv6 enable in config file
+		sock.sockfd = socket(AF_INET6, SOCK_STREAM, 0);
+	else						// allow only ipv4		
+		sock.sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	fcntl(sock.sockfd, F_SETFL, O_NONBLOCK);
 
 	if (sock.sockfd == INVALID_SOCKET)
@@ -28,7 +31,7 @@ int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 	#endif
 
 	memset(&sin, 0, sizeof(sin));
-	sin.sin6_family = AF_INET6;
+	sin.sin6_family = serv.get_allow_ipv6() ? AF_INET6 : AF_INET;
 	sin.sin6_port = htons(port);
 	sin.sin6_addr = in6addr_any;
 

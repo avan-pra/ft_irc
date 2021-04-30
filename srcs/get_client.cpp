@@ -34,11 +34,27 @@ void		accept_connection(MyServ &serv, t_sock &sock)
 	Connection		new_connection;
 	SOCKET			new_fd;
 	SOCKADDR_IN6	clSock6;
-	socklen_t		clSock_len = sizeof(clSock6);
 
 	FD_CLR(sock.sockfd, &serv.get_readfs());
 	memset(&clSock6, 0, sizeof(clSock6));
-	new_fd = accept(sock.sockfd, (sockaddr*)&clSock6, &clSock_len);
+	if (serv.get_allow_ipv6() == true)
+	{
+		socklen_t		clSock_len = sizeof(clSock6);
+
+		memset(&clSock6, 0, sizeof(clSock6));
+		new_fd = accept(sock.sockfd, (sockaddr*)&clSock6, &clSock_len);
+	}
+	else
+	{
+		sockaddr_in		clSock;
+		socklen_t		clSock_len = sizeof(clSock);
+
+		memset(&clSock, 0, sizeof(clSock));
+		new_fd = accept(sock.sockfd, (sockaddr*)&clSock, &clSock_len);
+		clSock6.sin6_addr.__in6_u.__u6_addr32[3] = clSock.sin_addr.s_addr;
+		clSock6.sin6_family = clSock.sin_family;
+		clSock6.sin6_port = clSock.sin_port;
+	}
 	if (new_fd < 0)
 	{
 		#ifdef DEBUG
