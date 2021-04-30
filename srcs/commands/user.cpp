@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/30 16:22:12 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/30 16:35:08 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,12 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 			throw std::exception();
 		}
 		params = ft_split(line, ":");
+		//On check si le realname a été donné ou pas
+		if (params.size() != 2)
+		{
+			g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "USER"));
+			throw std::exception();
+		}
 		realname = params[1];
 		line_new = params[0];
 		//On resplit par ' ' la premiere string recuperee par le premier split
