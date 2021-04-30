@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/27 14:52:22 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/30 14:29:46 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ enum confID
 	eSERVER_PASS_HASH,
 	eOPER_PASS_HASH,
 	eCOMMENT_LINE,
+	eALLOW_IPV6,
+	eCLIENT_LIMIT,
 	eNETWORK,
 	eERROR
 };
@@ -54,6 +56,8 @@ confID	hashit_s(const std::string &s)
 	else if (s == "LISTEN_LIMIT")			return	eLISTEN_LIMIT;
 	else if (s == "SERVER_PASS_HASH")		return eSERVER_PASS_HASH;
 	else if (s == "OPER_PASS_HASH")			return eOPER_PASS_HASH;
+	else if (s == "ALLOW_IPV6")				return eALLOW_IPV6;
+	else if (s == "CLIENT_LIMIT")			return eCLIENT_LIMIT;
 	else if (s == "NETWORK:")				return eNETWORK;
 	else if (s.size() > 0 && s[0] == '#')	return eCOMMENT_LINE;
 	return	eERROR;
@@ -96,7 +100,8 @@ static int		setup_hash_pass(const std::string s, unsigned char *target)
 
 int				config_error(const std::string &error_msg, const int &nb_line)
 {
-	std::cerr << "l." << nb_line << ": Error: config file: " << error_msg << std::endl;
+	std::cerr << RED "l." << nb_line << ": Error: config file: " << error_msg << NC;
+	std::cout << std::endl;
 	return (0);
 }
 
@@ -118,7 +123,10 @@ int		set_port(MyServ &serv, std::string port, std::map<int, bool> &m_port, const
 	static bool port_tls_set = false;
 
 	if (is_tls && !serv.get_accept_tls())
+	{
+		std::cout << "variable : " << port << std::endl;
 		return (config_error("PORT_TLS cannot be set when TLS is turn to false", nb_line));
+	}
 	if (port_set == true && !is_tls)
 		return (config_error("PORT has multiple declaration", nb_line));
 	if (port_tls_set == true && is_tls)
@@ -162,9 +170,9 @@ int		set_server_pass_hash(MyServ &serv, std::string s_pass, const int &nb_line)
 	static bool			serv_pass_set = false;
 
 	if (serv_pass_set == true)
-		return (config_error("server_pass_hash has multiple declaration", nb_line));
+		return (config_error("SERVER_PASS_HASH has multiple declaration", nb_line));
 	if (check == 1)
-		return (config_error("server_pass_hash  must be a sha256 hash", nb_line));
+		return (config_error("SERVER_PASS_HASH must be a sha256 hash", nb_line));
 	serv_pass_set = true;
 	if (check == 0)
 		return (1);
@@ -188,6 +196,37 @@ int		set_oper_pass_hash(MyServ &serv, std::string o_pass, const int &nb_line)
 		return (1);
 	serv.set_oper_password(target);
 	serv.set_pass_oper(true);
+	return (1);
+}
+
+int		set_allow_ipv6(MyServ &serv, std::string &variable, const int &nb_line)
+{
+	static int		already_set = false;
+
+	if (already_set == true)
+		return (config_error("ALLOW_IPV6 has multiple declaration", nb_line));
+	for (size_t i = 0; i < variable.size(); i++)
+		variable[i] = std::toupper(variable[i]);
+	if (variable == "TRUE")
+		serv.set_allow_ipv6(true);
+	else if (variable == "FALSE")
+		serv.set_allow_ipv6(false);
+	else
+		return (config_error("ALLOW_IPV6 muste be true or false", nb_line));
+	already_set = true;
+	return (1);
+}
+
+int		set_client_limit(MyServ &serv, std::string &variable, const int &nb_line)
+{
+	if (serv.get_client_limit() != 0)
+		return (config_error("CLIENT_LIMIT has multiple declaration", nb_line));
+	if (!is_only_digit(variable))
+		return (config_error("CLIENT_LIMIT need only numbers", nb_line));
+	if (variable == "")
+		serv.set_client_limit(CLIENT_LIMIT);
+	else
+		serv.set_client_limit(ft_atoi(variable));
 	return (1);
 }
 
@@ -273,11 +312,11 @@ int		set_network_id(MyServ &serv, std::fstream &file, int &nb_line, bool all_par
 	return (1);
 }
 
-void	parse_conf(MyServ &serv, std::map<int, bool> &m_port, std::fstream &file, int &nb_line)
+void	parse_conf(MyServ &serv, std::map<int, bool> &m_port, std::fstream &file, int &nb_line, bool &all_param_set)
 {
 	std::string			line;
 	std::string			variable;
-	static int					i = 0;
+	static int			i = 0;
 
 	getline(file, line);
 	if (line.size() > 0)
@@ -327,9 +366,23 @@ void	parse_conf(MyServ &serv, std::map<int, bool> &m_port, std::fstream &file, i
 					i++;
 					break ;
 				}
+			case eALLOW_IPV6:
+				{
+					if (!set_allow_ipv6(serv, variable, nb_line))
+						throw ConfigFileException();
+					i++;
+					break ;
+				}
+			case eCLIENT_LIMIT:
+				{
+					if (!set_client_limit(serv, variable, nb_line))
+						throw ConfigFileException();
+					i++;
+					break ;
+				}
 			case eNETWORK:
 				{
-					if (!set_network_id(serv, file, nb_line, (i == 6 ? true : false)))
+					if (!set_network_id(serv, file, nb_line, (i == 8 ? true : false)))
 						throw ConfigFileException();
 					break ;
 				}
@@ -340,11 +393,13 @@ void	parse_conf(MyServ &serv, std::map<int, bool> &m_port, std::fstream &file, i
 			case eERROR:
 				{
 					config_error("Unknown directive in configuration file", nb_line);
-					throw std::exception();
+					throw ConfigFileException();
 					break ;
 				}
 		}
 	}
+	if (i == 8)
+		all_param_set = true;
 }
 
 void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port)
@@ -352,7 +407,8 @@ void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port)
 	std::fstream		file;
 	std::string			line;
 	std::string			variable;
-	int					nb_line = 0;
+	int					nb_line = 1;
+	bool				all_param_set = false;
 
 	file.open(FILE_NAME);
 	if (file.is_open() == false)
@@ -364,7 +420,7 @@ void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port)
 	{
 		try
 		{
-			parse_conf(serv, m_port, file, nb_line);
+			parse_conf(serv, m_port, file, nb_line, all_param_set);
 			nb_line++;
 		}
 		catch (const std::exception& e)
@@ -373,5 +429,17 @@ void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port)
 			throw ConfigFileException();
 		}
 	}
+	if (all_param_set == false)
+	{
+		config_error("Need more parmeters", nb_line);
+		throw ConfigFileException();
+	}
+	#ifdef DEBUG
+		std::cout << CYAN "<<<< Config file >>>>" NC<< std::endl;
+		std::cout << "CLIENT_LIMIT : " << GREEN << serv.get_client_limit() << NC << std::endl;
+		std::cout << "LISTEN_LIMIT : " << GREEN << serv.get_listen_limit() << NC << std::endl;
+		std::cout << "ALLOW_IPV6   : " << GREEN << serv.get_allow_ipv6() << NC << std::endl;
+		std::cout << std::endl;
+	#endif
 	file.close();
 }

@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 19:45:37 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/27 14:23:39 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/30 14:01:05 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,8 @@ void	InitSSLCTX(MyServ &serv)
 	/* check if cert exists */
 	int		cert = open("./godirc.crt", O_RDONLY);
 	int		key = open("./godirc.key", O_RDONLY);
-//	int		has_tls = get_tls_socket_binded();
 
-/*	if (has_tls == 0)
-	{
-		#ifdef DEBUG
-			std::cout << "No tls port specified, stopping certificate handler." << std::endl;
-		#endif
-		return ;
-	}
-*/	if (cert < 0 || key < 0)
+	if (cert < 0 || key < 0)
 	{
 		serv.sslctx = NULL;
 		if (cert < 0)
@@ -48,7 +40,6 @@ void	InitSSLCTX(MyServ &serv)
 		std::cout << "IRCSERV only classic connection" << std::endl;
 		serv.set_accept_tls(false);
 		return ;
-		//error_exit("Error: Certs not found");
 	}
 	close(cert);
 	close(key);

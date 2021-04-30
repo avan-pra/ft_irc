@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/28 18:16:56 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/30 14:11:45 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ class MyServ
 		std::string		_hostname;
 		std::string		_port;
 		int				_listen_limit;
+		int				_client_limit;
 
 		fd_set			_readfs;
 		fd_set			_writefs;
@@ -64,6 +65,7 @@ class MyServ
 		bool			_pass_for_connection;
 		bool			_pass_oper;
 		bool			_accept_tls;
+		bool			_allow_ipv6;
         
 		const std::map<std::string, void (*)(const std::string &line, const size_t &client_idx, const MyServ &serv)> _command;
 
@@ -76,8 +78,8 @@ class MyServ
 		/*
 		** Constructor/Destructor
 		*/
-		MyServ() : _listen_limit(0), _max_fd(0), _pass_for_connection(false),
-					_pass_oper(false),  _command(fill_command())
+		MyServ() : _listen_limit(0), _client_limit(0), _max_fd(0), _pass_for_connection(false),
+					_pass_oper(false), _command(fill_command())
 		{
 			time(&_start_time);
 			set_timeout(3);
@@ -107,6 +109,8 @@ class MyServ
 		bool				get_need_pass() const { return _pass_for_connection; }
 		bool				get_pass_oper() const { return _pass_oper; }
 		bool				get_accept_tls() { return _accept_tls; }
+		bool				get_allow_ipv6() { return _allow_ipv6; }
+		int					get_client_limit() { return _client_limit; }
        
 	    const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	&get_command() const { return _command; }
 		
@@ -126,7 +130,9 @@ class MyServ
 		}
 		void	set_need_pass(bool need) { _pass_for_connection = need; }
 		void	set_pass_oper(bool need) { _pass_oper = need; }
-		void	set_accept_tls(bool tls) {_accept_tls = tls; }
+		void	set_accept_tls(bool tls) { _accept_tls = tls; }
+		void	set_allow_ipv6(bool ipv6) { _allow_ipv6 = ipv6; }
+		void	set_client_limit(int limit) { _client_limit = limit; }
 };
 
 #endif
