@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/30 18:27:22 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/30 19:04:06 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,6 @@ int		set_client_limit(MyServ &serv, std::string &cli_limit, const int &nb_line)
 
 int		set_client_hostname(MyServ &serv, std::string &cli_hostname, const int &nb_line)
 {
-	std::cout << serv.get_hostname() << std::endl;
 	if (serv.get_client_hostname() != "")
 		return (config_error("CLIENT_HOSTNAME already set", nb_line));
 	if (cli_hostname.size() >= 64)
