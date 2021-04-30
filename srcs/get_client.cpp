@@ -38,10 +38,17 @@ void		accept_connection(MyServ &serv, t_sock &sock)
 	FD_CLR(sock.sockfd, &serv.get_readfs());
 	memset(&clSock6, 0, sizeof(clSock6));
 	new_fd = accept(sock.sockfd, (sockaddr*)&clSock6, &clSock_len);
+	if (new_fd < 0)
+	{
+		#ifdef DEBUG
+			std::cerr <<"accpet error: received negative fd" << std::endl;
+		#endif
+		return ;
+	}
 	if (fcntl(new_fd, F_SETFL, O_NONBLOCK) < 0)
 	{
 		#ifdef DEBUG
-			std::cout <<"fcntl error: failed to set nonblock fd\n";
+			std::cerr <<"fcntl error: failed to set nonblock fd\n";
 		#endif
 		closesocket(new_fd);
 		return ;
