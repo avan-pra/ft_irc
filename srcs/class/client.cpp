@@ -14,18 +14,20 @@ static void tmp_send_to_channel(const std::string &msg, Client &cli, Channel &ch
 
 Client::~Client()
 {
-	for (std::deque<Channel>::iterator cht = g_vChannel.begin(); cht != g_vChannel.end(); )
+	for (std::deque<Channel>::iterator cht = g_vChannel.begin(); cht != g_vChannel.end(); ++cht)
 	{
 		if (cht->is_user_in_chan(*this) == true)
 		{
+			std::cout << "inside if" << std::endl;
 			cht->remove_user(this->get_nickname());
 			cht->remove_user_operator(this->get_nickname());
 			cht->remove_user_voice(this->get_nickname());
 			tmp_send_to_channel("PART " + cht->get_name() + " :", *this, *cht);
 			if (cht->_users.size() == 0)
+			{
 				cht = g_vChannel.erase(cht);
-			else
-				cht++;
+				--cht;
+			}
 		}
 	}
 }
