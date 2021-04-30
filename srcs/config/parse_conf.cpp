@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/30 14:29:46 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/30 16:37:16 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -438,7 +438,7 @@ void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port)
 		std::cout << CYAN "<<<< Config file >>>>" NC<< std::endl;
 		std::cout << "CLIENT_LIMIT : " << GREEN << serv.get_client_limit() << NC << std::endl;
 		std::cout << "LISTEN_LIMIT : " << GREEN << serv.get_listen_limit() << NC << std::endl;
-		std::cout << "ALLOW_IPV6   : " << GREEN << serv.get_allow_ipv6() << NC << std::endl;
+		std::cout << "ALLOW_IPV6   : " << GREEN << (serv.get_allow_ipv6() ? "true" : "false") << NC << std::endl;
 		std::cout << std::endl;
 	#endif
 	file.close();

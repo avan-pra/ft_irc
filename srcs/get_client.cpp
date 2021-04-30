@@ -6,12 +6,13 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 09:49:00 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/29 23:28:02 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/30 16:43:15 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/IRCserv.hpp"
 # include "../includes/commands.hpp"
+# include "../includes/Disconnect.hpp"
 # include <algorithm>
 
 bool		sort_dec(const std::pair<SOCKET,Client> &a,  const std::pair<SOCKET,Client> &b) 
@@ -74,6 +75,17 @@ void		accept_connection(MyServ &serv, t_sock &sock)
 	time(&new_connection.get_last_activity());
 	//push de <fd, User> sur le vecteur
 	g_aUnregistered.push_back(std::make_pair(new_fd, new_connection));
+
+	if (g_aUnregistered.size() + g_aClient.size() > (size_t)serv.get_client_limit())
+	{
+		size_t			i = g_aUnregistered.size() - 1;
+		std::string		sample = std::string(":" + serv.get_hostname() + " " + "5" + " ");
+
+		sample += RPL_BOUNCE(std::string("chat.freenode.net"), std::string("6667"));
+		g_aUnregistered[i].second.push_to_buffer(sample);
+		g_aUnregistered[i].second.send_packets();
+		disconnect(&g_aUnregistered[i].second, i);
+	}
 	//send motd a l'arrivee du client sur le server
 	// motd_command("", g_aClient.size() - 1, serv);
 	//sort en ordre decroissant en fonction de la key(ou first)

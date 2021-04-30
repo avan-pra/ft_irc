@@ -24,6 +24,8 @@ std::string		create_msg(const int &code, const size_t &client_idx, const MyServ 
 	{
 		case 1:
 			return sample + RPL_WELCOME(arg1);
+		case 5:
+			return sample + RPL_BOUNCE(arg1, arg2);
 		case 221:
 			return sample + RPL_UMODEIS(arg1);
 		case 311:

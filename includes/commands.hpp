@@ -57,10 +57,12 @@
 # define ERR_NOTOPIC(channel) (channel + " :No topic is set\r\n")
 # define ERR_BADCHANMASK(channel) (channel + " :Bad Channel Mask\r\n")
 # define ERR_ALREADYBAN(channel, user) (channel + " " + user + " b :Channel " + channel + " list already contains " + user + "\r\n")
+# define ERR_SERVERISFULL(serv_name) (serv_name + " Server is full\r\n");
 /*
 **  reponse for command file
 */
 # define RPL_WELCOME(nick) (":Welcome to the Internet Relay Network " + nick + "\r\n")
+# define RPL_BOUNCE(server_name, port) ("Try server " + server_name + ", port " + port + "\n")
 # define RPL_NONE() ("\r\n") //300
 //# define RPL_USERHOST(pseudo, host) (":[<réponse>{<espace><réponse>}]\r\n") //<réponse> ::= <pseudo>['*'] '=' <'+'|'-'><hôte>
 //# define RPL_ISON(pseudo) (":[<pseudo> {<espace><pseudo>}]\r\n")
