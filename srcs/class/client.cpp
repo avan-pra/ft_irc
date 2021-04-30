@@ -18,7 +18,6 @@ Client::~Client()
 	{
 		if (cht->is_user_in_chan(*this) == true)
 		{
-			std::cout << "inside if" << std::endl;
 			cht->remove_user(this->get_nickname());
 			cht->remove_user_operator(this->get_nickname());
 			cht->remove_user_voice(this->get_nickname());
