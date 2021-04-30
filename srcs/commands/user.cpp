@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/29 22:30:24 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/30 16:22:12 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,20 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 	{
 		std::string host_name, mode;
 		//Split with : to store already realname
+		params = ft_split(line, " ");
+		//On check si le nombre d'arguments de USER est bon
+		if (params.size() < 5)
+		{
+			g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "USER"));
+			throw std::exception();
+		}
 		params = ft_split(line, ":");
 		realname = params[1];
 		line_new = params[0];
 		//On resplit par ' ' la premiere string recuperee par le premier split
 		//comme ca les parametres sont bien separes
 		args = ft_split(line_new, " ");
-		if (args.size() < 4)
-		{
-			g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "USER"));
-			throw std::exception();
-		}
+		
 		if (g_aClient[client_idx].second.is_registered())
 		{
 			g_aClient[client_idx].second.push_to_buffer(create_msg(462, client_idx, serv, realname));
