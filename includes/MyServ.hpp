@@ -111,7 +111,7 @@ class MyServ
 		bool				get_need_pass() const { return _pass_for_connection; }
 		bool				get_pass_oper() const { return _pass_oper; }
 		bool				get_accept_tls() { return _accept_tls; }
-		bool				get_allow_ipv6() { return _allow_ipv6; }
+		bool				get_allow_ipv6() const { return _allow_ipv6; }
 		int					get_client_limit() { return _client_limit; }
 
 		const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	&get_command() const { return _command; }
