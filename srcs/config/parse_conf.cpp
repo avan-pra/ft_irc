@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/30 16:37:16 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/30 18:27:22 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ enum confID
 	eCOMMENT_LINE,
 	eALLOW_IPV6,
 	eCLIENT_LIMIT,
+	eCLIENT_HOSTNAME,
 	eNETWORK,
 	eERROR
 };
@@ -58,6 +59,7 @@ confID	hashit_s(const std::string &s)
 	else if (s == "OPER_PASS_HASH")			return eOPER_PASS_HASH;
 	else if (s == "ALLOW_IPV6")				return eALLOW_IPV6;
 	else if (s == "CLIENT_LIMIT")			return eCLIENT_LIMIT;
+	else if (s == "CLIENT_HOSTNAME")		return eCLIENT_HOSTNAME;
 	else if (s == "NETWORK:")				return eNETWORK;
 	else if (s.size() > 0 && s[0] == '#')	return eCOMMENT_LINE;
 	return	eERROR;
@@ -69,6 +71,27 @@ int		is_only_digit(const std::string &s)
 	{
 		if (!std::isdigit(s[i]))
 			return (0);
+	}
+	return (1);
+}
+
+int		is_valid_client_hostname(const std::string &s)
+{
+	std::vector<std::string>	subdomains;
+
+	subdomains = ft_split(s, ".");
+	if (s.size() == 0)
+		return (0);
+	for (size_t i = 0; i < subdomains.size(); i++)
+	{
+		if (!std::isdigit(subdomains[i][0]) && (subdomains[i][0] < 'a' || subdomains[i][0] > 'z'))
+			return (0);
+		for (size_t k = 0; k < subdomains.size(); k++)
+		{
+			if (!std::isdigit(subdomains[i][k]) && !(subdomains[i][k] >= 'a' && subdomains[i][k] <= 'z')
+				&& subdomains[i][k] != '-')
+				return (0);
+		}
 	}
 	return (1);
 }
@@ -217,16 +240,31 @@ int		set_allow_ipv6(MyServ &serv, std::string &variable, const int &nb_line)
 	return (1);
 }
 
-int		set_client_limit(MyServ &serv, std::string &variable, const int &nb_line)
+int		set_client_limit(MyServ &serv, std::string &cli_limit, const int &nb_line)
 {
 	if (serv.get_client_limit() != 0)
 		return (config_error("CLIENT_LIMIT has multiple declaration", nb_line));
-	if (!is_only_digit(variable))
+	if (!is_only_digit(cli_limit))
 		return (config_error("CLIENT_LIMIT need only numbers", nb_line));
-	if (variable == "")
+	if (cli_limit == "")
 		serv.set_client_limit(CLIENT_LIMIT);
 	else
-		serv.set_client_limit(ft_atoi(variable));
+		serv.set_client_limit(ft_atoi(cli_limit));
+	return (1);
+}
+
+int		set_client_hostname(MyServ &serv, std::string &cli_hostname, const int &nb_line)
+{
+	std::cout << serv.get_hostname() << std::endl;
+	if (serv.get_client_hostname() != "")
+		return (config_error("CLIENT_HOSTNAME already set", nb_line));
+	if (cli_hostname.size() >= 64)
+		return (config_error("CLIENT_HOSTNAME max size is 63 char", nb_line));
+	if (cli_hostname == "IP")
+		;
+	else if (!is_valid_client_hostname(cli_hostname))
+		return (config_error("CLIENT_HOSTNAME valid are ASCII 'a' to 'z', digit '0' to '9' and '-'. He may not start with '-'", nb_line));
+	serv.set_client_hostname(cli_hostname);
 	return (1);
 }
 
@@ -380,9 +418,16 @@ void	parse_conf(MyServ &serv, std::map<int, bool> &m_port, std::fstream &file, i
 					i++;
 					break ;
 				}
+			case eCLIENT_HOSTNAME:
+				{
+					if (!set_client_hostname(serv, variable, nb_line))
+						throw ConfigFileException();
+					i++;
+					break;
+				}
 			case eNETWORK:
 				{
-					if (!set_network_id(serv, file, nb_line, (i == 8 ? true : false)))
+					if (!set_network_id(serv, file, nb_line, (i == 9 ? true : false)))
 						throw ConfigFileException();
 					break ;
 				}
@@ -398,7 +443,7 @@ void	parse_conf(MyServ &serv, std::map<int, bool> &m_port, std::fstream &file, i
 				}
 		}
 	}
-	if (i == 8)
+	if (i == 9)
 		all_param_set = true;
 }
 
@@ -436,9 +481,10 @@ void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port)
 	}
 	#ifdef DEBUG
 		std::cout << CYAN "<<<< Config file >>>>" NC<< std::endl;
-		std::cout << "CLIENT_LIMIT : " << GREEN << serv.get_client_limit() << NC << std::endl;
-		std::cout << "LISTEN_LIMIT : " << GREEN << serv.get_listen_limit() << NC << std::endl;
-		std::cout << "ALLOW_IPV6   : " << GREEN << (serv.get_allow_ipv6() ? "true" : "false") << NC << std::endl;
+		std::cout << "CLIENT_HOSTNAME : " << GREEN << serv.get_client_hostname() << NC << std::endl;
+		std::cout << "CLIENT_LIMIT    : " << GREEN << serv.get_client_limit() << NC << std::endl;
+		std::cout << "LISTEN_LIMIT    : " << GREEN << serv.get_listen_limit() << NC << std::endl;
+		std::cout << "ALLOW_IPV6      : " << GREEN << (serv.get_allow_ipv6() ? "true" : RED "false") << NC << std::endl;
 		std::cout << std::endl;
 	#endif
 	file.close();

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/30 16:35:08 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/30 18:24:42 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,20 @@ static void			check_2nd_arg(const std::string str, std::string &host_name, std::
 	}
 }
 
-static void			set_user(const std::string username, std::string mode, const std::string server_name, const std::string realname, const size_t &client_idx)
+static void			set_user(const MyServ &serv, const std::string username, std::string mode, const std::string server_name, const std::string realname, const size_t &client_idx)
 {
 	g_aClient[client_idx].second.set_username(username);
 	#ifdef __linux__
-		g_aClient[client_idx].second.set_hostname(custom_ntoa(g_aClient[client_idx].second.sock_addr.sin6_addr.__in6_u.__u6_addr32[3]));
+		if (serv.get_client_hostname() == "IP")
+			g_aClient[client_idx].second.set_hostname(custom_ntoa(g_aClient[client_idx].second.sock_addr.sin6_addr.__in6_u.__u6_addr32[3]));
+		else
+			g_aClient[client_idx].second.set_hostname(serv.get_client_hostname());
 	#endif
 	#ifdef __APPLE__
-		g_aClient[client_idx].second.set_hostname(custom_ntoa(g_aClient[client_idx].second.sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]));
+		if (serv.get_client_hostname() == "IP")
+			g_aClient[client_idx].second.set_hostname(custom_ntoa(g_aClient[client_idx].second.sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]));
+		else
+			g_aClient[client_idx].second.set_hostname(serv.get_client_hostname());
 	#endif
 	g_aClient[client_idx].second.set_mode(mode);
 	g_aClient[client_idx].second.set_realname(realname);
@@ -113,7 +119,7 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 		}
 		check_realname(realname, client_idx, serv);
 		check_2nd_arg(args[2], host_name, mode);
-		set_user(args[1], mode, args[3], realname, client_idx);
+		set_user(serv, args[1], mode, args[3], realname, client_idx);
 
 		if (g_aClient[client_idx].second.get_nickname().size() > 0)
 		{

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/30 14:11:45 by lucas            ###   ########.fr       */
+/*   Updated: 2021/04/30 18:26:28 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ class MyServ
 	private:
 
 		std::string		_hostname;
+		std::string		_client_hostname;
 		std::string		_port;
 		int				_listen_limit;
 		int				_client_limit;
@@ -97,6 +98,7 @@ class MyServ
 		*/
 		std::string			get_hostname() const		{ return _hostname; }
 		std::string			get_port() const			{ return _port; }
+		std::string			get_client_hostname() const	{ return _client_hostname; }
 		int					get_listen_limit() const	{ return _listen_limit; }
 		const unsigned char *get_password() const { return _password; }
 		const unsigned char *get_oper_password() const { return _oper_password; }
@@ -111,8 +113,8 @@ class MyServ
 		bool				get_accept_tls() { return _accept_tls; }
 		bool				get_allow_ipv6() { return _allow_ipv6; }
 		int					get_client_limit() { return _client_limit; }
-       
-	    const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	&get_command() const { return _command; }
+
+		const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	&get_command() const { return _command; }
 		
 		/*
 		** Setter
@@ -133,6 +135,7 @@ class MyServ
 		void	set_accept_tls(bool tls) { _accept_tls = tls; }
 		void	set_allow_ipv6(bool ipv6) { _allow_ipv6 = ipv6; }
 		void	set_client_limit(int limit) { _client_limit = limit; }
+		void	set_client_hostname(std::string cli_host) { _client_hostname = cli_host; }
 };
 
 #endif
