@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/29 14:16:10 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/04/30 14:26:39 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # define closesocket(param) close(param)
 # define INVALID_SOCKET -1
 # define SOCKET_ERROR -1
+
+# define CLIENT_LIMIT 1024
 
 # define BUFF_SIZE 512
 
@@ -28,6 +30,17 @@
 # define FILE_NAME "./irc.conf"
 
 # define HASH_CHAR "0123456789abcdefABCDEF"
+
+# define NC "\e[0m"
+
+# define RED "\e[0;31m"
+
+# define GREEN "\e[0;32m"
+
+# define CYAN "\e[0;36m"
+
+# define REDB "\e[41m"
+
 
 # define DEBUG
 
