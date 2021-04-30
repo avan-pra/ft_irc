@@ -58,6 +58,8 @@ void		ping_if_away(Connection &co, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
 
+	if (co.is_registered() == false)
+		return ;
 	time(&time_compare);
 	//si je lui ai pas deja envoye un ping et si ca fait plus de 30sec que je l'ai pas ping
 	if (co.get_ping_status() == false && time_compare - co.get_last_activity() > PING)

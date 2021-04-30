@@ -72,10 +72,12 @@ void	connection_parser(char *line, const size_t &connection_idx, const MyServ &s
 	}
 }
 
-static bool	check_register_timeout(Connection &co)
+bool	check_register_timeout(Connection &co)
 {
 	time_t time_compare; //may be optimized better
 
+	if (co.is_registered() == true)
+		return false;
 	time(&time_compare);
 	if (time_compare - co.get_last_activity() > TIMEOUT_REGISTER)
 		return true;

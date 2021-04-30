@@ -81,6 +81,7 @@ void	nick_command(const std::string &line, const size_t &client_idx, const MySer
 			g_aClient[client_idx].second.push_to_buffer(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
 			motd_command("", client_idx, serv);
 			g_aClient[client_idx].second.set_register(true);
+			time(&g_aClient[client_idx].second.get_last_activity());
 		}
 	}
 	catch(const std::exception& e){ return ; }
