@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/26 11:14:49 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/01 14:28:32 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/01 12:58:22 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,12 @@ void	names_command(const std::string &line, const size_t &client_idx, const MySe
 	channel_names = ft_split(params[1], ",");
 	for (size_t i = 0; i < channel_names.size(); i++)
 	{
-		chan_id = find_channel(channel_names[i]);
-		flag = set_flag(chan_id) + g_vChannel[chan_id].get_name();
-		nick_list = set_nick_list(chan_id);
-		g_aClient[client_idx].second.push_to_buffer(create_msg(353, client_idx, serv, flag, nick_list));
-		g_aClient[client_idx].second.push_to_buffer(create_msg(366, client_idx, serv, g_vChannel[chan_id].get_name()));
+		if ((chan_id = find_channel(channel_names[i])) != -1)
+		{
+			flag = set_flag(chan_id) + g_vChannel[chan_id].get_name();
+			nick_list = set_nick_list(chan_id);
+			g_aClient[client_idx].second.push_to_buffer(create_msg(353, client_idx, serv, flag, nick_list));
+		}
+		g_aClient[client_idx].second.push_to_buffer(create_msg(366, client_idx, serv, channel_names[i]));
 	}
 }
