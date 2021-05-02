@@ -36,14 +36,14 @@ void	clear_empty_packet(std::vector<std::string> &packet)
 // void hold_if_cap(std::vector<std::string> &packet, const size_t &client_idx)
 // a degager ^^
 
-bool	can_execute(const std::string command, const size_t &client_idx, const MyServ &serv)
+bool	can_execute(const std::string command, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	bool ret = false;
 
 	//ptet opti le search
-	if ((g_aClient[client_idx].second.is_registered() == false && (command == "PASS" || command == "NICK"
+	if ((client_it->is_registered() == false && (command == "PASS" || command == "NICK"
 				|| command == "USER" || command == "CAP" || command == "SERVER" || command == "QUIT" || command == "PONG"))
-		|| g_aClient[client_idx].second.is_registered() == true)
+		|| client_it->is_registered() == true)
 		ret = true;
 	try
 	{
@@ -52,23 +52,23 @@ bool	can_execute(const std::string command, const size_t &client_idx, const MySe
 	}
 	catch (const std::exception &e) { throw std::exception(); }
 	if (ret == false)
-		g_aClient[client_idx].second.push_to_buffer(create_msg(451, client_idx, serv));
+		client_it->push_to_buffer(create_msg(451, client_it, serv));
 	return ret;
 }
 
-void	parser(char *line, const size_t &client_idx, const MyServ &serv)
+void	parser(char *line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string>	packet;
 	std::string					true_line;
 
 	//add old unfinished packet if any exist
-	true_line = g_aClient[client_idx].second.get_unended_packet() + std::string(line);
+	true_line = client_it->get_unended_packet() + std::string(line);
 
 	packet = ft_split(true_line, std::string("\r\n"));
 
 	if (packet.size() != 0)
 	{
-		build_unfinished_packet(true_line, g_aClient[client_idx].second, packet.back());
+		build_unfinished_packet(true_line, *client_it, packet.back());
 		clear_empty_packet(packet);
 		for (std::vector<std::string>::iterator str = packet.begin(); str != packet.end(); ++str)
 		{
@@ -83,12 +83,12 @@ void	parser(char *line, const size_t &client_idx, const MyServ &serv)
 				** execute command only if: ((if not registered and command are either PASS NICK or USER)
 				** or if register) AND if command exist
 				*/
-				if (can_execute(command, client_idx, serv) == true)
-					serv.get_command().at(command)(*str, client_idx, serv);
+				if (can_execute(command, client_it, serv) == true)
+					serv.get_command().at(command)(*str, client_it, serv);
 			}
 			catch (const IncorrectPassException &e) { throw IncorrectPassException(); }
 			catch (const QuitCommandException &e) { throw QuitCommandException(); }
-			catch (const std::exception &e) { g_aClient[client_idx].second.push_to_buffer(create_msg(421, client_idx, serv, command)); } //il faut envoyer ca au client
+			catch (const std::exception &e) { client_it->push_to_buffer(create_msg(421, client_it, serv, command)); } //il faut envoyer ca au client
 		}
 	}
 }

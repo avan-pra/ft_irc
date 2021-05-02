@@ -15,7 +15,7 @@
 #include <cstring>
 #include <openssl/sha.h>
 
-void		oper_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void		oper_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string>	params;
 	std::string					name;
@@ -23,18 +23,18 @@ void		oper_command(const std::string &line, const size_t &client_idx, const MySe
 	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "OPER"));
+		client_it->push_to_buffer(create_msg(461, client_it, serv, "OPER"));
 		return ;
 	}
 	if (serv.get_pass_oper() == false)
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(491, client_idx, serv));
+		client_it->push_to_buffer(create_msg(491, client_it, serv));
 		return ;
 	}
 	if (params[1] != "admin")
 	{
-		g_aClient[client_idx].second.push_to_buffer(":" + g_aClient[client_idx].second.get_nickname() + "!"
-			+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " QUIT :Password incorrect ERROR: Password incorrect" + "\r\n");
+		client_it->push_to_buffer(":" + client_it->get_nickname() + "!"
+			+ client_it->get_username() + "@" + client_it->get_hostname() + " QUIT :Password incorrect ERROR: Password incorrect" + "\r\n");
 		throw QuitCommandException();
 	}
 	const char *s = params[2].c_str();
@@ -42,16 +42,16 @@ void		oper_command(const std::string &line, const size_t &client_idx, const MySe
 
 	if (memcmp(d, serv.get_oper_password(), 32) == 0)
 	{
-		g_aClient[client_idx].second.set_is_oper(true);
+		client_it->set_is_oper(true);
 		//mssg
-		g_aClient[client_idx].second.push_to_buffer(create_msg(381, client_idx, serv));
+		client_it->push_to_buffer(create_msg(381, client_it, serv));
 		//mode +o
-		mode_command("MODE " + g_aClient[client_idx].second.get_nickname() + " +o", client_idx, serv);
+		mode_command("MODE " + client_it->get_nickname() + " +o", client_it, serv);
 	}
 	else
 	{
-		g_aClient[client_idx].second.push_to_buffer(":" + g_aClient[client_idx].second.get_nickname() + "!"
-			+ g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " QUIT :Password incorrect ERROR: Password incorrect" + "\r\n");
+		client_it->push_to_buffer(":" + client_it->get_nickname() + "!"
+			+ client_it->get_username() + "@" + client_it->get_hostname() + " QUIT :Password incorrect ERROR: Password incorrect" + "\r\n");
 		throw QuitCommandException();
 	}
 }

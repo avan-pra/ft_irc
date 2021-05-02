@@ -13,26 +13,26 @@
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/commands.hpp"
 
-static int		check_channel_exists(const std::string str, const size_t &client_idx, const MyServ &serv)
+static int		check_channel_exists(const std::string str, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	int	i;
 
 	if ((i = find_channel(str)) != -1)
 		return (i);
-	g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, str));
+	client_it->push_to_buffer(create_msg(403, client_it, serv, str));
 	throw std::exception();
 	return 0;
 }
 
-static void		check_usr_in_channel(const int channel_idx, const size_t &client_idx, const MyServ &serv)
+static void		check_usr_in_channel(const int channel_idx, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	for (size_t i = 0; i < g_vChannel[channel_idx]._users.size(); i++)
-		if (g_aClient[client_idx].second.get_nickname() == g_vChannel[channel_idx]._users[i]->get_nickname())
+		if (client_it->get_nickname() == g_vChannel[channel_idx]._users[i]->get_nickname())
 			return ;
-	g_aClient[client_idx].second.push_to_buffer(create_msg(442, client_idx, serv, g_vChannel[channel_idx].get_name()));
+	client_it->push_to_buffer(create_msg(442, client_it, serv, g_vChannel[channel_idx].get_name()));
 }
 
-void		part_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void		part_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string>	params;
 	std::string					channel_name, output = "";
@@ -43,7 +43,7 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "PART"));
+		client_it->push_to_buffer(create_msg(461, client_it, serv, "PART"));
 		return ;
 	}
 	try
@@ -56,16 +56,16 @@ void		part_command(const std::string &line, const size_t &client_idx, const MySe
 			channel_name = params[i];
 			if (!std::strchr(CHANNEL_VALID_CHAR, channel_name[0]))
 			{
-				g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, channel_name));
+				client_it->push_to_buffer(create_msg(403, client_it, serv, channel_name));
 				return ;
 			}
-			chann_idx = check_channel_exists(channel_name, client_idx, serv);
-			check_usr_in_channel(chann_idx, client_idx, serv);
-			send_to_channel(("PART " + g_vChannel[chann_idx].get_name() + " :" + output), client_idx, chann_idx, true);
-			// g_vChannel[chann_idx]._users.erase(g_vChannel[chann_idx].find_user_in_channel(g_aClient[client_idx].second.get_nickname()));
-			g_vChannel[chann_idx].remove_user(g_aClient[client_idx].second.get_nickname());
-			g_vChannel[chann_idx].remove_user_operator(g_aClient[client_idx].second.get_nickname());
-			g_vChannel[chann_idx].remove_user_voice(g_aClient[client_idx].second.get_nickname());
+			chann_idx = check_channel_exists(channel_name, client_it, serv);
+			check_usr_in_channel(chann_idx, client_it, serv);
+			send_to_channel(("PART " + g_vChannel[chann_idx].get_name() + " :" + output), client_it, chann_idx, true);
+			// g_vChannel[chann_idx]._users.erase(g_vChannel[chann_idx].find_user_in_channel(client_it->get_nickname()));
+			g_vChannel[chann_idx].remove_user(client_it->get_nickname());
+			g_vChannel[chann_idx].remove_user_operator(client_it->get_nickname());
+			g_vChannel[chann_idx].remove_user_voice(client_it->get_nickname());
 			std::deque<Channel>::iterator	ite = find_channel_by_iterator(g_vChannel[chann_idx].get_name());
 			if (ite != g_vChannel.end() && g_vChannel[chann_idx]._users.empty())
 				g_vChannel.erase(ite);

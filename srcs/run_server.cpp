@@ -11,20 +11,20 @@ static void re_init_serv_class(MyServ &serv)
 	FD_ZERO(&serv.get_exceptfs());
 	{
 		int max = 0;
-		for (size_t i = 0; i < g_aClient.size(); ++i)
+		for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
 		{
-			if (g_aClient[i].first > max)
-				max = g_aClient[i].first;
+			if (it->_fd > max)
+				max = it->_fd;
 		}
 		for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it < g_serv_sock.end(); ++it)
 		{
 			if (max < it->sockfd)
 				max = it->sockfd;
 		}
-		for (size_t i = 0; i < g_aUnregistered.size(); ++i)
+		for (std::list<Connection>::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); ++it)
 		{
-			if (g_aUnregistered[i].first > max)
-				max = g_aUnregistered[i].first;
+			if (it->_fd > max)
+				max = it->_fd;
 		}
 		serv.set_max_fd(max);
 	}
@@ -39,16 +39,16 @@ static void push_fd_to_set(MyServ &serv)
 		FD_SET(it->sockfd, &serv.get_readfs());
 	}
 	//push all connection fd to all 3 set
-	for (std::deque<std::pair<SOCKET, Connection> >::iterator ite = g_aUnregistered.begin(); ite != g_aUnregistered.end(); ++ite)
+	for (std::list<Connection>::iterator ite = g_aUnregistered.begin(); ite != g_aUnregistered.end(); ++ite)
 	{
-		FD_SET(ite->first, &serv.get_readfs());
+		FD_SET(ite->_fd, &serv.get_readfs());
 		// FD_SET(ite->first, &serv.get_writefs());
 		// FD_SET(*ite, &serv.get_exceptfs());
 	}
 	//push all client fd to all 3 set
-	for (std::deque<std::pair<SOCKET, Client> >::iterator ite = g_aClient.begin(); ite != g_aClient.end(); ++ite)
+	for (std::list<Client>::iterator ite = g_aClient.begin(); ite != g_aClient.end(); ++ite)
 	{
-		FD_SET(ite->first, &serv.get_readfs());
+		FD_SET(ite->_fd, &serv.get_readfs());
 		// FD_SET(ite->first, &serv.get_writefs());
 		// FD_SET(*ite, &serv.get_exceptfs());
 	}
@@ -83,20 +83,20 @@ bool		kick_if_away(Connection &co)
 
 void	send_bufferised_packet()
 {
-	for (std::deque<std::pair<int, Connection> >::iterator it = g_aUnregistered.begin(); it < g_aUnregistered.end(); ++it)
+	for (std::list<Connection>::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); ++it)
 	{
-		it->second.send_packets();
-		it->second.reset_buffer();
+		it->send_packets();
+		it->reset_buffer();
 	}
-	for (std::deque<std::pair<int, Client> >::iterator it = g_aClient.begin(); it < g_aClient.end(); ++it)
+	for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
 	{
-		it->second.send_packets();
-		it->second.reset_buffer();
+		it->send_packets();
+		it->reset_buffer();
 	}
-	for (std::deque<std::pair<int, Server> >::iterator it = g_aServer.begin(); it < g_aServer.end(); ++it)
+	for (std::list<Server>::iterator it = g_aServer.begin(); it != g_aServer.end(); ++it)
 	{
-		it->second.send_packets();
-		it->second.reset_buffer();
+		it->send_packets();
+		it->reset_buffer();
 	}
 }
 

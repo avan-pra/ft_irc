@@ -11,13 +11,13 @@ static size_t	who_switch(char c)
 }
 
 //return -1 si il y a eu un prblm
-static int	who_channel(const std::string &channel, const size_t &client_idx, const MyServ &serv)
+static int	who_channel(const std::string &channel, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	int channel_id = find_channel(channel);
 
 	if (channel_id < 0)
 		return (1);
-	if (g_aClient[client_idx].second.get_is_oper() == false && !is_user_in_chan(channel_id, g_aClient[client_idx].second.get_nickname()))
+	if (client_it->get_is_oper() == false && !is_user_in_chan(channel_id, client_it->get_nickname()))
 		return (1);
 	// std::cout << "who passed" << std::endl;
 	for (size_t n = 0; n < g_vChannel[channel_id]._users.size(); ++n)
@@ -40,12 +40,12 @@ static int	who_channel(const std::string &channel, const size_t &client_idx, con
 		str += std::string(":0") + " ";
 		str += g_vChannel[channel_id]._users[n]->get_realname();
 	
-		g_aClient[client_idx].second.push_to_buffer(create_msg(352, client_idx, serv, str));
+		client_it->push_to_buffer(create_msg(352, client_it, serv, str));
 	}
 	return (0);
 }
 
-static bool user_on_same_channel(Client a, Client b)
+static bool user_on_same_channel(Client &a, Client &b)
 {
 	for (size_t n = 0; n < g_vChannel.size(); ++n)
 	{
@@ -55,41 +55,41 @@ static bool user_on_same_channel(Client a, Client b)
 	return false;
 }
 
-static bool has_permission(const std::string &query, const size_t &client_idx, const size_t n)
+static bool has_permission(const std::string &query, std::list<Client>::iterator client_it, std::list<Client>::iterator it)
 {
 	std::string nick;
 	std::string user;
 	std::string host;
 
 	format_mask(query, nick, user, host);
-	if ((pattern_match(g_aClient[n].second.get_nickname(), nick) && pattern_match(g_aClient[n].second.get_username(), user) && pattern_match(g_aClient[n].second.get_hostname(), host))
-			&& ((g_aClient[n].second.is_invisble() == false || user_on_same_channel(g_aClient[n].second, g_aClient[client_idx].second) || g_aClient[n].second == g_aClient[client_idx].second)
-				|| g_aClient[client_idx].second.get_is_oper() == true))
+	if ((pattern_match(it->get_nickname(), nick) && pattern_match(it->get_username(), user) && pattern_match(it->get_hostname(), host))
+			&& ((it->is_invisble() == false || user_on_same_channel(*it, *client_it) || &(*it) == &(*client_it))
+				|| client_it->get_is_oper() == true))
 		return true;
 	return false;
 }
 
-int	who_client(const std::string &query, const size_t &client_idx, const MyServ &serv)
+int	who_client(const std::string &query, std::list<Client>::iterator client_it, const MyServ &serv)
 {
-	for (size_t n = 0; n < g_aClient.size(); ++n)
+	for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
 	{
-		if (has_permission(query, client_idx, n) == true)
+		if (has_permission(query, client_it, it) == true)
 		{
 			std::string str;
 
 			str += std::string("*") + " ";
-			str += g_aClient[n].second.get_username() + " ";
-			str += g_aClient[n].second.get_hostname() + " ";
+			str += it->get_username() + " ";
+			str += it->get_hostname() + " ";
 			str += serv.get_hostname() + " ";
-			str += g_aClient[n].second.get_nickname() + " ";
+			str += it->get_nickname() + " ";
 			{
 				str += "H";
 				str += " ";
 			}
 			str += std::string(":0") + " ";
-			str += g_aClient[n].second.get_realname();
+			str += it->get_realname();
 		
-			g_aClient[client_idx].second.push_to_buffer(create_msg(352, client_idx, serv, str));
+			client_it->push_to_buffer(create_msg(352, client_it, serv, str));
 		}
 	}
 	return (0);
@@ -118,7 +118,7 @@ static void is_valid_mask(const std::string &mask)
 	return;
 }
 
-void	who_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void	who_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string> arg = ft_split(line, " ");
 
@@ -133,10 +133,10 @@ void	who_command(const std::string &line, const size_t &client_idx, const MyServ
 	switch (who_switch(arg[1][0]))
 	{
 		case 1:
-			who_channel(arg[1], client_idx, serv); break;
+			who_channel(arg[1], client_it, serv); break;
 		default:
-			who_client(arg[1], client_idx, serv); break;
+			who_client(arg[1], client_it, serv); break;
 	}
-	g_aClient[client_idx].second.push_to_buffer(create_msg(315, client_idx, serv, arg[1]));
+	client_it->push_to_buffer(create_msg(315, client_it, serv, arg[1]));
 	//352 RPL_WHOREPLY
 }

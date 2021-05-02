@@ -14,9 +14,9 @@
 #include "../includes/Disconnect.hpp"
 
 std::deque<t_sock>							g_serv_sock;
-std::deque<std::pair<SOCKET, Client> >		g_aClient;
-std::deque<std::pair<SOCKET, Connection> >	g_aUnregistered;
-std::deque<std::pair<SOCKET, Server> >		g_aServer;
+std::list<Client>							g_aClient;
+std::list<Connection>						g_aUnregistered;
+std::list<Server>							g_aServer;
 std::deque<Channel>							g_vChannel;
 std::deque<t_discon_id>						g_aDisconnectedCli;
 
@@ -24,9 +24,9 @@ void		sig_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		for (size_t i = 0; i < g_aClient.size(); ++i)
+		for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
 		{
-			disconnect(&g_aClient[i].second, i);
+			disconnect(&(*it));
 		}
 		// for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it != g_serv_sock.end(); ++it)
 		// 	closesocket(it->sockfd);
