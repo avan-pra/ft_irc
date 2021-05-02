@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 13:51:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/28 16:47:24 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/03 00:41:05 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	add_pattern(std::vector<std::string> &chan_name)
 		chan_name.push_back(match[i]);
 }
 
-void	list_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void	list_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string>	params;
 	std::vector<std::string>	chan_name;
@@ -77,7 +77,7 @@ void	list_command(const std::string &line, const size_t &client_idx, const MySer
 	params = ft_split(line, " ");
 	if (params.size() == 1)
 	{
-		all_list(client_idx, serv);
+		all_list(client_it, serv);
 		return ;
 	}
 	chan_name = ft_split(params[1], ",");
@@ -90,12 +90,12 @@ void	list_command(const std::string &line, const size_t &client_idx, const MySer
 			if (!g_vChannel[chan_id].is_mode('s') && !g_vChannel[chan_id].is_mode('p'))
 			{
 				topic = ft_to_string(g_vChannel[chan_id]._users.size()) + g_vChannel[chan_id].get_topic();
-				g_aClient[client_idx].second.send_reply(create_msg(322, client_idx, serv, *it, topic));
+				client_it->send_reply(create_msg(322, client_it, serv, *it, topic));
 			}
 		}
 	}
 	if (find == false)
-		g_aClient[client_idx].second.send_reply(create_msg(403, client_idx, serv, chan_name[0]));
+		client_it->send_reply(create_msg(403, client_it, serv, chan_name[0]));
 	else
-		g_aClient[client_idx].second.push_to_buffer(create_msg(323, client_idx, serv));
+		client_it->push_to_buffer(create_msg(323, client_it, serv));
 }

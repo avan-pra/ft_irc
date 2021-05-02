@@ -23,13 +23,13 @@ static cap_commands cap_arg(std::string arg)
 	return eERROR;
 }
 
-void	cap_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void	cap_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string> arg = ft_split(line, " ");
 
 	if (arg.size() < 2)
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(410, client_idx, serv, "*"));
+		client_it->push_to_buffer(create_msg(410, client_it, serv, "*"));
 		return ;
 	}
 	switch (cap_arg(arg[1]))

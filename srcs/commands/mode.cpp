@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/29 23:43:30 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/03 01:16:23 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@
 #include <algorithm>
 #include <cstring>
 
-static void		check_nickname(const std::string str, const size_t &client_idx, const MyServ &serv)
+static void		check_nickname(const std::string str, std::list<Client>::iterator client_it, const MyServ &serv)
 {
-	if (str != g_aClient[client_idx].second.get_nickname())
+	if (str != client_it->get_nickname())
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(502, client_idx, serv));
+		client_it->push_to_buffer(create_msg(502, client_it, serv));
 		throw std::exception();
 	}
 }
 
-static void		set_usr_mode(const std::string mode, const size_t &client_idx, const MyServ &serv)
+static void		set_usr_mode(const std::string mode, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	bool		minus = false;
-	std::string	new_mode = g_aClient[client_idx].second.get_mode();
+	std::string	new_mode = client_it->get_mode();
 
 	//on check toute la string de modes char a char
 	for (size_t i = 0; i < mode.size(); i++)
@@ -39,12 +39,12 @@ static void		set_usr_mode(const std::string mode, const size_t &client_idx, cons
 			minus = false;
 		else if ((mode[i] == 'o' || mode[i] == 'O'))
 		{
-			if (minus ==  false && g_aClient[client_idx].second.get_is_oper() == true)
+			if (minus ==  false && client_it->get_is_oper() == true)
 				new_mode += mode[i];
 			else
 			{
 				new_mode.erase(std::remove(new_mode.begin(), new_mode.end(), mode[i]), new_mode.end());
-				g_aClient[client_idx].second.set_is_oper(false);
+				client_it->set_is_oper(false);
 			}
 		}
 		else
@@ -54,7 +54,7 @@ static void		set_usr_mode(const std::string mode, const size_t &client_idx, cons
 			{
 				std::string str = " ";
 				str.push_back(mode[i]);
-				g_aClient[client_idx].second.push_to_buffer(create_msg(472, client_idx, serv, str));
+				client_it->push_to_buffer(create_msg(472, client_it, serv, str));
 			}
 			else if (minus == true)
 			{
@@ -66,7 +66,7 @@ static void		set_usr_mode(const std::string mode, const size_t &client_idx, cons
 			}
 		}
 	}
-	g_aClient[client_idx].second.set_mode(new_mode);
+	client_it->set_mode(new_mode);
 }
 
 static std::string	set_output_mode(const size_t &chann_idx)
@@ -85,7 +85,7 @@ static std::string	set_output_mode(const size_t &chann_idx)
 }
 
 static bool			switch_mode(const char c, const std::string arg, const size_t &chann_idx,
-						const size_t &client_idx, const char &sign, const MyServ &serv)
+						std::list<Client>::iterator client_it, const char &sign, const MyServ &serv)
 {
 	bool				ret = true;
 	std::string 		mode = g_vChannel[chann_idx].get_mode();
@@ -150,32 +150,32 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 		{
 			if (is_user_in_chan(chann_idx, arg) == false)
 			{
-				g_aClient[client_idx].second.push_to_buffer(create_msg(441, client_idx, serv, arg, g_vChannel[chann_idx].get_name()));
+				client_it->push_to_buffer(create_msg(441, client_it, serv, arg, g_vChannel[chann_idx].get_name()));
 				return false;
 			}
-			mode_o(client_idx, chann_idx, sign, arg);
+			mode_o(client_it, chann_idx, sign, arg);
 			break;
 		}
 		case 'b':
 		{
-			mode_b(client_idx, chann_idx, sign, arg, serv);
+			mode_b(client_it, chann_idx, sign, arg, serv);
 			break;
 		}
 		case 'v':
 		{
 			if (is_user_in_chan(chann_idx, arg) == false)
 			{
-				g_aClient[client_idx].second.push_to_buffer(create_msg(441, client_idx, serv, arg, g_vChannel[chann_idx].get_name()));
+				client_it->push_to_buffer(create_msg(441, client_it, serv, arg, g_vChannel[chann_idx].get_name()));
 				return false;
 			}
-			mode_v(client_idx, chann_idx, sign, arg);
+			mode_v(client_it, chann_idx, sign, arg);
 			break;
 		}
 		default:
 		{
 			std::string str = " ";
 			str.push_back(c);
-			g_aClient[client_idx].second.push_to_buffer(create_msg(472, client_idx, serv, str));
+			client_it->push_to_buffer(create_msg(472, client_it, serv, str));
 			return false;
 		}
 	}
@@ -189,15 +189,15 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 	return	(ret);
 }
 
-static void			set_chann_mode(const std::string mode, const std::vector<std::string> args, const size_t &chann_idx, const size_t &client_idx, const MyServ &serv)
+static void			set_chann_mode(const std::string mode, const std::vector<std::string> args, const size_t &chann_idx, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	char				sign = '+';
 	std::string			tmp;
 	int					j = 3;
 
-	if (g_vChannel[chann_idx].is_operator(g_aClient[client_idx].second) == false)
+	if (g_vChannel[chann_idx].is_operator(&(*client_it)) == false)
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(482, client_idx, serv, g_vChannel[chann_idx].get_name()));
+		client_it->push_to_buffer(create_msg(482, client_it, serv, g_vChannel[chann_idx].get_name()));
 		throw std::exception();
 	}
 	for (size_t i = 0; i < mode.size(); i++)
@@ -206,41 +206,41 @@ static void			set_chann_mode(const std::string mode, const std::vector<std::stri
 			sign = '-';
 		else if (mode[i] == '+')
 			sign = '+';
-		else if (switch_mode(mode[i], args[j], chann_idx, client_idx, sign, serv) == true)
+		else if (switch_mode(mode[i], args[j], chann_idx, client_it, sign, serv) == true)
 			j++;
 	}
-	g_vChannel[chann_idx].send_to_all(create_full_msg_mode(g_vChannel[chann_idx].get_mode(), client_idx, chann_idx));
+	g_vChannel[chann_idx].send_to_all(create_full_msg_mode(g_vChannel[chann_idx].get_mode(), client_it, chann_idx));
 }
 
-static void			check_channel_errors(const size_t &client_idx, size_t &channel_idx, const std::string channel_name, const MyServ &serv)
+static void			check_channel_errors(std::list<Client>::iterator client_it, size_t &channel_idx, const std::string channel_name, const MyServ &serv)
 {
 	if ((channel_idx = find_channel(channel_name)) == -1)
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, channel_name));
+		client_it->push_to_buffer(create_msg(403, client_it, serv, channel_name));
 		throw std::exception();
 	}
-	if (is_user_in_chan(channel_idx, g_aClient[client_idx].second.get_nickname()) == false)
+	if (is_user_in_chan(channel_idx, client_it->get_nickname()) == false)
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(442, client_idx, serv, channel_name));
+		client_it->push_to_buffer(create_msg(442, client_it, serv, channel_name));
 		throw std::exception();
 	}
 }
 
-static void			ban_list(const size_t &channel_idx, const size_t &client_idx, const MyServ &serv)
+static void			ban_list(const size_t &channel_idx, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	for (size_t i = 0; i < g_vChannel[channel_idx]._ban.size(); i++)
 	{
 		std::string mssg;
 		mssg = g_vChannel[channel_idx].get_name() + " ";
 		mssg += g_vChannel[channel_idx]._ban[i].nickname + "!" + g_vChannel[channel_idx]._ban[i].username + "@" + g_vChannel[channel_idx]._ban[i].hostname + " ";
-		mssg += g_aClient[client_idx].second.get_nickname() + "!" + g_aClient[client_idx].second.get_username() + "@" + g_aClient[client_idx].second.get_hostname() + " ";
+		mssg += client_it->get_nickname() + "!" + client_it->get_username() + "@" + client_it->get_hostname() + " ";
 		mssg += ft_to_string(g_vChannel[channel_idx]._ban[i].ban_date);
-		g_aClient[client_idx].second.push_to_buffer(create_msg(367, client_idx, serv, mssg));
+		client_it->push_to_buffer(create_msg(367, client_it, serv, mssg));
 	}
-	g_aClient[client_idx].second.push_to_buffer(create_msg(368, client_idx, serv, g_vChannel[channel_idx].get_name()));
+	client_it->push_to_buffer(create_msg(368, client_it, serv, g_vChannel[channel_idx].get_name()));
 }
 
-void				mode_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void				mode_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string> params;
 	std::string str, mode;
@@ -248,7 +248,7 @@ void				mode_command(const std::string &line, const size_t &client_idx, const My
 	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "MODE"));
+		client_it->push_to_buffer(create_msg(461, client_it, serv, "MODE"));
 		return ;
 	}
 	try
@@ -259,11 +259,11 @@ void				mode_command(const std::string &line, const size_t &client_idx, const My
 		{
 			size_t	channel_idx = 0;
 			
-			check_channel_errors(client_idx, channel_idx, str, serv);
+			check_channel_errors(client_it, channel_idx, str, serv);
 			//Pas de arguments, on renvoie le mode actuel du channel
 			if (params.size() == 2)
 			{
-				g_aClient[client_idx].second.push_to_buffer(create_msg(324, client_idx, serv, g_vChannel[channel_idx].get_name(), set_output_mode(channel_idx), ""));
+				client_it->push_to_buffer(create_msg(324, client_idx, serv, g_vChannel[channel_idx].get_name(), set_output_mode(channel_idx), ""));
 				return ;
 			}
 			//Un nouveau mode doit etre set OU la list des ban est demandée
@@ -272,26 +272,26 @@ void				mode_command(const std::string &line, const size_t &client_idx, const My
 				mode = params[2];
 				//L'argument est +b, du coup on affiche la liste des users ban du channel
 				if ((mode == "+b" || mode == "b" || mode == "-b") && params.size() == 3)
-					ban_list(channel_idx, client_idx, serv);
+					ban_list(channel_idx, client_it, serv);
 				//On set le(s) nouveaux modes
 				else
-					set_chann_mode(mode, params, channel_idx, client_idx, serv);
+					set_chann_mode(mode, params, channel_idx, client_it, serv);
 			}
 		}
 		//La query concerne un user
 		else
 		{
-			check_nickname(str, client_idx, serv);
+			check_nickname(str, client_it, serv);
 			if (params.size() == 2)
 			{
-				g_aClient[client_idx].second.push_to_buffer(create_msg(221, client_idx, serv, g_aClient[client_idx].second.get_mode()));
+				client_it.push_to_buffer(create_msg(221, client_it, serv, client_it->get_mode()));
 				return ;
 			}
 			else
 			{
 				mode = params[2];
-				set_usr_mode(mode, client_idx, serv);
-				g_aClient[client_idx].second.push_to_buffer(create_msg(221, client_idx, serv, g_aClient[client_idx].second.get_mode()));
+				set_usr_mode(mode, client_it, serv);
+				client_it->push_to_buffer(create_msg(221, client_it, serv, client_it->get_mode()));
 			}
 		}
 	}

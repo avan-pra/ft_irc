@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/29 14:37:15 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/03 00:36:20 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,83 +72,83 @@ static int	check_name_and_key(std::map<std::string, std::string> &chan)
 	return (chan.size());
 }
 
-static int	check_invite(const int &chan_id, const size_t &client_idx, const MyServ &serv)
+static int	check_invite(const int &chan_id, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	if (g_vChannel[chan_id].get_mode().find("i") == std::string::npos)
 		return (1);
 	for (size_t i = 0; i < g_vChannel[chan_id]._invite.size(); i++)
 	{
-		if (g_aClient[client_idx].second == *g_vChannel[chan_id]._invite[i])
+		if (client_it == *g_vChannel[chan_id]._invite[i])
 			return (1);
 	}
-	g_aClient[client_idx].second.send_reply(create_msg(473, client_idx, serv, g_vChannel[chan_id].get_name()));
+	client_it->send_reply(create_msg(473, client_it, serv, g_vChannel[chan_id].get_name()));
 	return (0);
 }
 
-int		check_password(const size_t &client_idx, const MyServ &serv, const int &chan_id, const std::string &pass)
+int		check_password(std::list<Client>::iterator client_it, const MyServ &serv, const int &chan_id, const std::string &pass)
 {
 	if (g_vChannel[chan_id].get_mode().find("k") == std::string::npos)
 		return (1);
 	if (pass == g_vChannel[chan_id].get_password())
 		return (1);
-	g_aClient[client_idx].second.send_reply(create_msg(475, client_idx, serv, g_vChannel[chan_id].get_name()));
+	client_it->send_reply(create_msg(475, client_it, serv, g_vChannel[chan_id].get_name()));
 	return (0);
 }
 
-static int	try_enter_chan(const std::map<std::string, std::string>::iterator it, const size_t &client_idx,
+static int	try_enter_chan(const std::map<std::string, std::string>::iterator it, std::list<Client>::iterator client_it,
 							bool &enter, const MyServ &serv)
 {
 	int		i = find_channel(it->first);
 
 	for (std::deque<Client*>::iterator ite = g_vChannel[i]._users.begin(); ite != g_vChannel[i]._users.end(); ite++)
 	{
-		if (**ite == g_aClient[client_idx].second)
+		if (*ite == &(*client_it))
 		{
 			enter = true;
 			return (0);
 		}
 	}
-	if (!check_invite(i, client_idx, serv))
+	if (!check_invite(i, client_it, serv))
 	{
 		enter = true;
 		return (0);
 	}
-	if (!check_password(client_idx, serv, i, it->second))
+	if (!check_password(client_it, serv, i, it->second))
 	{
 		enter = true;
 		return (0);
 	}
-	if (g_vChannel[i].is_ban(g_aClient[client_idx].second))
+	if (g_vChannel[i].is_ban(*client_it))
 	{
 		enter = true;
-		g_aClient[client_idx].second.send_reply(create_msg(474, client_idx, serv, it->first));
+		client_it->send_reply(create_msg(474, client_it, serv, it->first));
 		return (0);
 	}
 	if (g_vChannel[i].is_mode('l') && g_vChannel[i]._users.size() == g_vChannel[i].get_limit())
 	{
 		enter = true;
-		g_aClient[client_idx].second.send_reply(create_msg(471, client_idx, serv, it->first));
+		client_it->send_reply(create_msg(471, client_it, serv, it->first));
 		return (0);
 	}
 	return (1);
 }
 
-static void	create_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter)
+static void	create_channel(const std::map<std::string, std::string>::iterator it, std::list<Client>::iterator client_it, bool &enter)
 {
 	Channel		chan(it->first);
 
-	chan._users.push_back(&g_aClient[client_idx].second);
-	chan._operator.push_back(&g_aClient[client_idx].second);
+	chan._users.push_back(&(*client_it));
+	chan._operator.push_back(&(*client_it));
 	chan.set_mode("+nt");
 	g_vChannel.push_back(chan);
 	enter = true;
 }
 
-static void	add_client_to_channel(const std::map<std::string, std::string>::iterator it, const size_t &client_idx, bool &enter)
+static void	add_client_to_channel(const std::map<std::string, std::string>::iterator it, std::list<Client>::iterator client_it, bool &enter)
 {
 	int		i = find_channel(it->first);
 
-	g_vChannel[i]._users.push_back(&g_aClient[client_idx].second);
+	g_vChannel[i]._users.push_back(&(*client_it));
 	enter = true;
 }
 
@@ -167,12 +167,12 @@ static void	make_channel_pair(const std::vector<std::string> &params, std::map<s
 		tmp.insert(std::make_pair(chan_name[i], key[i]));
 }
 
-static void	send_channel_time(const size_t &client_idx, const MyServ &serv, const std::string channel)
+static void	send_channel_time(std::list<Client>::iterator client_it, const MyServ &serv, const std::string channel)
 {
-	g_aClient[client_idx].second.push_to_buffer(create_msg(329, client_idx, serv, channel, ft_to_string((int)g_vChannel[find_channel(channel)].get_creation_date())));
+	client_it->push_to_buffer(create_msg(329, client_it, serv, channel, ft_to_string((int)g_vChannel[find_channel(channel)].get_creation_date())));
 }
 
-void	join_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void	join_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string>			params;
 	std::vector<std::string>			chan_name;
@@ -182,13 +182,13 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, params[0]));
+		client_it->push_to_buffer(create_msg(461, client_it, serv, params[0]));
 		return ;
 	}
 	make_channel_pair(params, tmp, chan_name);
 	if (!check_name_and_key(tmp))
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(476, client_idx, serv, chan_name[0]));
+		client_it->push_to_buffer(create_msg(476, client_it, serv, chan_name[0]));
 		return ;
 	}
 	enter = false;
@@ -198,19 +198,19 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 	{
 		if (find_channel(it->first) == -1)
 		{
-			create_channel(it, client_idx, enter);
-			send_to_channel(("JOIN " + it->first), client_idx, find_channel(it->first), true);
-			names_command("names " + it->first, client_idx, serv);
-			send_channel_time(client_idx, serv, it->first);
+			create_channel(it, client_it, enter);
+			send_to_channel(("JOIN " + it->first), client_it, find_channel(it->first), true);
+			names_command("names " + it->first, client_it, serv);
+			send_channel_time(client_it, serv, it->first);
 		}
 		else
 		{
-			if (try_enter_chan(it, client_idx, enter, serv))
+			if (try_enter_chan(it, client_it, enter, serv))
 			{
-				add_client_to_channel(it, client_idx, enter);
-				send_to_channel(("JOIN " + it->first), client_idx, find_channel(it->first), true);
-				names_command("names " + it->first, client_idx, serv);
-				send_channel_time(client_idx, serv, it->first);
+				add_client_to_channel(it, client_it, enter);
+				send_to_channel(("JOIN " + it->first), client_it, find_channel(it->first), true);
+				names_command("names " + it->first, client_it, serv);
+				send_channel_time(client_it, serv, it->first);
 			}
 		}
 		// for (size_t i = 0; i < g_vChannel[find_channel(it->first)]._users.size(); ++i)
@@ -219,5 +219,5 @@ void	join_command(const std::string &line, const size_t &client_idx, const MySer
 		// 	std::cout << g_aClient[i].second.get_nickname() << ":" << &(g_aClient[i].second) << std::endl;
 	}
 	if (enter == false)
-		g_aClient[client_idx].second.push_to_buffer(create_msg(403, client_idx, serv, chan_name[0]));
+		client_it->push_to_buffer(create_msg(403, client_it, serv, chan_name[0]));
 }

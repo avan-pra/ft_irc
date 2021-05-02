@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   info.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 19:42:41 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/23 12:35:02 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/03 00:33:43 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ std::string		make_info_str(const MyServ &serv, std::string time)
 	return (info);
 }
 
-void			info_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void			info_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	(void)line;
 	struct stat	file_info;
@@ -56,6 +56,6 @@ void			info_command(const std::string &line, const size_t &client_idx, const MyS
 		if (time[time.size() - 1] == '\n')
 			time.resize(time.size() - 1);
 	}
-	g_aClient[client_idx].second.push_to_buffer(create_msg(371, client_idx, serv, make_info_str(serv, time)));
-	g_aClient[client_idx].second.push_to_buffer(create_msg(374, client_idx, serv));
+	client_it->push_to_buffer(create_msg(371, client_it, serv, make_info_str(serv, time)));
+	client_it->push_to_buffer(create_msg(374, client_it, serv));
 }
