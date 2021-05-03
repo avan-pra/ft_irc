@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:22:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/03 00:35:19 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/03 17:46:30 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ void	check_line(const std::vector<std::string> &params, std::list<Client>::itera
 
 	if (params.size() < 3)
 	{
-		client_it->send_reply(create_msg(461, client_it, serv, params[0]));
+		client_it->push_to_buffer(create_msg(461, client_it, serv, params[0]));
 		return ;
 	}
 	if ((chan_id = find_channel(params[2])) == -1)
 	{
-		client_it->send_reply(create_msg(403, client_it, serv, params[2]));
+		client_it->push_to_buffer(create_msg(403, client_it, serv, params[2]));
 		return ;
 	}
 	if ((nick_id = find_client_by_iterator(params[1])) == g_aClient.end())
 	{
-		client_it->send_reply(create_msg(401, client_it, serv, params[1]));
+		client_it->push_to_buffer(create_msg(401, client_it, serv, params[1]));
 		return ;
 	}
 }
@@ -47,9 +47,9 @@ int		check_if_are_on(const std::vector<std::string> &params, std::list<Client>::
 			find = 2;
 	}
 	if (!find)
-		client_it->send_reply(create_msg(442, client_it, serv, client_it->get_nickname()));
+		client_it->push_to_buffer(create_msg(442, client_it, serv, client_it->get_nickname()));
 	if (find == 2)
-		client_it->send_reply(create_msg(443, client_it, serv, params[1], params[2]));
+		client_it->push_to_buffer(create_msg(443, client_it, serv, params[1], params[2]));
 	if (!find || find == 2)
 		return (0);
 	return (1);
@@ -83,6 +83,6 @@ void	invite_command(const std::string &line, std::list<Client>::iterator client_
 	}
 	if (!exist)
 		g_vChannel[chan_id]._invite.push_back(&(*nick_id));
-	client_it->send_reply(create_msg(341, client_it, serv, nick_id->get_nickname(), params[2]));
-	nick_id->send_reply(create_full_msg(params, client_it));
+	client_it->push_to_buffer(create_msg(341, client_it, serv, nick_id->get_nickname(), params[2]));
+	nick_id->push_to_buffer(create_full_msg(params, client_it));
 }
