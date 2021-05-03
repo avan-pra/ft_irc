@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/03 13:39:22 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/03 17:22:24 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ int		check_params(const std::vector<std::string> &params, std::list<Client>::ite
 			client_it->push_to_buffer(create_msg(404, client_it, serv, params[1]));
 			return (0);
 		}
-		if (chan_id != -1 && g_vChannel[chan_id].is_mode('m') && !g_vChannel[chan_id].is_operator(&(*client_it)))
-			if (!g_vChannel[chan_id].is_mode('v') || !g_vChannel[chan_id].is_voice((*client_it)))
+		if (g_vChannel[chan_id].is_mode('m') && !g_vChannel[chan_id].is_operator(&(*client_it)))
+			if (!g_vChannel[chan_id].is_voice((*client_it)))
 			{
 				client_it->push_to_buffer(create_msg(404, client_it, serv, params[1]));
 				return (0);
