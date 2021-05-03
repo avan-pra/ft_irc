@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/13 12:11:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/26 18:54:42 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/03 17:37:03 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void		mode_v(std::list<Client>::iterator client_it, const size_t &chann_idx, con
 		cli_to_add_idx = find_client_by_iterator(name);
 		if (cli_to_add_idx != g_aClient.end())
 		{
-			g_vChannel[chann_idx]._operator.push_back(&(*cli_to_add_idx));
+			g_vChannel[chann_idx]._voice.push_back(&(*cli_to_add_idx));
 			g_vChannel[chann_idx].send_to_all(":" + client_it->get_nickname() + "!" + client_it->get_username() + "@" + client_it->get_hostname() +
 											" MODE " + g_vChannel[chann_idx].get_name() + " +v " + name + "\r\n");
 		}
