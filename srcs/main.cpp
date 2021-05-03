@@ -28,8 +28,14 @@ void		sig_handler(int signal)
 		{
 			disconnect(&(*it), it);
 		}
-		// for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it != g_serv_sock.end(); ++it)
-		// 	closesocket(it->sockfd);
+		for (std::list<Connection>::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); ++it)
+		{
+			disconnect(&(*it), it);
+		}
+		for (std::list<Server>::iterator it = g_aServer.begin(); it != g_aServer.end(); ++it)
+		{
+			disconnect(&(*it), it);
+		}
 		for (size_t i = 0; i < g_serv_sock.size(); i++)
 		{
 			closesocket(g_serv_sock[i].sockfd);
