@@ -18,6 +18,7 @@ Client::~Client()
 	{
 		if (cht->is_user_in_chan(*this) == true)
 		{
+			std::cout << _nickname << " :User is in chan\n";
 			cht->remove_user(this->get_nickname());
 			cht->remove_user_operator(this->get_nickname());
 			cht->remove_user_voice(this->get_nickname());
@@ -25,6 +26,7 @@ Client::~Client()
 		}
 		if (cht->_users.size() == 0)
 		{
+			std::cout << _nickname << " delete chan " << cht->get_name() << std::endl;
 			cht = g_vChannel.erase(cht);
 		}
 		else

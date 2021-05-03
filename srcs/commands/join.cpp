@@ -78,7 +78,7 @@ static int	check_invite(const int &chan_id, std::list<Client>::iterator client_i
 		return (1);
 	for (size_t i = 0; i < g_vChannel[chan_id]._invite.size(); i++)
 	{
-		if (client_it == *g_vChannel[chan_id]._invite[i])
+		if (*client_it == *g_vChannel[chan_id]._invite[i])
 			return (1);
 	}
 	client_it->send_reply(create_msg(473, client_it, serv, g_vChannel[chan_id].get_name()));

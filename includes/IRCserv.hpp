@@ -56,6 +56,7 @@
 # include <iostream>
 # include <vector>
 # include <deque>
+# include <list>
 # include <utility>
 # include <functional>
 # include <fstream>
@@ -177,40 +178,40 @@ std::string		ft_to_string(size_t value);
 /*
 ** parser.cpp
 */
-void	parser(char *line, const size_t &client_idx, const MyServ &server);
+void	parser(char *line, std::list<Client>::iterator client_it, const MyServ &server);
 void	build_unfinished_packet(const std::string &true_line, Connection &co, std::string &last);
 void	clear_empty_packet(std::vector<std::string> &packet);
 
 /*
 ** send_msg_to.cpp
 */
-void	send_to_channel(const std::string &msg, const size_t &client_idx, const int &chan_id, bool to_sender = false);
-void	send_to_all_channel(const std::string &msg, const size_t &client_idx, bool to_sender = false);
+void	send_to_channel(const std::string &msg, std::list<Client>::iterator client_it, const int &chan_id, bool to_sender = false);
+void	send_to_all_channel(const std::string &msg, std::list<Client>::iterator client_it, bool to_sender = false);
 
 /*
 ** find_client_or_channel.cpp
 */
 int														find_channel(const std::string &name);
-int														find_user_by_nick(const std::string &nickname);
 bool													is_user_in_chan(const size_t &chan_id, const std::string &nickname);
-std::deque<Client*>::iterator							find_operator(const int &chan_id, const size_t &client_idx);
+std::deque<Client*>::iterator							find_operator(const int &chan_id, std::list<Client>::iterator client_it);
 bool													pattern_match(std::string str, std::string pattern);
-bool													is_chann_operator(const int &chan_id, const size_t &client_idx);
+bool													is_chann_operator(const int &chan_id, std::list<Client>::iterator client_it);
 int														find_channel_with_pattern(std::string &pattern);
 std::deque<Channel>::iterator							find_channel_by_iterator(const std::string &chan_name);
 
 /*
 ** find_connection.cpp 
 */
-std::deque<std::pair<SOCKET, Client> >::iterator		find_client_by_iterator(const std::string &nickname);
-std::deque<std::pair<SOCKET, Server> >::iterator		find_server_by_iterator(const SOCKET &fd);
-std::deque<std::pair<SOCKET, Connection> >::iterator	find_connection_by_iterator(const SOCKET &fd);
+std::list<Client>::iterator		find_client_by_iterator(const std::string &nickname);
+std::list<Client>::iterator		find_client_by_iterator(Connection *co);
+std::list<Server>::iterator		find_server_by_iterator(const SOCKET &fd);
+std::list<Connection>::iterator	find_connection_by_iterator(const SOCKET &fd);
 
 /*
 ** create_msg .cpp
 */
-std::string		create_full_msg(const std::vector<std::string> &params, const size_t &client_idx);
-std::string		create_full_msg_mode(const std::string &mode, const size_t &client_idx, const size_t &chann_idx);
+std::string		create_full_msg(const std::vector<std::string> &params, std::list<Client>::iterator client_it);
+std::string		create_full_msg_mode(const std::string &mode, std::list<Client>::iterator client_it, const size_t &chann_idx);
 
 /*
 ** mask_parser.cpp
@@ -234,6 +235,6 @@ void		error_exit(const std::string &exit_msg);
 /*
 ** who_was.cpp
 */
-void		add_disconnected_nick(const size_t &client_idx);
+void		add_disconnected_nick(std::list<Client>::iterator client_it);
 
 #endif

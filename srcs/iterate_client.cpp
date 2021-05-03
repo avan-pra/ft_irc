@@ -8,30 +8,35 @@ void	iterate_client(MyServ &serv)
 	char	c[BUFF_SIZE + 1];
 	int		ret = 0;
 
-	for (size_t i = 0; i != g_aClient.size(); ++i)
+	for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
 	{
-		ping_if_away(g_aClient[i].second, serv);
+		//std::cout << "in iterate client i =" << i << std::endl;
+		ping_if_away(*it, serv);
 		//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes
-		if (kick_if_away(g_aClient[i].second) == true || check_register_timeout(g_aClient[i].second) == true)
-			disconnect(&g_aClient[i].second, i);
-		else if (is_readable(serv, g_aClient[i].second))
+		if (kick_if_away(*it) == true || check_register_timeout(*it) == true)
 		{
-			get_message(c, g_aClient[i].second, ret);
-			check_message_problem(c, g_aClient[i].second, serv, ret);
+			//std::cout << i << "= i; before disconnect if away {" << g_aClient[i].second.get_nickname() << "}\n";
+			disconnect(&(*it));
+			//std::cout << i << "= i; after disconnect if away \n";
+		}
+		else if (is_readable(serv, *it))
+		{
+			get_message(c, *it, ret);
+			check_message_problem(c, *it, serv, ret);
 			/*
 			** get_message & check_message_problem may set ret to -1 which indicate an critical error such as a too big packet size
 			** an ssl handshake error, read error or if the client isnt writeable
 			*/
 			if (ret <= 0)
-				disconnect(&g_aClient[i].second, i);
+				disconnect(&(*it));
 			else if (ret > 0)
 			{
 				try
 				{
-					parser(c, i, serv);
+					parser(c, it, serv);
 				}
-				catch(const IncorrectPassException &e) { disconnect(&g_aClient[i].second, i); }
-				catch(const QuitCommandException &e) { disconnect(&g_aClient[i].second, i); }
+				catch(const IncorrectPassException &e) { disconnect(&(*it)); }
+				catch(const QuitCommandException &e) { disconnect(&(*it)); }
 			}
 		}
 	}

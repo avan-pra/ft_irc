@@ -26,11 +26,11 @@ static bool			is_number(const std::string& s)
 	return true;
 }
 
-static void			check_realname(const std::string str, const size_t &client_idx, const MyServ &serv)
+static void			check_realname(const std::string str, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	if (str.size() < 1)
 	{
-		g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "USER"));
+		client_it->push_to_buffer(create_msg(461, client_it, serv, "USER"));
 		throw std::exception();
 	}
 }
@@ -56,34 +56,34 @@ static void			check_2nd_arg(const std::string str, std::string &host_name, std::
 	}
 }
 
-static void			set_user(const MyServ &serv, const std::string username, std::string mode, const std::string server_name, const std::string realname, const size_t &client_idx)
+static void			set_user(const MyServ &serv, const std::string username, std::string mode, const std::string server_name, const std::string realname, std::list<Client>::iterator client_it)
 {
-	g_aClient[client_idx].second.set_username(username);
+	client_it->set_username(username);
 	#ifdef __linux__
 		if (serv.get_client_hostname() == "IP")
-			g_aClient[client_idx].second.set_hostname(custom_ntoa(g_aClient[client_idx].second.sock_addr.sin6_addr.__in6_u.__u6_addr32[3]));
+			client_it->set_hostname(custom_ntoa(client_it->sock_addr.sin6_addr.__in6_u.__u6_addr32[3]));
 		else
-			g_aClient[client_idx].second.set_hostname(serv.get_client_hostname());
+			client_it->set_hostname(serv.get_client_hostname());
 	#endif
 	#ifdef __APPLE__
 		if (serv.get_client_hostname() == "IP")
-			g_aClient[client_idx].second.set_hostname(custom_ntoa(g_aClient[client_idx].second.sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]));
+			client_it->set_hostname(custom_ntoa(client_it->second.sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]));
 		else
-			g_aClient[client_idx].second.set_hostname(serv.get_client_hostname());
+			client_it->set_hostname(serv.get_client_hostname());
 	#endif
-	g_aClient[client_idx].second.set_mode(mode);
-	g_aClient[client_idx].second.set_realname(realname);
-	g_aClient[client_idx].second.set_servername(server_name);
+	client_it->set_mode(mode);
+	client_it->set_realname(realname);
+	client_it->set_servername(server_name);
 }
 
-void				user_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void				user_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
-	std::vector<std::string> params;
-	std::vector<std::string> args;
-	std::string realname, line_new;
+	std::vector<std::string>	params;
+	std::vector<std::string>	args;
+	std::string					realname, line_new;
 
 	//Check get_need_pass --> if true --> check if pass is true if not do nothing
-	if (serv.get_need_pass() == true && g_aClient[client_idx].second.is_good_password() == false && g_aClient[client_idx].second.get_nickname().size() > 0)
+	if (serv.get_need_pass() == true && client_it->is_good_password() == false && client_it->get_nickname().size() > 0)
 	{
 		throw IncorrectPassException(); 
 		return ;
@@ -96,14 +96,14 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 		//On check si le nombre d'arguments de USER est bon
 		if (params.size() < 5)
 		{
-			g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "USER"));
+			client_it->push_to_buffer(create_msg(461, client_it, serv, "USER"));
 			throw std::exception();
 		}
 		params = ft_split(line, ":");
 		//On check si le realname a été donné ou pas
 		if (params.size() != 2)
 		{
-			g_aClient[client_idx].second.push_to_buffer(create_msg(461, client_idx, serv, "USER"));
+			client_it->push_to_buffer(create_msg(461, client_it, serv, "USER"));
 			throw std::exception();
 		}
 		realname = params[1];
@@ -112,21 +112,21 @@ void				user_command(const std::string &line, const size_t &client_idx, const My
 		//comme ca les parametres sont bien separes
 		args = ft_split(line_new, " ");
 		
-		if (g_aClient[client_idx].second.is_registered())
+		if (client_it->is_registered())
 		{
-			g_aClient[client_idx].second.push_to_buffer(create_msg(462, client_idx, serv, realname));
+			client_it->push_to_buffer(create_msg(462, client_it, serv, realname));
 			throw std::exception();
 		}
-		check_realname(realname, client_idx, serv);
+		check_realname(realname, client_it, serv);
 		check_2nd_arg(args[2], host_name, mode);
-		set_user(serv, args[1], mode, args[3], realname, client_idx);
+		set_user(serv, args[1], mode, args[3], realname, client_it);
 
-		if (g_aClient[client_idx].second.get_nickname().size() > 0)
+		if (client_it->get_nickname().size() > 0)
 		{
-			g_aClient[client_idx].second.push_to_buffer(create_msg(1, client_idx, serv, g_aClient[client_idx].second.get_nickname()));
-			motd_command("", client_idx, serv);
-			time(&g_aClient[client_idx].second.get_last_activity());
-			g_aClient[client_idx].second.set_register(true);
+			client_it->push_to_buffer(create_msg(1, client_it, serv, client_it->get_nickname()));
+			motd_command("", client_it, serv);
+			time(&client_it->get_last_activity());
+			client_it->set_register(true);
 		}
 
 	}

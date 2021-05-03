@@ -14,7 +14,7 @@
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
-void	delete_of_all_data(const std::string &kick_name, const size_t &chan_id, const size_t &kick_id)
+void	delete_of_all_data(const std::string &kick_name, const size_t &chan_id, std::list<Client>::iterator kick_id)
 {
 	std::deque<Client*>::iterator	it;
 
@@ -26,8 +26,8 @@ void	delete_of_all_data(const std::string &kick_name, const size_t &chan_id, con
 
 void	kick_on_one_channel(std::vector<std::string> params, std::vector<std::string> users, std::list<Client>::iterator client_it, const MyServ &serv)
 {
-	int		chan_id = find_channel(params[1]);
-	int		kick_cli_id;
+	int								chan_id = find_channel(params[1]);
+	std::list<Client>::iterator		it_kick;
 
 	if (chan_id == -1)
 	{
@@ -44,12 +44,12 @@ void	kick_on_one_channel(std::vector<std::string> params, std::vector<std::strin
 			client_it->send_reply(create_msg(482, client_it, serv, params[1]));
 		else
 		{
-			kick_cli_id = find_user_by_nick(users[i]);
+			it_kick = find_client_by_iterator(users[i]);
 			if (params[3] == "" || params[3] == ":")
-				params[3] = g_aClient[kick_cli_id].second.get_nickname();
+				params[3] = it_kick->get_nickname();
 			for (size_t k = 0; k < g_vChannel[chan_id]._users.size(); k++)
 				g_vChannel[chan_id]._users[k]->push_to_buffer(create_full_msg(params, client_it));
-			delete_of_all_data(users[i], chan_id, kick_cli_id);
+			delete_of_all_data(users[i], chan_id, it_kick);
 		}
 	}
 }

@@ -36,16 +36,6 @@ int		find_channel_with_pattern(std::string &pattern)
 	return (-1);
 }
 
-int		find_user_by_nick(const std::string &nickname)
-{
-	for (size_t i = 0; i < g_aClient.size(); i++)
-	{
-		if (g_aClient[i].second.get_nickname() == nickname)
-			return (i);
-	}
-	return (-1);
-}
-
 bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname)
 {
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); ++i)
@@ -56,21 +46,21 @@ bool	is_user_in_chan(const size_t &chan_id, const std::string &nickname)
 	return false;
 }
 
-bool	is_chann_operator(const int &chan_id, const size_t &client_idx)
+bool	is_chann_operator(const int &chan_id, std::list<Client>::iterator client_it)
 {
 	for (size_t i = 0; i != g_vChannel[chan_id]._operator.size(); i++)
 	{
-		if (g_vChannel[chan_id]._operator[i]->get_nickname() == g_aClient[client_idx].second.get_nickname())
+		if (g_vChannel[chan_id]._operator[i]->get_nickname() == client_it->get_nickname())
 			return (true);
 	}
 	return (false);
 }
 
-std::deque<Client*>::iterator	find_operator(const int &chan_id, const size_t &client_idx)
+std::deque<Client*>::iterator	find_operator(const int &chan_id, std::list<Client>::iterator client_it)
 {
 	for (std::deque<Client*>::iterator it = g_vChannel[chan_id]._operator.begin();
 	it != g_vChannel[chan_id]._operator.end(); it++)
-		if (**it == g_aClient[client_idx].second)
+		if (**it == *client_it)
 			return (it);
 	return (g_vChannel[chan_id]._operator.end());
 }

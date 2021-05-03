@@ -6,12 +6,12 @@
 typedef struct	command_list
 {
 	std::string name;
-	void	(*function)(const std::string &line, const size_t &client_idx);
+	void	(*function)(const std::string &line, std::list<Client>::iterator client_it);
 }				command_l;
 
-std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	fill_command(void)
+std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)>	fill_command(void)
 {
-	std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)> cmd;
+	std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> cmd;
 
 	cmd["PASS"] = pass_command;
 	cmd["NICK"] = nick_command;

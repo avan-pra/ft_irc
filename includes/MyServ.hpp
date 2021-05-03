@@ -21,11 +21,13 @@
 # include <sys/select.h>
 # include <sys/time.h>
 # include <map>
+# include <list>
 # include <cstring>
 # include <openssl/ssl.h>
 
 class MyServ;
-std::map<std::string, void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)> fill_command(void);
+class Client;
+std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> fill_command(void);
 
 struct t_networkID
 {
@@ -68,7 +70,7 @@ class MyServ
 		bool			_accept_tls;
 		bool			_allow_ipv6;
         
-		const std::map<std::string, void (*)(const std::string &line, const size_t &client_idx, const MyServ &serv)> _command;
+		const std::map<std::string, void (*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> _command;
 
 	public:
 
@@ -114,7 +116,7 @@ class MyServ
 		bool				get_allow_ipv6() const { return _allow_ipv6; }
 		int					get_client_limit() { return _client_limit; }
 
-		const std::map<std::string,  void	(*)(const std::string &line, const size_t &client_idx, const MyServ &serv)>	&get_command() const { return _command; }
+		const std::map<std::string,  void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)>	&get_command() const { return _command; }
 		
 		/*
 		** Setter

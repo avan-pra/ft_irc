@@ -20,7 +20,7 @@ void	whois_command(const std::string &line, std::list<Client>::iterator client_i
 	if (args.size() < 2)
 	{
 		//This is following RFC
-		client_it->push_to_buffer(create_msg(431, client_idx, serv));
+		client_it->push_to_buffer(create_msg(431, client_it, serv));
 		//Irssi sets by himself own user whois msg
 		return ;
 	}
@@ -32,7 +32,7 @@ void	whois_command(const std::string &line, std::list<Client>::iterator client_i
 			client_it->push_to_buffer(create_msg(318, client_it, serv, args[1]));
 			return ;
 		}
-		if ((target = find_client_by_iterator(args[1])) == -1)
+		if ((target = find_client_by_iterator(args[1])) == g_aClient.end())
 		{
 			client_it->push_to_buffer(create_msg(401, client_it, serv, " " + args[1]));
 			client_it->push_to_buffer(create_msg(318, client_it, serv, args[1]));

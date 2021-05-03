@@ -263,7 +263,7 @@ void				mode_command(const std::string &line, std::list<Client>::iterator client
 			//Pas de arguments, on renvoie le mode actuel du channel
 			if (params.size() == 2)
 			{
-				client_it->push_to_buffer(create_msg(324, client_idx, serv, g_vChannel[channel_idx].get_name(), set_output_mode(channel_idx), ""));
+				client_it->push_to_buffer(create_msg(324, client_it, serv, g_vChannel[channel_idx].get_name(), set_output_mode(channel_idx), ""));
 				return ;
 			}
 			//Un nouveau mode doit etre set OU la list des ban est demandée
@@ -284,7 +284,7 @@ void				mode_command(const std::string &line, std::list<Client>::iterator client
 			check_nickname(str, client_it, serv);
 			if (params.size() == 2)
 			{
-				client_it.push_to_buffer(create_msg(221, client_it, serv, client_it->get_mode()));
+				client_it->push_to_buffer(create_msg(221, client_it, serv, client_it->get_mode()));
 				return ;
 			}
 			else

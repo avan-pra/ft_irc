@@ -3,7 +3,7 @@
 #include "../includes/Disconnect.hpp"
 #include <ctime>
 
-static void	handle_wrong_command(std::string &command, const size_t connection_idx, const MyServ &serv)
+static void	handle_wrong_command(std::string &command, std::list<Connection>::iterator connection_it, const MyServ &serv)
 {
 	if (command == "QUIT")
 	{
@@ -17,27 +17,27 @@ static void	handle_wrong_command(std::string &command, const size_t connection_i
 		{
 			serv.get_command().at(command);
 			std::string err = ":" + serv.get_hostname() + " " + ft_to_string(451) + " * :You have not registered\r\n";
-			g_aUnregistered[connection_idx].second.push_to_buffer(err);
+			connection_it->push_to_buffer(err);
 		}
 		catch (const std::exception &e) 
 		{
 			std::string err = ":" + serv.get_hostname() + " " + ft_to_string(421) + " * " + command + " :Unknown command\r\n";
-			g_aUnregistered[connection_idx].second.push_to_buffer(err);
+			connection_it->push_to_buffer(err);
 		}
 	}
 }
 
-void	connection_parser(char *line, const size_t &connection_idx, const MyServ &serv)
+void	connection_parser(char *line, std::list<Connection>::iterator connection_it, const MyServ &serv)
 {
 	std::vector<std::string>	packet;
 	std::string					true_line;
-	Connection					&co = g_aUnregistered[connection_idx].second;
+	Connection					&co = *connection_it;
 
-	true_line = g_aUnregistered[connection_idx].second.get_unended_packet() + std::string(line);
+	true_line = connection_it->get_unended_packet() + std::string(line);
 	packet = ft_split(true_line, std::string("\r\n"));
 	if (packet.size() != 0)
 	{
-		build_unfinished_packet(true_line, g_aUnregistered[connection_idx].second, packet.back());
+		build_unfinished_packet(true_line, *connection_it, packet.back());
 		clear_empty_packet(packet);
 		for (std::vector<std::string>::iterator str = packet.begin(); str != packet.end(); ++str)
 		{
@@ -52,7 +52,7 @@ void	connection_parser(char *line, const size_t &connection_idx, const MyServ &s
 				Client cli = co;
 
 				cli.set_unended_packet(*str + "\r\n" + true_line + co.get_unended_packet());
-				g_aClient.push_back(std::make_pair(cli._fd, cli));
+				g_aClient.push_back(cli);
 				throw NewClientException();
 			}
 			if (command == "SERVER" || (command == "PASS" && ft_split(*str, " ").size() > 2))
@@ -60,12 +60,12 @@ void	connection_parser(char *line, const size_t &connection_idx, const MyServ &s
 				Server srv = co;
 
 				srv.set_unended_packet(*str + "\r\n" + true_line + co.get_unended_packet());
-				g_aServer.push_back(std::make_pair(srv._fd, srv));
+				g_aServer.push_back(srv);
 				throw NewServerException();
 			}
 			try
 			{
-				handle_wrong_command(command, connection_idx, serv);
+				handle_wrong_command(command, connection_it, serv);
 			}
 			catch (QuitCommandException) { throw QuitCommandException(); }
 		}
@@ -89,35 +89,31 @@ void	iterate_connection(MyServ &serv)
 	char	c[BUFF_SIZE + 1];
 	int		ret = 0;
 
-	for (size_t i = 0; i != g_aUnregistered.size(); ++i)
+	for (std::list<Connection>::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); ++it)
 	{
-		if (check_register_timeout(g_aUnregistered[i].second) == true)
-			disconnect(&g_aUnregistered[i].second, i);
-		else if (is_readable(serv, g_aUnregistered[i].second))
+		if (check_register_timeout(*it) == true)
+			disconnect(&(*it));
+		else if (is_readable(serv, *it))
 		{
-			get_message(c, g_aUnregistered[i].second, ret);
-			check_message_problem(c, g_aUnregistered[i].second, serv, ret);
+			get_message(c, *it, ret);
+			check_message_problem(c, *it, serv, ret);
 			if (ret <= 0)
-				disconnect(&g_aUnregistered[i].second, i);
+				disconnect(&(*it));
 			else if (ret > 0)
 			{
 				try
 				{
-					connection_parser(c, i, serv);
+					connection_parser(c, it, serv);
 				}
 				catch (NewServerException)
 				{
-					std::deque<std::pair<SOCKET, Connection> >::iterator	it = find_connection_by_iterator(g_aUnregistered[i].second._fd);
-					g_aUnregistered.erase(it); 
-					i--; 
+					g_aUnregistered.erase(it);
 				}
 				catch (NewClientException)
 				{
-					std::deque<std::pair<SOCKET, Connection> >::iterator	it = find_connection_by_iterator(g_aUnregistered[i].second._fd);
 					g_aUnregistered.erase(it);
-					i--;
 				}
-				catch (QuitCommandException) { disconnect(&g_aUnregistered[i].second, i); }
+				catch (QuitCommandException) { disconnect(&(*it)); }
 			}
 		}
 	}

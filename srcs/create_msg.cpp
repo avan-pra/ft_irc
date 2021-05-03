@@ -3,7 +3,7 @@
 #include "../includes/IRCserv.hpp"
 #include "../includes/commands.hpp"
 
-std::string		create_msg(const int &code, const size_t &client_idx, const MyServ &serv, const std::string &arg1, const std::string &arg2, const std::string &arg3, const std::string &arg4)
+std::string		create_msg(const int &code, std::list<Client>::iterator client_it, const MyServ &serv, const std::string &arg1, const std::string &arg2, const std::string &arg3, const std::string &arg4)
 {
 	std::string		sample;
 	std::string		true_code;
@@ -13,12 +13,12 @@ std::string		create_msg(const int &code, const size_t &client_idx, const MyServ 
 		true_code = std::string(2, '0').append(ft_to_string(code));
 	else if (code < 100)
 		true_code = std::string(1, '0').append(ft_to_string(code));
-	if (g_aClient[client_idx].second.get_nickname().empty())
+	if (client_it->get_nickname().empty())
 		sample = std::string(":" + serv.get_hostname() + " " + true_code + " * ");
 	else if (code == 691)
 		sample = std::string(":" + serv.get_hostname() + " " + true_code + " ");
 	else
-		sample = std::string(":" + serv.get_hostname() + " " + true_code + " " + g_aClient[client_idx].second.get_nickname() + " ");
+		sample = std::string(":" + serv.get_hostname() + " " + true_code + " " + client_it->get_nickname() + " ");
 
 	switch (code)
 	{
@@ -135,26 +135,26 @@ std::string		create_msg(const int &code, const size_t &client_idx, const MyServ 
 	}
 }
 
-std::string		create_full_msg(const std::vector<std::string> &params, const size_t &client_idx)
+std::string		create_full_msg(const std::vector<std::string> &params, std::list<Client>::iterator client_it)
 {
 	std::string		full_msg("");
 
-	full_msg += ":" + g_aClient[client_idx].second.get_nickname();
-	full_msg += "!" + g_aClient[client_idx].second.get_username();
-	full_msg += "@" + g_aClient[client_idx].second.get_hostname();
+	full_msg += ":" + client_it->get_nickname();
+	full_msg += "!" + client_it->get_username();
+	full_msg += "@" + client_it->get_hostname();
 	for (size_t i = 0; i < params.size(); i++)
 		full_msg += " " + params[i];
 	full_msg += "\r\n";
 	return (full_msg);
 }
 
-std::string		create_full_msg_mode(const std::string &mode, const size_t &client_idx, const size_t &chann_idx)
+std::string		create_full_msg_mode(const std::string &mode, std::list<Client>::iterator client_it, const size_t &chann_idx)
 {
 	std::string		full_msg("");
 
-	full_msg += ":" + g_aClient[client_idx].second.get_nickname();
-	full_msg += "!" + g_aClient[client_idx].second.get_username();
-	full_msg += "@" + g_aClient[client_idx].second.get_hostname();
+	full_msg += ":" + client_it->get_nickname();
+	full_msg += "!" + client_it->get_username();
+	full_msg += "@" + client_it->get_hostname();
 	full_msg += " ";
 	full_msg += "MODE " + g_vChannel[chann_idx].get_name() + " ";
 	full_msg += mode + "\r\n";

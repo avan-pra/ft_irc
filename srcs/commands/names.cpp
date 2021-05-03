@@ -34,7 +34,7 @@ std::string		set_nick_list(const int &chan_id)
 
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
-		if (find_operator(chan_id, find_user_by_nick(g_vChannel[chan_id][i].get_nickname())) != g_vChannel[chan_id]._operator.end())
+		if (find_operator(chan_id, find_client_by_iterator(g_vChannel[chan_id][i].get_nickname())) != g_vChannel[chan_id]._operator.end())
 			lst += "@";
 		else
 			lst += "+";

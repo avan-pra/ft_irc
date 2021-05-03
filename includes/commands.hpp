@@ -150,7 +150,7 @@
 # define USER_VALID_MODE "aiwroOs"
 # define CHANNEL_VALID_MODE "OovaimnqpsrtklbeI"
 
-std::string create_msg(const int &code, const size_t &client_idx, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string(), const std::string &arg4 = std::string());
+std::string create_msg(const int &code, std::list<Client>::iterator client_it, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string(), const std::string &arg4 = std::string());
 
 /*
 **  end of error
@@ -162,40 +162,40 @@ class MyServ;
 ** commands
 */
 
-void	pass_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	ping_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	pong_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	nick_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	user_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	ping_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	time_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	motd_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	info_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	version_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	join_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	mode_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	cap_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	quit_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	invite_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	names_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	list_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	server_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	part_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	privmsg_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	who_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	oper_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	kick_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	topic_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	notice_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	whois_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
-void	whowas_command(const std::string &line, const size_t &client_idx, const MyServ &serv);
+void	pass_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	ping_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	pong_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	nick_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	user_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	ping_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	time_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	motd_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	info_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	version_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	join_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	mode_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	cap_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	quit_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	invite_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	names_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	list_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	server_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	part_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	privmsg_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	who_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	oper_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	kick_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	topic_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	notice_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	whois_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	whowas_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp
 */
 
-void	mode_o(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &name);
-void	mode_b(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &str, const MyServ &serv);
-void	mode_v(const size_t &client_idx, const size_t &chann_idx, const char &sign, const std::string &name);
+void	mode_o(std::list<Client>::iterator client_it, const size_t &chann_idx, const char &sign, const std::string &name);
+void	mode_b(std::list<Client>::iterator client_it, const size_t &chann_idx, const char &sign, const std::string &str, const MyServ &serv);
+void	mode_v(std::list<Client>::iterator client_it, const size_t &chann_idx, const char &sign, const std::string &name);
 
 #endif

@@ -15,7 +15,7 @@
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
-void	check_line(const std::vector<std::string> &params, std::list<Client>::iterator client_it, const MyServ &serv, int &chan_id, int &nick_id)
+void	check_line(const std::vector<std::string> &params, std::list<Client>::iterator client_it, const MyServ &serv, int &chan_id, std::list<Client>::iterator &nick_id)
 {
 
 	if (params.size() < 3)
@@ -28,7 +28,7 @@ void	check_line(const std::vector<std::string> &params, std::list<Client>::itera
 		client_it->send_reply(create_msg(403, client_it, serv, params[2]));
 		return ;
 	}
-	if ((nick_id = find_user_by_nick(params[1])) == -1)
+	if ((nick_id = find_client_by_iterator(params[1])) == g_aClient.end())
 	{
 		client_it->send_reply(create_msg(401, client_it, serv, params[1]));
 		return ;
@@ -58,31 +58,31 @@ int		check_if_are_on(const std::vector<std::string> &params, std::list<Client>::
 
 void	invite_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
-	std::vector<std::string>	params;
-	int							chan_id;
-	int							nick_id;
-	bool						exist = false;
+	std::vector<std::string>		params;
+	int								chan_id;
+	std::list<Client>::iterator		nick_id;
+	bool							exist = false;
 
 	params = ft_split(line, " ");
 	 check_line(params, client_it, serv, chan_id, nick_id);
-	 if (chan_id == -1 || nick_id == -1)
+	 if (chan_id == -1 || nick_id == g_aClient.end())
 		return ;
 	if (!check_if_are_on(params, client_it, serv, chan_id))
 		return ;
 	if (g_vChannel[chan_id].get_mode().find("i") != std::string::npos)
 		if (find_operator(chan_id, client_it) == g_vChannel[chan_id]._operator.end())
 		{
-			client_it.push_to_buffer(create_msg(482, client_it, serv, client_it->get_nickname()));
+			client_it->push_to_buffer(create_msg(482, client_it, serv, client_it->get_nickname()));
 			return ;
 		}
 	for (std::deque<Client*>::iterator it = g_vChannel[chan_id]._invite.begin();
 		it != g_vChannel[chan_id]._invite.end(); it++)
 	{
-		if (**it == g_aClient[nick_id].second)
+		if (**it == *nick_id)
 			exist = true;
 	}
 	if (!exist)
-		g_vChannel[chan_id]._invite.push_back(&g_aClient[nick_id].second);
-	client_it->send_reply(create_msg(341, client_it, serv, g_aClient[nick_id].second.get_nickname(), params[2]));
-	g_aClient[nick_id].second.send_reply(create_full_msg(params, client_it));
+		g_vChannel[chan_id]._invite.push_back(&(*nick_id));
+	client_it->send_reply(create_msg(341, client_it, serv, nick_id->get_nickname(), params[2]));
+	nick_id->send_reply(create_full_msg(params, client_it));
 }

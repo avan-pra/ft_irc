@@ -14,7 +14,7 @@
 #include "../../includes/commands.hpp"
 #include <ctime>
 
-void	time_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void	time_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	time_t			get_time;
 	std::string		now;
@@ -24,5 +24,5 @@ void	time_command(const std::string &line, const size_t &client_idx, const MySer
 	now = ctime(&get_time);
 	if (now[now.size() - 1] == '\n')
 		now.resize(now.size() - 1);
-	g_aClient[client_idx].second.push_to_buffer(RPL_TIME(serv.get_hostname(), now.c_str()));
+	client_it->push_to_buffer(RPL_TIME(serv.get_hostname(), now.c_str()));
 }

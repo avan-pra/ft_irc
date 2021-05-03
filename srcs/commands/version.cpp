@@ -15,9 +15,9 @@
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
-void	version_command(const std::string &line, const size_t &client_idx, const MyServ &serv)
+void	version_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	(void)line;
 	(void)serv;
-	g_aClient[client_idx].second.push_to_buffer(RPL_VERSION(std::string("beta 1.0"), "0", serv.get_hostname(), std::string("Actually in beta 1.0")));
+	client_it->push_to_buffer(RPL_VERSION(std::string("beta 1.0"), "0", serv.get_hostname(), std::string("Actually in beta 1.0")));
 }

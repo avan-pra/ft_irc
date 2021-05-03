@@ -15,20 +15,20 @@
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
-bool	create_list(const std::string &it, size_t chan_id, const size_t &client_idx, const MyServ &serv, std::string &msg)
+bool	create_list(const std::string &it, size_t chan_id, std::list<Client>::iterator client_it, const MyServ &serv, std::string &msg)
 {
 	std::string		topic;
 
 	if ((chan_id = find_channel(it)) != -1)
 	{
 		topic = ft_to_string(g_vChannel[chan_id]._users.size()) + g_vChannel[chan_id].get_topic();
-		msg += create_msg(322, client_idx, serv, it, topic);
+		msg += create_msg(322, client_it, serv, it, topic);
 		return (true);
 	}
 	return (false);
 }
 
-void	all_list(const size_t &client_idx, const MyServ &serv)
+void	all_list(std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::string		msg;
 	std::string		topic
@@ -36,10 +36,10 @@ void	all_list(const size_t &client_idx, const MyServ &serv)
 	for (size_t i = 0; i < g_vChannel.size(); i++)
 	{
 		if (!g_vChannel[i].is_mode('s') && !g_vChannel[i].is_mode('p'))
-			create_list(g_vChannel[i].get_name(), i, client_idx, serv, msg);
+			create_list(g_vChannel[i].get_name(), i, client_it, serv, msg);
 	}
-	g_aClient[client_idx].second.push_to_buffer(msg);
-	g_aClient[client_idx].second.push_to_buffer(create_msg(323, client_idx, serv));
+	client_it->push_to_buffer(msg);
+	client_it->push_to_buffer(create_msg(323, client_it, serv));
 }
 
 void	add_pattern(std::vector<std::string> &chan_name)
