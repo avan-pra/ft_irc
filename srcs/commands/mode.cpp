@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/03 01:16:23 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/03 13:30:22 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ static void			set_chann_mode(const std::string mode, const std::vector<std::stri
 	char				sign = '+';
 	std::string			tmp;
 	int					j = 3;
+	bool				ret;
 
 	if (g_vChannel[chann_idx].is_operator(&(*client_it)) == false)
 	{
@@ -206,8 +207,12 @@ static void			set_chann_mode(const std::string mode, const std::vector<std::stri
 			sign = '-';
 		else if (mode[i] == '+')
 			sign = '+';
-		else if (switch_mode(mode[i], args[j], chann_idx, client_it, sign, serv) == true)
-			j++;
+		else
+		{
+			ret = (args.size() <= 3) ? switch_mode(mode[i], "", chann_idx, client_it, sign, serv) : switch_mode(mode[i], args[j], chann_idx, client_it, sign, serv);
+			if ( ret == true)
+				j++;
+		}
 	}
 	g_vChannel[chann_idx].send_to_all(create_full_msg_mode(g_vChannel[chann_idx].get_mode(), client_it, chann_idx));
 }
