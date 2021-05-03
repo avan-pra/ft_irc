@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/28 16:54:52 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/03 13:39:22 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 		send_privmsg_to_channel(params, client_it, i);
 	else if ((it = find_client_by_iterator(params[1])) != g_aClient.end())
 	{
-		client_it->push_to_buffer(create_full_msg(params, client_it));
+		it->push_to_buffer(create_full_msg(params, client_it));
 	}
 	time(&new_time);
 	client_it->set_t_idle(new_time);
