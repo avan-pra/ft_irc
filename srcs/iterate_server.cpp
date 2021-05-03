@@ -12,13 +12,13 @@ void	iterate_server(MyServ &serv)
 		ping_if_away(*it, serv);
 		//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes
 		if (kick_if_away(*it) == true)
-			disconnect(&(*it));
+			disconnect(&(*it), it);
 		else if (FD_ISSET(it->_fd, &serv.get_readfs()))
 		{
 			ft_bzero((char *)c, sizeof(c));
 			int ret = recv(it->_fd, &c, BUFF_SIZE, 0);
 			if (ret <= 0)
-				disconnect(&(*it));
+				disconnect(&(*it), it);
 			else if (ret > 0)
 			{
 				c[ret] = '\0';
@@ -26,8 +26,8 @@ void	iterate_server(MyServ &serv)
 				{
 					;
 				}
-				catch(const IncorrectPassException &e) { disconnect(&(*it)); }
-				catch(const QuitCommandException &e) { disconnect(&(*it)); }
+				catch(const IncorrectPassException &e) { disconnect(&(*it), it); }
+				catch(const QuitCommandException &e) { disconnect(&(*it), it); }
 			}
 		}
 	}

@@ -26,7 +26,7 @@ void		sig_handler(int signal)
 	{
 		for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
 		{
-			disconnect(&(*it));
+			disconnect(&(*it), it);
 		}
 		// for (std::deque<t_sock>::iterator it = g_serv_sock.begin(); it != g_serv_sock.end(); ++it)
 		// 	closesocket(it->sockfd);

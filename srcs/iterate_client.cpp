@@ -16,7 +16,7 @@ void	iterate_client(MyServ &serv)
 		if (kick_if_away(*it) == true || check_register_timeout(*it) == true)
 		{
 			//std::cout << i << "= i; before disconnect if away {" << g_aClient[i].second.get_nickname() << "}\n";
-			disconnect(&(*it));
+			disconnect(&(*it), it);
 			//std::cout << i << "= i; after disconnect if away \n";
 		}
 		else if (is_readable(serv, *it))
@@ -28,15 +28,15 @@ void	iterate_client(MyServ &serv)
 			** an ssl handshake error, read error or if the client isnt writeable
 			*/
 			if (ret <= 0)
-				disconnect(&(*it));
+				disconnect(&(*it), it);
 			else if (ret > 0)
 			{
 				try
 				{
 					parser(c, it, serv);
 				}
-				catch(const IncorrectPassException &e) { disconnect(&(*it)); }
-				catch(const QuitCommandException &e) { disconnect(&(*it)); }
+				catch(const IncorrectPassException &e) { disconnect(&(*it), it); }
+				catch(const QuitCommandException &e) { disconnect(&(*it), it); }
 			}
 		}
 	}

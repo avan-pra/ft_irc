@@ -96,9 +96,7 @@ class Channel
 			{
 				if ((*it)->get_nickname() == usr_nickname)
 				{
-					std::cout << "before erase _user in chan\n";
 					it = _users.erase(it);
-					std::cout << "after erase _user in chan\n";
 					return true;
 				}
 				else

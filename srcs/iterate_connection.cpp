@@ -92,13 +92,13 @@ void	iterate_connection(MyServ &serv)
 	for (std::list<Connection>::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); ++it)
 	{
 		if (check_register_timeout(*it) == true)
-			disconnect(&(*it));
+			disconnect(&(*it), it);
 		else if (is_readable(serv, *it))
 		{
 			get_message(c, *it, ret);
 			check_message_problem(c, *it, serv, ret);
 			if (ret <= 0)
-				disconnect(&(*it));
+				disconnect(&(*it), it);
 			else if (ret > 0)
 			{
 				try
@@ -107,13 +107,13 @@ void	iterate_connection(MyServ &serv)
 				}
 				catch (NewServerException)
 				{
-					g_aUnregistered.erase(it);
+					it = g_aUnregistered.erase(it);
 				}
 				catch (NewClientException)
 				{
-					g_aUnregistered.erase(it);
+					it = g_aUnregistered.erase(it);
 				}
-				catch (QuitCommandException) { disconnect(&(*it)); }
+				catch (QuitCommandException) { disconnect(&(*it), it); }
 			}
 		}
 	}

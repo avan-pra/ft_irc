@@ -100,7 +100,7 @@ void		accept_connection(MyServ &serv, t_sock &sock)
 		sample += RPL_BOUNCE(std::string("chat.freenode.net"), std::string("6667"));
 		it->push_to_buffer(sample);
 		it->send_packets();
-		disconnect(&(*it));
+		disconnect(&(*it), it);
 	}
 	//send motd a l'arrivee du client sur le server
 	// motd_command("", g_aClient.size() - 1, serv);
