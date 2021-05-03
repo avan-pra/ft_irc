@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/03 00:36:20 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/03 17:36:30 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	check_invite(const int &chan_id, std::list<Client>::iterator client_i
 		if (*client_it == *g_vChannel[chan_id]._invite[i])
 			return (1);
 	}
-	client_it->send_reply(create_msg(473, client_it, serv, g_vChannel[chan_id].get_name()));
+	client_it->push_to_buffer(create_msg(473, client_it, serv, g_vChannel[chan_id].get_name()));
 	return (0);
 }
 
@@ -91,7 +91,7 @@ int		check_password(std::list<Client>::iterator client_it, const MyServ &serv, c
 		return (1);
 	if (pass == g_vChannel[chan_id].get_password())
 		return (1);
-	client_it->send_reply(create_msg(475, client_it, serv, g_vChannel[chan_id].get_name()));
+	client_it->push_to_buffer(create_msg(475, client_it, serv, g_vChannel[chan_id].get_name()));
 	return (0);
 }
 
