@@ -22,6 +22,7 @@ Client::~Client()
 			cht->remove_user(this->get_nickname());
 			cht->remove_user_operator(this->get_nickname());
 			cht->remove_user_voice(this->get_nickname());
+			cht->remove_user_invite(this->get_nickname());
 			tmp_send_to_channel("PART " + cht->get_name() + " :", *this, *cht);
 		}
 		if (cht->_users.size() == 0)

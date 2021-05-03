@@ -66,6 +66,7 @@ void		part_command(const std::string &line, std::list<Client>::iterator client_i
 			g_vChannel[chann_idx].remove_user(client_it->get_nickname());
 			g_vChannel[chann_idx].remove_user_operator(client_it->get_nickname());
 			g_vChannel[chann_idx].remove_user_voice(client_it->get_nickname());
+			g_vChannel[chann_idx].remove_user_invite(client_it->get_nickname());
 			std::deque<Channel>::iterator	ite = find_channel_by_iterator(g_vChannel[chann_idx].get_name());
 			if (ite != g_vChannel.end() && g_vChannel[chann_idx]._users.empty())
 				g_vChannel.erase(ite);

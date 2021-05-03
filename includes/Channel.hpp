@@ -155,6 +155,21 @@ class Channel
 			}
 			return false;
 		}
+		bool			remove_user_invite(const std::string usr_nickname)
+		{
+			for (std::deque<Client*>::iterator it = _invite.begin(); it != _invite.end(); )
+			{
+				if ((*it)->get_nickname() == usr_nickname)
+				{
+					it = _invite.erase(it);
+					return true;
+				}
+				else
+					it++;
+			}
+			return false;
+		}
+
 
 		Channel			&operator=(const Channel &other)
 		{
