@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/30 18:24:42 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/03 13:15:03 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void			set_user(const MyServ &serv, const std::string username, std::stri
 	#endif
 	#ifdef __APPLE__
 		if (serv.get_client_hostname() == "IP")
-			client_it->set_hostname(custom_ntoa(client_it->second.sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]));
+			client_it->set_hostname(custom_ntoa(client_it->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]));
 		else
 			client_it->set_hostname(serv.get_client_hostname());
 	#endif
