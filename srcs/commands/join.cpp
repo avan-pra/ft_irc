@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/04 13:08:48 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/04 13:27:07 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 	std::vector<std::string>			chan_name;
 	std::map<std::string, std::string>	tmp;
 	bool								enter;
+	int									chan_id;
 
 	params = ft_split(line, " ");
 	if (params.size() < 2)
@@ -196,12 +197,11 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 		return ;
 	for (std::map<std::string, std::string>::iterator it = tmp.begin(); it != tmp.end(); it++)
 	{
-		if (find_channel(it->first) == -1)
+		if ((chan_id = find_channel(it->first)) == -1)
 		{
 			create_channel(it, client_it, enter);
 			send_to_channel(("JOIN " + it->first), client_it, find_channel(it->first), true);
 			names_command("names " + it->first, client_it, serv);
-			topic_command("topic " + it->first, client_it, serv);
 			send_channel_time(client_it, serv, it->first);
 		}
 		else
@@ -211,7 +211,8 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 				add_client_to_channel(it, client_it, enter);
 				send_to_channel(("JOIN " + it->first), client_it, find_channel(it->first), true);
 				names_command("names " + it->first, client_it, serv);
-				topic_command("topic " + it->first, client_it, serv);
+				if (g_vChannel[chan_id].get_topic() != "")
+					topic_command("topic " + it->first, client_it, serv);
 				send_channel_time(client_it, serv, it->first);
 			}
 		}
