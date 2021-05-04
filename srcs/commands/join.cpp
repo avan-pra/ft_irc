@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/03 17:36:30 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/04 13:08:48 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,7 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 			create_channel(it, client_it, enter);
 			send_to_channel(("JOIN " + it->first), client_it, find_channel(it->first), true);
 			names_command("names " + it->first, client_it, serv);
+			topic_command("topic " + it->first, client_it, serv);
 			send_channel_time(client_it, serv, it->first);
 		}
 		else
@@ -210,6 +211,7 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 				add_client_to_channel(it, client_it, enter);
 				send_to_channel(("JOIN " + it->first), client_it, find_channel(it->first), true);
 				names_command("names " + it->first, client_it, serv);
+				topic_command("topic " + it->first, client_it, serv);
 				send_channel_time(client_it, serv, it->first);
 			}
 		}
