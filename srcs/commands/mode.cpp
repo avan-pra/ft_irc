@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/04 13:12:15 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/04 13:45:55 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,14 +138,22 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 		}
 		case 'k':
 		{
-			sign == '+' ? g_vChannel[chann_idx].set_password(arg) : g_vChannel[chann_idx].set_password("");
-			if (g_vChannel[chann_idx].get_password() == "")
-				return false;
+			if (sign == '+' && !arg.empty())
+				g_vChannel[chann_idx].set_password(arg);
+			else if (sign == '-')
+				break;
+			else
+				return	false;
 			break;
 		}
 		case 'l':
 		{
-			sign == '+' ? g_vChannel[chann_idx].set_limit(ft_atoi(arg)) : g_vChannel[chann_idx].set_limit(-1);
+			if (sign == '+' && !arg.empty())
+				g_vChannel[chann_idx].set_limit(ft_atoi(arg));
+			else if (sign == '-')
+				break;
+			else
+				return	false;
 			break;
 		}
 		case 'o':
