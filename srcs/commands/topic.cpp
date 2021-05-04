@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 11:34:56 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/28 16:56:26 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/04 12:18:26 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,13 @@ void	send_topic(const std::vector<std::string> params, std::list<Client>::iterat
 		client_it->push_to_buffer(create_msg(332, client_it, serv, params[1], g_vChannel[chan_id].get_topic()));
 }
 
-void	change_topic(std::vector<std::string> params, std::list<Client>::iterator client_it, const MyServ &serv)
+void	change_topic(const std::string &line, std::vector<std::string> params, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	int				chan_id = find_channel(params[1]);
 	std::string		topic("");
 
-	for (size_t i = 2; i < params.size(); i++)
-		topic += params[i] + " ";
-	topic = topic.erase(0, 1);
+	topic = line.substr(line.find(":") + 1);
+	std::cout << topic << std::endl;
 	if (!check_params(params, client_it, serv))
 		return ;
 	if (g_vChannel[chan_id].is_mode('t') && !is_chann_operator(chan_id, client_it))
@@ -60,21 +59,26 @@ void	change_topic(std::vector<std::string> params, std::list<Client>::iterator c
 		return ;
 	}
 	g_vChannel[chan_id].set_topic(topic);
-	params[2] = topic;
 	g_vChannel[chan_id].send_to_all(create_full_msg(params, client_it));
 }
 
 void	topic_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string>	params = ft_split(line, " ");
+	int							chan_id;
 
 	if (params.size() < 2 || (params.size() > 2 && params[2].size() > 0 && params[2][0] != ':'))
 	{
 		client_it->push_to_buffer(create_msg(461, client_it, serv, params[0]));
 		return;
 	}
+	if ((chan_id = find_channel(params[1])) != -1 && params.size() < 3 && g_vChannel[chan_id].get_topic() == "")
+	{
+		client_it->push_to_buffer(create_msg(331, client_it, serv, params[1]));
+		return;
+	}
 	if (params.size() == 2)
 		send_topic(params, client_it, serv);
 	else
-		change_topic(params, client_it, serv);
+		change_topic(line, params, client_it, serv);
 }
