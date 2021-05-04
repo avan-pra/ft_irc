@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/30 19:04:06 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/04 17:21:48 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@ enum confID
 	eLISTEN_LIMIT,
 	eSERVER_PASS_HASH,
 	eOPER_PASS_HASH,
+	eOPER_NAME,
 	eCOMMENT_LINE,
 	eALLOW_IPV6,
 	eCLIENT_LIMIT,
 	eCLIENT_HOSTNAME,
+	ePING,
+	eTIMEOUT,
+	eTIMEOUT_REGISTER,
 	eNETWORK,
 	eERROR
 };
@@ -55,13 +59,17 @@ confID	hashit_s(const std::string &s)
 	else if (s == "PORT")					return	ePORT;
 	else if (s == "PORT_TLS")				return	ePORT_TLS;
 	else if (s == "LISTEN_LIMIT")			return	eLISTEN_LIMIT;
-	else if (s == "SERVER_PASS_HASH")		return eSERVER_PASS_HASH;
-	else if (s == "OPER_PASS_HASH")			return eOPER_PASS_HASH;
-	else if (s == "ALLOW_IPV6")				return eALLOW_IPV6;
-	else if (s == "CLIENT_LIMIT")			return eCLIENT_LIMIT;
-	else if (s == "CLIENT_HOSTNAME")		return eCLIENT_HOSTNAME;
-	else if (s == "NETWORK:")				return eNETWORK;
-	else if (s.size() > 0 && s[0] == '#')	return eCOMMENT_LINE;
+	else if (s == "SERVER_PASS_HASH")		return	eSERVER_PASS_HASH;
+	else if (s == "OPER_PASS_HASH")			return	eOPER_PASS_HASH;
+	else if (s == "OPER_NAME")				return	eOPER_NAME;
+	else if (s == "ALLOW_IPV6")				return	eALLOW_IPV6;
+	else if (s == "CLIENT_LIMIT")			return	eCLIENT_LIMIT;
+	else if (s == "CLIENT_HOSTNAME")		return	eCLIENT_HOSTNAME;
+	else if (s == "PING")					return	ePING;
+	else if (s == "TIMEOUT")				return	eTIMEOUT;
+	else if (s == "TIMEOUT_REGISTER")		return	eTIMEOUT_REGISTER;
+	else if (s == "NETWORK:")				return	eNETWORK;
+	else if (s.size() > 0 && s[0] == '#')	return	eCOMMENT_LINE;
 	return	eERROR;
 }
 
@@ -243,14 +251,65 @@ int		set_allow_ipv6(MyServ &serv, std::string &variable, const int &nb_line)
 int		set_client_limit(MyServ &serv, std::string &cli_limit, const int &nb_line)
 {
 	if (serv.get_client_limit() != 0)
-		return (config_error("CLIENT_LIMIT has multiple declaration", nb_line));
+		return (config_error("CLIENT_LIMIT has multiple declarations", nb_line));
 	if (!is_only_digit(cli_limit))
-		return (config_error("CLIENT_LIMIT need only numbers", nb_line));
+		return (config_error("CLIENT_LIMIT needs only numbers", nb_line));
 	if (cli_limit == "")
 		serv.set_client_limit(CLIENT_LIMIT);
 	else
 		serv.set_client_limit(ft_atoi(cli_limit));
 	return (1);
+}
+
+int		set_ping(MyServ &serv, std::string &ping, const int &nb_line)
+{
+	if (serv.get_ping() != 0)
+		return (config_error("PING has multiple declarations", nb_line));
+	if (!is_only_digit(ping))
+		return (config_error("PING needs only numbers", nb_line));
+	if (ping == "")
+		serv.set_ping(PING);
+	else
+		serv.set_ping(ft_atoi(ping));
+	return (1);
+}
+
+int		set_timeout(MyServ &serv, std::string &timeout, const int &nb_line)
+{
+	if (serv.get_t_timeout() != 0)
+		return (config_error("TIMEOUT has multiple declarations", nb_line));
+	if (!is_only_digit(timeout))
+		return (config_error("TIMEOUT needs only numbers", nb_line));
+	if (timeout == "")
+		serv.set_t_timeout(TIMEOUT);
+	else
+		serv.set_t_timeout(ft_atoi(timeout));
+	return (1);
+}
+
+int		set_timeout_register(MyServ &serv, std::string &timeout_register, const int &nb_line)
+{
+	if (serv.get_timeout_register() != 0)
+		return (config_error("TIMEOUT_REGISTER has multiple declarations", nb_line));
+	if (!is_only_digit(timeout_register))
+		return (config_error("TIMEOUT_REGISTER needs only numbers", nb_line));
+	if (timeout_register == "")
+		serv.set_timeout_register(TIMEOUT_REGISTER);
+	else
+		serv.set_timeout_register(ft_atoi(timeout_register));
+	return (1);
+}
+
+int		set_oper_name(MyServ &serv, std::string oper_name, const int &nb_line)
+{
+	static bool	oper_name_set = false;
+
+	if (oper_name_set == true)
+		return (config_error("OPER_NAME has multiple declaration", nb_line));
+	oper_name_set = true;
+	std::string h_name = oper_name;
+	serv.set_oper_name(oper_name);
+	return	(1);
 }
 
 int		set_client_hostname(MyServ &serv, std::string &cli_hostname, const int &nb_line)
@@ -362,87 +421,115 @@ void	parse_conf(MyServ &serv, std::map<int, bool> &m_port, std::fstream &file, i
 		switch (hashit_s(line.substr(0, line.find("=", 0))))
 		{
 			case eHOSTNAME:
-				{
-					if (!set_hostname(serv, variable, nb_line))
-						throw ConfigFileException();
-					i++;
-					break ;
-				}
-			case ePORT:
-				{
-					if (!set_port(serv, variable, m_port, nb_line, false))
-						throw ConfigFileException();
-					i++;
-					break ;
-				}
-			case ePORT_TLS:
-				{
-					if (!set_port(serv, variable, m_port, nb_line, true))
-						throw ConfigFileException();
-					i++;
-					break ;
-				}
-			case eLISTEN_LIMIT:
-				{
-					if (!set_listen_limit(serv, variable, nb_line))
-						throw ConfigFileException();
-					i++;
-					break ;
-				}
-			case eSERVER_PASS_HASH:
-				{
-					if (!set_server_pass_hash(serv, variable, nb_line))
-						throw ConfigFileException();
-					i++;
-					break ;
-				}
-			case eOPER_PASS_HASH:
-				{
-					if (!set_oper_pass_hash(serv, variable, nb_line))
-						throw ConfigFileException();
-					i++;
-					break ;
-				}
-			case eALLOW_IPV6:
-				{
-					if (!set_allow_ipv6(serv, variable, nb_line))
-						throw ConfigFileException();
-					i++;
-					break ;
-				}
-			case eCLIENT_LIMIT:
-				{
-					if (!set_client_limit(serv, variable, nb_line))
-						throw ConfigFileException();
-					i++;
-					break ;
-				}
-			case eCLIENT_HOSTNAME:
-				{
-					if (!set_client_hostname(serv, variable, nb_line))
-						throw ConfigFileException();
-					i++;
-					break;
-				}
-			case eNETWORK:
-				{
-					if (!set_network_id(serv, file, nb_line, (i == 9 ? true : false)))
-						throw ConfigFileException();
-					break ;
-				}
-			case eCOMMENT_LINE:
-				{
-					break ;
-				}
-			case eERROR:
-				{
-					config_error("Unknown directive in configuration file", nb_line);
+			{
+				if (!set_hostname(serv, variable, nb_line))
 					throw ConfigFileException();
-					break ;
-				}
+				i++;
+				break ;
+			}
+			case ePORT:
+			{
+				if (!set_port(serv, variable, m_port, nb_line, false))
+					throw ConfigFileException();
+				i++;
+				break ;
+			}
+			case ePORT_TLS:
+			{
+				if (!set_port(serv, variable, m_port, nb_line, true))
+					throw ConfigFileException();
+				i++;
+				break ;
+			}
+			case eLISTEN_LIMIT:
+			{
+				if (!set_listen_limit(serv, variable, nb_line))
+					throw ConfigFileException();
+				i++;
+				break ;
+			}
+			case eSERVER_PASS_HASH:
+			{
+				if (!set_server_pass_hash(serv, variable, nb_line))
+					throw ConfigFileException();
+				i++;
+				break ;
+			}
+			case eOPER_PASS_HASH:
+			{
+				if (!set_oper_pass_hash(serv, variable, nb_line))
+					throw ConfigFileException();
+				i++;
+				break ;
+			}
+			case eOPER_NAME:
+			{
+				if (!set_oper_name(serv, variable, nb_line))
+					throw ConfigFileException();
+				i++;
+				break ;
+			}
+			case eALLOW_IPV6:
+			{
+				if (!set_allow_ipv6(serv, variable, nb_line))
+					throw ConfigFileException();
+				i++;
+				break ;
+			}
+			case eCLIENT_LIMIT:
+			{
+				if (!set_client_limit(serv, variable, nb_line))
+					throw ConfigFileException();
+				i++;
+				break ;
+			}
+			case eCLIENT_HOSTNAME:
+			{
+				if (!set_client_hostname(serv, variable, nb_line))
+					throw ConfigFileException();
+				i++;
+				break;
+			}
+			case ePING:
+			{
+				if (!set_ping(serv, variable, nb_line))
+					throw ConfigFileException();
+				i++;
+				break ;
+			}
+			case eTIMEOUT:
+			{
+				if (!set_timeout(serv, variable, nb_line))
+					throw ConfigFileException();
+				i++;
+				break ;
+			}
+			case eTIMEOUT_REGISTER:
+			{
+				if (!set_timeout_register(serv, variable, nb_line))
+					throw ConfigFileException();
+				i++;
+				break ;
+			}
+			case eNETWORK:
+			{
+				if (!set_network_id(serv, file, nb_line, (i == 13 ? true : false)))
+					throw ConfigFileException();
+				break ;
+			}
+			case eCOMMENT_LINE:
+			{
+				break ;
+			}
+			case eERROR:
+			{
+				config_error("Unknown directive in configuration file", nb_line);
+				throw ConfigFileException();
+				break ;
+			}
 		}
 	}
-	if (i == 9)
+	if (i == 13)
 		all_param_set = true;
 }
 

@@ -72,14 +72,14 @@ void	connection_parser(char *line, std::list<Connection>::iterator connection_it
 	}
 }
 
-bool	check_register_timeout(Connection &co)
+bool	check_register_timeout(Connection &co, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
 
 	if (co.is_registered() == true)
 		return false;
 	time(&time_compare);
-	if (time_compare - co.get_last_activity() > TIMEOUT_REGISTER)
+	if (time_compare - co.get_last_activity() > serv.get_timeout_register())
 		return true;
 	return false;
 }
@@ -91,7 +91,7 @@ void	iterate_connection(MyServ &serv)
 
 	for (std::list<Connection>::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); ++it)
 	{
-		if (check_register_timeout(*it) == true)
+		if (check_register_timeout(*it, serv) == true)
 			disconnect(&(*it), it);
 		else if (is_readable(serv, *it))
 		{

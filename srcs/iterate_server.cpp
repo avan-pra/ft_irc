@@ -11,7 +11,7 @@ void	iterate_server(MyServ &serv)
 	{
 		ping_if_away(*it, serv);
 		//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes
-		if (kick_if_away(*it) == true)
+		if (kick_if_away(*it, serv) == true)
 			disconnect(&(*it), it);
 		else if (FD_ISSET(it->_fd, &serv.get_readfs()))
 		{

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/30 18:45:04 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/04 17:32:34 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void		launch_all_socket(MyServ &serv, const std::map<int, bool> &m_port);
 ** run_server.cpp
 */
 void		run_server(MyServ &serv);
-bool 		kick_if_away(Connection &co);
+bool 		kick_if_away(Connection &co, const MyServ &serv);
 void 		ping_if_away(Connection &co, const MyServ &serv);
 
 /*
@@ -135,7 +135,7 @@ void		iterate_server(MyServ &serv);
 ** iterate_connection.cpp
 */
 void		iterate_connection(MyServ &serv);
-bool		check_register_timeout(Connection &co);
+bool		check_register_timeout(Connection &co, const MyServ &serv);
 
 /*
 ** get_client.cpp

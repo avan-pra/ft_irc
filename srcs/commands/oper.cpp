@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 10:47:16 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/12 16:21:31 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/04 17:33:30 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		oper_command(const std::string &line, std::list<Client>::iterator client_i
 		client_it->push_to_buffer(create_msg(491, client_it, serv));
 		return ;
 	}
-	if (params[1] != "admin")
+	if (params[1] != serv.get_oper_name())
 	{
 		client_it->push_to_buffer(":" + client_it->get_nickname() + "!"
 			+ client_it->get_username() + "@" + client_it->get_hostname() + " QUIT :Password incorrect ERROR: Password incorrect" + "\r\n");

@@ -62,21 +62,21 @@ void		ping_if_away(Connection &co, const MyServ &serv)
 		return ;
 	time(&time_compare);
 	//si je lui ai pas deja envoye un ping et si ca fait plus de 30sec que je l'ai pas ping
-	if (co.get_ping_status() == false && time_compare - co.get_last_activity() > PING)
+	if (co.get_ping_status() == false && time_compare - co.get_last_activity() > serv.get_ping())
 	{
 		co.push_to_buffer("PING :" + serv.get_hostname() + "\r\n");
 		co.set_ping_status(true);
 	}
 }
 
-bool		kick_if_away(Connection &co)
+bool		kick_if_away(Connection &co, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
 
 	if (co.is_registered() == false)
 		return false;
 	time(&time_compare);
-	if (co.get_ping_status() == true && time_compare - co.get_last_activity() > TIMEOUT)
+	if (co.get_ping_status() == true && time_compare - co.get_last_activity() > serv.get_t_timeout())
 		return true;
 	return false;
 }

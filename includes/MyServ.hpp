@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/30 18:26:28 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/04 17:35:37 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ class MyServ
 		std::string		_hostname;
 		std::string		_client_hostname;
 		std::string		_port;
+		std::string		_oper_name;
 		int				_listen_limit;
 		int				_client_limit;
 
@@ -70,6 +71,10 @@ class MyServ
 		bool			_accept_tls;
 		bool			_allow_ipv6;
         
+		long			_ping;
+		long			_t_timeout;
+		long			_timeout_register;
+
 		const std::map<std::string, void (*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> _command;
 
 	public:
@@ -82,7 +87,7 @@ class MyServ
 		** Constructor/Destructor
 		*/
 		MyServ() : _listen_limit(0), _client_limit(0), _max_fd(0), _pass_for_connection(false),
-					_pass_oper(false), _command(fill_command())
+					_pass_oper(false), _ping(0), _t_timeout(0), _timeout_register(0), _command(fill_command())
 		{
 			time(&_start_time);
 			set_timeout(3);
@@ -115,9 +120,12 @@ class MyServ
 		bool				get_accept_tls() { return _accept_tls; }
 		bool				get_allow_ipv6() const { return _allow_ipv6; }
 		int					get_client_limit() { return _client_limit; }
-
+		long				get_ping() const { return _ping; }
+		long				get_t_timeout() const { return _t_timeout; }
+		long				get_timeout_register() const { return _timeout_register; }
+		std::string			get_oper_name() const { return _oper_name; }
 		const std::map<std::string,  void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)>	&get_command() const { return _command; }
-		
+
 		/*
 		** Setter
 		*/
@@ -138,6 +146,10 @@ class MyServ
 		void	set_allow_ipv6(bool ipv6) { _allow_ipv6 = ipv6; }
 		void	set_client_limit(int limit) { _client_limit = limit; }
 		void	set_client_hostname(std::string cli_host) { _client_hostname = cli_host; }
+		void	set_ping(long value) { _ping = value; }
+		void	set_t_timeout(long value) { _t_timeout = value; }
+		void	set_timeout_register(long value) { _timeout_register = value; }
+		void	set_oper_name(std::string name) { _oper_name = name; }
 };
 
 #endif

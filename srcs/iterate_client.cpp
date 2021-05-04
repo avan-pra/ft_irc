@@ -13,7 +13,7 @@ void	iterate_client(MyServ &serv)
 		//std::cout << "in iterate client i =" << i << std::endl;
 		ping_if_away(*it, serv);
 		//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes
-		if (kick_if_away(*it) == true || check_register_timeout(*it) == true)
+		if (kick_if_away(*it, serv) == true || check_register_timeout(*it, serv) == true)
 		{
 			//std::cout << i << "= i; before disconnect if away {" << g_aClient[i].second.get_nickname() << "}\n";
 			disconnect(&(*it), it);
