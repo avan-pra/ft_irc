@@ -565,13 +565,60 @@ void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port)
 		config_error("Need more parmeters", nb_line);
 		throw ConfigFileException();
 	}
+	if (serv.get_oper_name().size() == 0)
+		serv.set_pass_oper(false);
 	#ifdef DEBUG
-		std::cout << CYAN "<<<< Config file >>>>" NC<< std::endl;
-		std::cout << "CLIENT_HOSTNAME : " << GREEN << serv.get_client_hostname() << NC << std::endl;
-		std::cout << "CLIENT_LIMIT    : " << GREEN << serv.get_client_limit() << NC << std::endl;
-		std::cout << "LISTEN_LIMIT    : " << GREEN << serv.get_listen_limit() << NC << std::endl;
-		std::cout << "ALLOW_IPV6      : " << GREEN << (serv.get_allow_ipv6() ? "true" : RED "false") << NC << std::endl;
-		std::cout << std::endl;
+		{
+			std::cout << "HOSTNAME        : " << BLUE << serv.get_hostname() << NC << std::endl;
+			std::cout << "LISTEN_LIMIT    : " << GREEN << serv.get_listen_limit() << NC << std::endl;
+			std::cout << "PORTS           : ";
+			for (std::map<int, bool>::iterator it = m_port.begin(); it != m_port.end();)
+			{
+				if (it->second == true)
+					std::cout << GREENB << it->first << NC;
+				else
+					std::cout << GREEN << it->first << NC;
+				++it;
+				if (it != m_port.end())
+					std::cout << ",";
+			} std::cout << std::endl;
+
+			std::cout << "OPER_CREDENTIALS: ";
+			if (serv.get_pass_oper() == true)
+			{
+				std::cout << GREENB << serv.get_oper_name() << NC << ":" << GREENB;
+				for (size_t i = 0; i < 32; ++i)
+				{
+					std::cout << hex2char(serv.get_oper_password()[i] / 16);
+					std::cout << hex2char(serv.get_oper_password()[i] % 16);
+				} std::cout << NC << std::endl;
+			}
+			else
+			{
+				std::cout << REDB << "NOT CONFIGURED" << NC << std::endl;
+			}
+
+			std::cout << "SERVER_PASS_HASH: " << GREENB;
+			if (serv.get_need_pass() == true)
+			{
+				for (size_t i = 0; i < 32; ++i)
+				{
+					std::cout << hex2char(serv.get_password()[i] / 16);
+					std::cout << hex2char(serv.get_password()[i] % 16);
+				} std::cout << NC << std::endl;
+			}
+			else
+			{
+				std::cout << REDB << "NOT CONFIGURED" << NC << std::endl;
+			}
+
+			std::cout << "ALLOW_IPV6      : " << (serv.get_allow_ipv6() == true ? GREEN "true" : RED "false") << NC << std::endl;
+			std::cout << "CLIENT_LIMIT    : " << GREEN << serv.get_client_limit() << NC << std::endl;
+			std::cout << "CLIENT_HOSTNAME : " << BLUE << serv.get_client_hostname() << NC << std::endl;
+			std::cout << "PING_EVERY      : " << GREEN << serv.get_ping() << NC  << "s" << std::endl;
+			std::cout << "PING_TIMEOUT    : " << GREEN << serv.get_t_timeout() << NC  << "s" << std::endl;
+			std::cout << "TIMEOUT_REGISTER: " << GREEN << serv.get_timeout_register() << NC  << "s" << std::endl;
+		} std::cout << std::endl;
 	#endif
 	file.close();
 }
