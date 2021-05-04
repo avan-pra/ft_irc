@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/03 13:30:22 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/04 01:37:41 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 		case 'k':
 		{
 			sign == '+' ? g_vChannel[chann_idx].set_password(arg) : g_vChannel[chann_idx].set_password("");
+			if (g_vChannel[chann_idx].get_password() == "")
+				return false;
 			break;
 		}
 		case 'l':
@@ -185,7 +187,9 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 		g_vChannel[chann_idx].set_mode(mode);
 	}
 	else if (!(std::strchr(g_vChannel[chann_idx].get_mode().c_str(), c)) && !(std::strchr(not_add.c_str(), c)) && sign == '+')
+	{
 		g_vChannel[chann_idx].set_mode(g_vChannel[chann_idx].get_mode() += c);
+	}
 	return	(ret);
 }
 
@@ -193,7 +197,7 @@ static void			set_chann_mode(const std::string mode, const std::vector<std::stri
 {
 	char				sign = '+';
 	std::string			tmp;
-	int					j = 3;
+	int					j = 0;
 	bool				ret;
 
 	if (g_vChannel[chann_idx].is_operator(&(*client_it)) == false)
@@ -209,7 +213,7 @@ static void			set_chann_mode(const std::string mode, const std::vector<std::stri
 			sign = '+';
 		else
 		{
-			ret = (args.size() <= 3) ? switch_mode(mode[i], "", chann_idx, client_it, sign, serv) : switch_mode(mode[i], args[j], chann_idx, client_it, sign, serv);
+			ret = (args.empty()) ? switch_mode(mode[i], "", chann_idx, client_it, sign, serv) : switch_mode(mode[i], args[j], chann_idx, client_it, sign, serv);
 			if ( ret == true)
 				j++;
 		}
@@ -245,6 +249,42 @@ static void			ban_list(const size_t &channel_idx, std::list<Client>::iterator cl
 	client_it->push_to_buffer(create_msg(368, client_it, serv, g_vChannel[channel_idx].get_name()));
 }
 
+static void			sort_mode_args(std::string &mode, std::vector<std::string> &mode_args, const std::vector<std::string> &params)
+{
+	int		count = 0;
+	bool	mode_to_push = false;
+
+	(void)mode;
+	for (size_t i = 2; i < params.size(); i++)
+	{
+		if (count > 0)
+		{
+			mode_args.push_back(params[i]);
+			count--;
+		}
+		if (count == 0)
+		{
+			for (size_t j = 0; j < params[i].size(); j++)
+			{
+				std::cout << "*Param: " << params[i][j] << std::endl;
+				if (params[i][0] == '+' || params[i][0] == '-')
+					mode_to_push = true;				
+				if (params[i][j] == 'k' || params[i][j] == 'b' || params[i][j] == 'o' || params[i][j] == 'v' || params[i][j] == 'l')
+					if (mode_to_push == true)
+						count++;
+				if (mode_to_push == true)
+				{
+					mode.push_back(params[i][j]);
+				}
+			}
+		 	mode_to_push = false;
+		}
+	}
+	// std::cout << "MODE = " << mode << std::endl;
+	// for (size_t i = 0; i < mode_args.size(); i++)
+	// 	std::cout << "ARG = " <<  mode_args[i] << std::endl;
+}
+
 void				mode_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string> params;
@@ -274,13 +314,15 @@ void				mode_command(const std::string &line, std::list<Client>::iterator client
 			//Un nouveau mode doit etre set OU la list des ban est demandée
 			else
 			{
-				mode = params[2];
+				//mode = params[2];
+				std::vector<std::string>	mode_args;
+				sort_mode_args(mode, mode_args, params);
 				//L'argument est +b, du coup on affiche la liste des users ban du channel
 				if ((mode == "+b" || mode == "b" || mode == "-b") && params.size() == 3)
 					ban_list(channel_idx, client_it, serv);
 				//On set le(s) nouveaux modes
 				else
-					set_chann_mode(mode, params, channel_idx, client_it, serv);
+					set_chann_mode(mode, mode_args, channel_idx, client_it, serv);
 			}
 		}
 		//La query concerne un user
