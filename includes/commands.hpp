@@ -65,7 +65,7 @@
 # define RPL_BOUNCE(server_name, port) ("Try server " + server_name + ", port " + port + "\n")
 # define RPL_NONE() ("\r\n") //300
 //# define RPL_USERHOST(pseudo, host) (":[<réponse>{<espace><réponse>}]\r\n") //<réponse> ::= <pseudo>['*'] '=' <'+'|'-'><hôte>
-//# define RPL_ISON(pseudo) (":[<pseudo> {<espace><pseudo>}]\r\n")
+# define RPL_ISON(user_list) (user_list + "\r\n")
 # define RPL_AWAY(pseudo) (pseudo + " :<message d'absence>\r\n")
 # define RPL_UNAWAY() (":You are no longer marked as being away\r\n")
 # define RPL_NOWAWAY() (":You have been marked as being away\r\n")
@@ -189,6 +189,7 @@ void	topic_command(const std::string &line, std::list<Client>::iterator client_i
 void	notice_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	whois_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	whowas_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	ison_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp

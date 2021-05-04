@@ -52,7 +52,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["USERS"] = NULL;
 	cmd["WALLOPS"] = NULL;
 	cmd["USERHOST"] = NULL;
-	cmd["ISON"] = NULL;
+	cmd["ISON"] = ison_command;
 	cmd["SERVICE"] = NULL;
 	cmd["MOTD"] = motd_command;
 	cmd["LUSERS"] = NULL;
