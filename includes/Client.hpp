@@ -39,6 +39,7 @@ class Client : public Connection
 		bool			_has_good_password;
 		bool			_has_try_password;
 		bool			_is_oper;
+		std::string		_away_str;
 
 	public:
 
@@ -80,6 +81,8 @@ class Client : public Connection
 		bool			get_pass_try() { return _has_try_password; }
 		bool			get_is_oper() { return _is_oper; }
 		bool			is_invisble() { return (_mode.find('i', 0) != std::string::npos); }
+		bool			get_is_away() { return (_away_str.size() == 0 ? false : true); }
+		std::string		get_away_str() { return _away_str; }
 
 		/*
 		 ** Setter
@@ -92,6 +95,8 @@ class Client : public Connection
 		void			set_password_state(bool submit) { _has_good_password = submit; }
 		void			set_pass_try(bool pass) { _has_try_password = pass; }
 		void			set_is_oper(bool oper) { _is_oper = oper; }
+		void			set_away_str(const std::string &away_str) { _away_str = away_str; }
+		
 		
 		/*
 		** Methods

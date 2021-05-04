@@ -66,7 +66,7 @@
 # define RPL_NONE() ("\r\n") //300
 # define RPL_USERHOST(userhost_list) (userhost_list + "\r\n") //<réponse> ::= <pseudo>['*'] '=' <'+'|'-'><hôte>
 # define RPL_ISON(user_list) (user_list + "\r\n")
-# define RPL_AWAY(pseudo) (pseudo + " :<message d'absence>\r\n")
+# define RPL_AWAY(pseudo, str) (pseudo + " " + str + "\r\n")
 # define RPL_UNAWAY() (":You are no longer marked as being away\r\n")
 # define RPL_NOWAWAY() (":You have been marked as being away\r\n")
 # define RPL_WHOISUSER(nick, user, host, realname) (nick + " " + user + " " + host + " * :" + realname + "\r\n")
@@ -162,6 +162,7 @@ class MyServ;
 ** commands
 */
 
+void	away_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	pass_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	ping_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	pong_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
