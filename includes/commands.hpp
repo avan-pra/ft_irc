@@ -64,7 +64,7 @@
 # define RPL_WELCOME(nick) (":Welcome to the Internet Relay Network " + nick + "\r\n")
 # define RPL_BOUNCE(server_name, port) ("Try server " + server_name + ", port " + port + "\n")
 # define RPL_NONE() ("\r\n") //300
-//# define RPL_USERHOST(pseudo, host) (":[<réponse>{<espace><réponse>}]\r\n") //<réponse> ::= <pseudo>['*'] '=' <'+'|'-'><hôte>
+# define RPL_USERHOST(userhost_list) (userhost_list + "\r\n") //<réponse> ::= <pseudo>['*'] '=' <'+'|'-'><hôte>
 # define RPL_ISON(user_list) (user_list + "\r\n")
 # define RPL_AWAY(pseudo) (pseudo + " :<message d'absence>\r\n")
 # define RPL_UNAWAY() (":You are no longer marked as being away\r\n")
@@ -190,6 +190,7 @@ void	notice_command(const std::string &line, std::list<Client>::iterator client_
 void	whois_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	whowas_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	ison_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	userhost_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp

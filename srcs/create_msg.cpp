@@ -28,6 +28,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_BOUNCE(arg1, arg2);
 		case 221:
 			return sample + RPL_UMODEIS(arg1);
+		case 302:
+			return sample + RPL_USERHOST(arg1);
 		case 303:
 			return sample + RPL_ISON(arg1);
 		case 311:

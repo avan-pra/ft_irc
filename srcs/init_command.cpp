@@ -51,7 +51,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["SUMMON"] = NULL;
 	cmd["USERS"] = NULL;
 	cmd["WALLOPS"] = NULL;
-	cmd["USERHOST"] = NULL;
+	cmd["USERHOST"] = userhost_command;
 	cmd["ISON"] = ison_command;
 	cmd["SERVICE"] = NULL;
 	cmd["MOTD"] = motd_command;
