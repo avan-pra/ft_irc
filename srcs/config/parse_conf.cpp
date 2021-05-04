@@ -569,6 +569,7 @@ void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port)
 		serv.set_pass_oper(false);
 	#ifdef DEBUG
 		{
+			std::cout << CYAN "<<<< Config file >>>>" NC<< std::endl;
 			std::cout << "HOSTNAME        : " << BLUE << serv.get_hostname() << NC << std::endl;
 			std::cout << "LISTEN_LIMIT    : " << GREEN << serv.get_listen_limit() << NC << std::endl;
 			std::cout << "PORTS           : ";
