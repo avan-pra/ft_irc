@@ -89,8 +89,12 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 	int								i;
 	time_t							new_time;
 
-	params = ft_split(line.substr(0, line.find_first_of(':')), " ");
-	params.push_back(line.substr(line.find_first_of(':')));
+	try
+	{
+		params = ft_split(line.substr(0, line.find_first_of(':')), " ");
+		params.push_back(line.substr(line.find_first_of(':')));
+	}
+	catch(const std::exception& e) { }
 	if (!check_params(params, client_it, serv))
 		return ;
 	i = find_channel(params[1]);
@@ -99,6 +103,12 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 	else if ((it = find_client_by_iterator(params[1])) != g_aClient.end())
 	{
 		it->push_to_buffer(create_full_msg(params, client_it));
+		if (it->get_is_away() == true)
+			client_it->push_to_buffer(create_msg(301, client_it, serv, it->get_nickname(), it->get_away_str()));
+	}
+	else
+	{
+		client_it->push_to_buffer(create_msg(401, client_it, serv));
 	}
 	time(&new_time);
 	client_it->set_t_idle(new_time);
