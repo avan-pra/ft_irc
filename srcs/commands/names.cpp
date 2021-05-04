@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/26 11:14:49 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/03 01:00:06 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/04 13:16:42 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ std::string		set_nick_list(const int &chan_id)
 	{
 		if (find_operator(chan_id, find_client_by_iterator(g_vChannel[chan_id][i].get_nickname())) != g_vChannel[chan_id]._operator.end())
 			lst += "@";
-		else
+		else if (g_vChannel[chan_id].is_voice(*g_vChannel[chan_id]._users[i]))
 			lst += "+";
+		else
+			lst += " ";
 		lst += g_vChannel[chan_id][i].get_nickname();
 		lst += " ";
 	}
