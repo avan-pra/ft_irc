@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/04 01:37:41 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/04 13:12:15 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,8 +253,7 @@ static void			sort_mode_args(std::string &mode, std::vector<std::string> &mode_a
 {
 	int		count = 0;
 	bool	mode_to_push = false;
-
-	(void)mode;
+	
 	for (size_t i = 2; i < params.size(); i++)
 	{
 		if (count > 0)
@@ -266,13 +265,12 @@ static void			sort_mode_args(std::string &mode, std::vector<std::string> &mode_a
 		{
 			for (size_t j = 0; j < params[i].size(); j++)
 			{
-				std::cout << "*Param: " << params[i][j] << std::endl;
 				if (params[i][0] == '+' || params[i][0] == '-')
 					mode_to_push = true;				
 				if (params[i][j] == 'k' || params[i][j] == 'b' || params[i][j] == 'o' || params[i][j] == 'v' || params[i][j] == 'l')
 					if (mode_to_push == true)
 						count++;
-				if (mode_to_push == true)
+				if (mode_to_push == true && i != 2)
 				{
 					mode.push_back(params[i][j]);
 				}
@@ -314,7 +312,7 @@ void				mode_command(const std::string &line, std::list<Client>::iterator client
 			//Un nouveau mode doit etre set OU la list des ban est demandée
 			else
 			{
-				//mode = params[2];
+				mode = params[2];
 				std::vector<std::string>	mode_args;
 				sort_mode_args(mode, mode_args, params);
 				//L'argument est +b, du coup on affiche la liste des users ban du channel
