@@ -37,10 +37,13 @@
 
 # define GREEN "\e[0;32m"
 
+# define BLUE "\e[0;34m"
+
 # define CYAN "\e[0;36m"
 
 # define REDB "\e[41m"
 
+# define GREENB "\e[42m"
 
 # define DEBUG
 
@@ -169,6 +172,7 @@ std::vector<std::string>	ft_split(std::string s, std::string splitter);
 ** char2hex.cpp
 */
 int		char2hex(char input);
+char	hex2char(char input);
 
 /*
 ** to_string 
