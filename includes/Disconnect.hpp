@@ -9,4 +9,6 @@ void	disconnect(Server *co, std::list<Server>::iterator &server_it);
 
 void	disconnect(Connection *co, std::list<Connection>::iterator &connection_it);
 
+void	disconnect_all();
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:04 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/04/29 12:58:06 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/05 19:45:34 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,7 @@ void		sig_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
-		{
-			disconnect(&(*it), it);
-		}
-		for (std::list<Connection>::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); ++it)
-		{
-			disconnect(&(*it), it);
-		}
-		for (std::list<Server>::iterator it = g_aServer.begin(); it != g_aServer.end(); ++it)
-		{
-			disconnect(&(*it), it);
-		}
-		for (size_t i = 0; i < g_serv_sock.size(); i++)
-		{
-			closesocket(g_serv_sock[i].sockfd);
-		}
+		disconnect_all();
 		exit(0);
 	}
 	else if (signal == SIGPIPE)
@@ -73,6 +58,15 @@ int			main(void)
 		std::cerr << e.what() << std::endl;
 		return (1);
 	}
-	run_server(serv);
+	try
+	{
+		run_server(serv);
+	}
+	catch (const DieException &e)
+	{
+		disconnect_all();
+		std::cout << e.what() << std::endl;;
+		return (0);
+	}
 	return (0);
 }

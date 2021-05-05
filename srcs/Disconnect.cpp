@@ -92,3 +92,23 @@ void	disconnect(Connection *co, std::list<Connection>::iterator &connection_it)
 		return ;
 	}
 }
+
+void		disconnect_all()
+{
+	for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
+	{
+		disconnect(&(*it), it);
+	}
+	for (std::list<Connection>::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); ++it)
+	{
+		disconnect(&(*it), it);
+	}
+	for (std::list<Server>::iterator it = g_aServer.begin(); it != g_aServer.end(); ++it)
+	{
+		disconnect(&(*it), it);
+	}
+	for (size_t i = 0; i < g_serv_sock.size(); i++)
+	{
+		closesocket(g_serv_sock[i].sockfd);
+	}
+}

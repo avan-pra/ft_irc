@@ -66,4 +66,13 @@ class	ConfigFileException: public std::exception
 	};
 };
 
+class	DieException: public std::exception
+{
+	public:
+	virtual const char	*what() const throw()
+	{
+		return "Oper use DIE command to stop the server";
+	};
+};
+
 #endif

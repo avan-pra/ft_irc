@@ -13,7 +13,7 @@
 # define ERR_NOSUCHCHANNEL(channel) (channel + " :No such channel\r\n") //403
 # define ERR_CANNOTSENDTOCHAN(channel) (channel + " :Cannot send to channel\r\n") //404
 # define ERR_TOOMANYCHANNELS(channel) (channel + " :You have joined too many channels\r\n") //405
-# define ERR_WASNOSUCHNICK(channel) (channel + " :There was no such nickname\r\n") //406
+# define ERR_WASNOSUCHNICK(nickname) (nickname + " :There was no such nickname\r\n") //406
 # define ERR_TOOMANYTARGETS(dest) (dest + ":Duplicate recipients. No message delivered\r\n") //407
 # define ERR_NOORIGIN() (":No origin specified\r\n") //409
 # define ERR_NORECIPIENT(command) (":No recipient given (" + command + ")\r\n")
@@ -35,9 +35,9 @@
 # define ERR_NOLOGIN(user) (user + " :User not logged in\r\n")
 # define ERR_SUMMONDISABLED() (":SUMMON has been disabled\r\n")
 # define ERR_USERSDISABLED() (":USERS has been disabled\r\n")
-# define ERR_NOTREGISTERED() (" :You have not registered\r\n")
+# define ERR_NOTREGISTERED() (":You have not registered\r\n")
 # define ERR_NEEDMOREPARAMS(command) (command + " :Not enough parameters\r\n")
-# define ERR_ALREADYREGISTRED() (" :Unauthorized command (already registered)\r\n")
+# define ERR_ALREADYREGISTRED() (":Unauthorized command (already registered)\r\n")
 # define ERR_NOPERMFORHOST() (":Your host isn't among the privileged\r\n")
 # define ERR_PASSWDMISMATCH() (":Password incorrect\r\n")
 # define ERR_YOUREBANNEDCREEP() (":You are banned from this server\r\n")
@@ -51,8 +51,8 @@
 # define ERR_CHANOPRIVSNEEDED(channel) (channel + " :You're not channel operator\r\n")
 # define ERR_CANTKILLSERVER() (":You cant kill a server!\r\n")
 # define ERR_NOOPERHOST() (":No O-lines for your host\r\n")
-# define ERR_UMODEUNKNOWNFLAG() (" :Unknown MODE flag\r\n")
-# define ERR_USERSDONTMATCH() (" :Cannot change mode for other users\r\n")
+# define ERR_UMODEUNKNOWNFLAG() (":Unknown MODE flag\r\n")
+# define ERR_USERSDONTMATCH() (":Cannot change mode for other users\r\n")
 # define ERR_INVALIDCAP(command) (command + " :Invalid CAP command\r\n")
 # define ERR_NOTOPIC(channel) (channel + " :No topic is set\r\n")
 # define ERR_BADCHANMASK(channel) (channel + " :Bad Channel Mask\r\n")
@@ -74,7 +74,7 @@
 # define RPL_WHOISOPERATOR(pseudo) (pseudo + " :is an IRC operator\r\n")
 # define RPL_WHOISIDLE(pseudo, idle, signon) (" " + pseudo + " " + idle + " " + signon + " :seconds idle, signon time\r\n")
 # define RPL_WHOREPLY(arg) (arg + "\r\n")
-# define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of WHOIS list\r\n")
+# define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of /WHOIS list\r\n")
 //# define RPL_WHOISCHANNELS(pseudo, channel) (pseudo + " :{[@|+]<canal><espace>}\r\n")
 # define RPL_WHOWASUSER(nick, user, host, realname) (nick + " " + user + " " + host + " * :" + realname + "\r\n")
 # define RPL_ENDOFWHOWAS(nick) (nick + " :End of WHOWAS\r\n")
@@ -192,6 +192,7 @@ void	whois_command(const std::string &line, std::list<Client>::iterator client_i
 void	whowas_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	ison_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	userhost_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	die_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp
