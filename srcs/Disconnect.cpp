@@ -28,8 +28,9 @@ void	disconnect(Client *co, std::list<Client>::iterator &client_it)
 		#ifdef __APPLE__
 			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]);
 		#endif
+		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (client) "
+			<< (client_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
 		client_it = g_aClient.erase(it);
-		std::cout << "* Client disconnected from: " << sin_addr << ":" << sin_port << tls_str << std::endl;
 		return ;
 	}
 }
@@ -56,8 +57,9 @@ void	disconnect(Server *co, std::list<Server>::iterator &server_it)
 		#ifdef __APPLE__
 			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]);
 		#endif
+		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (server) "
+			<< (server_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
 		server_it = g_aServer.erase(it);
-		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << std::endl;
 		return ;
 	}
 }
@@ -84,9 +86,9 @@ void	disconnect(Connection *co, std::list<Connection>::iterator &connection_it)
 		#ifdef __APPLE__
 			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]);
 		#endif
-
+		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (unknown) "
+			<< (connection_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
 		connection_it = g_aUnregistered.erase(it);
-		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << std::endl;
 		return ;
 	}
 }
