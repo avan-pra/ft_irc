@@ -92,6 +92,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + ERR_NOSUCHCHANNEL(arg1);
 		case 404:
 			return sample + ERR_CANNOTSENDTOCHAN(arg1);
+		case 406:
+			return sample + ERR_WASNOSUCHNICK(arg1);
 		case 410:
 			return sample + ERR_INVALIDCAP(arg1);
 		case 411:

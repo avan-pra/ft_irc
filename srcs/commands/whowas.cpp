@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 19:32:09 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/28 17:10:05 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/05 17:40:56 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,9 @@ void	whowas_command(const std::string &line, std::list<Client>::iterator client_
 	if (args.size() == 2)
 	{
 		nickname = args[1];
+		//Err_reply if the user was not found
 		if (is_in_list(nickname) == false)
-			;//err_rply
+			client_it->push_to_buffer(create_msg(406, client_it, serv, nickname));
 		else
 			display_name_list(nickname, client_it, serv);
 	}

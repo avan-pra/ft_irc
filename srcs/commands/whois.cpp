@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:16:05 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/05 17:29:16 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/05 17:54:15 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ static void		whois_client(std::list<Client>::iterator client_it, std::vector<std
 	//Erro if the user used 2 arguments of WHOIS but quering a host
 	if (args[1].find('.') != std::string::npos)
 	{
-		client_it->push_to_buffer(create_msg(401, client_it, serv, " " + args[1]));
+		client_it->push_to_buffer(create_msg(406, client_it, serv, args[1]));
 		client_it->push_to_buffer(create_msg(318, client_it, serv, args[1]));
 		return ;
 	}
 	//Error if we can't find the user requested
 	if ((target = find_client_by_iterator(args[1])) == g_aClient.end())
 	{
-		client_it->push_to_buffer(create_msg(401, client_it, serv, " " + args[1]));
+		client_it->push_to_buffer(create_msg(406, client_it, serv, args[1]));
 		client_it->push_to_buffer(create_msg(318, client_it, serv, args[1]));
 		return ;
 	}
@@ -61,7 +61,7 @@ void	whois_command(const std::string &line, std::list<Client>::iterator client_i
 	else if (args.size() == 3)
 	{
 		//A modifier quand server sera set
-		client_it->push_to_buffer(create_msg(401, client_it, serv, " " + args[1]));
+		client_it->push_to_buffer(create_msg(406, client_it, serv, args[1]));
 		client_it->push_to_buffer(create_msg(318, client_it, serv, args[1]));
 		return ;
 	}

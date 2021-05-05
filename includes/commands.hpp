@@ -13,7 +13,7 @@
 # define ERR_NOSUCHCHANNEL(channel) (channel + " :No such channel\r\n") //403
 # define ERR_CANNOTSENDTOCHAN(channel) (channel + " :Cannot send to channel\r\n") //404
 # define ERR_TOOMANYCHANNELS(channel) (channel + " :You have joined too many channels\r\n") //405
-# define ERR_WASNOSUCHNICK(channel) (channel + " :There was no such nickname\r\n") //406
+# define ERR_WASNOSUCHNICK(nickname) (nickname + " :There was no such nickname\r\n") //406
 # define ERR_TOOMANYTARGETS(dest) (dest + ":Duplicate recipients. No message delivered\r\n") //407
 # define ERR_NOORIGIN() (":No origin specified\r\n") //409
 # define ERR_NORECIPIENT(command) (":No recipient given (" + command + ")\r\n")
@@ -74,7 +74,7 @@
 # define RPL_WHOISOPERATOR(pseudo) (pseudo + " :is an IRC operator\r\n")
 # define RPL_WHOISIDLE(pseudo, idle, signon) (" " + pseudo + " " + idle + " " + signon + " :seconds idle, signon time\r\n")
 # define RPL_WHOREPLY(arg) (arg + "\r\n")
-# define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of WHOIS list\r\n")
+# define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of /WHOIS list\r\n")
 //# define RPL_WHOISCHANNELS(pseudo, channel) (pseudo + " :{[@|+]<canal><espace>}\r\n")
 # define RPL_WHOWASUSER(nick, user, host, realname) (nick + " " + user + " " + host + " * :" + realname + "\r\n")
 # define RPL_ENDOFWHOWAS(nick) (nick + " :End of WHOWAS\r\n")
