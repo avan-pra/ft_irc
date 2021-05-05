@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ison.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 13:42:01 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/04 14:31:14 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/05 17:07:33 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,5 @@ void	ison_command(const std::string &line, std::list<Client>::iterator client_it
 			rpl += params[i];
 		}
 	}
-		std::cout << rpl << std::endl;
 	client_it->push_to_buffer(create_msg(303, client_it, serv, rpl));
 }
