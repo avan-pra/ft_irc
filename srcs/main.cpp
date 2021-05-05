@@ -65,8 +65,7 @@ int			main(void)
 	catch (const DieException &e)
 	{
 		disconnect_all();
-		std::cout << e.what() << std::endl;;
-		return (0);
+		std::cout << e.what() << std::endl;
 	}
-	return (0);
+	exit(0);
 }
