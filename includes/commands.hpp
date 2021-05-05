@@ -192,6 +192,7 @@ void	whois_command(const std::string &line, std::list<Client>::iterator client_i
 void	whowas_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	ison_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	userhost_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	die_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp

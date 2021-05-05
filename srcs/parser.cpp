@@ -86,6 +86,7 @@ void	parser(char *line, std::list<Client>::iterator client_it, const MyServ &ser
 				if (can_execute(command, client_it, serv) == true)
 					serv.get_command().at(command)(*str, client_it, serv);
 			}
+			catch (const DieException &e) { throw DieException(); }
 			catch (const IncorrectPassException &e) { throw IncorrectPassException(); }
 			catch (const QuitCommandException &e) { throw QuitCommandException(); }
 			catch (const std::exception &e) { client_it->push_to_buffer(create_msg(421, client_it, serv, command)); } //il faut envoyer ca au client
