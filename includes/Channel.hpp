@@ -206,6 +206,13 @@ class Channel
 					return (true);
 			return (false);
 		}
+		bool			is_voice(const Client *cli)
+		{
+			for (size_t i = 0; i < _voice.size(); i++)
+				if (_voice[i] == cli)
+					return (true);
+			return (false);
+		}
 
 		bool			is_ban(const Client &cli)
 		{

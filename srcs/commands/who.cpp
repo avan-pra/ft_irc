@@ -11,7 +11,7 @@ static size_t	who_switch(char c)
 }
 
 //return -1 si il y a eu un prblm
-static int	who_channel(const std::string &channel, std::list<Client>::iterator client_it, const MyServ &serv)
+static int	who_channel(const std::string &channel, std::list<Client>::iterator client_it, const MyServ &serv, char c)
 {
 	int channel_id = find_channel(channel);
 
@@ -19,28 +19,36 @@ static int	who_channel(const std::string &channel, std::list<Client>::iterator c
 		return (1);
 	if (client_it->get_is_oper() == false && !is_user_in_chan(channel_id, client_it->get_nickname()))
 		return (1);
-	// std::cout << "who passed" << std::endl;
 	for (size_t n = 0; n < g_vChannel[channel_id]._users.size(); ++n)
 	{
-		std::string str;
-
-		str += g_vChannel[channel_id].get_name() + " ";
-		str += g_vChannel[channel_id]._users[n]->get_username() + " ";
-		str += g_vChannel[channel_id]._users[n]->get_hostname() + " ";
-		str += serv.get_hostname() + " ";
-		str += g_vChannel[channel_id]._users[n]->get_nickname() + " ";
+		if (c == 'o' && g_vChannel[channel_id]._users[n]->get_is_oper() == false)
+			;//do not print the user if o is specified
+		else
 		{
-			str += "H";
-			if (g_vChannel[channel_id].is_operator(g_vChannel[channel_id]._users[n]))
-				str += "@";
-			else
-				str += "+";
-			str += " ";
+			std::string str;
+
+			str += g_vChannel[channel_id].get_name() + " ";
+			str += g_vChannel[channel_id]._users[n]->get_username() + " ";
+			str += g_vChannel[channel_id]._users[n]->get_hostname() + " ";
+			str += serv.get_hostname() + " ";
+			str += g_vChannel[channel_id]._users[n]->get_nickname() + " ";
+			{
+				if (g_vChannel[channel_id]._users[n]->get_is_away())
+					str += "G";
+				else
+					str += "H";
+				if (g_vChannel[channel_id]._users[n]->get_is_oper())
+					str += "*";
+				if (g_vChannel[channel_id].is_operator(g_vChannel[channel_id]._users[n]))
+					str += "@";
+				else if (g_vChannel[channel_id].is_voice(g_vChannel[channel_id]._users[n]))
+					str += "+";
+				str += " ";
+			}
+			str += std::string(":0") + " ";
+			str += g_vChannel[channel_id]._users[n]->get_realname();
+			client_it->push_to_buffer(create_msg(352, client_it, serv, str));
 		}
-		str += std::string(":0") + " ";
-		str += g_vChannel[channel_id]._users[n]->get_realname();
-	
-		client_it->push_to_buffer(create_msg(352, client_it, serv, str));
 	}
 	return (0);
 }
@@ -69,11 +77,13 @@ static bool has_permission(const std::string &query, std::list<Client>::iterator
 	return false;
 }
 
-int	who_client(const std::string &query, std::list<Client>::iterator client_it, const MyServ &serv)
+int	who_client(const std::string &query, std::list<Client>::iterator client_it, const MyServ &serv, char c)
 {
 	for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
 	{
-		if (has_permission(query, client_it, it) == true)
+		if (c == 'o' && it->get_is_oper() == false)
+			;//do not print the user if o is specified
+		else if (has_permission(query, client_it, it) == true)
 		{
 			std::string str;
 
@@ -83,7 +93,12 @@ int	who_client(const std::string &query, std::list<Client>::iterator client_it, 
 			str += serv.get_hostname() + " ";
 			str += it->get_nickname() + " ";
 			{
-				str += "H";
+				if (it->get_is_away())
+					str += "G";
+				else
+					str += "H";
+				if (it->get_is_oper())
+					str += "*";
 				str += " ";
 			}
 			str += std::string(":0") + " ";
@@ -133,9 +148,19 @@ void	who_command(const std::string &line, std::list<Client>::iterator client_it,
 	switch (who_switch(arg[1][0]))
 	{
 		case 1:
-			who_channel(arg[1], client_it, serv); break;
+		{
+			if (arg.size() >= 3 && arg[2].size() == 1 && arg[2][0] == 'o')
+				{ who_channel(arg[1], client_it, serv, 'o'); break; }
+			else
+				{ who_channel(arg[1], client_it, serv, 'n'); break; }
+		}
 		default:
-			who_client(arg[1], client_it, serv); break;
+		{
+			if (arg.size() >= 3 && arg[2].size() == 1 && arg[2][0] == 'o')
+				{ who_client(arg[1], client_it, serv, 'o'); break; }
+			else
+				{ who_client(arg[1], client_it, serv, 'n'); break; }
+		}
 	}
 	client_it->push_to_buffer(create_msg(315, client_it, serv, arg[1]));
 	//352 RPL_WHOREPLY
