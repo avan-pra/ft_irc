@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/06 17:21:15 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/06 18:07:51 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ struct t_networkID
 	}
 };
 
-typedef struct			t_config_file
+struct			t_config_file
 {
 	std::map<int, bool>		m_ports;
 	std::string				hostname;
