@@ -41,7 +41,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["WHO"] = who_command;
 	cmd["WHOIS"] = whois_command;
 	cmd["WHOWAS"] = whowas_command;
-	cmd["KILL"] = NULL;
+	cmd["KILL"] = kill_command;
 	cmd["PING"] = ping_command;
 	cmd["PONG"] = pong_command;
 	cmd["ERROR"] = NULL;

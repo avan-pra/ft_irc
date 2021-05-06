@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:11:18 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/29 14:06:51 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/06 11:27:55 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,8 @@ static void		check_usr_in_channel(const int channel_idx, std::list<Client>::iter
 void		part_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string>	params;
-	std::string					channel_name, output = "";
+	std::string					channel_name;
 
-	params = ft_split(line, ":");
-	if (params.size() > 1)
-		output = params[1];
 	params = ft_split(line, " ");
 	if (params.size() < 2)
 	{
@@ -48,8 +45,10 @@ void		part_command(const std::string &line, std::list<Client>::iterator client_i
 	}
 	try
 	{
-		int chann_idx = 0;
+		int 		chann_idx = 0;
+		std::string	output;
 
+		output = line.substr(line.find_first_of(':') + 1, line.size());
 		params = ft_split(params[1], ",");
 		for (size_t i = 0; i < params.size(); i++)
 		{

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/28 18:17:32 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/06 11:34:32 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,5 @@ class Client : public Connection
 			return (!(a == *this));
 		}
 };
-
 
 #endif

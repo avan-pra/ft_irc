@@ -132,6 +132,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + ERR_BADCHANNELKEY(arg1);
 		case 476:
 			return sample + ERR_BADCHANMASK(arg1);
+		case 481:
+			return sample + ERR_NOPRIVILEGES();
 		case 482:
 			return sample + ERR_CHANOPRIVSNEEDED(arg1);
 		case 491:
@@ -142,6 +144,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + ERR_USERSDONTMATCH();
 		case 691:
 			return sample + ERR_ALREADYBAN(arg1, arg2);
+		case 692:
+			return sample + ERR_KILLDENY(arg1);
 		default:
 			return std::string("");
 	}

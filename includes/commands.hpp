@@ -58,6 +58,8 @@
 # define ERR_BADCHANMASK(channel) (channel + " :Bad Channel Mask\r\n")
 # define ERR_ALREADYBAN(channel, user) (channel + " " + user + " b :Channel " + channel + " list already contains " + user + "\r\n")
 # define ERR_SERVERISFULL(serv_name) (serv_name + " Server is full\r\n");
+# define ERR_KILLDENY(mssg) (":" + mssg + "\r\n")
+
 /*
 **  reponse for command file
 */
@@ -193,6 +195,7 @@ void	whowas_command(const std::string &line, std::list<Client>::iterator client_
 void	ison_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	userhost_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	die_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	kill_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp

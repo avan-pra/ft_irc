@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/29 14:22:37 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/06 11:27:57 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,11 @@ void		quit_command(const std::string &line, std::list<Client>::iterator client_i
 			part_command("PART " + part_string, client_it, serv);
 		else
 		{
-			for (size_t i = 1; i < args.size() ; i++)
-				output += args[i] + " ";
-			if (output.size() > 0)
-				output.resize(output.size() - 1);
+			try
+			{
+				output = line.substr(line.find_first_of(':'), line.size());
+			}
+			catch (std::exception) { return; }
 			part_command("PART " + part_string + " " + output, client_it, serv);
 		}
 	}
