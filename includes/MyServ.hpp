@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/04 17:35:37 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/06 17:21:15 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,35 @@ struct t_networkID
 	}
 };
 
+typedef struct			t_config_file
+{
+	std::map<int, bool>		m_ports;
+	std::string				hostname;
+	std::string				client_hostname;
+	std::string				port;
+	std::string				oper_name;
+	int						listen_limit;
+	int						client_limit;
+	unsigned char			password[32];
+	unsigned char			oper_password[32];
+	bool					allow_ipv6;
+	long					ping;
+	long					t_timeout;
+	long					timeout_register;
+	std::deque<t_networkID>	aNetworks;
+	
+	t_config_file()
+	{
+		listen_limit = 0;
+		client_limit = 0;
+		bzero(password, 32);
+		bzero(oper_password, 32);
+		ping = 0;
+		t_timeout = 0;
+		timeout_register = 0;
+	}
+};
+
 class MyServ
 {
 	private:
@@ -82,6 +111,7 @@ class MyServ
 		SSL_CTX						*sslctx;
 		SSL							*sslptr;
 		std::deque<t_networkID>		network;
+		t_config_file				serv_config;
 
 		/*
 		** Constructor/Destructor
