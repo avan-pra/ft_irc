@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/06 18:07:51 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/07 11:54:32 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ struct			t_config_file
 	long					t_timeout;
 	long					timeout_register;
 	std::deque<t_networkID>	aNetworks;
-	
+	bool					pass_for_connection;
+	bool					pass_oper;
+	bool					accept_tls;
+
 	t_config_file()
 	{
 		listen_limit = 0;
@@ -73,6 +76,7 @@ struct			t_config_file
 		ping = 0;
 		t_timeout = 0;
 		timeout_register = 0;
+		client_hostname = "";
 	}
 };
 

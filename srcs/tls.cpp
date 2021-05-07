@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tls.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 19:45:37 by lucas             #+#    #+#             */
-/*   Updated: 2021/04/30 14:01:05 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/07 11:17:46 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	InitSSLCTX(MyServ &serv)
 			std::cerr << "Key not found. Skipping SSL_CTX creation" << std::endl;
 		std::cout << "IRCSERV only classic connection" << std::endl;
 		serv.set_accept_tls(false);
+		serv.serv_config.accept_tls = false;
 		return ;
 	}
 	close(cert);
@@ -65,6 +66,7 @@ void	InitSSLCTX(MyServ &serv)
 		error_exit("Failed to load a private key");
 	}
 	serv.set_accept_tls(true);
+	serv.serv_config.accept_tls = true;
 }
 
 int		receive_message(Connection &co, char *buf)

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/06 17:15:00 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/07 11:43:05 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,8 @@ std::string	custom_ntoa(uint32_t in);
 /*
 ** parse_conf.cpp
 */
-void		parse_conf(MyServ &serv, std::map<int, bool> &m_port, std::fstream &file, int &nb_line);
-void		start_parse_conf(MyServ &serv, std::map<int, bool> &m_port);
+void		parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line);
+void		start_parse_conf(t_config_file &config_file);
 
 /*
  ** ft_bzero.cpp
@@ -240,5 +240,11 @@ void		error_exit(const std::string &exit_msg);
 ** who_was.cpp
 */
 void		add_disconnected_nick(std::list<Client>::iterator client_it);
+
+/*
+** set_serv_attributes
+*/
+
+void		set_serv_attributes(MyServ &serv);
 
 #endif
