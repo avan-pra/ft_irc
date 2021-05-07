@@ -32,7 +32,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["STATS"] = NULL;
 	cmd["LINKS"] = NULL;
 	cmd["TIME"] = time_command;
-	cmd["CONNECT"] = NULL;
+	cmd["CONNECT"] = connect_command;
 	cmd["TRACE"] = NULL;
 	cmd["ADMIN"] = NULL;
 	cmd["INFO"] = info_command;

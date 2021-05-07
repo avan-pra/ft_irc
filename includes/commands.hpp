@@ -196,6 +196,7 @@ void	ison_command(const std::string &line, std::list<Client>::iterator client_it
 void	userhost_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	die_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	kill_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	connect_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp
