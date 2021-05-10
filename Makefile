@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/05/07 11:50:04 by jvaquer          ###   ########.fr        #
+#    Updated: 2021/05/10 10:29:35 by jvaquer          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,7 @@ SRC_CMD = nick.cpp user.cpp time.cpp \
 		  privmsg.cpp who.cpp oper.cpp kick.cpp \
 		  topic.cpp notice.cpp specific_modes.cpp \
 		  whois.cpp whowas.cpp ison.cpp userhost.cpp \
-		  away.cpp die.cpp kill.cpp connect.cpp \
+		  away.cpp die.cpp kill.cpp connect.cpp rehash.cpp \
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 

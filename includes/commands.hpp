@@ -197,6 +197,8 @@ void	userhost_command(const std::string &line, std::list<Client>::iterator clien
 void	die_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	kill_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	connect_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	rehash_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+
 
 /*
 ** specific_modes.cpp

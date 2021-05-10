@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/07 11:56:47 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/10 12:02:28 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,29 +138,24 @@ int				config_error(const std::string &error_msg, const int &nb_line)
 
 int		set_hostname(t_config_file &config_file, std::string hostname, const int &nb_line)
 {
-	static bool	host_set = false;
-
-	if (host_set == true)
+	if (config_file.host_set == true)
 		return (config_error("HOSTNAME has multiple declaration", nb_line));
-	host_set = true;
+	config_file.host_set = true;
 	std::string h_name = hostname;
 	config_file.hostname = hostname;
 	return	(1);
 }
 
 int		set_port(t_config_file &config_file, std::string port, const int &nb_line, bool is_tls)
-{
-	static bool	port_set = false;
-	static bool port_tls_set = false;
-
+{	
 	if (is_tls && !config_file.accept_tls)
 	{
 		std::cout << "variable : " << port << std::endl;
 		return (config_error("PORT_TLS cannot be set when TLS is turn to false", nb_line));
 	}
-	if (port_set == true && !is_tls)
+	if (config_file.port_set == true && !is_tls)
 		return (config_error("PORT has multiple declaration", nb_line));
-	if (port_tls_set == true && is_tls)
+	if (config_file.port_tls_set == true && is_tls)
 		return (config_error("PORT_TLS has multiple declaration", nb_line));
 	if (config_file.listen_limit <= 0)
 		return (config_error("PORT_TLS/PORT must be initialized after LISTEN_LIMIT", nb_line));
@@ -174,23 +169,22 @@ int		set_port(t_config_file &config_file, std::string port, const int &nb_line, 
 		config_file.m_ports[ft_atoi(*it)] = is_tls;
 	}
 	if (is_tls)
-		port_tls_set = true;
+		config_file.port_tls_set = true;
 	else
-		port_set = true;
+		config_file.port_set = true;
 	return	(1);
 }
 
 int		set_listen_limit(t_config_file &config_file, std::string limit, const int &nb_line)
 {
-	static bool	listen_limit_set = false;
 	int			listen_limit = ft_atoi(limit);
 
-	if (listen_limit_set == true)
+	if (config_file.listen_limit_set == true)
 		return (config_error("LISTEN_LIMIT has multiple declaration", nb_line));
 	if (listen_limit <= 0)
 		return (config_error("LISTEN_LIMIT must be higher than 0", nb_line));
 	config_file.listen_limit = listen_limit;
-	listen_limit_set = true;
+	config_file.listen_limit_set = true;
 	return	(1);
 }
 
@@ -198,13 +192,12 @@ int		set_server_pass_hash(t_config_file &config_file, std::string s_pass, const 
 {
 	unsigned char	target[32];
 	int				check = setup_hash_pass(s_pass, target);
-	static bool			serv_pass_set = false;
 
-	if (serv_pass_set == true)
+	if (config_file.serv_pass_set == true)
 		return (config_error("SERVER_PASS_HASH has multiple declaration", nb_line));
 	if (check == 1)
 		return (config_error("SERVER_PASS_HASH must be a sha256 hash", nb_line));
-	serv_pass_set = true;
+	config_file.serv_pass_set = true;
 	if (check == 0)
 		return (1);
 	std::memcpy(config_file.password, target, 32);
@@ -215,24 +208,22 @@ int		set_oper_pass_hash(t_config_file &config_file, std::string o_pass, const in
 {
 	unsigned char	target[32];
 	int				check = setup_hash_pass(o_pass, target);
-	static bool		oper_pass_set = false;
 
-	if (oper_pass_set == true)
+	if (config_file.oper_pass_set == true)
 		return (config_error("OPER_PASS_HASH has multiple declaration", nb_line));
 	if (check == 1)
 		return (config_error("OPER_PASS_HASH must be a sha256 hash", nb_line));
-	oper_pass_set = true;
+	config_file.oper_pass_set = true;
 	if (check == 0)
 		return (1);
-	std::memcpy(config_file.password, target, 32);
+	std::memcpy(config_file.oper_password, target, 32);
+	config_file.pass_oper = true;
 	return (1);
 }
 
 int		set_allow_ipv6(t_config_file &config_file, std::string &variable, const int &nb_line)
 {
-	static int		already_set = false;
-
-	if (already_set == true)
+	if (config_file.already_set == true)
 		return (config_error("ALLOW_IPV6 has multiple declaration", nb_line));
 	for (size_t i = 0; i < variable.size(); i++)
 		variable[i] = std::toupper(variable[i]);
@@ -242,7 +233,7 @@ int		set_allow_ipv6(t_config_file &config_file, std::string &variable, const int
 		config_file.allow_ipv6 = false;
 	else
 		return (config_error("ALLOW_IPV6 muste be true or false", nb_line));
-	already_set = true;
+	config_file.already_set = true;
 	return (1);
 }
 
@@ -300,20 +291,16 @@ int		set_timeout_register(t_config_file &config_file, std::string &timeout_regis
 
 int		set_oper_name(t_config_file &config_file, std::string oper_name, const int &nb_line)
 {
-	static bool	oper_name_set = false;
-
-	if (oper_name_set == true)
+	if (config_file.oper_name_set == true)
 		return (config_error("OPER_NAME has multiple declaration", nb_line));
-	oper_name_set = true;
+	config_file.oper_name_set = true;
 	config_file.oper_name = oper_name;
 	return	(1);
 }
 
 int		set_client_hostname(t_config_file &config_file, std::string &cli_hostname, const int &nb_line)
 {
-	static bool	cli_host_set = false;
-
-	if (cli_host_set == true)
+	if (config_file.cli_host_set == true)
 		return (config_error("CLIENT_HOSTNAME already set", nb_line));
 	if (cli_hostname.size() >= 64)
 		return (config_error("CLIENT_HOSTNAME max size is 63 char", nb_line));
@@ -322,7 +309,7 @@ int		set_client_hostname(t_config_file &config_file, std::string &cli_hostname, 
 	else if (!is_valid_client_hostname(cli_hostname))
 		return (config_error("CLIENT_HOSTNAME valid are ASCII 'a' to 'z', digit '0' to '9' and '-'. He may not start with '-'", nb_line));
 	config_file.client_hostname = cli_hostname;
-	cli_host_set = true;
+	config_file.cli_host_set = true;
 	return (1);
 }
 
@@ -412,7 +399,6 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 {
 	std::string			line;
 	std::string			variable;
-	static int			i = 0;
 
 	getline(file, line);
 	if (line.size() > 0)
@@ -424,96 +410,97 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 			{
 				if (!set_hostname(config_file, variable, nb_line))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break ;
 			}
 			case ePORT:
 			{
 				if (!set_port(config_file, variable, nb_line, false))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break ;
 			}
 			case ePORT_TLS:
 			{
 				if (!set_port(config_file, variable, nb_line, true))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break ;
 			}
 			case eLISTEN_LIMIT:
 			{
 				if (!set_listen_limit(config_file, variable, nb_line))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break ;
 			}
 			case eSERVER_PASS_HASH:
 			{
 				if (!set_server_pass_hash(config_file, variable, nb_line))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break ;
 			}
 			case eOPER_PASS_HASH:
 			{
 				if (!set_oper_pass_hash(config_file, variable, nb_line))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break ;
 			}
 			case eOPER_NAME:
 			{
 				if (!set_oper_name(config_file, variable, nb_line))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break ;
 			}
 			case eALLOW_IPV6:
 			{
 				if (!set_allow_ipv6(config_file, variable, nb_line))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break ;
 			}
 			case eCLIENT_LIMIT:
 			{
 				if (!set_client_limit(config_file, variable, nb_line))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break ;
 			}
 			case eCLIENT_HOSTNAME:
 			{
 				if (!set_client_hostname(config_file, variable, nb_line))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break;
 			}
 			case ePING:
 			{
 				if (!set_ping(config_file, variable, nb_line))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break ;
 			}
 			case eTIMEOUT:
 			{
 				if (!set_timeout(config_file, variable, nb_line))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
+
 				break ;
 			}
 			case eTIMEOUT_REGISTER:
 			{
 				if (!set_timeout_register(config_file, variable, nb_line))
 					throw ConfigFileException();
-				i++;
+				config_file.i++;
 				break ;
 			}
 			case eNETWORK:
 			{
-				if (!set_network_id(config_file, file, nb_line, (i == 13 ? true : false)))
+				if (!set_network_id(config_file, file, nb_line, (config_file.i == 13 ? true : false)))
 					throw ConfigFileException();
 				break ;
 			}
@@ -529,7 +516,7 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 			}
 		}
 	}
-	if (i == 13)
+	if (config_file.i == 13)
 		all_param_set = true;
 }
 

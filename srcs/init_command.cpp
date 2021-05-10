@@ -46,7 +46,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["PONG"] = pong_command;
 	cmd["ERROR"] = NULL;
 	cmd["AWAY"] = away_command;
-	cmd["REHASH"] = NULL;
+	cmd["REHASH"] = rehash_command;
 	cmd["RESTART"] = NULL;
 	cmd["SUMMON"] = NULL;
 	cmd["USERS"] = NULL;

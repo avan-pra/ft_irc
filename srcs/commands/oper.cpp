@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 10:47:16 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/04 17:40:57 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/10 10:42:29 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void		oper_command(const std::string &line, std::list<Client>::iterator client_i
 	{
 		client_it->push_to_buffer(":" + client_it->get_nickname() + "!"
 			+ client_it->get_username() + "@" + client_it->get_hostname() + " QUIT :ERROR: Password incorrect" + "\r\n");
+		std::cout << "LOL1" << std::endl;
 		throw QuitCommandException();
 	}
 	const char *s = params[2].c_str();
@@ -51,7 +52,8 @@ void		oper_command(const std::string &line, std::list<Client>::iterator client_i
 	else
 	{
 		client_it->push_to_buffer(":" + client_it->get_nickname() + "!"
-			+ client_it->get_username() + "@" + client_it->get_hostname() + " QUIT :Password incorrect ERROR: Password incorrect" + "\r\n");
+			+ client_it->get_username() + "@" + client_it->get_hostname() + " QUIT :ERROR: Password incorrect" + "\r\n");
+		std::cout << "LOL2" << std::endl;
 		throw QuitCommandException();
 	}
 }

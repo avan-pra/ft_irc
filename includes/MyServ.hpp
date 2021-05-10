@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/07 11:54:32 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/10 12:00:17 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,17 @@ struct			t_config_file
 	bool					pass_oper;
 	bool					accept_tls;
 
+	bool					host_set;
+	bool 					cli_host_set;
+	bool					port_set;
+	bool					port_tls_set;
+	bool					listen_limit_set;
+	bool					serv_pass_set;
+	bool					oper_pass_set;
+	bool					already_set;
+	bool					oper_name_set;
+	int						i;
+
 	t_config_file()
 	{
 		listen_limit = 0;
@@ -77,6 +88,16 @@ struct			t_config_file
 		t_timeout = 0;
 		timeout_register = 0;
 		client_hostname = "";
+		host_set = false;
+		cli_host_set = false;
+		port_set = false;
+		port_tls_set = false;
+		listen_limit_set = false;
+		serv_pass_set = false;
+		oper_pass_set = false;
+		already_set = false;
+		oper_name_set = false;
+		i = 0;
 	}
 };
 
@@ -151,7 +172,7 @@ class MyServ
 		time_t				get_start_time() const { return _start_time; }
 		bool				get_need_pass() const { return _pass_for_connection; }
 		bool				get_pass_oper() const { return _pass_oper; }
-		bool				get_accept_tls() { return _accept_tls; }
+		bool				get_accept_tls() const { return _accept_tls; }
 		bool				get_allow_ipv6() const { return _allow_ipv6; }
 		int					get_client_limit() { return _client_limit; }
 		long				get_ping() const { return _ping; }
