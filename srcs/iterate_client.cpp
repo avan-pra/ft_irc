@@ -8,7 +8,7 @@ void	iterate_client(MyServ &serv)
 	char	c[BUFF_SIZE + 1];
 	int		ret = 0;
 
-	for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
+	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); ++it)
 	{
 		//std::cout << "in iterate client i =" << i << std::endl;
 		ping_if_away(*it, serv);

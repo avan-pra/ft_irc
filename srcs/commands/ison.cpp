@@ -29,7 +29,7 @@ void	ison_command(const std::string &line, std::list<Client>::iterator client_it
 	}
 	for (size_t i = 1; i < params.size(); i++)
 	{
-		if (find_client_by_iterator(params[i]) != g_aClient.end())
+		if (find_client_by_iterator(params[i]) != g_all.g_aClient.end())
 		{
 			if (rpl != ":")
 				rpl += " ";

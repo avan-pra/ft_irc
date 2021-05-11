@@ -29,7 +29,7 @@ void		mode_o(std::list<Client>::iterator client_it, const size_t &chann_idx, con
 		std::list<Client>::iterator		cli_to_add_idx;
 
 		cli_to_add_idx = find_client_by_iterator(name);
-		if (cli_to_add_idx != g_aClient.end())
+		if (cli_to_add_idx != g_all.g_aClient.end())
 		{
 			g_vChannel[chann_idx]._operator.push_back(&(*cli_to_add_idx));
 			g_vChannel[chann_idx].send_to_all(":" + client_it->get_nickname() + "!" + client_it->get_username() + "@" + client_it->get_hostname() +
@@ -81,7 +81,7 @@ void		mode_v(std::list<Client>::iterator client_it, const size_t &chann_idx, con
 		std::list<Client>::iterator		cli_to_add_idx;
 
 		cli_to_add_idx = find_client_by_iterator(name);
-		if (cli_to_add_idx != g_aClient.end())
+		if (cli_to_add_idx != g_all.g_aClient.end())
 		{
 			g_vChannel[chann_idx]._voice.push_back(&(*cli_to_add_idx));
 			g_vChannel[chann_idx].send_to_all(":" + client_it->get_nickname() + "!" + client_it->get_username() + "@" + client_it->get_hostname() +

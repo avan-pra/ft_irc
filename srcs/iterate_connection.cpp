@@ -52,7 +52,7 @@ void	connection_parser(char *line, std::list<Connection>::iterator connection_it
 				Client cli = co;
 
 				cli.set_unended_packet(*str + "\r\n" + true_line + co.get_unended_packet());
-				g_aClient.push_back(cli);
+				g_all.g_aClient.push_back(cli);
 				throw NewClientException();
 			}
 			if (command == "SERVER" || (command == "PASS" && ft_split(*str, " ").size() > 2))
@@ -60,7 +60,7 @@ void	connection_parser(char *line, std::list<Connection>::iterator connection_it
 				Server srv = co;
 
 				srv.set_unended_packet(*str + "\r\n" + true_line + co.get_unended_packet());
-				g_aServer.push_back(srv);
+				g_all.g_aServer.push_back(srv);
 				throw NewServerException();
 			}
 			try
@@ -89,7 +89,7 @@ void	iterate_connection(MyServ &serv)
 	char	c[BUFF_SIZE + 1];
 	int		ret = 0;
 
-	for (std::list<Connection>::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); ++it)
+	for (std::list<Connection>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
 	{
 		if (check_register_timeout(*it, serv) == true)
 			disconnect(&(*it), it);
@@ -107,11 +107,11 @@ void	iterate_connection(MyServ &serv)
 				}
 				catch (NewServerException)
 				{
-					it = g_aUnregistered.erase(it);
+					it = g_all.g_aUnregistered.erase(it);
 				}
 				catch (NewClientException)
 				{
-					it = g_aUnregistered.erase(it);
+					it = g_all.g_aUnregistered.erase(it);
 				}
 				catch (QuitCommandException) { disconnect(&(*it), it); }
 			}

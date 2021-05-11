@@ -33,7 +33,7 @@ static std::string	check_username(const std::string &str, std::list<Client>::ite
 
 static void	check_username_ownership(std::string str, std::list<Client>::iterator client_it, const MyServ &serv)
 {
-	for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
+	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); ++it)
 	{
 		if (&(*it) != &(*client_it))
 		{

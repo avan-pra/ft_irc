@@ -53,6 +53,6 @@ void	notice_command(const std::string &line, std::list<Client>::iterator client_
 		if (check_priv_chan(client_it, id))
 			g_vChannel[id].send_to_all_except_one(*client_it, create_full_msg(params, client_it));
 	}
-	else if ((it = find_client_by_iterator(params[1])) != g_aClient.end())
+	else if ((it = find_client_by_iterator(params[1])) != g_all.g_aClient.end())
 		it->push_to_buffer(create_full_msg(params, client_it));
 }

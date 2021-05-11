@@ -7,7 +7,7 @@ void	iterate_server(MyServ &serv)
 {
 	char c[BUFF_SIZE + 1];
 
-	for (std::list<Server>::iterator it = g_aServer.begin(); it != g_aServer.end(); ++it)
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); ++it)
 	{
 		ping_if_away(*it, serv);
 		//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes

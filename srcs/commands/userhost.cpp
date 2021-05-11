@@ -26,7 +26,7 @@ void	userhost_command(const std::string &line, std::list<Client>::iterator clien
 	}
 	for (size_t i = 1; i < params.size(); i++)
 	{
-		if ((try_cli = find_client_by_iterator(params[i])) != g_aClient.end())
+		if ((try_cli = find_client_by_iterator(params[i])) != g_all.g_aClient.end())
 		{
 			if (rpl != ":")
 				rpl += " ";

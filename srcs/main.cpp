@@ -14,9 +14,7 @@
 #include "../includes/Disconnect.hpp"
 
 std::deque<t_sock>							g_serv_sock;
-std::list<Client>							g_aClient;
-std::list<Connection>						g_aUnregistered;
-std::list<Server>							g_aServer;
+t_connect									g_all;
 std::deque<Channel>							g_vChannel;
 std::deque<t_discon_id>						g_aDisconnectedCli;
 

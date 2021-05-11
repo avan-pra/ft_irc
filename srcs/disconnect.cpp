@@ -15,7 +15,7 @@ void	disconnect(Client *co, std::list<Client>::iterator &client_it)
 	if (dynamic_cast<Client*> (co) != NULL)
 	{
 		std::list<Client>::iterator	it = find_client_by_iterator(co);
-		if (it == g_aClient.end())
+		if (it == g_all.g_aClient.end())
 		{
 			std::cout << "Can't find Client" << std::endl;
 			return ;
@@ -30,7 +30,7 @@ void	disconnect(Client *co, std::list<Client>::iterator &client_it)
 		#endif
 		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (client) "
 			<< (client_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
-		client_it = g_aClient.erase(it);
+		client_it = g_all.g_aClient.erase(it);
 		return ;
 	}
 }
@@ -59,7 +59,7 @@ void	disconnect(Server *co, std::list<Server>::iterator &server_it)
 		#endif
 		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (server) "
 			<< (server_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
-		server_it = g_aServer.erase(it);
+		server_it = g_all.g_aServer.erase(it);
 		return ;
 	}
 }
@@ -88,22 +88,22 @@ void	disconnect(Connection *co, std::list<Connection>::iterator &connection_it)
 		#endif
 		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (unknown) "
 			<< (connection_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
-		connection_it = g_aUnregistered.erase(it);
+		connection_it = g_all.g_aUnregistered.erase(it);
 		return ;
 	}
 }
 
 void		disconnect_all()
 {
-	for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
+	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); ++it)
 	{
 		disconnect(&(*it), it);
 	}
-	for (std::list<Connection>::iterator it = g_aUnregistered.begin(); it != g_aUnregistered.end(); ++it)
+	for (std::list<Connection>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
 	{
 		disconnect(&(*it), it);
 	}
-	for (std::list<Server>::iterator it = g_aServer.begin(); it != g_aServer.end(); ++it)
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); ++it)
 	{
 		disconnect(&(*it), it);
 	}
