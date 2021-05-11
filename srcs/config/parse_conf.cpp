@@ -107,6 +107,7 @@ int		is_valid_client_hostname(const std::string &s)
 static int		setup_hash_pass(const std::string s, unsigned char *target)
 {
 	std::string password = s.substr(s.find("=") + 1);
+	// std::cout << ":" << password << ":" << password.size() << std::endl;
 	if (password.empty())
 		return (0);
 	if (password.size() != 64)
@@ -214,9 +215,9 @@ int		set_oper_pass_hash(t_config_file &config_file, std::string o_pass, const in
 		return (config_error("OPER_PASS_HASH has multiple declaration", nb_line));
 	if (check == 1)
 		return (config_error("OPER_PASS_HASH must be a sha256 hash", nb_line));
-	config_file.oper_pass_set = true;
 	if (check == 0)
 		return (1);
+	config_file.oper_pass_set = true;
 	std::memcpy(config_file.oper_password, target, 32);
 	config_file.pass_oper = true;
 	return (1);
@@ -553,7 +554,7 @@ void		start_parse_conf(t_config_file &config_file)
 		config_error("Need more parmeters", nb_line);
 		throw ConfigFileException();
 	}
-	if (config_file.oper_name.size() == 0)
+	if (config_file.oper_name_set == false || config_file.oper_pass_set == false)
 		config_file.pass_oper = false;
 	//fnct to set all serv vars
 	#ifdef DEBUG
