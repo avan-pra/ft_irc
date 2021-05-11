@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/10 12:02:28 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/11 16:32:11 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,7 @@ int		set_server_pass_hash(t_config_file &config_file, std::string s_pass, const 
 	if (check == 0)
 		return (1);
 	std::memcpy(config_file.password, target, 32);
+	config_file.pass_for_connection = true;
 	return (1);
 }
 
