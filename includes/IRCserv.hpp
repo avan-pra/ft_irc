@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/07 11:43:05 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/11 17:48:37 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@
 # define BLUE "\e[0;34m"
 
 # define CYAN "\e[0;36m"
+
+# define BLACK "\e[0;30m"
+
+# define BRIGHT_GREEN "\e[92m"
+
+# define YELLOW "\e[33m"
 
 # define REDB "\e[41m"
 

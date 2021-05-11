@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/11 16:32:11 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/11 17:48:07 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int		is_valid_client_hostname(const std::string &s)
 static int		setup_hash_pass(const std::string s, unsigned char *target)
 {
 	std::string password = s.substr(s.find("=") + 1);
-	// std::cout << ":" << password << ":" << password.size() << std::endl;
+
 	if (password.empty())
 		return (0);
 	if (password.size() != 64)
@@ -522,6 +522,61 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 		all_param_set = true;
 }
 
+void		print_config_file(t_config_file &config_file)
+{
+	std::cout << CYAN "<<<< Config file >>>>" NC<< std::endl;
+	std::cout << "HOSTNAME        : " << BLUE << config_file.hostname << NC << std::endl;
+	std::cout << "LISTEN_LIMIT    : " << GREEN << config_file.listen_limit << NC << std::endl;
+	std::cout << "PORTS           : ";
+	for (std::map<int, bool>::iterator it = config_file.m_ports.begin();
+			it != config_file.m_ports.end();)
+	{
+		if (it->second == true)
+			std::cout << BRIGHT_GREEN << it->first << NC;
+		else
+			std::cout << GREEN << it->first << NC;
+		++it;
+		if (it != config_file.m_ports.end())
+			std::cout << ",";
+	}
+	std::cout << std::endl;
+
+	std::cout << "OPER_CREDENTIALS: ";
+	if (config_file.pass_oper == true)
+	{
+		std::cout << YELLOW << config_file.oper_name << NC << ":" << YELLOW;
+		for (size_t i = 0; i < 32; ++i)
+		{
+			std::cout << hex2char(config_file.oper_password[i] / 16);
+			std::cout << hex2char(config_file.oper_password[i] % 16);
+		}
+		std::cout << NC << std::endl;
+	}
+	else
+		std::cout << REDB << "NOT CONFIGURED" << NC << std::endl;
+
+	std::cout << "SERVER_PASS_HASH: " << YELLOW;
+	if (config_file.pass_for_connection == true)
+	{
+		for (size_t i = 0; i < 32; ++i)
+		{
+			std::cout << hex2char(config_file.password[i] / 16);
+			std::cout << hex2char(config_file.password[i] % 16);
+		}
+		std::cout << NC << std::endl;
+	}
+	else
+		std::cout << REDB << "NOT CONFIGURED" << NC << std::endl;
+
+	std::cout << "ALLOW_IPV6      : " << (config_file.allow_ipv6 == true ? GREEN "true" : RED "false") << NC << std::endl;
+	std::cout << "CLIENT_LIMIT    : " << GREEN << config_file.client_limit << NC << std::endl;
+	std::cout << "CLIENT_HOSTNAME : " << BLUE << config_file.client_hostname << NC << std::endl;
+	std::cout << "PING_EVERY      : " << GREEN << config_file.ping << NC  << "s" << std::endl;
+	std::cout << "PING_TIMEOUT    : " << GREEN << config_file.t_timeout << NC  << "s" << std::endl;
+	std::cout << "TIMEOUT_REGISTER: " << GREEN << config_file.timeout_register << NC  << "s" << std::endl;
+	std::cout << std::endl;
+}
+
 void		start_parse_conf(t_config_file &config_file)
 {
 	std::fstream		file;
@@ -558,59 +613,7 @@ void		start_parse_conf(t_config_file &config_file)
 		config_file.pass_oper = false;
 	//fnct to set all serv vars
 	#ifdef DEBUG
-		{
-			std::cout << CYAN "<<<< Config file >>>>" NC<< std::endl;
-			std::cout << "HOSTNAME        : " << BLUE << config_file.hostname << NC << std::endl;
-			std::cout << "LISTEN_LIMIT    : " << GREEN << config_file.listen_limit << NC << std::endl;
-			std::cout << "PORTS           : ";
-			for (std::map<int, bool>::iterator it = config_file.m_ports.begin();
-					it != config_file.m_ports.end();)
-			{
-				if (it->second == true)
-					std::cout << GREENB << it->first << NC;
-				else
-					std::cout << GREEN << it->first << NC;
-				++it;
-				if (it != config_file.m_ports.end())
-					std::cout << ",";
-			} std::cout << std::endl;
-
-			std::cout << "OPER_CREDENTIALS: ";
-			if (config_file.pass_oper == true)
-			{
-				std::cout << GREENB << config_file.oper_name << NC << ":" << GREENB;
-				for (size_t i = 0; i < 32; ++i)
-				{
-					std::cout << hex2char(config_file.oper_password[i] / 16);
-					std::cout << hex2char(config_file.oper_password[i] % 16);
-				} std::cout << NC << std::endl;
-			}
-			else
-			{
-				std::cout << REDB << "NOT CONFIGURED" << NC << std::endl;
-			}
-
-			std::cout << "SERVER_PASS_HASH: " << GREENB;
-			if (config_file.pass_for_connection == true)
-			{
-				for (size_t i = 0; i < 32; ++i)
-				{
-					std::cout << hex2char(config_file.password[i] / 16);
-					std::cout << hex2char(config_file.password[i] % 16);
-				} std::cout << NC << std::endl;
-			}
-			else
-			{
-				std::cout << REDB << "NOT CONFIGURED" << NC << std::endl;
-			}
-
-			std::cout << "ALLOW_IPV6      : " << (config_file.allow_ipv6 == true ? GREEN "true" : RED "false") << NC << std::endl;
-			std::cout << "CLIENT_LIMIT    : " << GREEN << config_file.client_limit << NC << std::endl;
-			std::cout << "CLIENT_HOSTNAME : " << BLUE << config_file.client_hostname << NC << std::endl;
-			std::cout << "PING_EVERY      : " << GREEN << config_file.ping << NC  << "s" << std::endl;
-			std::cout << "PING_TIMEOUT    : " << GREEN << config_file.t_timeout << NC  << "s" << std::endl;
-			std::cout << "TIMEOUT_REGISTER: " << GREEN << config_file.timeout_register << NC  << "s" << std::endl;
-		} std::cout << std::endl;
+		print_config_file(config_file);
 	#endif
 	file.close();
 }
