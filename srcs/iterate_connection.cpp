@@ -47,21 +47,25 @@ void	connection_parser(char *line, std::list<Connection>::iterator connection_it
 
 			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 				*it = std::toupper(*it);
-			if (command == "NICK" || command == "USER" || (command == "PASS" && ft_split(*str, " ").size() <= 2))
+			if (command == "NICK" || command == "USER")
 			{
 				Client cli = co;
 
-				cli.set_unended_packet(*str + "\r\n" + true_line + co.get_unended_packet());
+				cli.set_unended_packet(co.get_unended_packet() + *str + "\r\n" + true_line);
 				g_all.g_aClient.push_back(cli);
 				throw NewClientException();
 			}
-			if (command == "SERVER" || (command == "PASS" && ft_split(*str, " ").size() > 2))
+			if (command == "SERVER")
 			{
 				Server srv = co;
 
-				srv.set_unended_packet(*str + "\r\n" + true_line + co.get_unended_packet());
+				srv.set_unended_packet(co.get_unended_packet() + *str + "\r\n" + true_line);
 				g_all.g_aServer.push_back(srv);
 				throw NewServerException();
+			}
+			if (command == "PASS")
+			{
+				;
 			}
 			try
 			{
@@ -96,6 +100,7 @@ void	iterate_connection(MyServ &serv)
 		else if (is_readable(serv, *it))
 		{
 			get_message(c, *it, ret);
+			// FD_CLR(it->_fd, &serv.get_readfs());
 			check_message_problem(c, *it, serv, ret);
 			if (ret <= 0)
 				disconnect(&(*it), it);

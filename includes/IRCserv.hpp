@@ -93,8 +93,9 @@ typedef struct	s_discon_id
 
 typedef struct	s_connect
 {
-	std::list<Client>							g_aClient;
 	std::list<Connection>						g_aUnregistered;
+	std::list<Client>							g_aClient;
+	// std::list<Service>							g_aService;
 	std::list<Server>							g_aServer;
 }				t_connect;
 

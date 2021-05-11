@@ -97,6 +97,7 @@ struct			t_config_file
 		oper_pass_set = false;
 		already_set = false;
 		oper_name_set = false;
+		pass_for_connection = false;
 		i = 0;
 	}
 };
