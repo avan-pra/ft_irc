@@ -67,10 +67,12 @@
 # include <openssl/ssl.h>
 # include <openssl/err.h>
 # include "./MyServ.hpp"
-# include "./Client.hpp"
 # include "./Channel.hpp"
-# include "./Server.hpp"
 # include "Exception.hpp"
+# include "./Client.hpp"
+# include "./Server.hpp"
+# include "./Service.hpp"
+# include "./Unregistered.hpp"
 
 typedef int	SOCKET;
 typedef struct sockaddr_in6 SOCKADDR_IN6;
@@ -93,9 +95,10 @@ typedef struct	s_discon_id
 
 typedef struct	s_connect
 {
+	// std::list<Unregistered>						g_aUnregistered;
 	std::list<Connection>						g_aUnregistered;
 	std::list<Client>							g_aClient;
-	// std::list<Service>							g_aService;
+	std::list<Service>							g_aService;
 	std::list<Server>							g_aServer;
 }				t_connect;
 
