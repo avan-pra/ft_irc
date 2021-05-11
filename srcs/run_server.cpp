@@ -112,7 +112,7 @@ void run_server(MyServ &serv)
 		readyfd = select(serv.get_max_fd() + 1, &serv.get_readfs(), &serv.get_writefs(), &serv.get_exceptfs(), &serv.get_timeout());
 
 		try_accept_connection(serv);
-		iterate_connection(serv);
+		iterate_unregistered(serv);
 		iterate_client(serv);
 		iterate_server(serv);
 		send_bufferised_packet();

@@ -152,7 +152,7 @@ void		iterate_server(MyServ &serv);
 /*
 ** iterate_connection.cpp
 */
-void		iterate_connection(MyServ &serv);
+void		iterate_unregistered(MyServ &serv);
 bool		check_register_timeout(Connection &co, const MyServ &serv);
 
 /*

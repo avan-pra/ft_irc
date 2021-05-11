@@ -27,7 +27,7 @@ static void	handle_wrong_command(std::string &command, std::list<Unregistered>::
 	}
 }
 
-void	connection_parser(char *line, std::list<Unregistered>::iterator unregistered_it, const MyServ &serv)
+void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregistered_it, const MyServ &serv)
 {
 	std::vector<std::string>	packet;
 	std::string					true_line;
@@ -88,7 +88,7 @@ bool	check_register_timeout(Connection &co, const MyServ &serv)
 	return false;
 }
 
-void	iterate_connection(MyServ &serv)
+void	iterate_unregistered(MyServ &serv)
 {
 	char	c[BUFF_SIZE + 1];
 	int		ret = 0;
@@ -108,7 +108,7 @@ void	iterate_connection(MyServ &serv)
 			{
 				try
 				{
-					connection_parser(c, it, serv);
+					unregistered_parser(c, it, serv);
 				}
 				catch (NewServerException)
 				{

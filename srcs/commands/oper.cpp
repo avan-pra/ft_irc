@@ -35,7 +35,6 @@ void		oper_command(const std::string &line, std::list<Client>::iterator client_i
 	{
 		client_it->push_to_buffer(":" + client_it->get_nickname() + "!"
 			+ client_it->get_username() + "@" + client_it->get_hostname() + " QUIT :ERROR: Password incorrect" + "\r\n");
-		std::cout << "LOL1" << std::endl;
 		throw QuitCommandException();
 	}
 	const char *s = params[2].c_str();
@@ -53,7 +52,6 @@ void		oper_command(const std::string &line, std::list<Client>::iterator client_i
 	{
 		client_it->push_to_buffer(":" + client_it->get_nickname() + "!"
 			+ client_it->get_username() + "@" + client_it->get_hostname() + " QUIT :ERROR: Password incorrect" + "\r\n");
-		std::cout << "LOL2" << std::endl;
 		throw QuitCommandException();
 	}
 }

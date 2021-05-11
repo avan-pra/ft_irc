@@ -5,17 +5,17 @@
 
 class Unregistered : public Connection
 {
-private:
-	/* data */
-public:
-	Unregistered(/* args */)
-	{
+	private:
+		/* data */
+	public:
+		Unregistered(/* args */)
+		{
 
-	}
-	virtual ~Unregistered()
-	{
-		
-	}
+		}
+		virtual ~Unregistered()
+		{
+			
+		}
 };
 
 #endif
