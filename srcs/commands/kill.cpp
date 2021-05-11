@@ -34,7 +34,7 @@ void	kill_command(const std::string &line, std::list<Client>::iterator client_it
 	}
 
 	std::list<Client>::iterator target;
-	if ((target = find_client_by_iterator(args[1])) == g_aClient.end())
+	if ((target = find_client_by_iterator(args[1])) == g_all.g_aClient.end())
 	{
 		client_it->push_to_buffer(create_msg(401, client_it, serv, args[1]));
 		return;

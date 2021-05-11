@@ -12,3 +12,4 @@ Dockerfile
 *.py
 godirc.crt
 godirc.key
+.DS_STORE

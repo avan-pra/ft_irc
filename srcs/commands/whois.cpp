@@ -25,7 +25,7 @@ static void		whois_client(std::list<Client>::iterator client_it, std::vector<std
 		return ;
 	}
 	//Error if we can't find the user requested
-	if ((target = find_client_by_iterator(args[1])) == g_aClient.end())
+	if ((target = find_client_by_iterator(args[1])) == g_all.g_aClient.end())
 	{
 		client_it->push_to_buffer(create_msg(406, client_it, serv, args[1]));
 		client_it->push_to_buffer(create_msg(318, client_it, serv, args[1]));

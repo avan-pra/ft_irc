@@ -35,7 +35,7 @@ int		check_params(const std::vector<std::string> &params, std::list<Client>::ite
 			client_it->push_to_buffer(create_msg(412, client_it, serv));
 		return (0);
 	}
-	if ((chan_id = find_channel(params[1])) == -1 && find_client_by_iterator(params[1]) == g_aClient.end())
+	if ((chan_id = find_channel(params[1])) == -1 && find_client_by_iterator(params[1]) == g_all.g_aClient.end())
 	{
 		// No such channel
 		if (find_channel(params[1]) == -1 && (params[1][0] == '&' || params[1][0] == '#' ||
@@ -100,7 +100,7 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 	i = find_channel(params[1]);
 	if (i != -1)
 		send_privmsg_to_channel(params, client_it, i);
-	else if ((it = find_client_by_iterator(params[1])) != g_aClient.end())
+	else if ((it = find_client_by_iterator(params[1])) != g_all.g_aClient.end())
 	{
 		it->push_to_buffer(create_full_msg(params, client_it));
 		if (it->get_is_away() == true)

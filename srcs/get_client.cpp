@@ -90,11 +90,11 @@ void		accept_connection(MyServ &serv, t_sock &sock)
 	new_connection.sock_addr = clSock6;
 	time(&new_connection.get_last_activity());
 	//push de <fd, User> sur le vecteur
-	g_aUnregistered.push_back(new_connection);
+	g_all.g_aUnregistered.push_back(new_connection);
 
-	if (g_aUnregistered.size() + g_aClient.size() > (size_t)serv.get_client_limit())
+	if (g_all.g_aUnregistered.size() + g_all.g_aClient.size() > (size_t)serv.get_client_limit())
 	{
-		std::list<Connection>::iterator		it = g_aUnregistered.end()--;
+		std::list<Connection>::iterator		it = g_all.g_aUnregistered.end()--;
 		std::string							sample = std::string(":" + serv.get_hostname() + " " + "5" + " ");
 
 		sample += RPL_BOUNCE(std::string("chat.freenode.net"), std::string("6667"));

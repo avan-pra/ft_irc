@@ -91,12 +91,17 @@ typedef struct	s_discon_id
 	std::string	realname;
 }				t_discon_id;
 
-extern std::deque<t_sock>							g_serv_sock;
-extern std::list<Client>							g_aClient;
-extern std::list<Connection>						g_aUnregistered;
-extern std::list<Server>							g_aServer;
-extern std::deque<Channel>							g_vChannel;
-extern std::deque<t_discon_id>						g_aDisconnectedCli;
+typedef struct	s_connect
+{
+	std::list<Client>							g_aClient;
+	std::list<Connection>						g_aUnregistered;
+	std::list<Server>							g_aServer;
+}				t_connect;
+
+extern std::deque<t_sock>			g_serv_sock;
+extern t_connect					g_all;
+extern std::deque<Channel>			g_vChannel;
+extern std::deque<t_discon_id>		g_aDisconnectedCli;
 
 class MyServ;
 

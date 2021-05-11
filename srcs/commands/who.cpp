@@ -79,7 +79,7 @@ static bool has_permission(const std::string &query, std::list<Client>::iterator
 
 int	who_client(const std::string &query, std::list<Client>::iterator client_it, const MyServ &serv, char c)
 {
-	for (std::list<Client>::iterator it = g_aClient.begin(); it != g_aClient.end(); ++it)
+	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); ++it)
 	{
 		if (c == 'o' && it->get_is_oper() == false)
 			;//do not print the user if o is specified

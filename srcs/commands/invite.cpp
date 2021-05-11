@@ -28,7 +28,7 @@ void	check_line(const std::vector<std::string> &params, std::list<Client>::itera
 		client_it->push_to_buffer(create_msg(403, client_it, serv, params[2]));
 		return ;
 	}
-	if ((nick_id = find_client_by_iterator(params[1])) == g_aClient.end())
+	if ((nick_id = find_client_by_iterator(params[1])) == g_all.g_aClient.end())
 	{
 		client_it->push_to_buffer(create_msg(401, client_it, serv, params[1]));
 		return ;
@@ -65,7 +65,7 @@ void	invite_command(const std::string &line, std::list<Client>::iterator client_
 
 	params = ft_split(line, " ");
 	 check_line(params, client_it, serv, chan_id, nick_id);
-	 if (chan_id == -1 || nick_id == g_aClient.end())
+	 if (chan_id == -1 || nick_id == g_all.g_aClient.end())
 		return ;
 	if (!check_if_are_on(params, client_it, serv, chan_id))
 		return ;
