@@ -12,8 +12,6 @@
 
 typedef int	SOCKET;
 
-
-
 class Connection
 {
 	protected:

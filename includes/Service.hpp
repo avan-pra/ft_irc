@@ -6,19 +6,10 @@
 class Service : public Connection
 {
 private:
-    /* data */
+	/* data */
 public:
-    Service(/* args */);
-    ~Service();
+	Service(/* args */);
+	virtual ~Service();
 };
-
-Service::Service(/* args */)
-{
-}
-
-Service::~Service()
-{
-}
-
 
 #endif

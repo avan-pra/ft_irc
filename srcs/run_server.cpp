@@ -21,7 +21,7 @@ static void re_init_serv_class(MyServ &serv)
 			if (max < it->sockfd)
 				max = it->sockfd;
 		}
-		for (std::list<Connection>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
+		for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
 		{
 			if (it->_fd > max)
 				max = it->_fd;
@@ -39,7 +39,7 @@ static void push_fd_to_set(MyServ &serv)
 		FD_SET(it->sockfd, &serv.get_readfs());
 	}
 	//push all connection fd to all 3 set
-	for (std::list<Connection>::iterator ite = g_all.g_aUnregistered.begin(); ite != g_all.g_aUnregistered.end(); ++ite)
+	for (std::list<Unregistered>::iterator ite = g_all.g_aUnregistered.begin(); ite != g_all.g_aUnregistered.end(); ++ite)
 	{
 		FD_SET(ite->_fd, &serv.get_readfs());
 		// FD_SET(ite->first, &serv.get_writefs());
@@ -83,7 +83,7 @@ bool		kick_if_away(Connection &co, const MyServ &serv)
 
 void	send_bufferised_packet()
 {
-	for (std::list<Connection>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
+	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
 	{
 		it->send_packets();
 		it->reset_buffer();

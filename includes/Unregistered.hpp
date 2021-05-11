@@ -6,19 +6,16 @@
 class Unregistered : public Connection
 {
 private:
-    /* data */
+	/* data */
 public:
-    Unregistered(/* args */);
-    ~Unregistered();
+	Unregistered(/* args */)
+	{
+
+	}
+	virtual ~Unregistered()
+	{
+		
+	}
 };
-
-Unregistered::Unregistered(/* args */)
-{
-}
-
-Unregistered::~Unregistered()
-{
-}
-
 
 #endif
