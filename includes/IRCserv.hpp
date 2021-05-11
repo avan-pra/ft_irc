@@ -73,10 +73,12 @@
 # include <openssl/ssl.h>
 # include <openssl/err.h>
 # include "./MyServ.hpp"
-# include "./Client.hpp"
 # include "./Channel.hpp"
-# include "./Server.hpp"
 # include "Exception.hpp"
+# include "./Client.hpp"
+# include "./Server.hpp"
+# include "./Service.hpp"
+# include "./Unregistered.hpp"
 
 typedef int	SOCKET;
 typedef struct sockaddr_in6 SOCKADDR_IN6;
@@ -99,8 +101,10 @@ typedef struct	s_discon_id
 
 typedef struct	s_connect
 {
+	std::list<Unregistered>						g_aUnregistered;
+	// std::list<Connection>						g_aUnregistered;
 	std::list<Client>							g_aClient;
-	std::list<Connection>						g_aUnregistered;
+	std::list<Service>							g_aService;
 	std::list<Server>							g_aServer;
 }				t_connect;
 
@@ -220,7 +224,7 @@ std::deque<Channel>::iterator							find_channel_by_iterator(const std::string &
 std::list<Client>::iterator		find_client_by_iterator(const std::string &nickname);
 std::list<Client>::iterator		find_client_by_iterator(Connection *co);
 std::list<Server>::iterator		find_server_by_iterator(const SOCKET &fd);
-std::list<Connection>::iterator	find_connection_by_iterator(const SOCKET &fd);
+std::list<Unregistered>::iterator	find_unregister_by_iterator(const SOCKET &fd);
 
 /*
 ** create_msg .cpp

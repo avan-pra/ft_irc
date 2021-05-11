@@ -64,7 +64,7 @@ void	disconnect(Server *co, std::list<Server>::iterator &server_it)
 	}
 }
 
-void	disconnect(Connection *co, std::list<Connection>::iterator &connection_it)
+void	disconnect(Unregistered *co, std::list<Unregistered>::iterator &unregistered_it)
 {
 	co->send_packets();
 	co->reset_buffer();
@@ -75,9 +75,9 @@ void	disconnect(Connection *co, std::list<Connection>::iterator &connection_it)
 		SSL_free(co->_sslptr);
 	}
 	closesocket(co->_fd);
-	if (dynamic_cast<Connection*> (co) != NULL)
+	if (dynamic_cast<Unregistered*> (co) != NULL)
 	{
-		std::list<Connection>::iterator	it = find_connection_by_iterator(co->_fd);
+		std::list<Unregistered>::iterator	it = find_unregister_by_iterator(co->_fd);
 		size_t			sin_port = ntohs(co->sock_addr.sin6_port);
 		std::string		tls_str = (it->get_tls() ? " (tls)" : "");
 		#ifdef __linux__
@@ -87,8 +87,8 @@ void	disconnect(Connection *co, std::list<Connection>::iterator &connection_it)
 			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]);
 		#endif
 		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (unknown) "
-			<< (connection_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
-		connection_it = g_all.g_aUnregistered.erase(it);
+			<< (unregistered_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
+		unregistered_it = g_all.g_aUnregistered.erase(it);
 		return ;
 	}
 }
@@ -99,7 +99,7 @@ void		disconnect_all()
 	{
 		disconnect(&(*it), it);
 	}
-	for (std::list<Connection>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
+	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
 	{
 		disconnect(&(*it), it);
 	}

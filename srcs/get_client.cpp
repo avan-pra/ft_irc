@@ -26,7 +26,7 @@ std::string	custom_ntoa(uint32_t in)
 
 void		accept_connection(MyServ &serv, t_sock &sock)
 {
-	Connection		new_connection;
+	Unregistered	new_connection;
 	SOCKET			new_fd;
 	SOCKADDR_IN6	clSock6;
 
@@ -94,7 +94,7 @@ void		accept_connection(MyServ &serv, t_sock &sock)
 
 	if (g_all.g_aUnregistered.size() + g_all.g_aClient.size() > (size_t)serv.get_client_limit())
 	{
-		std::list<Connection>::iterator		it = g_all.g_aUnregistered.end()--;
+		std::list<Unregistered>::iterator		it = g_all.g_aUnregistered.end()--;
 		std::string							sample = std::string(":" + serv.get_hostname() + " " + "5" + " ");
 
 		sample += RPL_BOUNCE(std::string("chat.freenode.net"), std::string("6667"));

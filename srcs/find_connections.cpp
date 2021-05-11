@@ -36,9 +36,9 @@ std::list<Server>::iterator		find_server_by_iterator(const SOCKET &fd)
 	return (g_all.g_aServer.end());
 }
 
-std::list<Connection>::iterator	find_connection_by_iterator(const SOCKET &fd)
+std::list<Unregistered>::iterator	find_unregister_by_iterator(const SOCKET &fd)
 {
-	for (std::list<Connection>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); it++)
+	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); it++)
 		if (fd == it->_fd)
 			return (it);
 	return (g_all.g_aUnregistered.end());
