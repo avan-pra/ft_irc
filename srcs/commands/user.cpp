@@ -73,7 +73,8 @@ static void			set_user(const MyServ &serv, const std::string username, std::stri
 	#endif
 	client_it->set_mode(mode);
 	client_it->set_realname(realname);
-	client_it->set_servername(server_name);
+	// client_it->set_servername(server_name);
+	(void)server_name;
 }
 
 void				user_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)

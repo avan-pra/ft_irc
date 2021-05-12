@@ -54,7 +54,6 @@ class Client : public Connection
 			_unended_packet = co.get_unended_packet();
 			_fd = co._fd;
 			_last_activity = co.get_last_activity();
-			_servername = co.get_servername();
 			_ping_sended = co.get_ping_status();
 			_is_register = false;
 			_tls = co.get_tls();

@@ -20,7 +20,6 @@ class Connection
 		time_t			_t_idle;
 		time_t			_t_signon;
 		std::string		_unended_packet;
-		std::string		_servername;
 		std::string		_buff;
 		bool			_ping_sended;
 		bool			_is_register;
@@ -54,7 +53,6 @@ class Connection
 		*/
 		time_t			&get_last_activity() { return _last_activity; }
 		std::string		get_unended_packet() { return (_unended_packet); }
-		std::string		get_servername() {return (_servername); }
 		bool			get_ping_status() { return _ping_sended; }
 		bool			is_registered() { return (_is_register); }
 		bool			get_tls() { return _tls; }
@@ -65,7 +63,6 @@ class Connection
 		** Setter 
 		*/
 		void			set_ping_status(bool ping) { _ping_sended = ping; }
-		void			set_servername(std::string servername) { _servername = servername; }
 		void			set_unended_packet(std::string packet) { _unended_packet = packet; }
 		void			set_register(bool registered) { _is_register = registered; }
 		void			set_tls(bool tls_state) { _tls = tls_state; }
