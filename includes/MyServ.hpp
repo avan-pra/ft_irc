@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/11 16:33:55 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/12 12:10:20 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,16 @@ struct			t_config_file
 	int						client_limit;
 	unsigned char			password[32];
 	unsigned char			oper_password[32];
-	bool					allow_ipv6;
+	unsigned char			server_password[32];
 	long					ping;
 	long					t_timeout;
 	long					timeout_register;
 	std::deque<t_networkID>	aNetworks;
 	bool					pass_for_connection;
 	bool					pass_oper;
+	bool					pass_for_server;
 	bool					accept_tls;
+	bool					allow_ipv6;
 
 	bool					host_set;
 	bool 					cli_host_set;
@@ -74,6 +76,7 @@ struct			t_config_file
 	bool					listen_limit_set;
 	bool					serv_pass_set;
 	bool					oper_pass_set;
+	bool					connection_pass_set;
 	bool					already_set;
 	bool					oper_name_set;
 	int						i;
@@ -84,6 +87,7 @@ struct			t_config_file
 		client_limit = 0;
 		bzero(password, 32);
 		bzero(oper_password, 32);
+		bzero(server_password, 32);
 		ping = 0;
 		t_timeout = 0;
 		timeout_register = 0;
@@ -95,9 +99,12 @@ struct			t_config_file
 		listen_limit_set = false;
 		serv_pass_set = false;
 		oper_pass_set = false;
+		connection_pass_set = false;
 		already_set = false;
 		oper_name_set = false;
 		pass_for_connection = false;
+		pass_for_server = false;
+		pass_oper =	false;
 		i = 0;
 	}
 };
