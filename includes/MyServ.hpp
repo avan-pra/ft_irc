@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/12 12:10:20 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/12 16:35:19 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,9 @@ struct			t_config_file
 	bool					oper_name_set;
 	int						i;
 
+	SSL_CTX						*sslctx;
+	SSL							*sslptr;
+	
 	t_config_file()
 	{
 		listen_limit = 0;

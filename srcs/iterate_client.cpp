@@ -36,6 +36,7 @@ void	iterate_client(MyServ &serv)
 					parser(c, it, serv);
 				}
 				catch (const DieException &e) { throw DieException(); }
+				catch (const RehashException &e) { throw RehashException(); }
 				catch(const IncorrectPassException &e) { disconnect(&(*it), it); }
 				catch(const QuitCommandException &e) { disconnect(&(*it), it); }
 			}

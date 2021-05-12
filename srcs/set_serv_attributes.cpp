@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 11:19:24 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/10 10:44:58 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/12 16:27:09 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,6 @@ void	set_serv_attributes(MyServ &serv)
 	serv.set_t_timeout(serv.serv_config.t_timeout);
 	serv.set_timeout_register(serv.serv_config.timeout_register);
 	serv.network = serv.serv_config.aNetworks;
+	serv.set_accept_tls(serv.serv_config.accept_tls);
+	serv.sslctx = serv.serv_config.sslctx;
 }

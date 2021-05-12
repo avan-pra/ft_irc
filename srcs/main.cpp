@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:04 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/05/07 11:43:06 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/12 18:58:24 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int			main(void)
 	{
 		signal(SIGINT, sig_handler);
 		signal(SIGPIPE, sig_handler);
-		InitSSLCTX(serv);
+		InitSSLCTX(serv.serv_config);
 		start_parse_conf(serv.serv_config);
 		set_serv_attributes(serv);
 		launch_all_socket(serv, serv.serv_config.m_ports);
@@ -57,14 +57,33 @@ int			main(void)
 		std::cerr << e.what() << std::endl;
 		return (1);
 	}
-	try
+
+	while (1)
 	{
-		run_server(serv);
-	}
-	catch (const DieException &e)
-	{
-		disconnect_all();
-		std::cout << e.what() << std::endl;
+		try
+		{
+			run_server(serv);
+		}
+		catch (const DieException &e)
+		{
+			disconnect_all();
+			std::cout << e.what() << std::endl;
+		}
+		catch (const RehashException &e)
+		{
+			t_config_file	new_file;
+			try
+			{
+				InitSSLCTX(new_file);
+				start_parse_conf(new_file);
+				serv.serv_config = new_file;
+				set_serv_attributes(serv);
+			}
+			catch (const std::exception& e)
+			{
+				;
+			}
+		}
 	}
 	exit(0);
 }

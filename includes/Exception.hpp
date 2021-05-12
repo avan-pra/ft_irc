@@ -75,4 +75,12 @@ class	DieException: public std::exception
 	};
 };
 
+class	RehashException: public std::exception
+{
+	virtual const char *what() const throw()
+	{
+		return "";
+	};
+};
+
 #endif

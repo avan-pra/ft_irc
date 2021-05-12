@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 19:45:37 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/07 11:17:46 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/12 16:33:24 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		get_tls_socket_binded()
 	return (ret);
 }
 
-void	InitSSLCTX(MyServ &serv)
+void	InitSSLCTX(t_config_file &config_file)
 {
 	/* check if cert exists */
 	int		cert = open("./godirc.crt", O_RDONLY);
@@ -32,14 +32,13 @@ void	InitSSLCTX(MyServ &serv)
 
 	if (cert < 0 || key < 0)
 	{
-		serv.sslctx = NULL;
+		config_file.sslctx = NULL;
 		if (cert < 0)
 			std::cerr << "Certificate not found. Skipping SSL_CTX creation" << std::endl;
 		if (key < 0)
 			std::cerr << "Key not found. Skipping SSL_CTX creation" << std::endl;
 		std::cout << "IRCSERV only classic connection" << std::endl;
-		serv.set_accept_tls(false);
-		serv.serv_config.accept_tls = false;
+		config_file.accept_tls = false;
 		return ;
 	}
 	close(cert);
@@ -47,26 +46,24 @@ void	InitSSLCTX(MyServ &serv)
 
 	/* ERR_free_strings() may be needed if we want to cleanup memory */
 	/* SSL_connect won't work with TLS_server_method	*/
-	if (!(serv.sslctx = SSL_CTX_new(TLS_server_method())))
+	if (!(config_file.sslctx = SSL_CTX_new(TLS_server_method())))
 		error_exit("Unable to create SSL context");
 	if (SSL_CTX_set_ecdh_auto(ctx, 1) <= 0)
 		error_exit("SSL_CTX_set_ecdh_auto failed");
 
 	/* Set the key and cert */
-	if (SSL_CTX_use_certificate_file(serv.sslctx,
-		"./godirc.crt", SSL_FILETYPE_PEM) <= 0)
+	if (SSL_CTX_use_certificate_file(config_file.sslctx, "./godirc.crt", SSL_FILETYPE_PEM) <= 0)
 	{
-		SSL_CTX_free(serv.sslctx);
+		SSL_CTX_free(config_file.sslctx);
 		error_exit("Failed to load a certificate");
 	}
-	if (SSL_CTX_use_PrivateKey_file(serv.sslctx,
+	if (SSL_CTX_use_PrivateKey_file(config_file.sslctx,
 		"./godirc.key", SSL_FILETYPE_PEM) <= 0)
 	{
-		SSL_CTX_free(serv.sslctx);
+		SSL_CTX_free(config_file.sslctx);
 		error_exit("Failed to load a private key");
 	}
-	serv.set_accept_tls(true);
-	serv.serv_config.accept_tls = true;
+	config_file.accept_tls = true;
 }
 
 int		receive_message(Connection &co, char *buf)
