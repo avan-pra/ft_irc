@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/12 12:11:34 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/12 12:25:02 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ enum confID
 	eLISTEN_LIMIT,
 	eCONNECTION_PASS_HASH,
 	eOPER_PASS_HASH,
+	eSERVER_PASS_HASH,
 	eOPER_NAME,
 	eCOMMENT_LINE,
 	eALLOW_IPV6,
@@ -61,6 +62,7 @@ confID	hashit_s(const std::string &s)
 	else if (s == "LISTEN_LIMIT")			return	eLISTEN_LIMIT;
 	else if (s == "CONNECTION_PASS_HASH")	return	eCONNECTION_PASS_HASH;
 	else if (s == "OPER_PASS_HASH")			return	eOPER_PASS_HASH;
+	else if (s == "SERVER_PASS_HASH")		return	eSERVER_PASS_HASH;
 	else if (s == "OPER_NAME")				return	eOPER_NAME;
 	else if (s == "ALLOW_IPV6")				return	eALLOW_IPV6;
 	else if (s == "CLIENT_LIMIT")			return	eCLIENT_LIMIT;
@@ -220,6 +222,23 @@ int		set_oper_pass_hash(t_config_file &config_file, std::string o_pass, const in
 	config_file.oper_pass_set = true;
 	std::memcpy(config_file.oper_password, target, 32);
 	config_file.pass_oper = true;
+	return (1);
+}
+
+int		set_server_pass_hash(t_config_file &config_file, std::string s_pass, const int &nb_line)
+{
+	unsigned char	target[32];
+	int				check = setup_hash_pass(s_pass, target);
+
+	if (config_file.serv_pass_set == true)
+		return (config_error("SERVER_PASS_HASH has multiple declaration", nb_line));
+	if (check == 1)
+		return (config_error("SERVER_PASS_HASH must be a sha256 hash", nb_line));
+	config_file.serv_pass_set = true;
+	if (check == 0)
+		return (1);
+	std::memcpy(config_file.server_password, target, 32);
+	config_file.pass_for_server = true;
 	return (1);
 }
 
@@ -450,6 +469,13 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 				config_file.i++;
 				break ;
 			}
+			case eSERVER_PASS_HASH:
+			{
+				if (!set_server_pass_hash(config_file, variable, nb_line))
+					throw ConfigFileException();
+				config_file.i++;
+				break ;
+			}
 			case eOPER_NAME:
 			{
 				if (!set_oper_name(config_file, variable, nb_line))
@@ -502,7 +528,7 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 			}
 			case eNETWORK:
 			{
-				if (!set_network_id(config_file, file, nb_line, (config_file.i == 13 ? true : false)))
+				if (!set_network_id(config_file, file, nb_line, (config_file.i == 14 ? true : false)))
 					throw ConfigFileException();
 				break ;
 			}
@@ -518,7 +544,7 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 			}
 		}
 	}
-	if (config_file.i == 13)
+	if (config_file.i == 14)
 		all_param_set = true;
 }
 
@@ -562,6 +588,19 @@ void		print_config_file(t_config_file &config_file)
 		{
 			std::cout << hex2char(config_file.oper_password[i] / 16);
 			std::cout << hex2char(config_file.oper_password[i] % 16);
+		}
+		std::cout << NC << std::endl;
+	}
+	else
+		std::cout << REDB << "NOT CONFIGURED" << NC << std::endl;
+
+	std::cout << "SERVER_PASS_HASH: " << YELLOW;
+	if (config_file.pass_for_server == true)
+	{
+		for (size_t i = 0; i < 32; ++i)
+		{
+			std::cout << hex2char(config_file.password[i] / 16);
+			std::cout << hex2char(config_file.password[i] % 16);
 		}
 		std::cout << NC << std::endl;
 	}
