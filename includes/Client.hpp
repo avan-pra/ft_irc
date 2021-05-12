@@ -36,8 +36,6 @@ class Client : public Connection
 		std::string		_hostname;
 		std::string		_realname;
 		std::string		_mode;
-		bool			_has_good_password;
-		bool			_has_try_password;
 		bool			_is_oper;
 		std::string		_away_str;
 
@@ -48,8 +46,6 @@ class Client : public Connection
 		*/
 		Client()
 		{
-			_has_good_password = false;
-			_has_try_password = false;
 			_is_oper = false;
 		}
 		
@@ -77,8 +73,6 @@ class Client : public Connection
 		std::string		get_realname() const { return (_realname); }
 		std::string		get_nickname() const { return (_nickname); }
 		std::string		get_mode(){ return (_mode);}
-		bool			is_good_password() { return (_has_good_password); }
-		bool			get_pass_try() { return _has_try_password; }
 		bool			get_is_oper() { return _is_oper; }
 		bool			is_invisble() { return (_mode.find('i', 0) != std::string::npos); }
 		bool			get_is_away() { return (_away_str.size() == 0 ? false : true); }
@@ -92,8 +86,6 @@ class Client : public Connection
 		void			set_realname(std::string real) { _realname = real; }
 		void			set_nickname(std::string nick) { _nickname = nick; }
 		void			set_mode(std::string mode) { _mode = mode; }
-		void			set_password_state(bool submit) { _has_good_password = submit; }
-		void			set_pass_try(bool pass) { _has_try_password = pass; }
 		void			set_is_oper(bool oper) { _is_oper = oper; }
 		void			set_away_str(const std::string &away_str) { _away_str = away_str; }
 		

@@ -120,8 +120,10 @@ class MyServ
 		timeval			_timeout;
 		time_t			_start_time;
 		unsigned char	_password[32];
+		unsigned char	_server_password[32];
 		unsigned char	_oper_password[32];
 		bool			_pass_for_connection;
+		bool			_pass_for_server;
 		bool			_pass_oper;
 		bool			_accept_tls;
 		bool			_allow_ipv6;
@@ -142,7 +144,7 @@ class MyServ
 		/*
 		** Constructor/Destructor
 		*/
-		MyServ() : _listen_limit(0), _client_limit(0), _max_fd(0), _pass_for_connection(false),
+		MyServ() : _listen_limit(0), _client_limit(0), _max_fd(0), _pass_for_connection(false), _pass_for_server(false),
 					_pass_oper(false), _ping(0), _t_timeout(0), _timeout_register(0), _command(fill_command())
 		{
 			time(&_start_time);
@@ -164,6 +166,7 @@ class MyServ
 		std::string			get_client_hostname() const	{ return _client_hostname; }
 		int					get_listen_limit() const	{ return _listen_limit; }
 		const unsigned char *get_password() const { return _password; }
+		const unsigned char *get_password_server() const { return _server_password; }
 		const unsigned char *get_oper_password() const { return _oper_password; }
 		fd_set				&get_readfs() { return _readfs; }
 		fd_set				&get_writefs() { return _writefs; }
@@ -172,6 +175,7 @@ class MyServ
 		timeval				&get_timeout() { return _timeout; }
 		time_t				get_start_time() const { return _start_time; }
 		bool				get_need_pass() const { return _pass_for_connection; }
+		bool				get_need_pass_server() const { return _pass_for_server; }
 		bool				get_pass_oper() const { return _pass_oper; }
 		bool				get_accept_tls() const { return _accept_tls; }
 		bool				get_allow_ipv6() const { return _allow_ipv6; }
@@ -189,6 +193,7 @@ class MyServ
 		void	set_port(const std::string port) { _port = port; }
 		void	set_listen_limit(int listen_limit) { _listen_limit = listen_limit; }
 		void	set_password(const unsigned char *password) { std::memcpy(_password, password, 32); }
+		void	set_password_server(const unsigned char *password) { std::memcpy(_server_password, password, 32); }
 		void	set_oper_password(const unsigned char *password) { std::memcpy(_oper_password, password, 32); }
 		void	set_max_fd(int value) { _max_fd = value; }
 		void	set_timeout(int sec = int(), int usec = int())
@@ -197,6 +202,7 @@ class MyServ
 			_timeout.tv_usec = usec;
 		}
 		void	set_need_pass(bool need) { _pass_for_connection = need; }
+		void	set_need_pass_server(bool need) { _pass_for_server = need; }
 		void	set_pass_oper(bool need) { _pass_oper = need; }
 		void	set_accept_tls(bool tls) { _accept_tls = tls; }
 		void	set_allow_ipv6(bool ipv6) { _allow_ipv6 = ipv6; }

@@ -3,6 +3,33 @@
 #include "../includes/Disconnect.hpp"
 #include <ctime>
 
+enum	s_state
+{
+	eClient,
+	eServer,
+}		t_state;
+
+void	pass_command(const std::string &line, std::list<Unregistered>::iterator unregistered_it, const MyServ &serv)
+{
+	if (unregistered_it->get_pass_try() == true)
+		return;
+	std::vector<std::string> arg = ft_split(line, " ");
+	if (arg.size() < 2)
+	{
+		unregistered_it->push_to_buffer(":" + serv.get_hostname() + " 461 * PASS :Not enough parameters\r\n"); return;
+		return;
+	}
+
+	const char *s = arg[1].c_str();
+	unsigned char *d = SHA256(reinterpret_cast<unsigned char*> (const_cast<char*> (s)), strlen(s), 0);
+
+	if (serv.get_need_pass() && memcmp(d, serv.get_password(), 32) == 0)
+		unregistered_it->set_pass_state(eClient);
+	else if (serv.get_need_pass_server() && memcmp(d, serv.get_password_server(), 32) == 0)
+		unregistered_it->set_pass_state(eServer);
+	unregistered_it->set_pass_try(true);
+}
+
 static void	handle_wrong_command(std::string &command, std::list<Unregistered>::iterator unregistered_it, const MyServ &serv)
 {
 	if (command == "QUIT")
@@ -49,29 +76,38 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 				*it = std::toupper(*it);
 			if (command == "NICK" || command == "USER")
 			{
+				if (serv.get_need_pass() && co.get_pass_state() != eClient)
+					throw QuitCommandException();
+
 				Client cli = co;
 
 				cli.set_unended_packet(co.get_unended_packet() + *str + "\r\n" + true_line);
 				g_all.g_aClient.push_back(cli);
 				throw NewClientException();
 			}
-			if (command == "SERVER")
+			else if (command == "SERVER")
 			{
+				if (serv.get_need_pass_server() && co.get_pass_state() != eServer)
+					throw QuitCommandException();
+
 				Server srv = co;
 
 				srv.set_unended_packet(co.get_unended_packet() + *str + "\r\n" + true_line);
 				g_all.g_aServer.push_back(srv);
 				throw NewServerException();
 			}
-			if (command == "PASS")
+			else if (command == "PASS")
 			{
-				;
+				pass_command(*str, unregistered_it, serv);
 			}
-			try
+			else
 			{
-				handle_wrong_command(command, unregistered_it, serv);
+				try
+				{
+					handle_wrong_command(command, unregistered_it, serv);
+				}
+				catch (QuitCommandException) { throw QuitCommandException(); }
 			}
-			catch (QuitCommandException) { throw QuitCommandException(); }
 		}
 	}
 }

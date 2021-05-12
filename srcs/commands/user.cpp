@@ -82,12 +82,12 @@ void				user_command(const std::string &line, std::list<Client>::iterator client
 	std::vector<std::string>	args;
 	std::string					realname, line_new;
 
-	//Check get_need_pass --> if true --> check if pass is true if not do nothing
-	if (serv.get_need_pass() == true && client_it->is_good_password() == false && client_it->get_nickname().size() > 0)
-	{
-		throw IncorrectPassException(); 
-		return ;
-	}
+	// //Check get_need_pass --> if true --> check if pass is true if not do nothing
+	// if (serv.get_need_pass() == true && client_it->is_good_password() == false && client_it->get_nickname().size() > 0)
+	// {
+	// 	throw IncorrectPassException(); 
+	// 	return ;
+	// }
 	try
 	{
 		std::string host_name, mode;
