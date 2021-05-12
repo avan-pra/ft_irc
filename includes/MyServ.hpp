@@ -27,7 +27,9 @@
 
 class MyServ;
 class Client;
+class Server;
 std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> fill_command(void);
+std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator erver_it, const MyServ &serv)>	fill_command_server(void);
 
 struct t_networkID
 {
@@ -140,6 +142,7 @@ class MyServ
 		long			_timeout_register;
 
 		const std::map<std::string, void (*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> _command;
+		const std::map<std::string, void (*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)> _command_server;
 
 	public:
 
@@ -152,7 +155,7 @@ class MyServ
 		** Constructor/Destructor
 		*/
 		MyServ() : _listen_limit(0), _client_limit(0), _max_fd(0), _pass_for_connection(false), _pass_for_server(false),
-					_pass_oper(false), _ping(0), _t_timeout(0), _timeout_register(0), _command(fill_command())
+					_pass_oper(false), _ping(0), _t_timeout(0), _timeout_register(0), _command(fill_command()), _command_server(fill_command_server())
 		{
 			time(&_start_time);
 			set_timeout(3);
