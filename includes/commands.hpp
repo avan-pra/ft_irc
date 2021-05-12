@@ -154,6 +154,8 @@
 
 std::string create_msg(const int &code, std::list<Client>::iterator client_it, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string(), const std::string &arg4 = std::string());
 
+std::string		create_msg(const int &code, std::list<Server>::iterator server_it, const MyServ &serv, const std::string &arg1 = "", const std::string &arg2 = "", const std::string &arg3 = "", const std::string &arg4 = "");
+
 /*
 **  end of error
 */
@@ -182,7 +184,6 @@ void	quit_command(const std::string &line, std::list<Client>::iterator client_it
 void	invite_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	names_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	list_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
-void	server_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	part_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	privmsg_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	who_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
@@ -199,6 +200,8 @@ void	kill_command(const std::string &line, std::list<Client>::iterator client_it
 void	connect_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	rehash_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
+
+void	server_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp

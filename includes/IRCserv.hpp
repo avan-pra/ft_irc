@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/12 16:34:04 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/12 19:17:40 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,5 +261,10 @@ void		add_disconnected_nick(std::list<Client>::iterator client_it);
 */
 
 void		set_serv_attributes(MyServ &serv);
+
+/*
+** server_parser.cpp
+*/
+void   server_parser(char *line, std::list<Server>::iterator server_it, const MyServ &serv);
 
 #endif

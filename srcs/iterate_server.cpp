@@ -10,14 +10,11 @@ void	iterate_server(MyServ &serv)
 
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); ++it)
 	{
-		//std::cout << "in iterate client i =" << i << std::endl;
 		ping_if_away(*it, serv);
 		//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes
 		if (kick_if_away(*it, serv) == true || check_register_timeout(*it, serv) == true)
 		{
-			//std::cout << i << "= i; before disconnect if away {" << g_aClient[i].second.get_nickname() << "}\n";
 			disconnect(&(*it), it);
-			//std::cout << i << "= i; after disconnect if away \n";
 		}
 		else if (is_readable(serv, *it))
 		{
@@ -33,7 +30,7 @@ void	iterate_server(MyServ &serv)
 			{
 				try
 				{
-					;//parser(c, it, serv);
+					server_parser(c, it, serv);
 				}
 				catch (const DieException &e) { throw DieException(); }
 				catch(const IncorrectPassException &e) { disconnect(&(*it), it); }

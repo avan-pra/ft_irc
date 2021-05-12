@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/05/11 17:14:47 by lucas            ###   ########.fr        #
+#    Updated: 2021/05/12 16:52:53 by lucas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRC = main.cpp parser.cpp get_client.cpp \
 	  create_msg.cpp iterate_client.cpp iterate_server.cpp iterate_unregistered.cpp\
 	  find_client_or_channel.cpp send_msg_to.cpp mask_parser.cpp \
 	  tls.cpp error.cpp acquire_message.cpp class/client.cpp find_connections.cpp\
-	  disconnect.cpp set_serv_attributes.cpp \
+	  disconnect.cpp set_serv_attributes.cpp server_parser.cpp \
 
 OBJ = $(SRCS:.cpp=.o)
 

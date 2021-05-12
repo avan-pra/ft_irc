@@ -1,8 +1,9 @@
 #include "../../includes/IRCserv.hpp"
 
-void	server_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
+void	server_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
 {
+	std::cout << "|" << line << "|";
 	(void)line;
-	(void)client_it;
+	(void)server_it;
 	(void)serv;
 }

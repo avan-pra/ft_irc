@@ -16,7 +16,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["PASS"] = pass_command;
 	cmd["NICK"] = nick_command;
 	cmd["USER"] = user_command;
-	cmd["SERVER"] = server_command; 
+	cmd["SERVER"] = NULL; 
 	cmd["OPER"] = oper_command; 
 	cmd["QUIT"] = quit_command;
 	cmd["CONNECT"] = connect_command; 
@@ -65,13 +65,13 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	return cmd;
 }
 
-std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator erver_it, const MyServ &serv)>	fill_command_server(void)
+std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	fill_command_server(void)
 {
 	std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)> cmd;
 
 	cmd["PASS"] = NULL;
 	cmd["NICK"] = NULL;
-	cmd["SERVER"] = NULL; 
+	cmd["SERVER"] = server_command;
 	cmd["QUIT"] = NULL; 
 	cmd["SQUIT"] = NULL;
 	cmd["JOIN"] = NULL;

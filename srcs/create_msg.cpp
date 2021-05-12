@@ -151,6 +151,35 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 	}
 }
 
+std::string		create_msg(const int &code, std::list<Server>::iterator server_it, const MyServ &serv, const std::string &arg1, const std::string &arg2, const std::string &arg3, const std::string &arg4)
+{
+	std::string		sample;
+	std::string		true_code;
+
+	(void)arg1;
+	(void)arg2;
+	(void)arg3;
+	(void)arg4;
+	true_code = ft_to_string(code);
+	if (code < 10)
+		true_code = std::string(2, '0').append(ft_to_string(code));
+	else if (code < 100)
+		true_code = std::string(1, '0').append(ft_to_string(code));
+	if (server_it->get_servername().empty())
+		sample = std::string(":" + serv.get_hostname() + " " + true_code + " * ");
+	else if (code == 691)
+		sample = std::string(":" + serv.get_hostname() + " " + true_code + " ");
+	else
+		sample = std::string(":" + serv.get_hostname() + " " + true_code + " " + server_it->get_servername() + " ");
+
+	switch (code)
+	{
+		case 421:
+			return sample + ERR_UNKNOWNCOMMAND();
+	}
+	return sample;
+}
+
 std::string		create_full_msg(const std::vector<std::string> &params, std::list<Client>::iterator client_it)
 {
 	std::string		full_msg("");

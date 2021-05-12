@@ -26,6 +26,11 @@ static void re_init_serv_class(MyServ &serv)
 			if (it->_fd > max)
 				max = it->_fd;
 		}
+		for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); ++it)
+		{
+			if (it->_fd > max)
+				max = it->_fd;
+		}
 		serv.set_max_fd(max);
 	}
 	serv.set_timeout(3);
@@ -47,6 +52,12 @@ static void push_fd_to_set(MyServ &serv)
 	}
 	//push all client fd to all 3 set
 	for (std::list<Client>::iterator ite = g_all.g_aClient.begin(); ite != g_all.g_aClient.end(); ++ite)
+	{
+		FD_SET(ite->_fd, &serv.get_readfs());
+		// FD_SET(ite->first, &serv.get_writefs());
+		// FD_SET(*ite, &serv.get_exceptfs());
+	}
+	for (std::list<Server>::iterator ite = g_all.g_aServer.begin(); ite != g_all.g_aServer.end(); ++ite)
 	{
 		FD_SET(ite->_fd, &serv.get_readfs());
 		// FD_SET(ite->first, &serv.get_writefs());
