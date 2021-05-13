@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 15:53:28 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/12 16:46:53 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/13 18:02:19 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,23 @@ bool	can_execute(const std::string command, std::list<Server>::iterator server_i
 	return ret;
 }
 
+std::string		true_command(const std::string &line)
+{
+	std::vector<std::string>	params = ft_split(line, " ");
+
+	if (params.size() == 0)
+		return ("");
+	if (params.size() == 1)
+		return (params[0]);
+	if (params[0].size() > 1 && params[0][0] == ':')
+		return (params[1]);
+	else
+		return (params[0]);
+}
+
 void	server_parser(char *line, std::list<Server>::iterator server_it, const MyServ &serv)
 {
-	std::string		true_line;
+	std::string					true_line;
 	std::vector<std::string>	packet;
 
 	true_line = server_it->get_unended_packet() + std::string(line);
@@ -48,8 +62,9 @@ void	server_parser(char *line, std::list<Server>::iterator server_it, const MySe
 
 		for (std::vector<std::string>::iterator str = packet.begin(); str != packet.end(); ++str)
 		{
-			std::string command = std::string(str->substr(0, str->find(" ", 0)));
+			std::string command = true_command(*str);
 
+			std::cout << command << std::endl;
 			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 				*it = std::toupper(*it);
 
