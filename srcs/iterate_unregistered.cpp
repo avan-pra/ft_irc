@@ -28,6 +28,41 @@ void	pass_command(const std::string &line, std::list<Unregistered>::iterator unr
 	else if (serv.get_need_pass_server() && memcmp(d, serv.get_password_server(), 32) == 0)
 		unregistered_it->set_pass_state(eServer);
 	unregistered_it->set_pass_try(true);
+	
+	if (arg.size() >= 4)
+	{
+		if (arg[2].size() >= 4 && arg[2].size() <= 14)
+		{
+			for (size_t i = 0; i < 4; ++i)
+			{
+				if (std::isdigit(arg[2][i]))
+					;
+				else
+					return ;
+			}
+		}
+		else
+			return ;
+		unregistered_it->set_version(arg[2]);
+		if (arg[3].size() <= 100 && std::count(arg[3].begin(), arg[3].end(), '|') == 1)
+		{
+			std::vector<std::string> flags = ft_split(arg[3], "|");
+			if (flags.size() < 1 && flags[0] != "IRC")
+				return ;
+			unregistered_it->set_implementation_name(flags[0]);
+			if (flags.size() == 2)
+				unregistered_it->set_implementation_option(flags[1]);
+			else if (flags.size() > 2) //c impossible en theorie
+				return ;
+		}
+		else
+			return ;
+		if (arg.size() >= 5)
+		{
+			unregistered_it->set_link_option(arg[4]);
+		}
+		unregistered_it->set_arg_set(true);
+	}
 }
 
 static void	handle_wrong_command(std::string &command, std::list<Unregistered>::iterator unregistered_it, const MyServ &serv)
@@ -76,7 +111,7 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 				*it = std::toupper(*it);
 			if (command == "NICK" || command == "USER")
 			{
-				if (serv.get_need_pass() && co.get_pass_state() != eClient)
+				if (serv.get_need_pass() && (co.get_pass_state() != eClient || co.get_arg_set() == false))
 					throw QuitCommandException();
 
 				Client cli = co;
