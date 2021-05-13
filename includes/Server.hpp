@@ -45,6 +45,11 @@ class Server : public Connection
 			_sslptr = co._sslptr;
 			sock_addr = co.sock_addr;
 			
+			_hopcount = 0;
+			_token = -1;
+			_info = "";
+			_servername = "";
+
 			//related to PASS command
 			_version = co.get_version();
 			_implementation_name = co.get_implementation_name();
