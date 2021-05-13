@@ -86,6 +86,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_ENDOFMOTD();
 		case 381:
 			return sample + RPL_YOUREOPER();
+		case 382:
+			return sample + RPL_REHASHING(arg1);
 		case 401:
 			return sample + ERR_NOSUCHNICK(arg1);
 		case 403:

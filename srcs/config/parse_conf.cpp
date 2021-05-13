@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/12 12:25:02 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/13 17:57:24 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -627,7 +627,7 @@ void		start_parse_conf(t_config_file &config_file)
 	file.open(FILE_NAME);
 	if (file.is_open() == false)
 	{
-		std::cerr << "Could not open irc.conf file" << std::endl;
+		std::cerr << "Could not open " << FILE_NAME  << " file" << std::endl;
 		throw ConfigFileException();
 	}
 	while (file)

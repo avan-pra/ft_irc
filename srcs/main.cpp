@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:04 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/05/12 18:58:24 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/13 17:52:29 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,9 @@ int			main(void)
 		}
 		catch (const RehashException &e)
 		{
-			t_config_file	new_file;
 			try
 			{
-				InitSSLCTX(new_file);
-				start_parse_conf(new_file);
-				serv.serv_config = new_file;
-				set_serv_attributes(serv);
+				rehash(serv);
 			}
 			catch (const std::exception& e)
 			{
