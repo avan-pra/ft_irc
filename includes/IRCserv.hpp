@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/13 17:50:38 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/14 11:43:00 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,7 @@ void		format_mask(const std::string &str, std::string &nickname, std::string &us
 /*
  ** tls.cpp
 */
-void		InitSSLCTX(t_config_file &config_file);
+void		InitSSLCTX(t_config_file &config_file, MyServ &serv);
 void		error_exit(const std::string &exit_msg);
 int			receive_message(Connection &co, char *buf);
 int			DoHandshakeTLS(Connection &co);

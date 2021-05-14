@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/12 19:17:20 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/14 11:30:29 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ struct			t_config_file
 		pass_for_server = false;
 		pass_oper =	false;
 		i = 0;
+		accept_tls = false;
 	}
 };
 
