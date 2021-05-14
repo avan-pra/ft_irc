@@ -69,13 +69,14 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 {
 	std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)> cmd;
 
-	cmd["PASS"] = NULL;
+	cmd["PASS"] = pass_command;
 	cmd["NICK"] = NULL;
 	cmd["SERVER"] = server_command;
 	cmd["QUIT"] = NULL; 
 	cmd["SQUIT"] = NULL;
 	cmd["JOIN"] = NULL;
 	cmd["NJOIN"] = NULL;
+	cmd["PING"] = ping_command;
 
 	cmd["PART"] = NULL; 
 	cmd["MODE"] = NULL; 
@@ -98,7 +99,6 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["WHOIS"] = NULL;
 	cmd["WHOWAS"] = NULL;
 	cmd["KILL"] = NULL;
-	cmd["PING"] = NULL;
 	cmd["PONG"] = NULL;
 	cmd["ERROR"] = NULL;
 	cmd["AWAY"] = NULL;

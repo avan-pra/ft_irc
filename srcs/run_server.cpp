@@ -124,6 +124,8 @@ void run_server(MyServ &serv)
 
 		try_accept_connection(serv);
 		iterate_unregistered(serv);
+		if (g_all.g_aServer.size() > 0)
+			std::cout << "run_server :" << g_all.g_aServer.front().get_unended_packet();
 		iterate_client(serv);
 		iterate_server(serv);
 		send_bufferised_packet();

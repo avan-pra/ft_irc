@@ -2,6 +2,7 @@
 # define SERVER_HPP
 
 # include <iostream>
+# include <deque>
 
 # include "Connection.hpp"
 # include "Unregistered.hpp"
@@ -12,6 +13,18 @@ typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 
 class Unregistered;
+
+struct t_introduce_serv
+{
+	std::string		hostname;
+	std::string		pass;
+	std::string		version;
+	std::string		flags;
+	std::string		info;
+	int				hopcount;
+	int				token;
+	bool			is_tls;
+};
 
 class Server : public Connection
 {
@@ -28,6 +41,7 @@ class Server : public Connection
 		std::string		_link_option;
 
 	public:
+		std::deque<t_introduce_serv>	_other_serv;
 
 		/*
 		** Constructor/Destructor

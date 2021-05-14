@@ -168,11 +168,13 @@ class MyServ;
 
 void	away_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	pass_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	pass_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	ping_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	pong_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	nick_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	user_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	ping_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	ping_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	time_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	motd_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	info_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);

@@ -24,6 +24,7 @@ void	iterate_server(MyServ &serv)
 			** get_message & check_message_problem may set ret to -1 which indicate an critical error such as a too big packet size
 			** an ssl handshake error, read error or if the client isnt writeable
 			*/
+			std::cout << "iterate_server :" << c;
 			if (ret <= 0)
 				disconnect(&(*it), it);
 			else if (ret > 0)

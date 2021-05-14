@@ -11,3 +11,14 @@ void	ping_command(const std::string &line, std::list<Client>::iterator client_it
 	}
 	catch(const std::exception& e) { }
 }
+
+void	ping_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
+{
+	std::vector<std::string> arg = ft_split(line, " ");
+
+	try
+	{
+		server_it->push_to_buffer(":" + serv.get_hostname() + " PONG " + serv.get_hostname() + "\r\n");
+	}
+	catch(const std::exception& e) { }
+}

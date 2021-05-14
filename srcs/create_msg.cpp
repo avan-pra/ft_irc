@@ -178,6 +178,8 @@ std::string		create_msg(const int &code, std::list<Server>::iterator server_it, 
 	{
 		case 421:
 			return sample + ERR_UNKNOWNCOMMAND();
+		case 451:
+			return sample + ERR_NOTREGISTERED();
 	}
 	return sample;
 }

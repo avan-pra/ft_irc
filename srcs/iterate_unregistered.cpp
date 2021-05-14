@@ -93,7 +93,7 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 {
 	std::vector<std::string>	packet;
 	std::string					true_line;
-	Unregistered					&co = *unregistered_it;
+	Unregistered				&co = *unregistered_it;
 
 	true_line = unregistered_it->get_unended_packet() + std::string(line);
 	packet = ft_split(true_line, std::string("\r\n"));
@@ -122,6 +122,11 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 			}
 			else if (command == "SERVER")
 			{
+				if (!co.get_pass_try())
+				{
+					co.push_to_buffer(":" + serv.get_hostname() + " 461 * SERVER :Syntax error\r\n");
+					return ;
+				}
 				if (serv.get_need_pass_server() && co.get_pass_state() != eServer)
 					throw QuitCommandException();
 
