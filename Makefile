@@ -37,7 +37,6 @@ SRC = main.cpp parser.cpp get_client.cpp \
 	  find_client_or_channel.cpp send_msg_to.cpp mask_parser.cpp \
 	  tls.cpp error.cpp acquire_message.cpp class/client.cpp find_connections.cpp\
 	  disconnect.cpp set_serv_attributes.cpp server_parser.cpp \
-	  network_connection.cpp \
 
 OBJ = $(SRCS:.cpp=.o)
 
