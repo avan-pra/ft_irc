@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 16:19:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/13 17:57:48 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/14 12:02:25 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,6 @@ void				add_new_ports(MyServ &serv, t_config_file &new_file, std::map<int, bool>
 	}
 }
 
-void				rehash(MyServ &serv)
-{
-	t_config_file					new_file;
-	std::map<int, bool>				new_ports;
-
-	if (serv.sslctx == NULL)
-		InitSSLCTX(new_file);
-	else if (serv.get_accept_tls() == true)
-		new_file.accept_tls = true;
-	else
-		new_file.accept_tls = false;
-	start_parse_conf(new_file);
-	//close old sockets not present in new config file
-	close_old_socket(serv, new_file);
-	//add new ports and launch them
-	add_new_ports(serv, new_file, new_ports);
-	launch_all_socket(serv, new_ports);
-	serv.serv_config = new_file;
-	set_serv_attributes(serv);
-}
-
 void				close_old_socket(MyServ &serv, t_config_file &new_file)
 {
 	std::map<int, bool>::iterator 	iter;
@@ -73,6 +52,27 @@ void				close_old_socket(MyServ &serv, t_config_file &new_file)
 			}
 		}
 	}
+}
+
+void				rehash(MyServ &serv)
+{
+	t_config_file					new_file;
+	std::map<int, bool>				new_ports;
+
+	if (serv.sslctx == NULL)
+		InitSSLCTX(new_file, serv);
+	if (serv.get_accept_tls() == true)
+		new_file.accept_tls = true;
+	else
+		new_file.accept_tls = false;
+	start_parse_conf(new_file);
+	//close old sockets not present in new config file
+	close_old_socket(serv, new_file);
+	//add new ports and launch them
+	add_new_ports(serv, new_file, new_ports);
+	launch_all_socket(serv, new_ports);
+	serv.serv_config = new_file;
+	set_serv_attributes(serv);
 }
 
 void				rehash_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)

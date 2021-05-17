@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:04 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/05/13 17:52:29 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/14 11:52:42 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int			main(void)
 	{
 		signal(SIGINT, sig_handler);
 		signal(SIGPIPE, sig_handler);
-		InitSSLCTX(serv.serv_config);
+		InitSSLCTX(serv.serv_config, serv);
 		start_parse_conf(serv.serv_config);
 		set_serv_attributes(serv);
 		launch_all_socket(serv, serv.serv_config.m_ports);
