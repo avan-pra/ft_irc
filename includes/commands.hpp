@@ -207,6 +207,8 @@ void	nick_command(const std::string &line, std::list<Server>::iterator server_it
 void	pass_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	pong_command(const std::string &line, std::list<Server>::iterator client_it, const MyServ &serv);
 void	ping_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	quit_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	mode_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp

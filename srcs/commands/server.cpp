@@ -1,4 +1,5 @@
 #include "../../includes/IRCserv.hpp"
+#include "../includes/commands.hpp"
 
 void	share_client(std::list<Server>::iterator &server_it, const MyServ &serv)
 {
@@ -20,6 +21,10 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 
 	if (arg.size() < 5)
 		return ;
+	if (is_servername_exist(arg[1]))
+	{
+		server_it->push_to_buffer(create_msg(462, server_it, serv));
+	}
 	server_it->set_server_name(arg[1]);
 	server_it->set_hopcount(1);
 	server_it->set_token(-1);

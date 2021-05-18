@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/17 17:55:04 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/18 17:56:13 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ class Client : public Connection
 		Client()
 		{
 			_is_oper = false;
+			_type = CLIENT_TYPE;
 		}
 		
 		Client(Connection &co)
@@ -61,6 +62,7 @@ class Client : public Connection
 			_sslptr = co._sslptr;
 			sock_addr = co.sock_addr;
 			_is_oper = false;
+			_type = CLIENT_TYPE;
 		}
 		
 		~Client();

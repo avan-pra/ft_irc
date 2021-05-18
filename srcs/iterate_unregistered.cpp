@@ -6,7 +6,8 @@
 enum	s_state
 {
 	eClient,
-	eServer
+	eServer,
+	eService
 }		t_state;
 
 void	pass_command(const std::string &line, std::list<Unregistered>::iterator unregistered_it, const MyServ &serv)
@@ -124,6 +125,7 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 			}
 			else if (command == "SERVER")
 			{
+				std::cout << *str << std::endl;
 				if (!co.get_pass_try())
 				{
 					co.push_to_buffer(":" + serv.get_hostname() + " 461 * SERVER :Syntax error\r\n");
@@ -135,21 +137,21 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 				Server srv = co;
 
 				srv.set_unended_packet(co.get_unended_packet() + *str + "\r\n" + true_line);
-				srv.set_hopcount(0);
+				srv.set_hopcount(1);
 				g_all.g_aServer.push_back(srv);
 				throw NewServerException();
 			}
 			else if (command == "SERVICE")
-			{
-				if (serv.get_need_pass() && (co.get_pass_state() != eClient || co.get_arg_set() == false))
-					throw QuitCommandException();
-				
-				Service	new_Service = co;
+ 			{
+ 				if (serv.get_need_pass() && (co.get_pass_state() != eClient || co.get_arg_set() == false))
+ 					throw QuitCommandException();
 
-				new_Service.set_unended_packet(co.get_unended_packet() + *str + "\r\n" + true_line);
-				g_all.g_aService.push_back(new_Service);
-				throw  NewServiceException();
-			}
+ 				Service	new_Service = co;
+
+ 				new_Service.set_unended_packet(co.get_unended_packet() + *str + "\r\n" + true_line);
+ 				g_all.g_aService.push_back(new_Service);
+ 				throw  NewServiceException();
+ 			}
 			else if (command == "PASS")
 			{
 				pass_command(*str, unregistered_it, serv);

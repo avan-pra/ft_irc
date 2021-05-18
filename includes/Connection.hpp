@@ -10,6 +10,9 @@
 		# define MSG_NOSIGNAL 0
 # endif
 
+# define SERVER_TYPE 1
+# define CLIENT_TYPE 2
+
 typedef int	SOCKET;
 
 class Connection
@@ -24,6 +27,7 @@ class Connection
 		bool			_ping_sended;
 		bool			_is_register;
 		bool			_tls;
+		int				_type;
 		int				_hopcount;
 
 	public:
@@ -36,7 +40,7 @@ class Connection
 		/*
 		** Constructor/Destructor
 		*/
-		Connection(): _hopcount(0)
+		Connection(): _hopcount(1)
 		{
 			_last_activity = 0;
 			_ping_sended = false;
@@ -45,7 +49,7 @@ class Connection
 			_fd = -1;
 			_sslptr = NULL;
 			_t_signon = time(0);
-			_t_idle = time(0);
+ 			_t_idle = time(0);
 		}
 		virtual ~Connection() { }
 
@@ -60,6 +64,7 @@ class Connection
 		time_t			&get_t_idle() { return _t_idle; }
 		time_t			&get_t_signon() { return _t_signon; }
 		int				get_hopcount() { return _hopcount; }
+		int				get_type() { return _type; }
 
 		/*
 		** Setter 
@@ -70,6 +75,7 @@ class Connection
 		void			set_tls(bool tls_state) { _tls = tls_state; }
 		void			set_t_idle(time_t time) { _t_idle = time; }
 		void			set_hopcount(int count) { _hopcount = count; }
+		void			set_type(int t) { _type = t; }
 
 		/*
 		** Methods
@@ -83,7 +89,13 @@ class Connection
 		}
 
 		void			reset_buffer() { _buff = ""; }
-		void			push_to_buffer(const std::string &s) { _buff += s; }
+		void			push_to_buffer(const std::string &s)
+		{
+			if (_type == CLIENT_TYPE && _hopcount == 0)
+				_buff += s;
+			else if (_type == SERVER_TYPE && _hopcount == 1)
+				_buff += s;
+		}
 		std::string		get_buffer() { return _buff; }
 		void			send_packets()
 		{
