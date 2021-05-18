@@ -6,7 +6,7 @@
 enum	s_state
 {
 	eClient,
-	eServer,
+	eServer
 }		t_state;
 
 void	pass_command(const std::string &line, std::list<Unregistered>::iterator unregistered_it, const MyServ &serv)
@@ -138,6 +138,17 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 				srv.set_hopcount(0);
 				g_all.g_aServer.push_back(srv);
 				throw NewServerException();
+			}
+			else if (command == "SERVICE")
+			{
+				if (serv.get_need_pass() && (co.get_pass_state() != eClient || co.get_arg_set() == false))
+					throw QuitCommandException();
+				
+				Service	new_Service = co;
+
+				new_Service.set_unended_packet(co.get_unended_packet() + *str + "\r\n" + true_line);
+				g_all.g_aService.push_back(new_Service);
+				throw  NewServiceException();
 			}
 			else if (command == "PASS")
 			{
