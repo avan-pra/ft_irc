@@ -110,6 +110,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + ERR_ERRONEUSNICKNAME(arg1);
 		case 433:
 			return sample + ERR_NICKNAMEINUSE(arg1);
+		case 436:
+			return sample + ERR_NICKCOLLISION(arg1, arg2, arg3);
 		case 441:
 			return sample + ERR_USERNOTINCHANNEL(arg1, arg2);
 		case 442:
@@ -176,10 +178,16 @@ std::string		create_msg(const int &code, std::list<Server>::iterator server_it, 
 
 	switch (code)
 	{
+		case 401:
+			return sample + ERR_NOSUCHNICK(arg1);
 		case 421:
 			return sample + ERR_UNKNOWNCOMMAND();
+		case 433:
+			return sample + ERR_NICKNAMEINUSE(arg1);
 		case 451:
 			return sample + ERR_NOTREGISTERED();
+		case 461:
+			return sample + ERR_NEEDMOREPARAMS(arg1);
 	}
 	return sample;
 }

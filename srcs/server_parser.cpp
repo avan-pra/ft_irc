@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 15:53:28 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/14 13:48:38 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/17 17:40:22 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	server_parser(char *line, std::list<Server>::iterator server_it, const MySe
 		{
 			std::string command = true_command(*str);
 
-			std::cout << command << std::endl;
 			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 				*it = std::toupper(*it);
 

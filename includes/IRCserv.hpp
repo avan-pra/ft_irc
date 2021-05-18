@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/17 10:55:30 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/17 18:34:27 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,16 @@ char	hex2char(char input);
 std::string		ft_to_string(size_t value);
 
 /*
+ ** is_number.cpp
+*/
+bool			is_number(const std::string& s);
+
+/*
+ ** is_alnum.cpp
+*/
+int		ft_isalnum(int c);
+
+/*
 ** parser.cpp
 */
 void	parser(char *line, std::list<Client>::iterator client_it, const MyServ &server);
@@ -206,6 +216,7 @@ void	clear_empty_packet(std::vector<std::string> &packet);
 */
 void	send_to_channel(const std::string &msg, std::list<Client>::iterator client_it, const int &chan_id, bool to_sender = false);
 void	send_to_all_channel(const std::string &msg, std::list<Client>::iterator client_it, bool to_sender = false);
+void	send_to_all_server(const std::string &msg, std::list<Server>::iterator server_it, bool to_sender = false);
 
 /*
 ** find_client_or_channel.cpp
@@ -225,6 +236,7 @@ std::list<Client>::iterator		find_client_by_iterator(const std::string &nickname
 std::list<Client>::iterator		find_client_by_iterator(Connection *co);
 std::list<Server>::iterator		find_server_by_iterator(const SOCKET &fd);
 std::list<Unregistered>::iterator	find_unregister_by_iterator(const SOCKET &fd);
+bool							is_servername_exist(const std::string &servname);
 
 /*
 ** create_msg .cpp

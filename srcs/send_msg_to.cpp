@@ -31,3 +31,14 @@ void	send_to_all_channel(const std::string &msg, std::list<Client>::iterator cli
 		}
 	}
 }
+
+void	send_to_all_server(const std::string &msg, std::list<Server>::iterator server_it, bool to_sender)
+{
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
+	{
+		if (it != server_it)
+			it->push_to_buffer(msg);
+		if (to_sender && it == server_it)
+			server_it->push_to_buffer(msg);
+	}
+}

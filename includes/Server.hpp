@@ -16,14 +16,13 @@ class Unregistered;
 
 struct t_introduce_serv
 {
-	std::string		hostname;
-	std::string		pass;
-	std::string		version;
-	std::string		flags;
-	std::string		info;
-	int				hopcount;
-	int				token;
-	bool			is_tls;
+	std::string				hostname;
+	std::string				pass;
+	std::string				version;
+	std::string				flags;
+	std::string				info;
+	int						hopcount;
+	int						token;
 };
 
 class Server : public Connection

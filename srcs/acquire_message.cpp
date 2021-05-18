@@ -18,7 +18,6 @@ void		check_packet_len_error(char *c, Connection &co, int &ret)
 
 	for (std::vector<std::string>::iterator it = tmp.begin(); it < tmp.end(); ++it)
 	{
-		// std::cout << it->size() << ":" << *it << std::endl;
 		if (it->size() + 2 > 512)
 		{
 			#ifdef DEBUG

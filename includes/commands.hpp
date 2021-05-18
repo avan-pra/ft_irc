@@ -4,6 +4,16 @@
 #include "IRCserv.hpp"
 #include <iostream>
 
+//define invalid character as for username
+# define NICKNAME_VALID_CHAR "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_[]{}\\`|"
+
+//define channel chars
+# define CHANNEL_VALID_CHAR "#&!+"
+
+//define valid USER modes
+# define USER_VALID_MODE "aiwroOs"
+# define CHANNEL_VALID_MODE "OovaimnqpsrtklbeI"
+
 /*
 **  error for command file
 */
@@ -27,7 +37,7 @@
 # define ERR_NONICKNAMEGIVEN() (":No nickname given\r\n")
 # define ERR_ERRONEUSNICKNAME(pseudo) (pseudo + " :Erroneus nickname\r\n")
 # define ERR_NICKNAMEINUSE(nick) (nick + " :Nickname is already in use\r\n")
-# define ERR_NICKCOLLISION(nick) (nick + " :Nickname collision KILL\r\n")
+# define ERR_NICKCOLLISION(nick, user, host) (nick + " :Nickname collision KILL from " + user + "@" + host + "\r\n")
 //mssg originel claque au sol, du coup on modifie le mssg
 # define ERR_USERNOTINCHANNEL(pseudo, channel) (pseudo + " :Is not on channel " + channel + "\r\n")
 # define ERR_NOTONCHANNEL(channel) (channel + " :You're not on that channel\r\n")
@@ -142,15 +152,6 @@
 # define RPL_ADMINEMAIL() (":<info admin>\r\n")
 # define RPL_CREATIONTIME(channel, c_time) (channel + " " + c_time + "\r\n")
 
-//define invalid character as for username
-# define NICKNAME_VALID_CHAR "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_[]{}\\`|"
-
-//define channel chars
-# define CHANNEL_VALID_CHAR "#&!+"
-
-//define valid USER modes
-# define USER_VALID_MODE "aiwroOs"
-# define CHANNEL_VALID_MODE "OovaimnqpsrtklbeI"
 
 std::string create_msg(const int &code, std::list<Client>::iterator client_it, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string(), const std::string &arg4 = std::string());
 
@@ -168,13 +169,11 @@ class MyServ;
 
 void	away_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	pass_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
-void	pass_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	ping_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	pong_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	nick_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	user_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	ping_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
-void	ping_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	time_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	motd_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	info_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
@@ -204,6 +203,10 @@ void	rehash_command(const std::string &line, std::list<Client>::iterator client_
 
 
 void	server_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	nick_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	pass_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	pong_command(const std::string &line, std::list<Server>::iterator client_it, const MyServ &serv);
+void	ping_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp

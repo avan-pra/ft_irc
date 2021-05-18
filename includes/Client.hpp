@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/06 11:34:32 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/17 17:55:04 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ class Client : public Connection
 		std::string		_mode;
 		bool			_is_oper;
 		std::string		_away_str;
+		int				_server_token;
 
 	public:
 
@@ -76,6 +77,7 @@ class Client : public Connection
 		bool			is_invisble() { return (_mode.find('i', 0) != std::string::npos); }
 		bool			get_is_away() { return (_away_str.size() == 0 ? false : true); }
 		std::string		get_away_str() { return _away_str; }
+		int				get_server_token() { return (_server_token); }
 
 		/*
 		 ** Setter
@@ -87,6 +89,7 @@ class Client : public Connection
 		void			set_mode(std::string mode) { _mode = mode; }
 		void			set_is_oper(bool oper) { _is_oper = oper; }
 		void			set_away_str(const std::string &away_str) { _away_str = away_str; }
+		void			set_server_token(int token) { _server_token = token; }
 		
 		
 		/*

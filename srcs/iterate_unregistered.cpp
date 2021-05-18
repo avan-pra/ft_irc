@@ -116,6 +116,8 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 
 				Client cli = co;
 
+				cli.set_server_token(0);
+				cli.set_hopcount(0);
 				cli.set_unended_packet(co.get_unended_packet() + *str + "\r\n" + true_line);
 				g_all.g_aClient.push_back(cli);
 				throw NewClientException();
@@ -133,6 +135,7 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 				Server srv = co;
 
 				srv.set_unended_packet(co.get_unended_packet() + *str + "\r\n" + true_line);
+				srv.set_hopcount(0);
 				g_all.g_aServer.push_back(srv);
 				throw NewServerException();
 			}

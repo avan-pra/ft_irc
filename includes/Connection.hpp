@@ -24,6 +24,7 @@ class Connection
 		bool			_ping_sended;
 		bool			_is_register;
 		bool			_tls;
+		int				_hopcount;
 
 	public:
 
@@ -35,7 +36,7 @@ class Connection
 		/*
 		** Constructor/Destructor
 		*/
-		Connection()
+		Connection(): _hopcount(0)
 		{
 			_last_activity = 0;
 			_ping_sended = false;
@@ -58,6 +59,7 @@ class Connection
 		bool			get_tls() { return _tls; }
 		time_t			&get_t_idle() { return _t_idle; }
 		time_t			&get_t_signon() { return _t_signon; }
+		int				get_hopcount() { return _hopcount; }
 
 		/*
 		** Setter 
@@ -67,6 +69,7 @@ class Connection
 		void			set_register(bool registered) { _is_register = registered; }
 		void			set_tls(bool tls_state) { _tls = tls_state; }
 		void			set_t_idle(time_t time) { _t_idle = time; }
+		void			set_hopcount(int count) { _hopcount = count; }
 
 		/*
 		** Methods

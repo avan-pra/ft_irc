@@ -84,6 +84,8 @@ bool		kick_if_away(Connection &co, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
 
+	if (co.get_hopcount() > 0 )
+		return false;
 	if (co.is_registered() == false)
 		return false;
 	time(&time_compare);
@@ -124,8 +126,6 @@ void run_server(MyServ &serv)
 
 		try_accept_connection(serv);
 		iterate_unregistered(serv);
-		if (g_all.g_aServer.size() > 0)
-			std::cout << "run_server :" << g_all.g_aServer.front().get_unended_packet();
 		iterate_client(serv);
 		iterate_server(serv);
 		send_bufferised_packet();

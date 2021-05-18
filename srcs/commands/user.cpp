@@ -6,25 +6,13 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/03 13:15:03 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/18 11:54:26 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/commands.hpp"
 #include "../../includes/IRCserv.hpp"
 #include <vector>
-
-static bool			is_number(const std::string& s)
-{
-    std::string::const_iterator it = s.begin();
-    while (it != s.end())
-	{
-		if (!std::isdigit(*it))
-			return false;
-		++it;
-	}
-	return true;
-}
 
 static void			check_realname(const std::string str, std::list<Client>::iterator client_it, const MyServ &serv)
 {
@@ -128,6 +116,12 @@ void				user_command(const std::string &line, std::list<Client>::iterator client
 			motd_command("", client_it, serv);
 			time(&client_it->get_last_activity());
 			client_it->set_register(true);
+			
+			std::string		nick_msg = ":" + serv.get_hostname() + " NICK " + client_it->get_nickname() + " 1 ";
+
+			nick_msg += client_it->get_username() + " " + client_it->get_hostname() + " 1 ";
+			nick_msg += client_it->get_mode() + " :" + client_it->get_realname() + "\r\n";
+			send_to_all_server(nick_msg, g_all.g_aServer.begin(), true);
 		}
 
 	}

@@ -5,13 +5,16 @@ void	disconnect(Client *co, std::list<Client>::iterator &client_it)
 {
 	co->send_packets();
 	co->reset_buffer();
-	if (co->get_tls())
+	if (co->get_hopcount() != 0)
 	{
-		if (co->_sslptr != NULL)
-			SSL_shutdown(co->_sslptr);
-		SSL_free(co->_sslptr);
+		if (co->get_tls())
+		{
+			if (co->_sslptr != NULL)
+				SSL_shutdown(co->_sslptr);
+			SSL_free(co->_sslptr);
+		}
+		closesocket(co->_fd);
 	}
-	closesocket(co->_fd);
 	if (dynamic_cast<Client*> (co) != NULL)
 	{
 		std::list<Client>::iterator	it = find_client_by_iterator(co);
@@ -39,6 +42,13 @@ void	disconnect(Server *co, std::list<Server>::iterator &server_it)
 {
 	co->send_packets();
 	co->reset_buffer();
+	for (std::list<Client>::iterator it = g_all.g_aClient.begin() ; it != g_all.g_aClient.end();)
+	{
+		if (server_it->_fd == it->_fd)
+			it = g_all.g_aClient.erase(it);
+		else
+			it++;
+	}
 	if (co->get_tls())
 	{
 		if (co->_sslptr != NULL)
