@@ -129,7 +129,7 @@ bool	check_valid_hostname(const std::string hostname)
 
 	for (size_t i = 0; i < shortname.size(); i++)
 	{
-		if (shortname[i][0] == '-' || shortname[i].back() == '-')
+		if (shortname[i][0] == '-' || shortname[i][shortname[i].size() -1] == '-')
 			return (false);
 		for (size_t k = 0; k < shortname[i].size(); k++)
 		{
