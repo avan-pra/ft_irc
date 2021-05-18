@@ -84,7 +84,7 @@
 # define RPL_WHOISUSER(nick, user, host, realname) (nick + " " + user + " " + host + " * :" + realname + "\r\n")
 //# define RPL_WHOISSERVER(pseudo, server) (pseudo + " " + server + " :<info serveur>\r\n")
 # define RPL_WHOISOPERATOR(pseudo) (pseudo + " :is an IRC operator\r\n")
-# define RPL_WHOISIDLE(pseudo, idle, signon) (" " + pseudo + " " + idle + " " + signon + " :seconds idle, signon time\r\n")
+# define RPL_WHOISIDLE(pseudo, idle, signon) (pseudo + " " + idle + " " + signon + " :seconds idle, signon time\r\n")
 # define RPL_WHOREPLY(arg) (arg + "\r\n")
 # define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of /WHOIS list\r\n")
 //# define RPL_WHOISCHANNELS(pseudo, channel) (pseudo + " :{[@|+]<canal><espace>}\r\n")

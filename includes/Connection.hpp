@@ -44,8 +44,8 @@ class Connection
 			_tls = false;
 			_fd = -1;
 			_sslptr = NULL;
-			time(&_t_idle);
-			time(&_t_signon);
+			_t_signon = time(0);
+			_t_idle = time(0);
 		}
 		virtual ~Connection() { }
 
