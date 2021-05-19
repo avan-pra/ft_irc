@@ -1,5 +1,5 @@
 #include "../../includes/IRCserv.hpp"
-#include "../includes/commands.hpp"
+#include "../../includes/commands.hpp"
 
 void	share_client(std::list<Server>::iterator &server_it, const MyServ &serv)
 {
