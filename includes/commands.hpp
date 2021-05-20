@@ -209,13 +209,18 @@ void	pong_command(const std::string &line, std::list<Server>::iterator client_it
 void	ping_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	quit_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	mode_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	service_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp
 */
-
 void	mode_o(std::list<Client>::iterator client_it, const size_t &chann_idx, const char &sign, const std::string &name);
 void	mode_b(std::list<Client>::iterator client_it, const size_t &chann_idx, const char &sign, const std::string &str, const MyServ &serv);
 void	mode_v(std::list<Client>::iterator client_it, const size_t &chann_idx, const char &sign, const std::string &name);
+
+/*
+** nick.cpp
+*/
+bool	check_valid_nickname(const std::string &nick);
 
 #endif

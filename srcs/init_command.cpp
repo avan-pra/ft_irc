@@ -58,7 +58,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["DIE"] = die_command;
 	// cmd["NJOIN"] = NULL;
 	// cmd["SQUERY"] = NULL;
-	// cmd["SERVICE"] = NULL;
+	cmd["SERVICE"] = service_command;
 
 	cmd["CAP"] = cap_command;
 
