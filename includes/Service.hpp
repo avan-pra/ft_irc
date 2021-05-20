@@ -10,7 +10,6 @@ class Service : public Connection
 		std::string	_nickname;
 		std::string	_distribution;
 		std::string	_info;
-		bool		_is_oper;
 
 		//Actually unused
 		std::string	_type;
@@ -22,7 +21,6 @@ class Service : public Connection
 		*/
 		Service()
 		{
-			_is_oper = false;
 		}
 
 		Service(Connection &co)
@@ -35,7 +33,6 @@ class Service : public Connection
 			_tls = co.get_tls();
 			_sslptr = co._sslptr;
 			sock_addr = co.sock_addr;
-			_is_oper = false;
 		}
 		
 		~Service() {}
@@ -46,7 +43,6 @@ class Service : public Connection
 		std::string		get_nickname() { return	_nickname; }
 		std::string		get_distribution() { return	_distribution; }
 		std::string		get_info() { return	_info; }
-		bool			get_is_oper() { return _is_oper; }
 		std::string		get_type() { return	_type; }
 
 };

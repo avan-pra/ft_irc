@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/14 11:30:29 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/20 15:55:53 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,11 @@
 class MyServ;
 class Client;
 class Server;
-std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> fill_command(void);
-std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator erver_it, const MyServ &serv)>	fill_command_server(void);
+class Service;
+
+std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> 	fill_command(void);
+std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	fill_command_server(void);
+std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)>	fill_command_service(void);
 
 struct t_networkID
 {
@@ -144,9 +147,10 @@ class MyServ
 		long			_t_timeout;
 		long			_timeout_register;
 
-		const std::map<std::string, void (*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> _command;
-		const std::map<std::string, void (*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)> _command_server;
-
+		const std::map<std::string, void (*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)>	_command;
+		const std::map<std::string, void (*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	_command_server;
+		const std::map<std::string, void (*)(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)> _command_service; 
+	
 	public:
 
 		SSL_CTX						*sslctx;
@@ -158,7 +162,8 @@ class MyServ
 		** Constructor/Destructor
 		*/
 		MyServ() : _listen_limit(0), _client_limit(0), _max_fd(0), _pass_for_connection(false), _pass_for_server(false),
-					_pass_oper(false), _ping(0), _t_timeout(0), _timeout_register(0), _command(fill_command()), _command_server(fill_command_server())
+					_pass_oper(false), _ping(0), _t_timeout(0), _timeout_register(0), _command(fill_command()),
+					_command_server(fill_command_server()), _command_service(fill_command_service())
 		{
 			time(&_start_time);
 			set_timeout(3);
