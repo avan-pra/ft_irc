@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/04 13:45:55 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/18 14:20:53 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,4 +349,19 @@ void				mode_command(const std::string &line, std::list<Client>::iterator client
 		}
 	}
 	catch(const std::exception &e){return ;}
+}
+
+void				mode_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
+{
+	std::vector<std::string>	params = ft_split(line, " ");
+	std::list<Client>::iterator	client_it;
+	std::string					command;
+
+	(void)server_it;
+	if (params.size() < 3)
+		return ;
+	if ((client_it = find_client_by_iterator(&params[0][1])) == g_all.g_aClient.end())
+		return ;
+	command = line.substr(line.find("MODE"));
+	mode_command(command, client_it, serv);
 }

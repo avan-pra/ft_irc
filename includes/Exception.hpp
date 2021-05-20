@@ -35,6 +35,14 @@ class   NewClientException: public std::exception
 	};
 };
 
+class	NewServiceException: public std::exception
+{
+	virtual const char	*what() const throw()
+	{
+		return "";
+	}
+};
+
 class   CantInitSocket: public std::exception
 {
 	virtual const char *what() const throw()

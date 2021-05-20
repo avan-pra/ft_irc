@@ -3,18 +3,18 @@
 
 void	disconnect(Client *co, std::list<Client>::iterator &client_it)
 {
+	if (co->get_hopcount() > 0)
+		goto _erase_only;
 	co->send_packets();
 	co->reset_buffer();
-	if (co->get_hopcount() != 0)
+	if (co->get_tls())
 	{
-		if (co->get_tls())
-		{
-			if (co->_sslptr != NULL)
-				SSL_shutdown(co->_sslptr);
-			SSL_free(co->_sslptr);
-		}
-		closesocket(co->_fd);
+		if (co->_sslptr != NULL)
+			SSL_shutdown(co->_sslptr);
+		SSL_free(co->_sslptr);
 	}
+	closesocket(co->_fd);
+_erase_only:
 	if (dynamic_cast<Client*> (co) != NULL)
 	{
 		std::list<Client>::iterator	it = find_client_by_iterator(co);

@@ -32,13 +32,12 @@ static void		whois_client(std::list<Client>::iterator client_it, std::vector<std
 		return ;
 	}
 	time_t		curr_t;
-	time_t		signon = target->get_t_signon();
 	
-	time(&curr_t);
+	curr_t = time(0);
 	curr_t -= target->get_t_idle();
 	client_it->push_to_buffer(create_msg(311, client_it, serv, target->get_nickname(), target->get_username(),
 															target->get_hostname(), target->get_realname()));
-	client_it->push_to_buffer(create_msg(317, client_it, serv, args[1], ft_to_string(curr_t), ft_to_string(signon)));
+	client_it->push_to_buffer(create_msg(317, client_it, serv, args[1], ft_to_string(curr_t), ft_to_string(target->get_t_signon())));
 	client_it->push_to_buffer(create_msg(318, client_it, serv, args[1]));
 }
 

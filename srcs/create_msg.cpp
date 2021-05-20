@@ -188,6 +188,8 @@ std::string		create_msg(const int &code, std::list<Server>::iterator server_it, 
 			return sample + ERR_NOTREGISTERED();
 		case 461:
 			return sample + ERR_NEEDMOREPARAMS(arg1);
+		case 462:
+			return sample + ERR_ALREADYREGISTRED();
 	}
 	return sample;
 }

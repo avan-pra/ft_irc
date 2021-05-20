@@ -28,7 +28,6 @@ struct t_introduce_serv
 class Server : public Connection
 {
 	private:
-		size_t			_hopcount;
 		size_t			_token;
 		std::string		_info;
 		std::string		_servername;
@@ -58,7 +57,8 @@ class Server : public Connection
 			_sslptr = co._sslptr;
 			sock_addr = co.sock_addr;
 			
-			_hopcount = 0;
+			_hopcount = 1;
+			_type = SERVER_TYPE;
 			_token = -1;
 			_info = "";
 			_servername = "";
@@ -75,7 +75,6 @@ class Server : public Connection
 		/*
 		** Getter
 		*/
-		size_t			get_hopcount() { return _hopcount; }
 		size_t			get_token() { return _token; }
 		std::string		get_info() { return _info; }
 		std::string		get_servername() { return (_servername); }
@@ -87,7 +86,6 @@ class Server : public Connection
 		/*
 		** Setter
 		*/
-		void			set_hopcount(size_t n) { _hopcount = n; }
 		void			set_token(size_t name) { _token = name; }
 		void			set_info(std::string info) { _info = info; }
 		void			set_server_name(std::string name) { _servername = name; }
