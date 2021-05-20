@@ -35,8 +35,8 @@ struct t_networkID
 {
 	std::string		name;
 	std::string		pass;
+	std::string		host;
 	int				port;
-	int				port_tls;
 	bool			is_tls;
 
 	t_networkID()
@@ -44,7 +44,6 @@ struct t_networkID
 		name = "";
 		pass = "";
 		port = -1;
-		port_tls = -1;
 		is_tls = false;
 	}
 };

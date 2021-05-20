@@ -40,6 +40,7 @@ enum networkID
 	eNETWORK_PASS,
 	eNETWORK_PORT,
 	eNETWORK_PORT_TLS,
+	eNETWORK_HOST,
 	eNETWORK_COMMENT,
 	eNETWORK_ERROR
 };
@@ -48,8 +49,9 @@ networkID	get_network_arg(const std::string &s)
 {
 	if (s == "\tPASS")						return eNETWORK_PASS;
 	else if (s == "\tPORT")					return eNETWORK_PORT;
-	else if (s == "\tPORT_TLS")					return eNETWORK_PORT_TLS;
+	else if (s == "\tPORT_TLS")				return eNETWORK_PORT_TLS;
 	else if (s == "\tNAME")					return eNETWORK_NAME;
+	else if (s == "\tHOST")					return eNETWORK_HOST;
 	else if (s.size() > 0 && s[0] == '#')	return eNETWORK_COMMENT;
 	return eNETWORK_ERROR;
 }
@@ -340,12 +342,12 @@ int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line
 	std::string		variable;
 	int				i = 0;
 	t_networkID		net;
-	bool			name = false, pass = false;
+	bool			name = false, pass = false, host = false;
 
 	if (!all_param_set)
 		return (config_error("ircserv variables must be at the top of the config file", nb_line));
 	net.is_tls = false;
-	while (file && i < 3)
+	while (file && i < 4)
 	{
 		getline(file, line);
 		nb_line++;
@@ -364,7 +366,7 @@ int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line
 					return (config_error("NETWORK NAME no name given", nb_line));
 				name = true;
 				net.name = variable;
-				break;
+				break ;
 			}
 			case eNETWORK_PASS:
 			{
@@ -393,8 +395,16 @@ int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line
 					return (config_error("NETWORK can't have PORT and PORT_TLS", nb_line));
 				if (!is_only_digit(variable))
 					return (config_error("NETWORK PORT_TLS need only numbers", nb_line));
-				net.port_tls = ft_atoi(variable);
+				net.port = ft_atoi(variable);
 				net.is_tls = true;
+				break ;
+			}
+			case eNETWORK_HOST:
+			{
+				if (host == true)
+					return (config_error("NETWORK HOST has multiple declaration", nb_line));
+				host = true;
+				net.host = variable;
 				break ;
 			}
 			case eNETWORK_COMMENT:
@@ -408,9 +418,9 @@ int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line
 		}
 		i++;
 	}
-	if (pass == false || name == false)
+	if (pass == false || name == false || host == false)
 		return (config_error("NETWORK missing paraneter", nb_line));
-	if (net.port <= 0 && net.port_tls <= 0)
+	if (net.port <= 0)
 		return (config_error("NETWORK need one PORT or PORT_TLS", nb_line));
 	config_file.aNetworks.push_back(net);
 	return (1);
