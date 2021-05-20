@@ -58,7 +58,6 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["DIE"] = die_command;
 	// cmd["NJOIN"] = NULL;
 	// cmd["SQUERY"] = NULL;
-	cmd["SERVICE"] = service_command;
 
 	cmd["CAP"] = cap_command;
 
@@ -121,47 +120,21 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	return cmd;
 }
 
-std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)>	fill_command(void)
+std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iterator client_it, const MyServ &serv)>	fill_command_service(void)
 {
-	std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> cmd;
+	std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iterator client_it, const MyServ &serv)> cmd;
 
-	cmd["PASS"] = pass_command;
-	cmd["SERVICE"] = service_command;
-	
-	cmd["QUIT"] = quit_command;
-	cmd["CONNECT"] = connect_command; 
-	cmd["SQUIT"] = NULL;
-	cmd["VERSION"] = version_command;
-	cmd["STATS"] = NULL;
-	cmd["LINKS"] = NULL;
-	cmd["TIME"] = time_command;
-	cmd["TRACE"] = NULL;
-	cmd["ADMIN"] = NULL;
-	cmd["INFO"] = info_command;
-	cmd["PRIVMSG"] = privmsg_command;
-	cmd["NOTICE"] = notice_command;
-	cmd["WHO"] = who_command;
-	cmd["WHOIS"] = whois_command;
-	cmd["WHOWAS"] = whowas_command;
-	cmd["KILL"] = kill_command;
-	cmd["PING"] = ping_command;
-	cmd["PONG"] = pong_command;
-	cmd["AWAY"] = away_command;
-	cmd["REHASH"] = rehash_command;
-	cmd["RESTART"] = NULL;
-	cmd["SUMMON"] = NULL;
-	cmd["USERS"] = NULL;
-	cmd["WALLOPS"] = NULL;
-	cmd["USERHOST"] = userhost_command;
-	cmd["ISON"] = ison_command;
-	cmd["MOTD"] = motd_command;
-	cmd["LUSERS"] = NULL;
-	cmd["SERVLIST"] = NULL;
-	cmd["DIE"] = die_command;
-	// cmd["NJOIN"] = NULL;
+	// cmd["PASS"] = pass_command;
+	// cmd["SERVICE"] = service_command;
+	// cmd["QUIT"] = quit_command;
+	// cmd["NOTICE"] = notice_command;
+	// cmd["PRIVMSG"] = privmsg_command;
 	// cmd["SQUERY"] = NULL;
-
-	cmd["CAP"] = cap_command;
+	// cmd["WHO"] = who_command;
+	// cmd["WHOIS"] = whois_command;
+	// cmd["WHOWAS"] = whowas_command;
+	// cmd["USERHOST"] = userhost_command;
+	// cmd["ISON"] = ison_command;
 
 	return cmd;
 }
