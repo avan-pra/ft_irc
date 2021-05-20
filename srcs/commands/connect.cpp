@@ -9,14 +9,15 @@
 #include <netdb.h>
 #include <vector>
 
-struct sockaddr_in *get_serv_info(std::string addr, struct addrinfo **res)
+struct sockaddr_in *get_serv_info(t_networkID net, struct addrinfo **res)
 {
-	struct addrinfo test;
+	struct addrinfo info;
+	struct sockaddr_in *tmp;
 
-	memset(&test, 0, sizeof(test));
-	test.ai_family = AF_UNSPEC;
-	test.ai_socktype = SOCK_STREAM;
-	if (getaddrinfo(addr.c_str(), "", &test, res) != 0)
+	memset(&info, 0, sizeof(info));
+	info.ai_family = AF_UNSPEC;
+	info.ai_socktype = SOCK_STREAM;
+	if (getaddrinfo(net.host.c_str(), "", &info, res) != 0)
 	{
 		throw std::exception();
 	}
@@ -25,7 +26,23 @@ struct sockaddr_in *get_serv_info(std::string addr, struct addrinfo **res)
 	// 	ip_access = (struct sockaddr_in *)loop->ai_addr;
 	// 	std::cout << inet_ntoa(ip_access->sin_addr) << std::endl;
 	// }
-	return (struct sockaddr_in *)(*res)->ai_addr;
+	tmp = (struct sockaddr_in *)(*res)->ai_addr;
+	tmp->sin_port = htons(net.port);
+	return tmp;
+}
+
+std::list<Server>::iterator connect_to_serv(struct sockaddr_in *ip_info)
+{
+	int serv_socket = socket(ip_info->sin_family, SOCK_STREAM, 0);
+
+	if (connect(serv_socket, (sockaddr*)ip_info, sizeof(*ip_info)) != 0)
+	{
+		std::cout << "error could not connect" << std::endl;
+		throw std::exception();
+	}
+	//la c'est le moment ou faut creer un nouveau server et tt
+	closesocket(serv_socket);
+	return g_all.g_aServer.begin();
 }
 
 void	connect_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
@@ -48,17 +65,22 @@ void	connect_command(const std::string &line, std::list<Client>::iterator client
 	{
 		if (serv.network[i].name == arg[1])
 		{
+			struct addrinfo *res = NULL;
+			struct sockaddr_in *ip_info;
+			std::list<Server>::iterator new_serv;
+
 			try
 			{
-				struct addrinfo *res;
-				struct sockaddr_in *ip_info;
-
-				ip_info = get_serv_info(serv.network[i].host, &res);
-				// connect_to_serv();
+				ip_info = get_serv_info(serv.network[i], &res);
+				// std::cout << inet_ntoa(ip_info->sin_addr) << ":" << ntohs(ip_info->sin_port) << ":" << ip_info->sin_family << std::endl;
+				connect_to_serv(ip_info);
 				// send_register_packets();
 				freeaddrinfo(res);
 			}
-			catch (const std::exception &e) { }
+			catch (const std::exception &e) {
+			if (res != NULL)
+				freeaddrinfo(res);
+			}
 		}
 	}
 	//ptet dire que son serv de merde on l'a pas trouve
