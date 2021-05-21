@@ -41,7 +41,10 @@ int			main(int argc, char **argv)
 	SSL_library_init();
 	SSL_load_error_strings();
 	if (argc < 2)
+	{
+		std::cerr << BLUE << REDB << "No config file specified, assuming \"./irc.conf\"" << NC << std::endl;
 		serv.set_config_file_name("irc.conf");
+	}
 	else
 		serv.set_config_file_name(argv[1]);
 	try

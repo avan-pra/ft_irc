@@ -51,6 +51,8 @@
 
 # define GREENB "\e[42m"
 
+# define UNDERLINE "\e[4m"
+
 # define DEBUG
 
 # include <sys/types.h>
