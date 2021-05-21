@@ -57,6 +57,8 @@ int			main(int argc, char **argv)
 	{
 		if (serv.sslctx != NULL)
 			SSL_CTX_free(serv.sslctx);
+		if (serv.client_sslctx != NULL)
+			SSL_CTX_free(serv.client_sslctx);
 		std::cerr << e.what() << std::endl;
 		return (1);
 	}
