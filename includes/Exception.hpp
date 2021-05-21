@@ -55,7 +55,7 @@ class   UnbindableSocket: public std::exception
 {
 	virtual const char *what() const throw()
 	{
-		return "Socket could not be binded to interface, maybe one of the port is already taken ?";
+		return "Socket could not be binded to the requested port.";
 	};
 };
 

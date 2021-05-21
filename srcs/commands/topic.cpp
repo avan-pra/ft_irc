@@ -50,7 +50,6 @@ void	change_topic(const std::string &line, std::vector<std::string> params, std:
 	std::string		topic("");
 
 	topic = line.substr(line.find(":") + 1);
-	std::cout << topic << std::endl;
 	if (!check_params(params, client_it, serv))
 		return ;
 	if (g_vChannel[chan_id].is_mode('t') && !is_chann_operator(chan_id, client_it))

@@ -41,7 +41,7 @@ void	InitSSLCTX(t_config_file &config_file, MyServ &serv)
 			std::cerr << "Certificate not found. Skipping SSL_CTX creation" << std::endl;
 		if (key < 0)
 			std::cerr << "Key not found. Skipping SSL_CTX creation" << std::endl;
-		std::cout << "IRCSERV only classic connection" << std::endl;
+		std::cerr << "IRCSERV only classic connection" << std::endl;
 		serv.set_accept_tls(false);
 		config_file.accept_tls = false;
 		return ;

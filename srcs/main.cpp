@@ -75,7 +75,7 @@ int			main(int argc, char **argv)
 		catch (const DieException &e)
 		{
 			disconnect_all();
-			std::cout << e.what() << std::endl;
+			std::cerr << e.what() << std::endl;
 		}
 		catch (const RehashException &e)
 		{

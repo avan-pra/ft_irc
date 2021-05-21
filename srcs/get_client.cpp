@@ -71,11 +71,11 @@ void		accept_connection(MyServ &serv, t_sock &sock)
 		return ;
 	}
 	#ifdef __APPLE__
-		std::cout << "* New connection from: " << custom_ntoa(clSock6.sin6_addr.__u6_addr.__u6_addr32[3]) << ":"
+		std::cerr << "* New connection from: " << custom_ntoa(clSock6.sin6_addr.__u6_addr.__u6_addr32[3]) << ":"
 			<< ntohs(clSock6.sin6_port) << (sock.is_tls ? " (tls)" : "") << std::endl;
 	#endif
 	#ifdef __linux__
-		std::cout << "* New connection from: " << custom_ntoa(clSock6.sin6_addr.__in6_u.__u6_addr32[3]) << ":"
+		std::cerr << "* New connection from: " << custom_ntoa(clSock6.sin6_addr.__in6_u.__u6_addr32[3]) << ":"
 			<< ntohs(clSock6.sin6_port) << (sock.is_tls ? " (tls)" : "") << std::endl;
 	#endif
 	if (sock.is_tls)

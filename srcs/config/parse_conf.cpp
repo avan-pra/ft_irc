@@ -137,7 +137,7 @@ static int		setup_hash_pass(const std::string s, unsigned char *target)
 int				config_error(const std::string &error_msg, const int &nb_line)
 {
 	std::cerr << RED "l." << nb_line << ": Error: config file: " << error_msg << NC;
-	std::cout << std::endl;
+	std::cerr << std::endl;
 	return (0);
 }
 
@@ -155,7 +155,7 @@ int		set_port(t_config_file &config_file, std::string port, const int &nb_line, 
 {	
 	if (is_tls && !config_file.accept_tls)
 	{
-		std::cout << "variable : " << port << std::endl;
+		// std::cout << "variable : " << port << std::endl;
 		return (config_error("PORT_TLS cannot be set when TLS is turn to false", nb_line));
 	}
 	if (config_file.port_set == true && !is_tls)

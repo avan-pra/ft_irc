@@ -16,20 +16,20 @@
 
 void        service_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)
 {
-    std::vector<std::string>    args;
-    
-    std::cout << "HELLO Service" << std::endl;
-    args = ft_split(line, " ");
-    if (args.size() != 6)
-    {
-        service_it->push_to_buffer(create_msg(461, service_it, serv, "SERVICE"));
-        return ;
-    }
-    if (check_valid_nickname(args[1]) == false)
-        return;
-    if (args[2] != "*" || args[5] != "*")
-        return ;
-    if (args[3].find(".") == args[3].npos)
-        return ;
-    service_it->set_register(true);
+	std::vector<std::string>    args;
+	
+	// std::cout << "HELLO Service" << std::endl;
+	args = ft_split(line, " ");
+	if (args.size() != 6)
+	{
+		service_it->push_to_buffer(create_msg(461, service_it, serv, "SERVICE"));
+		return ;
+	}
+	if (check_valid_nickname(args[1]) == false)
+		return;
+	if (args[2] != "*" || args[5] != "*")
+		return ;
+	if (args[3].find(".") == args[3].npos)
+		return ;
+	service_it->set_register(true);
 }

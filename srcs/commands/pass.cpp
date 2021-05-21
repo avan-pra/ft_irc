@@ -5,7 +5,6 @@
 
 void	pass_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
-	std::cout << "pass_command : " << line;
 	if (client_it->is_registered() == true)
 	{
 		client_it->push_to_buffer(create_msg(462, client_it, serv));

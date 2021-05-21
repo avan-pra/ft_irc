@@ -126,7 +126,7 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 			}
 			else if (command == "SERVER")
 			{
-				std::cout << *str << std::endl;
+				// std::cout << *str << std::endl;
 				if (!co.get_pass_try())
 				{
 					co.push_to_buffer(":" + serv.get_hostname() + " 461 * SERVER :Syntax error\r\n");

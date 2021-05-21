@@ -20,7 +20,7 @@ _erase_only:
 		std::list<Client>::iterator	it = find_client_by_iterator(co);
 		if (it == g_all.g_aClient.end())
 		{
-			std::cout << "Can't find Client" << std::endl;
+			// std::cout << "Can't find Client" << std::endl;
 			return ;
 		}
 		size_t			sin_port = ntohs(co->sock_addr.sin6_port);
@@ -31,7 +31,7 @@ _erase_only:
 		#ifdef __APPLE__
 			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]);
 		#endif
-		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (client) "
+		std::cerr << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (client) "
 			<< (client_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
 		client_it = g_all.g_aClient.erase(it);
 		return ;
@@ -67,7 +67,7 @@ void	disconnect(Server *co, std::list<Server>::iterator &server_it)
 		#ifdef __APPLE__
 			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]);
 		#endif
-		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (server) "
+		std::cerr << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (server) "
 			<< (server_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
 		server_it = g_all.g_aServer.erase(it);
 		return ;
@@ -93,7 +93,7 @@ _erase_only:
 		std::list<Service>::iterator	it = find_service_by_iterator(co->get_nickname());
 		if (it == g_all.g_aService.end())
 		{
-			std::cout << "Can't find Service" << std::endl;
+			// std::cout << "Can't find Service" << std::endl;
 			return ;
 		}
 		size_t			sin_port = ntohs(co->sock_addr.sin6_port);
@@ -104,7 +104,7 @@ _erase_only:
 		#ifdef __APPLE__
 			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]);
 		#endif
-		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (service) "
+		std::cerr << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (service) "
 			<< (service_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
 		service_it = g_all.g_aService.erase(it);
 		return ;
@@ -133,7 +133,7 @@ void	disconnect(Unregistered *co, std::list<Unregistered>::iterator &unregistere
 		#ifdef __APPLE__
 			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]);
 		#endif
-		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (unknown) "
+		std::cerr << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (unknown) "
 			<< (unregistered_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
 		unregistered_it = g_all.g_aUnregistered.erase(it);
 		return ;

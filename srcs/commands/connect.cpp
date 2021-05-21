@@ -42,7 +42,7 @@ void	connect_to_serv(t_networkID net, SOCKADDR_IN6 *ip_info, const MyServ &serv)
 
 	if (connect(serv_socket, (sockaddr*)ip_info, sizeof(*ip_info)) != 0)
 	{
-		std::cout << "error could not connect" << std::endl;
+		std::cerr << "Error could not connect to " << net.name << std::endl;
 		throw std::exception();
 	}
 	if (fcntl(serv_socket, F_SETFL, O_NONBLOCK) < 0)
@@ -71,12 +71,12 @@ void	connect_to_serv(t_networkID net, SOCKADDR_IN6 *ip_info, const MyServ &serv)
 	}
 	#ifdef __APPLE__
 		ip_info->sin6_addr.__u6_addr.__u6_addr32[3] = ((SOCKADDR_IN*)ip_info)->sin_addr.s_addr;
-		std::cout << "* Initiating new server connection towards: " << custom_ntoa(ip_info->sin6_addr.__u6_addr.__u6_addr32[3]) << ":"
+		std::cerr << "* Initiating new server connection towards: " << custom_ntoa(ip_info->sin6_addr.__u6_addr.__u6_addr32[3]) << ":"
 			<< ntohs(ip_info->sin6_port) << (net.is_tls ? " (tls)" : "") << std::endl;
 	#endif
 	#ifdef __linux__
 		ip_info->sin6_addr.__in6_u.__u6_addr32[3] = ((SOCKADDR_IN*)ip_info)->sin_addr.s_addr;
-		std::cout << "* Initiating new server connection towards: " << custom_ntoa(ip_info->sin6_addr.__in6_u.__u6_addr32[3]) << ":"
+		std::cerr << "* Initiating new server connection towards: " << custom_ntoa(ip_info->sin6_addr.__in6_u.__u6_addr32[3]) << ":"
 			<< ntohs(ip_info->sin6_port) << (net.is_tls ? " (tls)" : "") << std::endl;
 	#endif
 	new_serv.sock_addr = *(struct sockaddr_in6*)ip_info;

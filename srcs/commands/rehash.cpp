@@ -59,7 +59,14 @@ void				rehash(MyServ &serv)
 	t_config_file					new_file;
 	std::map<int, bool>				new_ports;
 
+	#ifdef DEBUG
+		std::cerr << "-----------------------------\n";
+		std::cerr << GREEN << "REHASH RECEIVED, REHASHING..." << NC << "\n";
+		std::cerr << "-----------------------------" << std::endl;
+	#endif
 	if (serv.sslctx == NULL)
+		InitSSLCTX(new_file, serv);
+	if (serv.client_sslctx == NULL)
 		InitSSLCTX(new_file, serv);
 	if (serv.get_accept_tls() == true)
 		new_file.accept_tls = true;
