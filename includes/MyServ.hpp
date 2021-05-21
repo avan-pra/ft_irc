@@ -13,6 +13,7 @@
 #ifndef MYSERV
 # define MYSERV
 
+#include <openssl/ossl_typ.h>
 # include <unistd.h>
 # include <iostream>
 # include <string>
@@ -154,6 +155,7 @@ class MyServ
 	public:
 
 		SSL_CTX						*sslctx;
+		SSL_CTX						*client_sslctx;
 		SSL							*sslptr;
 		std::deque<t_networkID>		network;
 		t_config_file				serv_config;

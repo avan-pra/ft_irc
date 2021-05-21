@@ -26,6 +26,10 @@ int		get_tls_socket_binded()
 
 void	InitSSLCTX(t_config_file &config_file, MyServ &serv)
 {
+	if (!(serv.client_sslctx = SSL_CTX_new(TLS_client_method())))
+		error_exit("Unable to create SSL context");
+
+
 	/* check if cert exists */
 	int		cert = open("./godirc.crt", O_RDONLY);
 	int		key = open("./godirc.key", O_RDONLY);
