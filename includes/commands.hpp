@@ -210,6 +210,9 @@ void	ping_command(const std::string &line, std::list<Server>::iterator server_it
 void	quit_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	mode_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	service_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	njoin_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	join_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	privmsg_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp

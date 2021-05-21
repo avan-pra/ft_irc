@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 15:53:28 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/17 17:40:22 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 12:05:10 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,27 @@ std::string		true_command(const std::string &line)
 		return (params[0]);
 }
 
-void	server_parser(char *line, std::list<Server>::iterator server_it, const MyServ &serv)
+void		set_unmoded_channel(std::string &rpl)
+{
+	std::vector<std::string>	params = ft_split(rpl, " ");
+	int							chan_id;
+	time_t						date;
+
+	if (params.size() < 5)
+		return ;
+	if ((chan_id = find_channel(params[3])) != -1)
+	{
+		if (std::strcmp(params[1].c_str(), "329") == 0)
+		{
+			time(&date);
+			g_vChannel[chan_id].set_creation(date);
+		}
+		else if (std::strcmp(params[1].c_str(), "324") == 0 )
+			g_vChannel[chan_id].set_mode(params[4]);
+	}
+}
+
+void		server_parser(char *line, std::list<Server>::iterator server_it, const MyServ &serv)
 {
 	std::string					true_line;
 	std::vector<std::string>	packet;
@@ -64,15 +84,24 @@ void	server_parser(char *line, std::list<Server>::iterator server_it, const MySe
 		{
 			std::string command = true_command(*str);
 
-			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
-				*it = std::toupper(*it);
+		//	std::cout << "TRUE_COMMAND :" << command << std::endl;;
 
-			try
+			if (std::strcmp(command.c_str(), "329") == 0 || std::strcmp(command.c_str(), "324") == 0)
 			{
-				if (can_execute(command, server_it, serv) == true)
-					serv.get_command_server().at(command)(*str, server_it, serv);
+				set_unmoded_channel(*str);
 			}
-			catch (const std::exception &e) { server_it->push_to_buffer(create_msg(421, server_it, serv, command)); }
+			else
+			{
+				for (std::string::iterator it = command.begin(); it != command.end(); ++it)
+					*it = std::toupper(*it);
+
+				try
+				{
+					if (can_execute(command, server_it, serv) == true)
+						serv.get_command_server().at(command)(*str, server_it, serv);
+				}
+				catch (const std::exception &e) { server_it->push_to_buffer(create_msg(421, server_it, serv, command)); }
+			}
 		}
 	}
 }

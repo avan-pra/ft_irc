@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/04 13:27:07 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 12:02:08 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,10 +199,16 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 	{
 		if ((chan_id = find_channel(it->first)) == -1)
 		{
+			std::string		rpl;
+
 			create_channel(it, client_it, enter);
 			send_to_channel(("JOIN " + it->first), client_it, find_channel(it->first), true);
 			names_command("names " + it->first, client_it, serv);
 			send_channel_time(client_it, serv, it->first);
+			rpl = ":" + client_it->get_nickname() + "!" + client_it->get_username() + "@" +
+				client_it->get_hostname()+ " JOIN " + it->first + "\x07o\r\n";
+			//std::cout << rpl;
+			send_to_all_server(rpl, g_all.g_aServer.begin(), true);
 		}
 		else
 		{
@@ -214,6 +220,9 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 				if (g_vChannel[chan_id].get_topic() != "")
 					topic_command("topic " + it->first, client_it, serv);
 				send_channel_time(client_it, serv, it->first);
+				send_to_all_server(":" + client_it->get_nickname() + "!" + client_it->get_username() +
+					"@" + client_it->get_hostname() + " JOIN " + g_vChannel[chan_id].get_name() +
+					" " + client_it->get_nickname() +"\r\n", g_all.g_aServer.begin(), true);
 			}
 		}
 		// for (size_t i = 0; i < g_vChannel[find_channel(it->first)]._users.size(); ++i)
@@ -223,4 +232,48 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 	}
 	if (enter == false)
 		client_it->push_to_buffer(create_msg(403, client_it, serv, chan_name[0]));
+}
+
+void	create_channel(const std::string &chan_name, std::list<Client>::iterator client_it)
+{
+	Channel		new_channel;
+
+	new_channel.set_name(chan_name);
+	new_channel.set_mode("+");
+	new_channel._users.push_back(&(*client_it));
+	new_channel._operator.push_back(&(*client_it));
+	g_vChannel.push_back(new_channel);
+}
+
+void	join_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
+{
+	std::vector<std::string>	params = ft_split(line, " ");
+	std::vector<std::string>	chan_list;
+	std::list<Client>::iterator	client_it;
+	std::string					chan_name;
+	int							chan_id;
+	size_t						pos;
+
+	(void)serv;
+	if (params.size() < 3)
+		return ;
+	client_it = find_client_by_iterator(&params[0][1]);
+	chan_list = ft_split(params[2], ",");
+	send_to_all_server(line, server_it);
+	for (size_t i = 0; i < chan_list.size(); i++)
+	{
+		if ((pos = chan_list[i].find(7)) != std::string::npos)
+			chan_name = chan_list[i].substr(0, pos);
+		else
+			chan_name = chan_list[i];
+		if ((chan_id = find_channel(chan_name)) != -1)
+		{
+			g_vChannel[chan_id]._users.push_back(&(*client_it));
+			send_to_channel(("JOIN " + chan_name), client_it, chan_id, true);
+			if (pos != std::string::npos && chan_list[i][pos + 1] == 'o')
+				g_vChannel[chan_id]._operator.push_back(&(*client_it));
+		}
+		else
+			create_channel(chan_name, client_it);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/03 17:22:24 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 12:03:27 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,28 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 	}
 	time(&new_time);
 	client_it->set_t_idle(new_time);
+}
+
+void	privmsg_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
+{
+	std::vector<std::string>		params = ft_split(line, " ");
+	std::list<Client>::iterator		client_it;
+
+	(void)server_it;
+	if (params.size() < 4)
+		return ;
+	if (params[0].size() <= 1 || params[0][0] != ':')
+		return ;
+	if ((client_it = find_client_by_iterator(&params[0][1])) == g_all.g_aClient.end())
+		return ;
+	for (size_t i = params[0].size(); i < line.size(); i++)
+	{
+		if (line[i] != ' ')
+		{
+			std::string		new_line = &line[i];
+	//		std::cout << new_line << std::endl;
+			privmsg_command(std::string(new_line) , client_it, serv);
+			return ;
+		}
+	}
 }

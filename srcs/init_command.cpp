@@ -72,11 +72,12 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["SERVER"] = server_command;
 	cmd["QUIT"] = quit_command; 
 	cmd["SQUIT"] = NULL;
-	cmd["JOIN"] = NULL;
-	cmd["NJOIN"] = NULL;
+	cmd["JOIN"] = join_command;
+	cmd["NJOIN"] = njoin_command;
 	cmd["PING"] = ping_command;
 	cmd["PONG"] = pong_command;
 	cmd["MODE"] = mode_command; 
+	cmd["PRIVMSG"] = privmsg_command;
 
 	cmd["PART"] = NULL; 
 	cmd["TOPIC"] = NULL;

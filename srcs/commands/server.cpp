@@ -15,6 +15,50 @@ void	share_client(std::list<Server>::iterator &server_it, const MyServ &serv)
 	}
 }
 
+void	share_server(std::list<Server>::iterator &server_it, const MyServ &serv)
+{
+	std::string		rpl;// = ":" + serv.get_hostname() + " SERVER " + serv.get_hostname() + " 1 1 :Ircgod info\r\n";
+
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
+	{
+		if (server_it->get_hopcount() == 1)
+		{
+			if (it != server_it)
+			{
+				rpl = ":" + serv.get_hostname() + " SERVER " + it->get_servername();
+				rpl += " " + ft_to_string(it->get_hopcount()) + " " + ft_to_string(it->get_token()) + " :New server\r\n";
+				server_it->push_to_buffer(rpl);
+			}
+		}
+	}
+}
+
+void	share_channel(std::list<Server>::iterator &server_it, const MyServ &serv)
+{
+	std::string		rpl;
+
+	for (std::deque<Channel>::iterator it = g_vChannel.begin(); it != g_vChannel.end(); it++)
+	{
+		rpl = ":" + serv.get_hostname() + " NJOIN " + it->get_name() + " :";
+		for (std::deque<Client*>::iterator cli_it = it->_users.begin(); cli_it != it->_users.end(); cli_it++)
+		{
+			if (cli_it != it->_users.begin())
+				rpl += ",";
+			if (it->is_operator(*cli_it))
+				rpl += "@";
+			else if (it->is_voice(*cli_it))
+				rpl += "+";
+			rpl += (*cli_it)->get_nickname();
+		}
+		rpl += "\r\n";
+		server_it->push_to_buffer(rpl);
+		rpl = "";
+		rpl += ":" + serv.get_hostname() + " MODE " + it->get_name() + " " + it->get_mode() + "\r\n";
+		server_it->push_to_buffer(rpl);
+		rpl = "";
+	}
+}
+
 void	new_direct_server(std::string line, std::list<Server>::iterator server_it, const MyServ &serv)
 {
 	std::vector<std::string> arg = ft_split(line, " ");
@@ -33,8 +77,9 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 			"password" + " 0001-IRC ircGODd|1.1:\r\n");
 	server_it->push_to_buffer(":" + serv.get_hostname() + " SERVER " +
 			serv.get_hostname() + " 1 :Experimental server\r\n");
+	share_server(server_it, serv);
 	share_client(server_it, serv);
-	//share_channel(server_it, serv);
+	share_channel(server_it, serv);
 
 	server_it->set_register(true);
 }

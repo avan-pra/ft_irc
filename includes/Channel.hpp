@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/04/29 23:18:19 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/20 13:37:46 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ class Channel
 		void			set_mode(std::string mode) { _mode = mode; }
 		void			set_limit(size_t limit) { _limit = limit; }
 		void			set_topic(std::string topic) { _topic = topic; }
+		void			set_creation(time_t date) { _creation = date; }
 
 		/*
 		** Methods
