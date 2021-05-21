@@ -169,10 +169,11 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	cli.set_realname(&params[8][1]);
 	cli._fd = server_it->_fd;
 	cli.set_server_token(ft_atoi(params[6]));
+	cli.set_server_host(&(*server_it));
 
 	g_all.g_aClient.push_back(cli);
 
-	full_msg = serv.get_hostname();
+	full_msg = ":" + serv.get_hostname();
 	for (size_t i = 1; i < params.size(); i++)
 		full_msg += " " + params[i];
 	full_msg += "\r\n";
@@ -197,6 +198,15 @@ void	change_nick(std::vector<std::string> params, std::list<Server>::iterator se
 	new_nick = &params[2][1];
 	if (!check_valid_nickname(nick) || !check_valid_nickname(new_nick))
 		return ;
+	send_to_all_server(":" + client_it->get_nickname() + " NICK " + new_nick + "\r\n", server_it);
+	std::string		rpl = create_full_name_msg(client_it) + " NICK " + new_nick + "\r\n";
+	for (size_t i = 0; i < g_vChannel.size(); i++)
+	{
+		if (g_vChannel[i].is_user_in_chan(*client_it))
+		{
+			g_vChannel[i].send_to_all_interne(rpl);
+		}
+	}
 	client_it->set_nickname(new_nick);
 }
 
