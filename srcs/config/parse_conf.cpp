@@ -364,6 +364,11 @@ int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line
 					return (config_error("NETWORK NAME has multiple declaration", nb_line));
 				if (variable.size() == 0)
 					return (config_error("NETWORK NAME no name given", nb_line));
+				for (size_t i = 0; i < config_file.aNetworks.size(); ++i)
+				{
+					if (variable == config_file.aNetworks[i].name)
+						return (config_error("NETWORK NAME has already been declared elsewhere", nb_line));
+				}
 				name = true;
 				net.name = variable;
 				break ;
@@ -655,6 +660,7 @@ void		start_parse_conf(t_config_file &config_file, std::string filename)
 	}
 	if (all_param_set == false)
 	{
+		file.close();
 		config_error("Need more parmeters", nb_line);
 		throw ConfigFileException();
 	}
