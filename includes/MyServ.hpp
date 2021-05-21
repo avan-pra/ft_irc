@@ -126,6 +126,7 @@ class MyServ
 		std::string		_client_hostname;
 		std::string		_port;
 		std::string		_oper_name;
+		std::string		_config_file_name;
 		int				_listen_limit;
 		int				_client_limit;
 
@@ -184,6 +185,7 @@ class MyServ
 		std::string			get_hostname() const		{ return _hostname; }
 		std::string			get_port() const			{ return _port; }
 		std::string			get_client_hostname() const	{ return _client_hostname; }
+		std::string			get_config_file_name() const	{ return _config_file_name; }
 		int					get_listen_limit() const	{ return _listen_limit; }
 		const unsigned char *get_password() const { return _password; }
 		const unsigned char *get_password_server() const { return _server_password; }
@@ -210,8 +212,9 @@ class MyServ
 		/*
 		** Setter
 		*/
-		void	set_hostname(const std::string hostname) { _hostname = hostname; }
-		void	set_port(const std::string port) { _port = port; }
+		void	set_hostname(const std::string &hostname) { _hostname = hostname; }
+		void	set_port(const std::string &port) { _port = port; }
+		void	set_config_file_name(const std::string &_file_name) { _config_file_name = _file_name; }
 		void	set_listen_limit(int listen_limit) { _listen_limit = listen_limit; }
 		void	set_password(const unsigned char *password) { std::memcpy(_password, password, 32); }
 		void	set_password_server(const unsigned char *password) { std::memcpy(_server_password, password, 32); }

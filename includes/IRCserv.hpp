@@ -166,7 +166,7 @@ std::string	custom_ntoa(uint32_t in);
 ** parse_conf.cpp
 */
 void		parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line);
-void		start_parse_conf(t_config_file &config_file);
+void		start_parse_conf(t_config_file &config_file, std::string filename);
 
 /*
  ** ft_bzero.cpp

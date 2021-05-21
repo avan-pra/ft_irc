@@ -626,7 +626,7 @@ void		print_config_file(t_config_file &config_file)
 	std::cout << std::endl;
 }
 
-void		start_parse_conf(t_config_file &config_file)
+void		start_parse_conf(t_config_file &config_file, std::string filename)
 {
 	std::fstream		file;
 	std::string			line;
@@ -634,7 +634,7 @@ void		start_parse_conf(t_config_file &config_file)
 	int					nb_line = 1;
 	bool				all_param_set = false;
 
-	file.open(FILE_NAME);
+	file.open(filename.c_str());
 	if (file.is_open() == false)
 	{
 		std::cerr << "Could not open " << FILE_NAME  << " file" << std::endl;
