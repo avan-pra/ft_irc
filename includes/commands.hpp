@@ -153,9 +153,9 @@
 # define RPL_CREATIONTIME(channel, c_time) (channel + " " + c_time + "\r\n")
 
 
-std::string create_msg(const int &code, std::list<Client>::iterator client_it, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string(), const std::string &arg4 = std::string());
-
+std::string     create_msg(const int &code, std::list<Client>::iterator client_it, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string(), const std::string &arg4 = std::string());
 std::string		create_msg(const int &code, std::list<Server>::iterator server_it, const MyServ &serv, const std::string &arg1 = "", const std::string &arg2 = "", const std::string &arg3 = "", const std::string &arg4 = "");
+std::string		create_msg(const int &code, std::list<Service>::iterator service_it, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string(), const std::string &arg4 = std::string());
 
 /*
 **  end of error
@@ -209,10 +209,13 @@ void	pong_command(const std::string &line, std::list<Server>::iterator client_it
 void	ping_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	quit_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	mode_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
-void	service_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	njoin_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	join_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	privmsg_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+
+
+void	service_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
+void	quit_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp

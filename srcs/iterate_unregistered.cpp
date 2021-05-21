@@ -147,7 +147,9 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
  					throw QuitCommandException();
 
  				Service	new_Service = co;
-
+				
+				new_Service.set_server_token(0);
+				new_Service.set_hopcount(0);
  				new_Service.set_unended_packet(co.get_unended_packet() + *str + "\r\n" + true_line);
  				g_all.g_aService.push_back(new_Service);
  				throw  NewServiceException();
@@ -207,6 +209,10 @@ void	iterate_unregistered(MyServ &serv)
 					it = g_all.g_aUnregistered.erase(it);
 				}
 				catch (NewClientException)
+				{
+					it = g_all.g_aUnregistered.erase(it);
+				}
+				catch (NewServiceException)
 				{
 					it = g_all.g_aUnregistered.erase(it);
 				}

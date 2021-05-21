@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 13:57:16 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/17 18:34:11 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 16:29:15 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,14 @@ std::list<Unregistered>::iterator	find_unregister_by_iterator(const SOCKET &fd)
 		if (fd == it->_fd)
 			return (it);
 	return (g_all.g_aUnregistered.end());
+}
+
+std::list<Service>::iterator		find_service_by_iterator(const std::string &nickname)
+{
+	for (std::list<Service>::iterator it = g_all.g_aService.begin(); it != g_all.g_aService.end(); it++)
+		if (nickname == it->get_nickname())
+			return (it);
+	return (g_all.g_aService.end());
 }
 
 bool							is_servername_exist(const std::string &servname)

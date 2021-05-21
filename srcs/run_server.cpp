@@ -31,6 +31,11 @@ static void re_init_serv_class(MyServ &serv)
 			if (it->_fd > max)
 				max = it->_fd;
 		}
+		for (std::list<Service>::iterator it = g_all.g_aService.begin(); it != g_all.g_aService.end(); ++it)
+		{
+			if (it->_fd > max)
+				max = it->_fd;
+		}
 		serv.set_max_fd(max);
 	}
 	serv.set_timeout(3);
@@ -58,6 +63,12 @@ static void push_fd_to_set(MyServ &serv)
 		// FD_SET(*ite, &serv.get_exceptfs());
 	}
 	for (std::list<Server>::iterator ite = g_all.g_aServer.begin(); ite != g_all.g_aServer.end(); ++ite)
+	{
+		FD_SET(ite->_fd, &serv.get_readfs());
+		// FD_SET(ite->first, &serv.get_writefs());
+		// FD_SET(*ite, &serv.get_exceptfs());
+	}
+	for (std::list<Service>::iterator ite =g_all.g_aService.begin(); ite != g_all.g_aService.end(); ++ite)
 	{
 		FD_SET(ite->_fd, &serv.get_readfs());
 		// FD_SET(ite->first, &serv.get_writefs());
@@ -111,6 +122,11 @@ void	send_bufferised_packet()
 		it->send_packets();
 		it->reset_buffer();
 	}
+	for (std::list<Service>::iterator it = g_all.g_aService.begin(); it != g_all.g_aService.end(); ++it)
+	{
+		it->send_packets();
+		it->reset_buffer();
+	}
 }
 
 void run_server(MyServ &serv)
@@ -128,6 +144,7 @@ void run_server(MyServ &serv)
 		iterate_unregistered(serv);
 		iterate_client(serv);
 		iterate_server(serv);
+		iterate_service(serv);
 		send_bufferised_packet();
 	}
 }

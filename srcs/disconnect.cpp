@@ -74,6 +74,43 @@ void	disconnect(Server *co, std::list<Server>::iterator &server_it)
 	}
 }
 
+void	disconnect(Service *co, std::list<Service>::iterator &service_it)
+{
+	if (co->get_hopcount() > 0)
+		goto _erase_only;
+	co->send_packets();
+	co->reset_buffer();
+	if (co->get_tls())
+	{
+		if (co->_sslptr != NULL)
+			SSL_shutdown(co->_sslptr);
+		SSL_free(co->_sslptr);
+	}
+	closesocket(co->_fd);
+_erase_only:
+	if (dynamic_cast<Service*> (co) != NULL)
+	{
+		std::list<Service>::iterator	it = find_service_by_iterator(co->get_nickname());
+		if (it == g_all.g_aService.end())
+		{
+			std::cout << "Can't find Service" << std::endl;
+			return ;
+		}
+		size_t			sin_port = ntohs(co->sock_addr.sin6_port);
+		std::string		tls_str = (it->get_tls() ? " (tls)" : "");
+		#ifdef __linux__
+			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__in6_u.__u6_addr32[3]);
+		#endif
+		#ifdef __APPLE__
+			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]);
+		#endif
+		std::cout << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (service) "
+			<< (service_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
+		service_it = g_all.g_aService.erase(it);
+		return ;
+	}
+}
+
 void	disconnect(Unregistered *co, std::list<Unregistered>::iterator &unregistered_it)
 {
 	co->send_packets();

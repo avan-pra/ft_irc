@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/20 19:26:55 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/21 16:53:35 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ class MyServ
 		std::string			get_oper_name() const { return _oper_name; }
 		const std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)>	&get_command() const { return _command; }
 		const std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	&get_command_server() const { return _command_server; }
+		const std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)>	&get_command_service() const { return _command_service; }
 
 		/*
 		** Setter

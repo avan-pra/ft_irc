@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/18 13:53:50 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 18:23:46 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,20 @@ void		quit_command(const std::string &line, std::list<Server>::iterator server_i
 	add_disconnected_nick(client_it);
 	send_to_all_server(line, server_it);
 	client_it = g_all.g_aClient.erase(client_it);
+}
+
+
+void			quit_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)
+{
+	std::vector<std::string>	args;
+	std::string					output;
+	std::string					quit_msg_server;
+
+	(void)serv;
+	args = ft_split(line, " ");
+	quit_msg_server += ":" + service_it->get_nickname() + " QUIT " + ":leaving";
+	if (quit_msg_server.find("\r\n") == std::string::npos)
+		quit_msg_server += "\r\n";
+	send_to_all_server(quit_msg_server, g_all.g_aServer.begin(), true);
+	throw QuitCommandException();
 }

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/17 18:34:27 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 16:57:31 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,11 +232,12 @@ std::deque<Channel>::iterator							find_channel_by_iterator(const std::string &
 /*
 ** find_connection.cpp 
 */
-std::list<Client>::iterator		find_client_by_iterator(const std::string &nickname);
-std::list<Client>::iterator		find_client_by_iterator(Connection *co);
-std::list<Server>::iterator		find_server_by_iterator(const SOCKET &fd);
+std::list<Client>::iterator			find_client_by_iterator(const std::string &nickname);
+std::list<Client>::iterator			find_client_by_iterator(Connection *co);
+std::list<Server>::iterator			find_server_by_iterator(const SOCKET &fd);
+std::list<Service>::iterator		find_service_by_iterator(const std::string &nickname);
 std::list<Unregistered>::iterator	find_unregister_by_iterator(const SOCKET &fd);
-bool							is_servername_exist(const std::string &servname);
+bool								is_servername_exist(const std::string &servname);
 
 /*
 ** create_msg .cpp
@@ -286,7 +287,16 @@ void		rehash(MyServ &serv);
 void		close_old_socket(MyServ &serv, t_config_file &new_file);
 void		add_new_ports(MyServ &serv, t_config_file &new_file, std::map<int, bool> &new_ports);
 
-
 void		connect_to_network(MyServ &serv);
+
+/*
+** service_parser.cpp 
+*/
+void		service_parser(char *line, std::list<Service>::iterator service_it, const MyServ &serv);
+
+/*
+** iterate_service.cpp 
+*/
+void		iterate_service(MyServ &serv);
 
 #endif

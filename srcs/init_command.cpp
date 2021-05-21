@@ -125,8 +125,8 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iter
 	std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iterator client_it, const MyServ &serv)> cmd;
 
 	// cmd["PASS"] = pass_command;
-	// cmd["SERVICE"] = service_command;
-	// cmd["QUIT"] = quit_command;
+	cmd["SERVICE"] = service_command;
+	cmd["QUIT"] = quit_command;
 	// cmd["NOTICE"] = notice_command;
 	// cmd["PRIVMSG"] = privmsg_command;
 	// cmd["SQUERY"] = NULL;
