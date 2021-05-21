@@ -90,18 +90,16 @@ void	connect_command(const std::string &line, std::list<Client>::iterator client
 {
 	std::vector<std::string> arg = ft_split(line, " ");
 
-	if (arg.size() < 2)
+	if (arg.size() < 2) //refuse if not enough arg
 	{
 		client_it->push_to_buffer(create_msg(461, client_it, serv, "CONNECT"));
 		return ;
 	}
-	//refuse if not oper
-	// if (client_it->get_is_oper() == false)
-	// {
-	// 	client_it->push_to_buffer(create_msg(481, client_it, serv));
-	// 	return ;
-	// }
-	//check si c'est pour nous ou un autre serv
+	if (client_it->get_is_oper() == false) //refuse if not oper
+	{
+		client_it->push_to_buffer(create_msg(481, client_it, serv));
+		return ;
+	}
 	for (size_t i = 0; i < serv.network.size(); ++i)
 	{
 		if (serv.network[i].name == arg[1])
@@ -120,7 +118,8 @@ void	connect_command(const std::string &line, std::list<Client>::iterator client
 				if (res != NULL)
 					freeaddrinfo(res);
 			}
+			return ;
 		}
 	}
-	//ptet dire que son serv de merde on l'a pas trouve
+	client_it->push_to_buffer(create_msg(402, client_it, serv, arg[1])); //we havent found the server, tell him
 }
