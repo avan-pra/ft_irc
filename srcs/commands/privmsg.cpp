@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/21 12:03:27 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 18:27:30 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,12 @@ void	send_privmsg_to_channel(const std::vector<std::string> params, std::list<Cl
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
 		if (*g_vChannel[chan_id]._users[i] != *client_it)
-			g_vChannel[chan_id]._users[i]->push_to_buffer(full_msg);
+		{
+			if (g_vChannel[chan_id]._users[i]->get_hopcount() > 0)
+				g_vChannel[chan_id]._users[i]->get_server_host()->push_to_buffer(full_msg);
+			else
+				g_vChannel[chan_id]._users[i]->push_to_buffer(full_msg);
+		}
 	}
 }
 
@@ -102,9 +107,18 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 		send_privmsg_to_channel(params, client_it, i);
 	else if ((it = find_client_by_iterator(params[1])) != g_all.g_aClient.end())
 	{
-		it->push_to_buffer(create_full_msg(params, client_it));
-		if (it->get_is_away() == true)
+		if (it->get_hopcount() > 0)
+		{
+			std::string		rpl = ":" + client_it->get_nickname() + " " + line + "\r\n";
+
+			it->get_server_host()->push_to_buffer(rpl);
+		}
+		else
+		{
+			it->push_to_buffer(create_full_msg(params, client_it));
+			if (it->get_is_away() == true)
 			client_it->push_to_buffer(create_msg(301, client_it, serv, it->get_nickname(), it->get_away_str()));
+		}
 	}
 	else
 	{
@@ -131,7 +145,6 @@ void	privmsg_command(const std::string &line, std::list<Server>::iterator server
 		if (line[i] != ' ')
 		{
 			std::string		new_line = &line[i];
-	//		std::cout << new_line << std::endl;
 			privmsg_command(std::string(new_line) , client_it, serv);
 			return ;
 		}

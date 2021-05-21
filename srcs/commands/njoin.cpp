@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 18:12:15 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/20 13:25:04 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 16:27:04 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,4 @@ void	njoin_command(const std::string &line, std::list<Server>::iterator server_i
 	nick_list = &params[3][1];
 	add_channel(params[2], nick_list);
 	server_it->push_to_buffer(":" + serv.get_hostname() + " MODE " + params[2] + "\r\n");
-
-	for (size_t i = 0; i < g_vChannel.size() ; i++)
-		std::cout << g_vChannel[i].get_name() << " ";
-	std::cout << std::endl;
 }

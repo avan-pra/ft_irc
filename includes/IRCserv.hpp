@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/17 18:34:27 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 17:10:28 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,7 @@ bool							is_servername_exist(const std::string &servname);
 */
 std::string		create_full_msg(const std::vector<std::string> &params, std::list<Client>::iterator client_it);
 std::string		create_full_msg_mode(const std::string &mode, std::list<Client>::iterator client_it, const size_t &chann_idx);
+std::string		create_full_name_msg(std::list<Client>::iterator client_it);
 
 /*
 ** mask_parser.cpp
