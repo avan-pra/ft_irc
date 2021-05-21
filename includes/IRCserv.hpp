@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/21 16:57:31 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/21 18:41:34 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ std::string	custom_ntoa(uint32_t in);
 ** parse_conf.cpp
 */
 void		parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line);
-void		start_parse_conf(t_config_file &config_file);
+void		start_parse_conf(t_config_file &config_file, std::string filename);
 
 /*
  ** ft_bzero.cpp
@@ -244,6 +244,7 @@ bool								is_servername_exist(const std::string &servname);
 */
 std::string		create_full_msg(const std::vector<std::string> &params, std::list<Client>::iterator client_it);
 std::string		create_full_msg_mode(const std::string &mode, std::list<Client>::iterator client_it, const size_t &chann_idx);
+std::string		create_full_name_msg(std::list<Client>::iterator client_it);
 
 /*
 ** mask_parser.cpp

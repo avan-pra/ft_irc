@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/20 13:37:46 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 18:22:01 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,10 +254,27 @@ class Channel
 			return (_mode.find(c) != std::string::npos ? true : false);
 		}
 
-		void			send_to_all(std::string msg)
+		void			send_to_all_interne(std::string &msg)
 		{
 			for (size_t i = 0; i < _users.size(); i++)
-				_users[i]->push_to_buffer(msg);
+			{
+				if (_users[i]->get_hopcount() == 0)
+					_users[i]->push_to_buffer(msg);
+			}
+		}
+
+		void			send_to_all(std::string msg)
+		{
+
+			for (size_t i = 0; i < _users.size(); i++)
+			{
+				if (_users[i]->get_hopcount() > 0)
+				{
+					_users[i]->get_server_host()->push_to_buffer(msg);
+				}
+				else
+					_users[i]->push_to_buffer(msg);
+			}
 		}
 
 		void			send_to_all_except_one(const Client &except, const std::string &msg)
@@ -265,7 +282,14 @@ class Channel
 			for (size_t i = 0; i < _users.size(); i++)
 			{
 				if (*_users[i] != except)
-					_users[i]->push_to_buffer(msg);
+				{
+					if (_users[i]->get_hopcount() > 0)
+					{
+						_users[i]->get_server_host()->push_to_buffer(msg);
+					}
+					else
+						_users[i]->push_to_buffer(msg);
+				}
 			}
 		}
 

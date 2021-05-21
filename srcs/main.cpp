@@ -33,20 +33,23 @@ void		sig_handler(int signal)
 	}
 }
 
-int			main(void)
+int			main(int argc, char **argv)
 {
 	MyServ				serv;
 	std::map<int, bool>	m_port;
 
 	SSL_library_init();
 	SSL_load_error_strings();
-
+	if (argc < 2)
+		serv.set_config_file_name("irc.conf");
+	else
+		serv.set_config_file_name(argv[1]);
 	try
 	{
 		signal(SIGINT, sig_handler);
 		signal(SIGPIPE, sig_handler);
 		InitSSLCTX(serv.serv_config, serv);
-		start_parse_conf(serv.serv_config);
+		start_parse_conf(serv.serv_config, serv.get_config_file_name());
 		set_serv_attributes(serv);
 		launch_all_socket(serv, serv.serv_config.m_ports);
 	}

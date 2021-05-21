@@ -236,6 +236,16 @@ std::string		create_full_msg(const std::vector<std::string> &params, std::list<C
 	return (full_msg);
 }
 
+std::string		create_full_name_msg(std::list<Client>::iterator client_it)
+{
+	std::string		full_msg("");
+
+	full_msg += ":" + client_it->get_nickname();
+	full_msg += "!" + client_it->get_username();
+	full_msg += "@" + client_it->get_hostname();
+	return (full_msg);
+}
+
 std::string		create_full_msg_mode(const std::string &mode, std::list<Client>::iterator client_it, const size_t &chann_idx)
 {
 	std::string		full_msg("");

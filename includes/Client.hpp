@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/18 17:56:13 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 15:21:42 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <cerrno>
 # include <openssl/ssl.h>
 # include "./Connection.hpp"
+# include "./Server.hpp"
 
 typedef int	SOCKET;
 
@@ -39,6 +40,7 @@ class Client : public Connection
 		bool			_is_oper;
 		std::string		_away_str;
 		int				_server_token;
+		Server			*_server_host;
 
 	public:
 
@@ -80,6 +82,7 @@ class Client : public Connection
 		bool			get_is_away() { return (_away_str.size() == 0 ? false : true); }
 		std::string		get_away_str() { return _away_str; }
 		int				get_server_token() { return (_server_token); }
+		Server			*get_server_host() { return (_server_host); }
 
 		/*
 		 ** Setter
@@ -92,6 +95,7 @@ class Client : public Connection
 		void			set_is_oper(bool oper) { _is_oper = oper; }
 		void			set_away_str(const std::string &away_str) { _away_str = away_str; }
 		void			set_server_token(int token) { _server_token = token; }
+		void			set_server_host(Server *serv) { _server_host = serv; }
 		
 		
 		/*

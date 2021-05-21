@@ -65,7 +65,7 @@ void				rehash(MyServ &serv)
 		new_file.accept_tls = true;
 	else
 		new_file.accept_tls = false;
-	start_parse_conf(new_file);
+	start_parse_conf(new_file, serv.get_config_file_name());
 	//close old sockets not present in new config file
 	close_old_socket(serv, new_file);
 	//add new ports and launch them

@@ -93,7 +93,6 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["TRACE"] = NULL;
 	cmd["ADMIN"] = NULL;
 	cmd["INFO"] = NULL;
-	cmd["PRIVMSG"] = NULL;
 	cmd["NOTICE"] = NULL;
 	cmd["WHO"] = NULL;
 	cmd["WHOIS"] = NULL;

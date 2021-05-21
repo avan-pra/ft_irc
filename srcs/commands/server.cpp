@@ -5,13 +5,13 @@ void	share_client(std::list<Server>::iterator &server_it, const MyServ &serv)
 {
 	for (std::list<Client>::iterator client_it = g_all.g_aClient.begin(); client_it != g_all.g_aClient.end(); client_it++)
 	{
-		if (client_it->get_hopcount() == 0)
-		{
+	//	if (client_it->get_hopcount() == 0)
+	//	{
 			std::string		rpl = ":" + serv.get_hostname() + " NICK " + client_it->get_nickname() + " 1 " +
 				client_it->get_username() + " " + client_it->get_hostname() + " 1 " + client_it->get_mode() +
 				" :" + client_it->get_realname() + "\r\n";
 			server_it->push_to_buffer(rpl);
-		}
+	//	}
 	}
 }
 

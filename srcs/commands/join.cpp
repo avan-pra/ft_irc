@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/21 12:02:08 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 18:25:48 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,7 @@ void	join_command(const std::string &line, std::list<Server>::iterator server_it
 		return ;
 	client_it = find_client_by_iterator(&params[0][1]);
 	chan_list = ft_split(params[2], ",");
-	send_to_all_server(line, server_it);
+	send_to_all_server(line + "\r\n", server_it);
 	for (size_t i = 0; i < chan_list.size(); i++)
 	{
 		if ((pos = chan_list[i].find(7)) != std::string::npos)
@@ -268,6 +268,8 @@ void	join_command(const std::string &line, std::list<Server>::iterator server_it
 			chan_name = chan_list[i];
 		if ((chan_id = find_channel(chan_name)) != -1)
 		{
+			std::string		rpl;
+
 			g_vChannel[chan_id]._users.push_back(&(*client_it));
 			send_to_channel(("JOIN " + chan_name), client_it, chan_id, true);
 			if (pos != std::string::npos && chan_list[i][pos + 1] == 'o')
