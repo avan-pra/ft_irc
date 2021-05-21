@@ -49,7 +49,9 @@ int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 		if (bind(sock.sockfd, (struct sockaddr *)&sin4, sizeof(sin4)) < 0)
 			throw UnbindableSocket();
 	}
-	std::cout << "Server binded to port number " << GREEN << port << (is_tls == true ? " (tls)" : "") << NC << std::endl;
+	#ifdef DEBUG
+		std::cerr << "Server binded to port number " << GREEN << port << (is_tls == true ? " (tls)" : "") << NC << std::endl;
+	#endif
 
 	if (listen(sock.sockfd, serv.get_listen_limit()) == SOCKET_ERROR)
 		throw ListenError();
