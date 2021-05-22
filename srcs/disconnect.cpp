@@ -113,8 +113,11 @@ _erase_only:
 
 void	disconnect(Unregistered *co, std::list<Unregistered>::iterator &unregistered_it)
 {
-	co->send_packets();
-	co->reset_buffer();
+	if (!(co->get_tls()) || (co->get_tls() && SSL_is_init_finished(co->_sslptr)))
+	{
+		co->send_packets();
+		co->reset_buffer();
+	}
 	if (co->get_tls())
 	{
 		if (co->_sslptr != NULL)

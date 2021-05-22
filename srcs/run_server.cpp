@@ -109,23 +109,45 @@ void	send_bufferised_packet()
 {
 	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
 	{
-		it->send_packets();
-		it->reset_buffer();
+		if (!(it->get_tls()) || (it->get_tls() && SSL_is_init_finished(it->_sslptr)))
+		{
+			it->send_packets();
+			it->reset_buffer();
+		}
+		else if (it->get_tls())
+			DoHandshakeTLS(*it);
 	}
 	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); ++it)
 	{
-		it->send_packets();
-		it->reset_buffer();
+		if (!(it->get_tls()) || (it->get_tls() && SSL_is_init_finished(it->_sslptr)))
+		{
+			it->send_packets();
+			it->reset_buffer();
+		}
+		else if (it->get_tls())
+			DoHandshakeTLS(*it);
 	}
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); ++it)
 	{
-		it->send_packets();
-		it->reset_buffer();
+		if (!(it->get_tls()) || (it->get_tls() && SSL_is_init_finished(it->_sslptr)))
+		{
+			it->send_packets();
+			it->reset_buffer();
+		}
+		else if (it->get_tls())
+		{
+			DoHandshakeTLS(*it);
+		}
 	}
 	for (std::list<Service>::iterator it = g_all.g_aService.begin(); it != g_all.g_aService.end(); ++it)
 	{
-		it->send_packets();
-		it->reset_buffer();
+		if (!(it->get_tls()) || (it->get_tls() && SSL_is_init_finished(it->_sslptr)))
+		{
+			it->send_packets();
+			it->reset_buffer();
+		}
+		else if (it->get_tls())
+			DoHandshakeTLS(*it);
 	}
 }
 

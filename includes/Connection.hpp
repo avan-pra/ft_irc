@@ -13,6 +13,9 @@
 # define SERVER_TYPE 1
 # define CLIENT_TYPE 2
 
+# define CONNECT true
+# define ACCEPT false
+
 typedef int	SOCKET;
 
 class Connection
@@ -35,6 +38,7 @@ class Connection
 		SOCKET			_fd;
 		SSL				*_sslptr;
 		sockaddr_in6	sock_addr;
+		bool			connection_state;
 		// sockaddr_in		sock_addr;
 
 		/*
@@ -50,6 +54,7 @@ class Connection
 			_sslptr = NULL;
 			_t_signon = time(0);
  			_t_idle = time(0);
+			connection_state = ACCEPT;
 		}
 		virtual ~Connection() { }
 

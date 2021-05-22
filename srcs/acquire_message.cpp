@@ -48,9 +48,11 @@ void		get_message(char *c, Connection &co, int &ret)
 void		check_message_problem(char *c, Connection &co, MyServ &serv, int &ret)
 {
 	(void)serv;
+	(void)co;
+	(void)c;
 	if (/*!(FD_ISSET(co._fd, &serv.get_writefs()))*/false)
 		ret = -1;
-	check_packet_len_error(c, co, ret);
+	// check_packet_len_error(c, co, ret);
 }
 
 bool		is_readable(MyServ &serv, Connection &co)

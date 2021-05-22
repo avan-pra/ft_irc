@@ -79,7 +79,11 @@ int		receive_message(Connection &co, char *buf)
 	if (co.get_tls() == false)
 		ret = recv(co._fd, buf, BUFF_SIZE, 0);
 	else
+	{
 		ret = SSL_read(co._sslptr, buf, BUFF_SIZE);
+		if (ret == -1 && (SSL_get_error(co._sslptr, ret) == 2 || SSL_get_error(co._sslptr, ret) == 3))
+			ret = 1;
+	}
 	return (ret);
 }
 
@@ -88,7 +92,10 @@ int		DoHandshakeTLS(Connection &co)
 	int		ret;
 	int		error;
 
-	ret = SSL_accept(co._sslptr);
+	if (co.connection_state == CONNECT)
+		ret = SSL_connect(co._sslptr);
+	else //if (co.connection_state == ACCEPT)
+		ret = SSL_accept(co._sslptr);
 	if (ret != 1)
 	{
 		error = SSL_get_error(co._sslptr, ret);

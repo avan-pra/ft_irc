@@ -55,7 +55,7 @@ class   UnbindableSocket: public std::exception
 {
 	virtual const char *what() const throw()
 	{
-		return "Socket could not be binded to the requested port.";
+		return "Socket could not bind to the requested port.";
 	};
 };
 

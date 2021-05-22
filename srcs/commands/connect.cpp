@@ -56,6 +56,7 @@ void	connect_to_serv(t_networkID net, SOCKADDR_IN6 *ip_info, const MyServ &serv)
 	if (net.is_tls == true)
 	{
 		new_serv._sslptr = SSL_new(serv.client_sslctx);
+		new_serv.set_tls(true);
 		SSL_set_fd(new_serv._sslptr, serv_socket);
 		const int status = SSL_connect(new_serv._sslptr);
 		if (status != 1)
