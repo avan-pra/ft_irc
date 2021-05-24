@@ -12,6 +12,7 @@
 
 # define SERVER_TYPE 1
 # define CLIENT_TYPE 2
+# define SERVICE_TYPE 3
 
 # define CONNECT true
 # define ACCEPT false
@@ -94,14 +95,19 @@ class Connection
 		}
 
 		void			reset_buffer() { _buff = ""; }
+
 		void			push_to_buffer(const std::string &s)
 		{
 			if (_type == CLIENT_TYPE && _hopcount == 0)
 				_buff += s;
 			else if (_type == SERVER_TYPE && _hopcount == 1)
 				_buff += s;
+			else if (_type == SERVICE_TYPE && _hopcount == 0)
+				_buff += s;
 		}
+
 		std::string		get_buffer() { return _buff; }
+
 		void			send_packets()
 		{
 			if (_tls)

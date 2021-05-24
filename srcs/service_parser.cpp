@@ -50,7 +50,6 @@ void	service_parser(char *line, std::list<Service>::iterator service_it, const M
 				** execute command only if: ((if not registered and command are either PASS NICK or USER)
 				** or if register) AND if command exist
 				*/
-			std::cout << "Hello1" << std::endl;
 				if (can_execute(command, service_it, serv) == true)
 					serv.get_command_service().at(command)(*str, service_it, serv);
 			}

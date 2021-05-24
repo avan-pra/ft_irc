@@ -12,7 +12,7 @@ class Service : public Connection
 		std::string	_info;
 
 		//Actually unused
-		std::string	_type;
+		std::string	_serv_type;
 		int			_server_token;
 
 
@@ -35,6 +35,7 @@ class Service : public Connection
 			_tls = co.get_tls();
 			_sslptr = co._sslptr;
 			sock_addr = co.sock_addr;
+			_type = SERVICE_TYPE;
 		}
 		
 		~Service() {}
@@ -45,7 +46,7 @@ class Service : public Connection
 		std::string		get_nickname() const { return	_nickname; }
 		std::string		get_distribution() const { return	_distribution; }
 		std::string		get_info() const { return	_info; }
-		std::string		get_type() const { return	_type; }
+		std::string		get_serv_type() const { return	_serv_type; }
 		int				get_server_token() const { return _server_token; }
 
 		/*
@@ -54,7 +55,7 @@ class Service : public Connection
 		void			set_nickname(const std::string nick) { _nickname = nick; }
 		void			set_distribution(const std::string distrib) { _distribution = distrib; }
 		void			set_info(const std::string info) { _info = info; }
-		void			set_type(const std::string type) { _type = type; }
+		void			set_serv_type(const std::string type) { _serv_type = type; }
 		void			set_server_token(const int serv_token) { _server_token = serv_token; }
 };
 
