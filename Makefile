@@ -61,7 +61,7 @@ SRC_CMD = nick.cpp user.cpp time.cpp \
 		  topic.cpp notice.cpp specific_modes.cpp \
 		  whois.cpp whowas.cpp ison.cpp userhost.cpp \
 		  away.cpp die.cpp kill.cpp connect.cpp rehash.cpp \
-		  pass_server.cpp njoin.cpp service.cpp\
+		  njoin.cpp service.cpp\
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 

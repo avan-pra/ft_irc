@@ -216,6 +216,7 @@ void	privmsg_command(const std::string &line, std::list<Server>::iterator server
 
 void	service_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
 void	quit_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
+void	pass_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
 
 /*
 ** specific_modes.cpp

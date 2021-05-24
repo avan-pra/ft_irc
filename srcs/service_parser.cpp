@@ -4,9 +4,6 @@
 #include <algorithm>
 #include <cstring>
 
-// void hold_if_cap(std::vector<std::string> &packet, const size_t &client_idx)
-// a degager ^^
-
 bool	can_execute(const std::string command, std::list<Service>::iterator service_it, const MyServ &serv)
 {
 	bool ret = false;
@@ -17,7 +14,7 @@ bool	can_execute(const std::string command, std::list<Service>::iterator service
 		ret = true;
 	try
 	{
-		if (serv.get_command().at(command) == NULL)
+		if (serv.get_command_service().at(command) == NULL)
 			return false;
 	}
 	catch (const std::exception &e) { throw std::exception(); }
@@ -53,6 +50,7 @@ void	service_parser(char *line, std::list<Service>::iterator service_it, const M
 				** execute command only if: ((if not registered and command are either PASS NICK or USER)
 				** or if register) AND if command exist
 				*/
+			std::cout << "Hello1" << std::endl;
 				if (can_execute(command, service_it, serv) == true)
 					serv.get_command_service().at(command)(*str, service_it, serv);
 			}

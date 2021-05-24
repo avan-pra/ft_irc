@@ -91,6 +91,6 @@ void				rehash_command(const std::string &line, std::list<Client>::iterator clie
 		client_it->push_to_buffer(create_msg(481, client_it, serv));
 		return;
 	}
-	client_it->push_to_buffer(create_msg(382, client_it, serv, FILE_NAME));
+	client_it->push_to_buffer(create_msg(382, client_it, serv, serv.get_config_file_name()));
 	throw RehashException();
 }
