@@ -24,3 +24,13 @@ void	pass_command(const std::string &line, std::list<Client>::iterator client_it
 	// 	client_it->set_password_state(true);
 	// client_it->set_pass_try(true);
 }
+
+void	pass_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)
+{
+	(void)line;
+	if (service_it->is_registered() == true)
+	{
+		service_it->push_to_buffer(create_msg(462, service_it, serv));
+		return;
+	}
+}
