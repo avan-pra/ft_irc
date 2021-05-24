@@ -27,7 +27,7 @@
 
 # define TIMEOUT_REGISTER 60
 
-# define FILE_NAME "./irc.conf"
+# define PROTOCOL_VERSION "0210"
 
 # define HASH_CHAR "0123456789abcdefABCDEF"
 
