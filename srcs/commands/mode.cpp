@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/18 14:20:53 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/21 18:28:25 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,9 +286,6 @@ static void			sort_mode_args(std::string &mode, std::vector<std::string> &mode_a
 		 	mode_to_push = false;
 		}
 	}
-	// std::cout << "MODE = " << mode << std::endl;
-	// for (size_t i = 0; i < mode_args.size(); i++)
-	// 	std::cout << "ARG = " <<  mode_args[i] << std::endl;
 }
 
 void				mode_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
@@ -363,5 +360,9 @@ void				mode_command(const std::string &line, std::list<Server>::iterator server
 	if ((client_it = find_client_by_iterator(&params[0][1])) == g_all.g_aClient.end())
 		return ;
 	command = line.substr(line.find("MODE"));
-	mode_command(command, client_it, serv);
+	try
+	{
+		mode_command(command, client_it, serv);
+	}
+	catch (const std::exception &e) {return ;}
 }

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/21 18:25:48 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/24 23:39:37 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,8 +205,7 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 			send_to_channel(("JOIN " + it->first), client_it, find_channel(it->first), true);
 			names_command("names " + it->first, client_it, serv);
 			send_channel_time(client_it, serv, it->first);
-			rpl = ":" + client_it->get_nickname() + "!" + client_it->get_username() + "@" +
-				client_it->get_hostname()+ " JOIN " + it->first + "\x07o\r\n";
+			rpl = ":" + client_it->get_nickname() + " JOIN " + it->first + "\x07o\r\n";
 			//std::cout << rpl;
 			send_to_all_server(rpl, g_all.g_aServer.begin(), true);
 		}
@@ -220,8 +219,7 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 				if (g_vChannel[chan_id].get_topic() != "")
 					topic_command("topic " + it->first, client_it, serv);
 				send_channel_time(client_it, serv, it->first);
-				send_to_all_server(":" + client_it->get_nickname() + "!" + client_it->get_username() +
-					"@" + client_it->get_hostname() + " JOIN " + g_vChannel[chan_id].get_name() +
+				send_to_all_server(":" + client_it->get_nickname() + " JOIN " + g_vChannel[chan_id].get_name() +
 					" " + client_it->get_nickname() +"\r\n", g_all.g_aServer.begin(), true);
 			}
 		}

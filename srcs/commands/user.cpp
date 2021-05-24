@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/18 11:54:26 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/24 23:32:40 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void				user_command(const std::string &line, std::list<Client>::iterator client
 		if (client_it->get_nickname().size() > 0)
 		{
 			client_it->push_to_buffer(create_msg(1, client_it, serv, client_it->get_nickname()));
-			motd_command("", client_it, serv);
+			motd_command("MOTD", client_it, serv);
 			time(&client_it->get_last_activity());
 			client_it->set_register(true);
 			

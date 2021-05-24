@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/25 00:11:30 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/25 00:23:19 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
-
-/*
-** Client
-*/
 
 int		check_params(const std::vector<std::string> &params, std::list<Client>::iterator client_it, const MyServ &serv)
 {
@@ -79,6 +75,8 @@ int		check_params(const std::vector<std::string> &params, std::list<Client>::ite
 void	send_privmsg_to_channel(const std::vector<std::string> params, std::list<Client>::iterator client_it, const int &chan_id)
 {
 	std::string		full_msg = create_full_msg(params, client_it);
+
+	std::cout << "full_msg :" << full_msg;
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
 		if (*g_vChannel[chan_id]._users[i] != *client_it)
@@ -132,32 +130,43 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 	client_it->set_t_idle(new_time);
 }
 
+std::string		trim_client_name(std::string full_name)
+{
+	std::string		nick;
+
+	nick = full_name.substr(0, full_name.find('!'));
+	return (nick);
+}
+
 void	privmsg_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
 {
 	std::vector<std::string>		params = ft_split(line, " ");
 	std::list<Client>::iterator		client_it;
+	std::string						true_line;
 
 	(void)server_it;
+	true_line = line;
 	if (params.size() < 4)
 		return ;
 	if (params[0].size() <= 1 || params[0][0] != ':')
 		return ;
+	if (params[0][0] == ':')
+	{
+		params[0] = trim_client_name(params[0]);
+		true_line = params[0] + " " + true_line.substr(true_line.find("PRIVMSG"));
+	}
 	if ((client_it = find_client_by_iterator(&params[0][1])) == g_all.g_aClient.end())
 		return ;
-	for (size_t i = params[0].size(); i < line.size(); i++)
+	for (size_t i = params[0].size(); i < true_line.size(); i++)
 	{
-		if (line[i] != ' ')
+		if (true_line[i] != ' ')
 		{
-			std::string		new_line = &line[i];
+			std::string		new_line = &true_line[i];
 			privmsg_command(std::string(new_line) , client_it, serv);
 			return ;
 		}
 	}
 }
-
-/*
-** Service
-*/
 
 int		check_params(const std::vector<std::string> &params, std::list<Service>::iterator service_it, const MyServ &serv)
 {
@@ -218,6 +227,7 @@ int		check_params(const std::vector<std::string> &params, std::list<Service>::it
 	// }
 	return (1);
 }
+
 
 void	privmsg_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)
 {

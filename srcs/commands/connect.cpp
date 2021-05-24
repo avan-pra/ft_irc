@@ -38,9 +38,11 @@ void	connect_to_serv(t_networkID net, SOCKADDR_IN6 *ip_info, const MyServ &serv)
 {
 	Unregistered tmp;
 	Server new_serv = tmp;
-	int serv_socket = socket(ip_info->sin6_family, SOCK_STREAM, 0);
+	int serv_socket;
 
-	if (connect(serv_socket, (sockaddr*)ip_info, sizeof(*ip_info)) != 0)
+	serv_socket = socket(ip_info->sin6_family, SOCK_STREAM, 0);
+
+	if (connect(serv_socket, (sockaddr*)ip_info, sizeof(sockaddr)) != 0)
 	{
 		std::cerr << "Error could not connect to " << net.name << std::endl;
 		throw std::exception();
