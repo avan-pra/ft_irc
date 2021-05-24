@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/21 16:53:35 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/24 12:56:57 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ class Service;
 std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> 	fill_command(void);
 std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	fill_command_server(void);
 std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iterator client_it, const MyServ &serv)>	fill_command_service(void);
+std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	fill_rpl_server(void);
 
 struct t_networkID
 {
@@ -151,6 +152,7 @@ class MyServ
 
 		const std::map<std::string, void (*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)>	_command;
 		const std::map<std::string, void (*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	_command_server;
+		const std::map<std::string, void (*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	_rpl_server;
 		const std::map<std::string, void (*)(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)> _command_service; 
 	
 	public:
@@ -166,7 +168,7 @@ class MyServ
 		*/
 		MyServ() : _listen_limit(0), _client_limit(0), _max_fd(0), _pass_for_connection(false), _pass_for_server(false),
 					_pass_oper(false), _ping(0), _t_timeout(0), _timeout_register(0), _command(fill_command()),
-					_command_server(fill_command_server()), _command_service(fill_command_service())
+					_command_server(fill_command_server()), _rpl_server(fill_rpl_server()), _command_service(fill_command_service())
 		{
 			time(&_start_time);
 			set_timeout(3);
@@ -209,6 +211,7 @@ class MyServ
 		const std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)>	&get_command() const { return _command; }
 		const std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	&get_command_server() const { return _command_server; }
 		const std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)>	&get_command_service() const { return _command_service; }
+		const std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	&get_rpl_server() const { return _rpl_server; }
 
 		/*
 		** Setter
