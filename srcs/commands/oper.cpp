@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 10:47:16 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/10 10:42:29 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/24 17:07:42 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void		oper_command(const std::string &line, std::list<Client>::iterator client_i
 	std::string					name;
 
 	params = ft_split(line, " ");
+	if (client_it->get_is_oper() == true)
+		return ;
 	if (params.size() < 2)
 	{
 		client_it->push_to_buffer(create_msg(461, client_it, serv, "OPER"));

@@ -83,6 +83,8 @@ void	connect_to_serv(t_networkID net, SOCKADDR_IN6 *ip_info, const MyServ &serv)
 	new_serv.sock_addr = *(struct sockaddr_in6*)ip_info;
 	new_serv._fd = serv_socket;
 	new_serv.set_hopcount(1);
+	new_serv.push_to_buffer("PASS " + net.pass + " " + PROTOCOL_VERSION + " ircGODd|1.1:" + "\r\n");
+	new_serv.push_to_buffer("SERVER " + serv.get_hostname() + " 1 " + ":salut la miff" + "\r\n");
 	time(&new_serv.get_last_activity());
 	g_all.g_aServer.push_back(new_serv);
 }

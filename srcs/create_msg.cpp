@@ -244,6 +244,19 @@ std::string		create_full_msg(const std::vector<std::string> &params, std::list<C
 	return (full_msg);
 }
 
+std::string		create_full_msg(const std::vector<std::string> &params, std::list<Service>::iterator service_it)
+{
+	std::string		full_msg("");
+
+	full_msg += ":" + service_it->get_nickname();
+	// full_msg += "!" + client_it->get_username();
+	// full_msg += "@" + client_it->get_hostname();
+	for (size_t i = 0; i < params.size(); i++)
+		full_msg += " " + params[i];
+	full_msg += "\r\n";
+	return (full_msg);
+}
+
 std::string		create_full_name_msg(std::list<Client>::iterator client_it)
 {
 	std::string		full_msg("");

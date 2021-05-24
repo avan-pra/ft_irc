@@ -112,7 +112,7 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 				*it = std::toupper(*it);
 			if (command == "NICK" || command == "USER")
 			{
-				if (serv.get_need_pass() && (co.get_pass_state() != eClient || co.get_arg_set() == false))
+				if (serv.get_need_pass() && (co.get_pass_state() != eClient))
 					throw QuitCommandException();
 
 				Client cli = co;

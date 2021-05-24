@@ -220,6 +220,7 @@ void	version_command(const std::string &line, std::list<Server>::iterator server
 
 void	service_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
 void	quit_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
+void	pass_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
 
 
 void	reply_code(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);

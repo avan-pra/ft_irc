@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 15:01:58 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/21 17:17:53 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/24 17:04:19 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void        service_command(const std::string &line, std::list<Service>::iterato
 {
 	std::vector<std::string>    args;
 	
-	// std::cout << "HELLO Service" << std::endl;
 	args = ft_split(line, " ");
 	if (args.size() != 6)
 	{
