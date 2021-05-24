@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/12 16:52:49 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/24 15:53:27 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/24 16:04:51 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	notice_command(const std::string &line, std::list<Client>::iterator client_
 void	notice_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)
 {
 	std::vector<std::string>	params = ft_split(line, " ");
-	int							id;
+	//int							id;
 	std::list<Client>::iterator	it;
 
 	if (params.size() < 3)
