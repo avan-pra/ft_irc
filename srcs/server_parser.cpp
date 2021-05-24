@@ -117,7 +117,7 @@ void		server_parser(char *line, std::list<Server>::iterator server_it, const MyS
 				{
 					try
 					{
-						std::cout << "TRUE_COMMAND :" << command << std::endl;
+						// std::cout << "received: " << *str << std::endl;
 						if (can_execute(command, server_it, serv) == true)
 							serv.get_command_server().at(command)(*str, server_it, serv);
 					}

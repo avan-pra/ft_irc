@@ -70,7 +70,7 @@ void	server_reply(std::string line, std::list<Server>::iterator server_it, const
 		server_it->push_to_buffer(create_msg(462, server_it, serv));
 		return ;
 	}
-	server_it->set_server_name(arg[1]);
+	server_it->set_server_name(arg[2]);
 	server_it->set_hopcount(1);
 	server_it->set_token(g_all.g_aServer.size());
 	server_it->set_info(line.substr(line.find_first_of(':', 1)));
