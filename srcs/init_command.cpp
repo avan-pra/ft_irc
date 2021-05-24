@@ -146,14 +146,13 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iter
 	cmd["PASS"] = pass_command;
 	cmd["SERVICE"] = service_command;
 	cmd["QUIT"] = quit_command;
-	// cmd["NOTICE"] = notice_command;
-	// cmd["PRIVMSG"] = privmsg_command;
-	// cmd["SQUERY"] = NULL;
-	// cmd["WHO"] = who_command;
-	// cmd["WHOIS"] = whois_command;
-	// cmd["WHOWAS"] = whowas_command;
-	// cmd["USERHOST"] = userhost_command;
-	// cmd["ISON"] = ison_command;
+	cmd["NOTICE"] = notice_command;
+	cmd["PRIVMSG"] = privmsg_command;
+	cmd["WHO"] = who_command;
+	cmd["WHOIS"] = whois_command;
+	cmd["WHOWAS"] = whowas_command;
+	cmd["USERHOST"] = userhost_command;
+	cmd["ISON"] = ison_command;
 
 	return cmd;
 }

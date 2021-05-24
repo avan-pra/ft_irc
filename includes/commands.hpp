@@ -221,7 +221,13 @@ void	version_command(const std::string &line, std::list<Server>::iterator server
 void	service_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
 void	quit_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
 void	pass_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
-
+void	notice_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
+void	privmsg_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
+void	who_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
+void	whois_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
+void	whowas_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
+void	userhost_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
+void	ison_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
 
 void	reply_code(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 
