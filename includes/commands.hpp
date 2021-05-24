@@ -151,7 +151,7 @@
 # define RPL_ADMINLOC2() (":<info admin>\r\n")
 # define RPL_ADMINEMAIL() (":<info admin>\r\n")
 # define RPL_CREATIONTIME(channel, c_time) (channel + " " + c_time + "\r\n")
-
+# define RPL_YOURESERVICE(servicename) ("You are service " + servicename + "\r\n")
 
 std::string     create_msg(const int &code, std::list<Client>::iterator client_it, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string(), const std::string &arg4 = std::string());
 std::string		create_msg(const int &code, std::list<Server>::iterator server_it, const MyServ &serv, const std::string &arg1 = "", const std::string &arg2 = "", const std::string &arg3 = "", const std::string &arg4 = "");

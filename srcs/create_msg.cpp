@@ -209,13 +209,15 @@ std::string		create_msg(const int &code, std::list<Service>::iterator service_it
 		true_code = std::string(1, '0').append(ft_to_string(code));
 	if (service_it->get_nickname().empty())
 		sample = std::string(":" + serv.get_hostname() + " " + true_code + " * ");
-	else if (code == 691)
+	else if (code == 691 || code == 383)
 		sample = std::string(":" + serv.get_hostname() + " " + true_code + " ");
 	else
 		sample = std::string(":" + serv.get_hostname() + " " + true_code + " " + service_it->get_nickname() + " ");
 
 	switch (code)
 	{
+		case 383:
+			return sample + RPL_YOURESERVICE(arg1);
 		case 461:
 			return sample + ERR_NEEDMOREPARAMS(arg1);
 		default:
