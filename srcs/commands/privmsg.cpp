@@ -188,8 +188,10 @@ int		check_params(const std::vector<std::string> &params, std::list<Service>::it
 		// No such nickname
 		// else
 		if (find_client_by_iterator(params[1]) == g_all.g_aClient.end())
+		{
 			service_it->push_to_buffer(create_msg(401, service_it, serv, params[1]));
 			return (0);
+		}
 	// }
 	if (params[2][0] != ':')
 	{
