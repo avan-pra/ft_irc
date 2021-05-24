@@ -82,3 +82,13 @@ void	pass_command(const std::string &line, std::list<Server>::iterator server_it
 		}
 	}
 }
+
+void	pass_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)
+{
+	(void)line;
+	if (service_it->is_registered() == true)
+	{
+		service_it->push_to_buffer(create_msg(462, service_it, serv));
+		return;
+	}
+}
