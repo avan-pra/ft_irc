@@ -31,6 +31,7 @@ class Server : public Connection
 		size_t			_token;
 		std::string		_info;
 		std::string		_servername;
+		bool			_has_try_password;
 
 		//related to PASS command
 		std::string		_version;
@@ -62,6 +63,7 @@ class Server : public Connection
 			_token = -1;
 			_info = "";
 			_servername = "";
+			_has_try_password = false;
 
 			//related to PASS command
 			_version = co.get_version();
@@ -82,6 +84,7 @@ class Server : public Connection
 		std::string		get_implementation_name() { return _implementation_name; }
 		std::string		get_implementation_option() { return _implementation_option; }
 		std::string		get_link_option() { return _link_option; }
+		bool			get_pass_try() { return _has_try_password; }
 
 		/*
 		** Setter
@@ -89,6 +92,11 @@ class Server : public Connection
 		void			set_token(size_t name) { _token = name; }
 		void			set_info(std::string info) { _info = info; }
 		void			set_server_name(std::string name) { _servername = name; }
+		void			set_version(std::string version) { _version = version; }
+		void			set_implementation_name(std::string implementation_name) { _implementation_name = implementation_name; }
+		void			set_implementation_option(std::string implementation_option) { _implementation_option = implementation_option; }
+		void			set_link_option(std::string link_option) { _link_option = link_option; }
+		void			set_pass_try(bool pass) { _has_try_password = pass; }
 };
 
 #endif

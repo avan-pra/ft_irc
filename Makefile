@@ -6,7 +6,7 @@
 #    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/05/21 17:05:05 by jvaquer          ###   ########.fr        #
+#    Updated: 2021/05/24 17:20:56 by lucas            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ SRC = main.cpp parser.cpp get_client.cpp \
 	  find_client_or_channel.cpp send_msg_to.cpp mask_parser.cpp \
 	  tls.cpp error.cpp acquire_message.cpp class/client.cpp find_connections.cpp\
 	  disconnect.cpp set_serv_attributes.cpp server_parser.cpp iterate_service.cpp \
-	  service_parser.cpp \
+	  service_parser.cpp reply_server.cpp \
 
 OBJ = $(SRCS:.cpp=.o)
 
@@ -61,9 +61,10 @@ SRC_CMD = nick.cpp user.cpp time.cpp \
 		  topic.cpp notice.cpp specific_modes.cpp \
 		  whois.cpp whowas.cpp ison.cpp userhost.cpp \
 		  away.cpp die.cpp kill.cpp connect.cpp rehash.cpp \
-		  pass_server.cpp njoin.cpp service.cpp\
+		  njoin.cpp service.cpp\
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
+
 
 #config folder
 SRCS_CONF = $(addprefix $(DIR_CONF), $(SRC_CONF))

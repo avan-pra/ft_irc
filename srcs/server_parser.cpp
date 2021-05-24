@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/12 15:53:28 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/21 12:05:10 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/24 13:10:12 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,28 @@ bool	can_execute(const std::string command, std::list<Server>::iterator server_i
 	try
 	{
 		if (serv.get_command_server().at(command) == NULL)
+		{
 			return false;
+		}
 	}
 	catch (const std::exception &e) { throw std::exception(); }
 	if (ret == false)
 		server_it->push_to_buffer(create_msg(451, server_it, serv));
+	return ret;
+}
+
+bool	can_read(const std::string command, std::list<Server>::iterator server_it, const MyServ &serv)
+{
+	bool ret = true;
+
+	(void)server_it;
+	//ptet opti le search
+	try
+	{
+		if (serv.get_rpl_server().at(command) == NULL)
+			return false;
+	}
+	catch (const std::exception &e) { return false; }
 	return ret;
 }
 
@@ -84,7 +101,6 @@ void		server_parser(char *line, std::list<Server>::iterator server_it, const MyS
 		{
 			std::string command = true_command(*str);
 
-		//	std::cout << "TRUE_COMMAND :" << command << std::endl;;
 
 			if (std::strcmp(command.c_str(), "329") == 0 || std::strcmp(command.c_str(), "324") == 0)
 			{
@@ -95,12 +111,18 @@ void		server_parser(char *line, std::list<Server>::iterator server_it, const MyS
 				for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 					*it = std::toupper(*it);
 
-				try
+				if (can_read(command, server_it, serv) == true)
+					serv.get_rpl_server().at(command)(*str, server_it, serv);
+				else
 				{
-					if (can_execute(command, server_it, serv) == true)
-						serv.get_command_server().at(command)(*str, server_it, serv);
+					try
+					{
+						// std::cout << "received: " << *str << std::endl;
+						if (can_execute(command, server_it, serv) == true)
+							serv.get_command_server().at(command)(*str, server_it, serv);
+					}
+					catch (const std::exception &e) { server_it->push_to_buffer(create_msg(421, server_it, serv, command)); }
 				}
-				catch (const std::exception &e) { server_it->push_to_buffer(create_msg(421, server_it, serv, command)); }
 			}
 		}
 	}

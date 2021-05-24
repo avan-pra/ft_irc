@@ -25,6 +25,64 @@ void	pass_command(const std::string &line, std::list<Client>::iterator client_it
 	// client_it->set_pass_try(true);
 }
 
+void	pass_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
+{
+	if (server_it->is_registered() == true)
+	{
+		server_it->push_to_buffer(create_msg(462, server_it, serv));
+		return;
+	}
+	if (server_it->get_pass_try() == true)
+		return;
+	std::vector<std::string> arg = ft_split(line.substr(line.find("PASS")), " ");
+	if (arg.size() < 4)
+	{
+		server_it->push_to_buffer(":" + serv.get_hostname() + " 461 * PASS :Not enough parameters\r\n"); return;
+		return;
+	}
+
+	const char *s = arg[1].c_str();
+	unsigned char *d = SHA256(reinterpret_cast<unsigned char*> (const_cast<char*> (s)), strlen(s), 0);
+
+	if (serv.get_need_pass_server() && !(memcmp(d, serv.get_password_server(), 32) == 0))
+		throw IncorrectPassException();
+	server_it->set_pass_try(true);
+
+	if (arg.size() >= 4)
+	{
+		if (arg[2].size() >= 4 && arg[2].size() <= 14)
+		{
+			for (size_t i = 0; i < 4; ++i)
+			{
+				if (std::isdigit(arg[2][i]))
+					;
+				else
+					return ;
+			}
+		}
+		else
+			return ;
+		server_it->set_version(arg[2]);
+		if (arg[3].size() <= 100 && std::count(arg[3].begin(), arg[3].end(), '|') == 1)
+		{
+			std::vector<std::string> flags = ft_split(arg[3], "|");
+			if (flags.size() < 1 && flags[0] != "IRC")
+				return ;
+			server_it->set_implementation_name(flags[0]);
+			if (flags.size() == 2)
+				server_it->set_implementation_option(flags[1]);
+			else if (flags.size() > 2) //c impossible en theorie
+				return ;
+		}
+		else
+			return ;
+		if (arg.size() >= 5)
+		{
+			server_it->set_link_option(arg[4]);
+		}
+	}
+}
+
 void	pass_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)
 {
 	(void)line;

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/24 18:23:19 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/24 19:30:33 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 
 # define TIMEOUT_REGISTER 60
 
-# define FILE_NAME "./irc.conf"
+# define PROTOCOL_VERSION "0210"
 
 # define HASH_CHAR "0123456789abcdefABCDEF"
 
@@ -237,6 +237,7 @@ std::deque<Channel>::iterator							find_channel_by_iterator(const std::string &
 std::list<Client>::iterator			find_client_by_iterator(const std::string &nickname);
 std::list<Client>::iterator			find_client_by_iterator(Connection *co);
 std::list<Server>::iterator			find_server_by_iterator(const SOCKET &fd);
+std::list<Server>::iterator			find_server_by_iterator(const std::string &name);
 std::list<Service>::iterator		find_service_by_iterator(const std::string &nickname);
 std::list<Unregistered>::iterator	find_unregister_by_iterator(const SOCKET &fd);
 bool								is_servername_exist(const std::string &servname);

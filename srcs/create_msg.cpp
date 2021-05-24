@@ -62,6 +62,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_TOPIC(arg1, arg2);
 		case 341:
 			return sample + RPL_INVITING(arg1, arg2);
+		case 351:
+			return sample + RPL_VERSION(arg1, arg2, arg3, arg4);
 		case 352:
 			return sample + RPL_WHOREPLY(arg1);
 		case 353:
@@ -88,7 +90,11 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_YOUREOPER();
 		case 382:
 			return sample + RPL_REHASHING(arg1);
+		case 391:
+			return sample + RPL_TIME(arg1, arg2);
 		case 401:
+			return sample + ERR_NOSUCHNICK(arg1);
+		case 402:
 			return sample + ERR_NOSUCHNICK(arg1);
 		case 403:
 			return sample + ERR_NOSUCHCHANNEL(arg1);
@@ -104,6 +110,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + ERR_NOTEXTTOSEND();
 		case 421:
 			return sample + ERR_UNKNOWNCOMMAND(arg1);
+		case 422:
+			return sample + ERR_NOMOTD();
 		case 431:
 			return sample + ERR_NONICKNAMEGIVEN();
 		case 432:

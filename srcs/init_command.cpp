@@ -78,6 +78,11 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["PONG"] = pong_command;
 	cmd["MODE"] = mode_command; 
 	cmd["PRIVMSG"] = privmsg_command;
+	cmd["MOTD"] = motd_command;
+	cmd["INFO"] = info_command;
+	cmd["TIME"] = time_command;
+	cmd["VERSION"] = version_command;
+
 
 	cmd["PART"] = NULL; 
 	cmd["TOPIC"] = NULL;
@@ -85,14 +90,11 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["LIST"] = NULL;
 	cmd["INVITE"] = NULL;
 	cmd["KICK"] = NULL;
-	cmd["VERSION"] = NULL;
 	cmd["STATS"] = NULL;
 	cmd["LINKS"] = NULL;
-	cmd["TIME"] = NULL;
 	cmd["CONNECT"] = NULL;
 	cmd["TRACE"] = NULL;
 	cmd["ADMIN"] = NULL;
-	cmd["INFO"] = NULL;
 	cmd["NOTICE"] = NULL;
 	cmd["WHO"] = NULL;
 	cmd["WHOIS"] = NULL;
@@ -109,12 +111,30 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["USERHOST"] = NULL;
 	cmd["ISON"] = NULL;
 	cmd["SERVICE"] = NULL;
-	cmd["MOTD"] = NULL;
 	cmd["LUSERS"] = NULL;
 	cmd["SERVLIST"] = NULL;
 	cmd["SQUERY"] = NULL;
 	cmd["DIE"] = NULL;
 	cmd["CAP"] = NULL;
+
+	return cmd;
+}
+
+std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	fill_rpl_server(void)
+{
+	std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)> cmd;
+
+	//RPL code
+	cmd["005"] = reply_code;
+	cmd["351"] = reply_code;
+	cmd["371"] = reply_code;
+	cmd["372"] = reply_code;
+	cmd["374"] = reply_code;
+	cmd["375"] = reply_code;
+	cmd["376"] = reply_code;
+	cmd["391"] = reply_code;
+	cmd["422"] = reply_code;
+	cmd["391"] = reply_code;
 
 	return cmd;
 }

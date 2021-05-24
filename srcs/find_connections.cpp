@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 13:57:16 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/21 16:29:15 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/24 12:08:38 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,18 @@ std::list<Client>::iterator			find_client_by_iterator(Connection *co)
 	return (g_all.g_aClient.end());
 }
 
-std::list<Server>::iterator		find_server_by_iterator(const SOCKET &fd)
+std::list<Server>::iterator			find_server_by_iterator(const SOCKET &fd)
 {
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
 		if (fd == it->_fd)
+			return (it);
+	return (g_all.g_aServer.end());
+}
+
+std::list<Server>::iterator			find_server_by_iterator(const std::string &name)
+{
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
+		if (name == it->get_servername())
 			return (it);
 	return (g_all.g_aServer.end());
 }
