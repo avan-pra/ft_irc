@@ -36,7 +36,7 @@ class Unregistered : public Connection
 		std::string		get_pass_submited() { return _pass_submited; };
 
 		void			set_pass_try(bool pass) { _has_try_password = pass; }
-		void			set_pass_state(bool state) { _password_state = state; }
+		void			set_pass_state(int state) { _password_state = state; }
 		void			set_arg_set(bool state) { _all_arg_set = state; }
 		void			set_version(std::string version) { _version = version; }
 		void			set_implementation_name(std::string implementation_name) { _implementation_name = implementation_name; }

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/25 00:23:19 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/26 00:52:14 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,27 @@ int		check_params(const std::vector<std::string> &params, std::list<Client>::ite
 
 void	send_privmsg_to_channel(const std::vector<std::string> params, std::list<Client>::iterator client_it, const int &chan_id)
 {
-	std::string		full_msg = create_full_msg(params, client_it);
+	std::string					full_msg = create_full_msg(params, client_it);
+	std::vector<std::string>	already_server_send;
+	size_t							k;
 
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
 		if (*g_vChannel[chan_id]._users[i] != *client_it)
 		{
 			if (g_vChannel[chan_id]._users[i]->get_hopcount() > 0)
-				g_vChannel[chan_id]._users[i]->get_server_host()->push_to_buffer(full_msg);
+			{
+				for (k = 0; i < already_server_send.size(); i++)
+				{
+					if (already_server_send[i] == g_vChannel[chan_id]._users[i]->get_server_uplink()->get_servername())
+						break ;
+				}
+				if (k == already_server_send.size())
+				{
+					g_vChannel[chan_id]._users[i]->get_server_uplink()->push_to_buffer(full_msg);
+					already_server_send.push_back(g_vChannel[chan_id]._users[i]->get_server_uplink()->get_servername());
+					}
+			}
 			else
 				g_vChannel[chan_id]._users[i]->push_to_buffer(full_msg);
 		}
@@ -112,13 +125,13 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 		{
 			std::string		rpl = ":" + client_it->get_nickname() + " " + line + "\r\n";
 
-			it->get_server_host()->push_to_buffer(rpl);
+			it->get_server_uplink()->push_to_buffer(rpl);
 		}
 		else
 		{
 			it->push_to_buffer(create_full_msg(params, client_it));
 			if (it->get_is_away() == true)
-			client_it->push_to_buffer(create_msg(301, client_it, serv, it->get_nickname(), it->get_away_str()));
+				client_it->push_to_buffer(create_msg(301, client_it, serv, it->get_nickname(), it->get_away_str()));
 		}
 	}
 	else
@@ -142,8 +155,10 @@ void	privmsg_command(const std::string &line, std::list<Server>::iterator server
 	std::vector<std::string>		params = ft_split(line, " ");
 	std::list<Client>::iterator		client_it;
 	std::string						true_line;
+	int								chan_id;
+	std::list<Client>::iterator		cible;
 
-	(void)server_it;
+	(void)serv;
 	true_line = line;
 	if (params.size() < 4)
 		return ;
@@ -156,13 +171,29 @@ void	privmsg_command(const std::string &line, std::list<Server>::iterator server
 	}
 	if ((client_it = find_client_by_iterator(&params[0][1])) == g_all.g_aClient.end())
 		return ;
-	for (size_t i = params[0].size(); i < true_line.size(); i++)
+	chan_id = find_channel(params[2]);
+	cible = find_client_by_iterator(params[2]);
+	if (chan_id == -1 && cible == g_all.g_aClient.end())
+		return ;
+
+	if (cible != g_all.g_aClient.end())
 	{
-		if (true_line[i] != ' ')
+		if (cible->get_hopcount() > 0)
+			cible->get_server_uplink()->push_to_buffer(line + "\r\n");
+		else
+			cible->push_to_buffer(line + "\r\n");
+	}
+	else if (chan_id != -1)
+	{
+		for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 		{
-			std::string		new_line = &true_line[i];
-			privmsg_command(std::string(new_line) , client_it, serv);
-			return ;
+			if (g_vChannel[chan_id]._users[i]->get_server_uplink() != &(*server_it))
+			{
+				if (g_vChannel[chan_id]._users[i]->get_hopcount() > 0)
+					g_vChannel[chan_id]._users[i]->get_server_uplink()->push_to_buffer(line + "\r\n");
+				else
+					g_vChannel[chan_id]._users[i]->push_to_buffer(line + "\r\n");
+			}
 		}
 	}
 }

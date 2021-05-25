@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:29:28 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/21 15:21:42 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/25 22:55:36 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ class Client : public Connection
 		std::string		_away_str;
 		int				_server_token;
 		Server			*_server_host;
+		Server			*_server_uplink;
+
 
 	public:
 
@@ -83,6 +85,7 @@ class Client : public Connection
 		std::string		get_away_str() { return _away_str; }
 		int				get_server_token() { return (_server_token); }
 		Server			*get_server_host() { return (_server_host); }
+		Server			*get_server_uplink() { return (_server_uplink); }
 
 		/*
 		 ** Setter
@@ -96,6 +99,7 @@ class Client : public Connection
 		void			set_away_str(const std::string &away_str) { _away_str = away_str; }
 		void			set_server_token(int token) { _server_token = token; }
 		void			set_server_host(Server *serv) { _server_host = serv; }
+		void			set_server_uplink(Server *serv) { _server_uplink = serv; }
 		
 		
 		/*

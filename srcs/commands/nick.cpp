@@ -175,6 +175,8 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 		disconnect(&(*client_it), client_it);
 		return ;
 	}
+	std::list<Server>::iterator		host = find_server_by_iterator(&params[0][1]);
+
 	cli.set_nickname(params[2]);
 	cli.set_mode(params[7]);
 	cli.set_hopcount(ft_atoi(params[3]));
@@ -183,10 +185,13 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	cli.set_realname(&params[8][1]);
 	cli._fd = server_it->_fd;
 	cli.set_server_token(ft_atoi(params[6]));
-	cli.set_server_host(&(*server_it));
+	cli.set_server_host(&(*host));
+	cli.set_server_uplink(&(*server_it));
 
 	g_all.g_aClient.push_back(cli);
-	server_it->_client_attached.push_back(&(*(g_all.g_aClient.rbegin())));
+
+
+	host->_client_attached.push_back(&(*(g_all.g_aClient.rbegin())));
 
 
 	full_msg = ":" + serv.get_hostname();

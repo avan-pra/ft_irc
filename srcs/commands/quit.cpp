@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/21 18:23:46 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/25 22:34:21 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void		quit_command(const std::string &line, std::list<Server>::iterator server_i
 	std::string					part_string;
 
 	(void)serv;
-	(void)server_it;
 	if (params.size() < 3)
 		return ;
 	if (params[1].size() < 2 || (client_it = find_client_by_iterator(&params[0][1])) == g_all.g_aClient.end())
@@ -102,6 +101,14 @@ void		quit_command(const std::string &line, std::list<Server>::iterator server_i
 	add_disconnected_nick(client_it);
 	send_to_all_server(line, server_it);
 	client_it = g_all.g_aClient.erase(client_it);
+	for (std::deque<Client*>::iterator it = server_it->_client_attached.begin(); it != server_it->_client_attached.end(); it++)
+	{
+		if (**it == *client_it)
+		{
+			server_it->_client_attached.erase(it);
+			break ;
+		}
+	}
 }
 
 
