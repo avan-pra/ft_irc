@@ -1,5 +1,6 @@
 #include "../../includes/commands.hpp"
 #include "../../includes/IRCserv.hpp"
+#include "../../includes/Disconnect.hpp"
 #include <cstring>
 
 //does what it says
@@ -170,8 +171,8 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 		return ;
 	if ((client_it = find_client_by_iterator(params[2])) != g_all.g_aClient.end())
 	{
-		server_it->push_to_buffer(create_msg(433, server_it, serv, params[2]));
-		throw QuitCommandException();
+		server_it->push_to_buffer(create_msg(436, server_it, serv, params[2], client_it->get_username(), client_it->get_hostname()));
+		disconnect(&(*client_it), client_it);
 		return ;
 	}
 	cli.set_nickname(params[2]);

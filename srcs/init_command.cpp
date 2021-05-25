@@ -71,7 +71,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["NICK"] = nick_command;
 	cmd["SERVER"] = server_command;
 	cmd["QUIT"] = quit_command; 
-	cmd["SQUIT"] = NULL;
+	cmd["SQUIT"] = squit_command;
 	cmd["JOIN"] = join_command;
 	cmd["NJOIN"] = njoin_command;
 	cmd["PING"] = ping_command;
@@ -82,6 +82,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["INFO"] = info_command;
 	cmd["TIME"] = time_command;
 	cmd["VERSION"] = version_command;
+	cmd["ERROR"] = error_command;
 
 
 	cmd["PART"] = part_command;
@@ -101,7 +102,6 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["WHOWAS"] = NULL;
 	cmd["KILL"] = NULL;
 	cmd["PONG"] = NULL;
-	cmd["ERROR"] = NULL;
 	cmd["AWAY"] = NULL;
 	cmd["REHASH"] = NULL;
 	cmd["RESTART"] = NULL;

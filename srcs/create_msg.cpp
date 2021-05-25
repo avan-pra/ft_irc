@@ -100,7 +100,7 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 		case 401:
 			return sample + ERR_NOSUCHNICK(arg1);
 		case 402:
-			return sample + ERR_NOSUCHNICK(arg1);
+			return sample + ERR_NOSUCHSERVER(arg1);
 		case 403:
 			return sample + ERR_NOSUCHCHANNEL(arg1);
 		case 404:
@@ -193,6 +193,8 @@ std::string		create_msg(const int &code, std::list<Server>::iterator server_it, 
 	{
 		case 401:
 			return sample + ERR_NOSUCHNICK(arg1);
+		case 402:
+			return sample + ERR_NOSUCHSERVER(arg1);
 		case 421:
 			return sample + ERR_UNKNOWNCOMMAND();
 		case 433:

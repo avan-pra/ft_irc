@@ -10,32 +10,36 @@ void	iterate_server(MyServ &serv)
 
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); ++it)
 	{
-		ping_if_away(*it, serv);
-		//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes
-		if (kick_if_away(*it, serv) == true || check_register_timeout(*it, serv) == true)
+		if (it->get_hopcount() == 1)
 		{
-			disconnect(&(*it), it);
-		}
-		else if (is_readable(serv, *it))
-		{
-			get_message(c, *it, ret);
-			check_message_problem(c, *it, serv, ret);
-			/*
-			** get_message & check_message_problem may set ret to -1 which indicate an critical error such as a too big packet size
-			** an ssl handshake error, read error or if the client isnt writeable
-			*/
-			if (ret <= 0)
-				disconnect(&(*it), it);
-			else if (ret > 0)
+			ping_if_away(*it, serv);
+			//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes
+			if (kick_if_away(*it, serv) == true || check_register_timeout(*it, serv) == true)
 			{
-				try
+				disconnect(&(*it), it);
+			}
+			else if (is_readable(serv, *it))
+			{
+				get_message(c, *it, ret);
+				if (std::strlen(c) > 2)
+					std::cout << "iterate_server :" << c;
+				check_message_problem(c, *it, serv, ret);
+				/*
+				 ** get_message & check_message_problem may set ret to -1 which indicate an critical error such as a too big packet size
+				 ** an ssl handshake error, read error or if the client isnt writeable
+				 */
+				if (ret <= 0)
+					disconnect(&(*it), it);
+				else if (ret > 0)
 				{
-					//std::cout << "iterate_server :" << c;
-					server_parser(c, it, serv);
+					try
+					{
+						server_parser(c, it, serv);
+					}
+					catch (const DieException &e) { throw DieException(); }
+					catch(const IncorrectPassException &e) { disconnect(&(*it), it); }
+					catch(const QuitCommandException &e) { disconnect(&(*it), it); }
 				}
-				catch (const DieException &e) { throw DieException(); }
-				catch(const IncorrectPassException &e) { disconnect(&(*it), it); }
-				catch(const QuitCommandException &e) { disconnect(&(*it), it); }
 			}
 		}
 	}
