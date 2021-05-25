@@ -128,16 +128,20 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 	params[0] = &params[0][1];
 	if (server_it->get_servername() != params[0])
 		return ;
-	if (params[3] == "1")
+	if (ft_atoi(params[3]) <= 1)
 		return ;
 
-	struct t_introduce_serv	new_serv;
+	Unregistered	tmp;
+	Server			new_serv = tmp;
 
-	new_serv.hostname = params[2];
-	new_serv.hopcount = ft_atoi(params[3]);
-	new_serv.token = ft_atoi(params[4]);
-	new_serv.info = &params[5][1];
-	// server_it->_other_serv.push_back(new_serv); ATTENTION ICI
+	new_serv.set_server_name(params[2]);
+	new_serv.set_hopcount(ft_atoi(params[3]));
+	new_serv.set_token(ft_atoi(params[4]));
+	new_serv.set_info(&params[5][1]);
+	new_serv._fd = server_it->_fd;
+	new_serv.set_register(true);
+	g_all.g_aServer.push_back(new_serv);
+	server_it->_introduced_serv.push_back(&g_all.g_aServer.back());
 	return ;
 }
 

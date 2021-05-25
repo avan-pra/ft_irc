@@ -42,3 +42,14 @@ void	send_to_all_server(const std::string &msg, std::list<Server>::iterator serv
 			server_it->push_to_buffer(msg);
 	}
 }
+
+void	send_to_all_server(const std::string &msg, Server *serv, bool to_sender)
+{
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
+	{
+		if (*it != *serv)
+			it->push_to_buffer(msg);
+		if (to_sender && *it == *serv)
+			serv->push_to_buffer(msg);
+	}
+}

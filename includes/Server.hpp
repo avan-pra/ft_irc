@@ -99,6 +99,20 @@ class Server : public Connection
 		void			set_implementation_option(std::string implementation_option) { _implementation_option = implementation_option; }
 		void			set_link_option(std::string link_option) { _link_option = link_option; }
 		void			set_pass_try(bool pass) { _has_try_password = pass; }
+
+
+		bool	operator==(Server &a)
+		{
+			if (a.get_servername() != get_servername())
+				return (false);
+			return (true);
+		}
+		bool	operator!=(Server &a)
+		{
+			if (a.get_servername() != get_servername())
+				return (true);
+			return (false);
+		}
 };
 
 #endif
