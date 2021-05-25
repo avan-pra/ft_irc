@@ -84,7 +84,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["VERSION"] = version_command;
 
 
-	cmd["PART"] = NULL; 
+	cmd["PART"] = part_command;
 	cmd["TOPIC"] = NULL;
 	cmd["NAMES"] = NULL;
 	cmd["LIST"] = NULL;

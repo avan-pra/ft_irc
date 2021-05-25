@@ -208,6 +208,7 @@ void	rehash_command(const std::string &line, std::list<Client>::iterator client_
 void	server_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	nick_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	pass_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	part_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	pong_command(const std::string &line, std::list<Server>::iterator client_it, const MyServ &serv);
 void	ping_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	quit_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);

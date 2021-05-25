@@ -8,6 +8,7 @@ Server::~Server()
 {
 	std::list<Client>::iterator it;
 
+	//push to buffer of all other serv that this server has quit
 	for (std::deque<Client*>::iterator cht = this->_client_attached.begin(); cht != this->_client_attached.end(); )
 	{
 		it = find_client_by_iterator(&(**cht));

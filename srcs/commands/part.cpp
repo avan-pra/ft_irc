@@ -73,3 +73,10 @@ void		part_command(const std::string &line, std::list<Client>::iterator client_i
 	}
 	catch(const std::exception& e) { return ; }
 }
+
+void		part_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
+{
+	(void)line;
+	(void)server_it;
+	(void)serv;
+}
