@@ -41,8 +41,8 @@ class Server : public Connection
 		std::string		_link_option;
 
 	public:
-		std::deque<t_introduce_serv>	_other_serv;
 		std::deque<Client*>				_client_attached;
+		std::deque<Server*>				_introduced_serv;
 
 		/*
 		** Constructor/Destructor

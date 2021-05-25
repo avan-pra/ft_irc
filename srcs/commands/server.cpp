@@ -137,7 +137,7 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 	new_serv.hopcount = ft_atoi(params[3]);
 	new_serv.token = ft_atoi(params[4]);
 	new_serv.info = &params[5][1];
-	server_it->_other_serv.push_back(new_serv);
+	// server_it->_other_serv.push_back(new_serv); ATTENTION ICI
 	return ;
 }
 

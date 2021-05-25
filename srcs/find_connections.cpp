@@ -44,6 +44,14 @@ std::list<Server>::iterator			find_server_by_iterator(const std::string &name)
 	return (g_all.g_aServer.end());
 }
 
+std::list<Server>::iterator			find_server_by_iterator(const Server *se)
+{
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
+		if (se == &(*it))
+			return (it);
+	return (g_all.g_aServer.end());
+}
+
 std::list<Unregistered>::iterator	find_unregister_by_iterator(const SOCKET &fd)
 {
 	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); it++)
