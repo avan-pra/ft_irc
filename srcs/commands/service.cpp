@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 15:01:58 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/25 11:41:02 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/25 22:32:15 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,27 @@
 void        service_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)
 {
 	std::vector<std::string>    args;
-	
+	std::vector<std::string>    tmp;
+	std::string					info;
+
+	if (line.find(":") == std::string::npos)
+		return ;
 	args = ft_split(line, " ");
-	if (args.size() != 7)
+	if (args.size() < 7)
 	{
 		service_it->push_to_buffer(create_msg(461, service_it, serv, "SERVICE"));
 		return ;
 	}
 	if (check_valid_nickname(args[1]) == false)
 		return;
-	if (args[2] != "*" || args[5] != "*")
+	if ((args[2] != "*" && args[2] != "0") || (args[5] != "*" && args[5] != "0"))
 		return ;
 	if (args[3].find(".") == args[3].npos)
 		return ;
 	service_it->set_nickname(args[1]);
 	service_it->set_distribution(args[3]);
 	service_it->set_serv_type(args[4]);
+	info = line.substr(line.find(":") + 1);
 	service_it->set_info(args[6]);
 	service_it->set_register(true);
 	service_it->push_to_buffer(create_msg(383, service_it, serv, service_it->get_nickname()));
