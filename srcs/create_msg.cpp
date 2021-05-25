@@ -229,10 +229,44 @@ std::string		create_msg(const int &code, std::list<Service>::iterator service_it
 
 	switch (code)
 	{
+		case 2:
+			return sample + RPL_YOURHOST(arg1, arg2);
+		case 4:
+			return sample + RPL_MYINFO(arg1, arg2, arg3, arg4);
+		case 301:
+			return sample + RPL_AWAY(arg1, arg2);
+		case 302:
+			return sample + RPL_USERHOST(arg1);
+		case 303:
+			return sample + RPL_ISON(arg1);
+		case 311:
+			return sample + RPL_WHOISUSER(arg1, arg2, arg3, arg4);
+		case 314:
+			return sample + RPL_WHOWASUSER(arg1, arg2, arg3, arg4);
+		case 315:
+			return sample + RPL_ENDOFWHO(arg1);
+		case 318:
+			return sample + RPL_ENDOFWHOIS(arg1);
+		case 352:
+			return sample + RPL_WHOREPLY(arg1);
+		case 369:
+			return sample + RPL_ENDOFWHOWAS(arg1);
 		case 383:
 			return sample + RPL_YOURESERVICE(arg1);
+		case 401:
+			return sample + ERR_NOSUCHNICK(arg1);
+		case 406:
+			return sample + ERR_WASNOSUCHNICK(arg1);
+		case 411:
+			return sample + ERR_NORECIPIENT(arg1);
+		case 412:
+			return sample + ERR_NOTEXTTOSEND();
+		case 431:
+			return sample + ERR_NONICKNAMEGIVEN();
 		case 461:
 			return sample + ERR_NEEDMOREPARAMS(arg1);
+		case 462:
+			return sample + ERR_ALREADYREGISTRED();
 		default:
 			return std::string("");
 	}
