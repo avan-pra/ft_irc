@@ -21,7 +21,6 @@ enum confID
 	eLISTEN_LIMIT,
 	eCONNECTION_PASS_HASH,
 	eOPER_PASS_HASH,
-	eSERVER_PASS_HASH,
 	eOPER_NAME,
 	eCOMMENT_LINE,
 	eALLOW_IPV6,
@@ -37,7 +36,8 @@ enum confID
 enum networkID
 {
 	eNETWORK_NAME,
-	eNETWORK_PASS,
+	eNETWORK_LOCAL_PASS,
+	eNETWORK_REMOTE_PASS,
 	eNETWORK_PORT,
 	eNETWORK_PORT_TLS,
 	eNETWORK_HOST,
@@ -47,7 +47,8 @@ enum networkID
 
 networkID	get_network_arg(const std::string &s)
 {
-	if (s == "\tPASS")						return eNETWORK_PASS;
+	if (s == "\tLOCAL_PASS")				return eNETWORK_LOCAL_PASS;
+	else if (s == "\tREMOTE_PASS")			return eNETWORK_REMOTE_PASS;
 	else if (s == "\tPORT")					return eNETWORK_PORT;
 	else if (s == "\tPORT_TLS")				return eNETWORK_PORT_TLS;
 	else if (s == "\tNAME")					return eNETWORK_NAME;
@@ -64,7 +65,6 @@ confID	hashit_s(const std::string &s)
 	else if (s == "LISTEN_LIMIT")			return	eLISTEN_LIMIT;
 	else if (s == "CONNECTION_PASS_HASH")	return	eCONNECTION_PASS_HASH;
 	else if (s == "OPER_PASS_HASH")			return	eOPER_PASS_HASH;
-	else if (s == "SERVER_PASS_HASH")		return	eSERVER_PASS_HASH;
 	else if (s == "OPER_NAME")				return	eOPER_NAME;
 	else if (s == "ALLOW_IPV6")				return	eALLOW_IPV6;
 	else if (s == "CLIENT_LIMIT")			return	eCLIENT_LIMIT;
@@ -227,23 +227,6 @@ int		set_oper_pass_hash(t_config_file &config_file, std::string o_pass, const in
 	return (1);
 }
 
-int		set_server_pass_hash(t_config_file &config_file, std::string s_pass, const int &nb_line)
-{
-	unsigned char	target[32];
-	int				check = setup_hash_pass(s_pass, target);
-
-	if (config_file.serv_pass_set == true)
-		return (config_error("SERVER_PASS_HASH has multiple declaration", nb_line));
-	if (check == 1)
-		return (config_error("SERVER_PASS_HASH must be a sha256 hash", nb_line));
-	config_file.serv_pass_set = true;
-	if (check == 0)
-		return (1);
-	std::memcpy(config_file.server_password, target, 32);
-	config_file.pass_for_server = true;
-	return (1);
-}
-
 int		set_allow_ipv6(t_config_file &config_file, std::string &variable, const int &nb_line)
 {
 	if (config_file.already_set == true)
@@ -342,12 +325,12 @@ int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line
 	std::string		variable;
 	int				i = 0;
 	t_networkID		net;
-	bool			name = false, pass = false, host = false;
+	bool			name = false, local_pass = false, remote_pass = false, host = false;
 
 	if (!all_param_set)
 		return (config_error("ircserv variables must be at the top of the config file", nb_line));
 	net.is_tls = false;
-	while (file && i < 4)
+	while (file && i < 5)
 	{
 		getline(file, line);
 		nb_line++;
@@ -373,12 +356,29 @@ int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line
 				net.name = variable;
 				break ;
 			}
-			case eNETWORK_PASS:
+			case eNETWORK_LOCAL_PASS:
 			{
-				if (pass == true)
-					return (config_error("NETWORK PASS has multiple declaration", nb_line));
-				pass = true;
-				net.pass = variable;
+				unsigned char	target[32];
+				int				check = setup_hash_pass(variable, target);
+
+				if (local_pass == true)
+					return (config_error("LOCAL_PASS has multiple declaration", nb_line));
+				if (check == 1)
+					return (config_error("LOCAL_PASS must be a sha256 hash", nb_line));
+				if (check == 0)
+					return (1);
+				local_pass = true;
+				std::memcpy(net.local_pass, target, 32);
+				break ;
+			}
+			case eNETWORK_REMOTE_PASS:
+			{
+				if (remote_pass == true)
+					return (config_error("REMOTE_PASS has multiple declaration", nb_line));
+				if (variable.size() == 0)
+					return (config_error("REMOTE_PASS can't be empty", nb_line));
+				remote_pass = true;
+				net.remote_pass = variable;
 				break ;
 			}
 			case eNETWORK_PORT:
@@ -423,7 +423,7 @@ int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line
 		}
 		i++;
 	}
-	if (pass == false || name == false || host == false)
+	if (local_pass == false || remote_pass == false || name == false || host == false)
 		return (config_error("NETWORK missing paraneter", nb_line));
 	if (net.port <= 0)
 		return (config_error("NETWORK need one PORT or PORT_TLS", nb_line));
@@ -484,13 +484,6 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 				config_file.i++;
 				break ;
 			}
-			case eSERVER_PASS_HASH:
-			{
-				if (!set_server_pass_hash(config_file, variable, nb_line))
-					throw ConfigFileException();
-				config_file.i++;
-				break ;
-			}
 			case eOPER_NAME:
 			{
 				if (!set_oper_name(config_file, variable, nb_line))
@@ -543,7 +536,7 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 			}
 			case eNETWORK:
 			{
-				if (!set_network_id(config_file, file, nb_line, (config_file.i == 14 ? true : false)))
+				if (!set_network_id(config_file, file, nb_line, (config_file.i == 13 ? true : false)))
 					throw ConfigFileException();
 				break ;
 			}
@@ -559,7 +552,7 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 			}
 		}
 	}
-	if (config_file.i == 14)
+	if (config_file.i == 13)
 		all_param_set = true;
 }
 
@@ -631,19 +624,6 @@ void		print_config_file(t_config_file &config_file)
 		{
 			std::cerr << hex2char(config_file.password[i] / 16);
 			std::cerr << hex2char(config_file.password[i] % 16);
-		}
-		std::cerr << NC << std::endl;
-	}
-	else
-		std::cerr << REDB << "NOT CONFIGURED" << NC << std::endl;
-
-	std::cerr << "SERVER_PASS_HASH    : " << YELLOW;
-	if (config_file.pass_for_server == true)
-	{
-		for (size_t i = 0; i < 32; ++i)
-		{
-			std::cerr << hex2char(config_file.server_password[i] / 16);
-			std::cerr << hex2char(config_file.server_password[i] % 16);
 		}
 		std::cerr << NC << std::endl;
 	}

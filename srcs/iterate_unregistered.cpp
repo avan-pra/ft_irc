@@ -26,8 +26,8 @@ void	pass_command(const std::string &line, std::list<Unregistered>::iterator unr
 
 	if (serv.get_need_pass() && memcmp(d, serv.get_password(), 32) == 0)
 		unregistered_it->set_pass_state(eClient);
-	else if (serv.get_need_pass_server() && memcmp(d, serv.get_password_server(), 32) == 0)
-		unregistered_it->set_pass_state(eServer);
+	
+	unregistered_it->set_pass_submited(arg[1]);
 	unregistered_it->set_pass_try(true);
 	
 	if (arg.size() >= 4)
@@ -132,8 +132,8 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 					co.push_to_buffer(":" + serv.get_hostname() + " 461 * SERVER :Syntax error\r\n");
 					return ;
 				}
-				if (serv.get_need_pass_server() && co.get_pass_state() != eServer)
-					throw QuitCommandException();
+				// if (serv.get_need_pass_server() && co.get_pass_state() != eServer)
+				// 	throw QuitCommandException();
 
 				Server srv = co;
 

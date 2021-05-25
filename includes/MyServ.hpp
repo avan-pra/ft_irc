@@ -39,7 +39,8 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 struct t_networkID
 {
 	std::string		name;
-	std::string		pass;
+	unsigned char	local_pass[32];
+	std::string		remote_pass;
 	std::string		host;
 	int				port;
 	bool			is_tls;
@@ -47,7 +48,8 @@ struct t_networkID
 	t_networkID()
 	{
 		name = "";
-		pass = "";
+		memset(local_pass, 0, 32);
+		remote_pass = "";
 		port = -1;
 		is_tls = false;
 	}
@@ -64,14 +66,12 @@ struct			t_config_file
 	int						client_limit;
 	unsigned char			password[32];
 	unsigned char			oper_password[32];
-	unsigned char			server_password[32];
 	long					ping;
 	long					t_timeout;
 	long					timeout_register;
 	std::deque<t_networkID>	aNetworks;
 	bool					pass_for_connection;
 	bool					pass_oper;
-	bool					pass_for_server;
 	bool					accept_tls;
 	bool					allow_ipv6;
 
@@ -96,7 +96,6 @@ struct			t_config_file
 		client_limit = 0;
 		bzero(password, 32);
 		bzero(oper_password, 32);
-		bzero(server_password, 32);
 		ping = 0;
 		t_timeout = 0;
 		timeout_register = 0;
@@ -112,7 +111,6 @@ struct			t_config_file
 		already_set = false;
 		oper_name_set = false;
 		pass_for_connection = false;
-		pass_for_server = false;
 		pass_oper =	false;
 		i = 0;
 		accept_tls = false;
@@ -138,10 +136,8 @@ class MyServ
 		timeval			_timeout;
 		time_t			_start_time;
 		unsigned char	_password[32];
-		unsigned char	_server_password[32];
 		unsigned char	_oper_password[32];
 		bool			_pass_for_connection;
-		bool			_pass_for_server;
 		bool			_pass_oper;
 		bool			_accept_tls;
 		bool			_allow_ipv6;
@@ -166,7 +162,7 @@ class MyServ
 		/*
 		** Constructor/Destructor
 		*/
-		MyServ() : _listen_limit(0), _client_limit(0), _max_fd(0), _pass_for_connection(false), _pass_for_server(false),
+		MyServ() : _listen_limit(0), _client_limit(0), _max_fd(0), _pass_for_connection(false),
 					_pass_oper(false), _ping(0), _t_timeout(0), _timeout_register(0), _command(fill_command()),
 					_command_server(fill_command_server()), _rpl_server(fill_rpl_server()), _command_service(fill_command_service())
 		{
@@ -190,7 +186,6 @@ class MyServ
 		std::string			get_config_file_name() const	{ return _config_file_name; }
 		int					get_listen_limit() const	{ return _listen_limit; }
 		const unsigned char *get_password() const { return _password; }
-		const unsigned char *get_password_server() const { return _server_password; }
 		const unsigned char *get_oper_password() const { return _oper_password; }
 		fd_set				&get_readfs() { return _readfs; }
 		fd_set				&get_writefs() { return _writefs; }
@@ -199,7 +194,6 @@ class MyServ
 		timeval				&get_timeout() { return _timeout; }
 		time_t				get_start_time() const { return _start_time; }
 		bool				get_need_pass() const { return _pass_for_connection; }
-		bool				get_need_pass_server() const { return _pass_for_server; }
 		bool				get_pass_oper() const { return _pass_oper; }
 		bool				get_accept_tls() const { return _accept_tls; }
 		bool				get_allow_ipv6() const { return _allow_ipv6; }
@@ -221,7 +215,6 @@ class MyServ
 		void	set_config_file_name(const std::string &_file_name) { _config_file_name = _file_name; }
 		void	set_listen_limit(int listen_limit) { _listen_limit = listen_limit; }
 		void	set_password(const unsigned char *password) { std::memcpy(_password, password, 32); }
-		void	set_password_server(const unsigned char *password) { std::memcpy(_server_password, password, 32); }
 		void	set_oper_password(const unsigned char *password) { std::memcpy(_oper_password, password, 32); }
 		void	set_max_fd(int value) { _max_fd = value; }
 		void	set_timeout(int sec = int(), int usec = int())
@@ -230,7 +223,6 @@ class MyServ
 			_timeout.tv_usec = usec;
 		}
 		void	set_need_pass(bool need) { _pass_for_connection = need; }
-		void	set_need_pass_server(bool need) { _pass_for_server = need; }
 		void	set_pass_oper(bool need) { _pass_oper = need; }
 		void	set_accept_tls(bool tls) { _accept_tls = tls; }
 		void	set_allow_ipv6(bool ipv6) { _allow_ipv6 = ipv6; }

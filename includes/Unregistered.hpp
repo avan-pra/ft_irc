@@ -14,6 +14,7 @@ class Unregistered : public Connection
 		std::string		_implementation_name;
 		std::string		_implementation_option;
 		std::string		_link_option;
+		std::string		_pass_submited;
 	public:
 		Unregistered(/* args */)
 		{
@@ -32,6 +33,7 @@ class Unregistered : public Connection
 		std::string		get_implementation_name() { return _implementation_name; }
 		std::string		get_implementation_option() { return _implementation_option; }
 		std::string		get_link_option() { return _link_option; }
+		std::string		get_pass_submited() { return _pass_submited; };
 
 		void			set_pass_try(bool pass) { _has_try_password = pass; }
 		void			set_pass_state(bool state) { _password_state = state; }
@@ -40,6 +42,7 @@ class Unregistered : public Connection
 		void			set_implementation_name(std::string implementation_name) { _implementation_name = implementation_name; }
 		void			set_implementation_option(std::string implementation_option) { _implementation_option = implementation_option; }
 		void			set_link_option(std::string link_option) { _link_option = link_option; }
+		void			set_pass_submited(std::string pass_submited) { _pass_submited = pass_submited; }
 };
 
 #endif

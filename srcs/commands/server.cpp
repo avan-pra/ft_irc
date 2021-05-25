@@ -107,7 +107,7 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 	server_it->set_token(g_all.g_aServer.size());
 	server_it->set_info(line.substr(0, line.find_first_of(':')));
 	server_it->push_to_buffer(":" + serv.get_hostname() + " PASS " +
-			serv.network[i].pass + " " + PROTOCOL_VERSION + " ircGODd|1.1:\r\n");
+			serv.network[i].remote_pass + " " + PROTOCOL_VERSION + " ircGODd|1.1:\r\n");
 	server_it->push_to_buffer(":" + serv.get_hostname() + " SERVER " +
 			serv.get_hostname() + " 1 :Experimental server\r\n");
 	share_server(server_it, serv);
@@ -145,12 +145,47 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 	return ;
 }
 
+static void	check_password(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
+{
+	std::vector<std::string> arg = ft_split(line, " ");
+	(void)server_it;
+
+	if (arg.size() < 5)
+		return ;
+
+	size_t i;
+	for (i = 0; i < serv.network.size(); ++i) //check if we know the foreign server
+	{
+		if (arg[0][0] == ':')
+		{
+			if (serv.network[i].name == arg[2])
+				break ;
+		}
+		else
+		{
+			if (serv.network[i].name == arg[1])
+				break ;
+		}
+	}
+	i == serv.network.size() ? throw QuitCommandException() : NULL;
+
+	std::string tmp = server_it->get_pass_submited();
+	const char *s = tmp.c_str();
+	unsigned char *d = SHA256(reinterpret_cast<unsigned char*> (const_cast<char*> (s)), strlen(s), 0);
+
+	if (!(memcmp(d, serv.network[i].local_pass, 32) == 0))
+		throw IncorrectPassException();
+}
+
 void	server_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
 {
 	//si ca commence par : avec un hostname c'est que c'est pas direct sur nous
 
 	if (/*server est deja connu des services*/false)
 		;//kick server_it et delete tous les serveurs qui sont relie a server_it
+
+	if (server_it->is_registered() == false)
+		check_password(line, server_it, serv);
 
 	if (line[0] == ':' && server_it->is_registered() == false)
 	{
