@@ -42,13 +42,13 @@ void	disconnect(Server *co, std::list<Server>::iterator &server_it)
 {
 	co->send_packets();
 	co->reset_buffer();
-	for (std::list<Client>::iterator it = g_all.g_aClient.begin() ; it != g_all.g_aClient.end();)
-	{
-		if (server_it->_fd == it->_fd)
-			it = g_all.g_aClient.erase(it);
-		else
-			it++;
-	}
+	// for (std::list<Client>::iterator it = g_all.g_aClient.begin() ; it != g_all.g_aClient.end();)
+	// {
+	// 	if (server_it->_fd == it->_fd)
+	// 		it = g_all.g_aClient.erase(it);
+	// 	else
+	// 		it++;
+	// }
 	if (co->get_tls())
 	{
 		if (co->_sslptr != NULL)
@@ -145,15 +145,15 @@ void	disconnect(Unregistered *co, std::list<Unregistered>::iterator &unregistere
 
 void		disconnect_all()
 {
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); ++it)
+	{
+		disconnect(&(*it), it);
+	}
 	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); ++it)
 	{
 		disconnect(&(*it), it);
 	}
 	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
-	{
-		disconnect(&(*it), it);
-	}
-	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); ++it)
 	{
 		disconnect(&(*it), it);
 	}

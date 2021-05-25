@@ -13,6 +13,7 @@ typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 
 class Unregistered;
+class Client;
 
 struct t_introduce_serv
 {
@@ -41,6 +42,7 @@ class Server : public Connection
 
 	public:
 		std::deque<t_introduce_serv>	_other_serv;
+		std::deque<Client*>				_client_attached;
 
 		/*
 		** Constructor/Destructor
@@ -72,7 +74,7 @@ class Server : public Connection
 			_link_option = co.get_link_option();
 		}
 
-		~Server() {};
+		~Server();
 
 		/*
 		** Getter

@@ -35,7 +35,7 @@ SRC = main.cpp parser.cpp get_client.cpp \
 	  run_server.cpp init_command.cpp \
 	  create_msg.cpp iterate_client.cpp iterate_server.cpp iterate_unregistered.cpp\
 	  find_client_or_channel.cpp send_msg_to.cpp mask_parser.cpp \
-	  tls.cpp error.cpp acquire_message.cpp class/client.cpp find_connections.cpp\
+	  tls.cpp error.cpp acquire_message.cpp class/client.cpp class/server.cpp find_connections.cpp\
 	  disconnect.cpp set_serv_attributes.cpp server_parser.cpp iterate_service.cpp \
 	  service_parser.cpp reply_server.cpp \
 
