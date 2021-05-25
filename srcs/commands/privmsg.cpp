@@ -76,7 +76,6 @@ void	send_privmsg_to_channel(const std::vector<std::string> params, std::list<Cl
 {
 	std::string		full_msg = create_full_msg(params, client_it);
 
-	std::cout << "full_msg :" << full_msg;
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
 		if (*g_vChannel[chan_id]._users[i] != *client_it)

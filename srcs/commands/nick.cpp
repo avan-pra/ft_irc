@@ -173,6 +173,7 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	if ((client_it = find_client_by_iterator(params[2])) != g_all.g_aClient.end())
 	{
 		server_it->push_to_buffer(create_msg(433, server_it, serv, params[2]));
+		throw QuitCommandException();
 		return ;
 	}
 	cli.set_nickname(params[2]);
@@ -186,6 +187,8 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	cli.set_server_host(&(*server_it));
 
 	g_all.g_aClient.push_back(cli);
+	server_it->_client_attached.push_back(&(*(g_all.g_aClient.rbegin())));
+
 
 	full_msg = ":" + serv.get_hostname();
 	for (size_t i = 1; i < params.size(); i++)

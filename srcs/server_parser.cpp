@@ -121,7 +121,11 @@ void		server_parser(char *line, std::list<Server>::iterator server_it, const MyS
 						if (can_execute(command, server_it, serv) == true)
 							serv.get_command_server().at(command)(*str, server_it, serv);
 					}
-					catch (const std::exception &e) { server_it->push_to_buffer(create_msg(421, server_it, serv, command)); }
+					catch (const DieException &e) { throw DieException(); }
+					catch (const RehashException &e) { throw RehashException(); }
+					catch (const IncorrectPassException &e) { throw IncorrectPassException(); }
+					catch (const QuitCommandException &e) { throw QuitCommandException(); }
+					catch (const std::exception &e) { } //il faut envoyer ca au client
 				}
 			}
 		}
