@@ -84,7 +84,9 @@ void	nick_command(const std::string &line, std::list<Client>::iterator client_it
 			str_time = ctime(&tmp);
 			if (str_time[str_time.size() - 1] == '\n')
 				str_time.resize(str_time.size() - 1);
+			std::cout << "Lol" << std::endl;
 			client_it->push_to_buffer(create_msg(1, client_it, serv, client_it->get_nickname()));
+			std::cout << "Lolilol" << std::endl;
 			client_it->push_to_buffer(create_msg(2, client_it, serv, serv.get_hostname(), SERV_VERSION));
 			client_it->push_to_buffer(create_msg(3, client_it, serv, str_time));
 			client_it->push_to_buffer(create_msg(4, client_it, serv, serv.get_hostname(), SERV_VERSION, USER_VALID_MODE, CHANNEL_VALID_MODE));

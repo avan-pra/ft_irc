@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 13:56:08 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/24 23:32:40 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/25 14:45:53 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,18 @@ void				user_command(const std::string &line, std::list<Client>::iterator client
 
 		if (client_it->get_nickname().size() > 0)
 		{
+			std::string		str_time;
+			time_t			tmp = serv.get_start_time();
+
+			str_time = get_created_time();
+			str_time = ctime(&tmp);
+			if (str_time[str_time.size() - 1] == '\n')
+				str_time.resize(str_time.size() - 1);
 			client_it->push_to_buffer(create_msg(1, client_it, serv, client_it->get_nickname()));
+			client_it->push_to_buffer(create_msg(2, client_it, serv, serv.get_hostname(), SERV_VERSION));
+			client_it->push_to_buffer(create_msg(3, client_it, serv, str_time));
+			client_it->push_to_buffer(create_msg(4, client_it, serv, serv.get_hostname(), SERV_VERSION, USER_VALID_MODE, CHANNEL_VALID_MODE));
+			client_it->push_to_buffer(create_msg(5, client_it, serv, serv.get_hostname(), serv.get_port()));
 			motd_command("MOTD", client_it, serv);
 			time(&client_it->get_last_activity());
 			client_it->set_register(true);
