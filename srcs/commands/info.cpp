@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 19:42:41 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/24 17:03:57 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/25 12:05:44 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ std::string		make_info_str(const MyServ &serv, std::list<Client>::iterator clien
 		time.resize(time.size() - 1);
 	info += create_msg(371, client_it, serv, " " + serv.get_hostname() + " started on " + time + "\n");
 	info += create_msg(371, client_it, serv, " Project : FT_IRC of 42\n");
-	info += create_msg(371, client_it, serv, " Version : beta 1.0\n");
+	info += create_msg(371, client_it, serv, " Version : beta " + std::string(SERV_VERSION) + "\n");
 	info += create_msg(371, client_it, serv, " Created by :\n");
 	info += create_msg(371, client_it, serv, "  lmoulin  <lmoulin@student.42.fr>\n");
 	info += create_msg(371, client_it, serv, "  jvaquer  <jvaquer@student.42.fr>\n");

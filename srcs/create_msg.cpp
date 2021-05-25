@@ -24,6 +24,12 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 	{
 		case 1:
 			return sample + RPL_WELCOME(arg1);
+		case 2:
+			return sample + RPL_YOURHOST(arg1, arg2);
+		case 3:
+			return sample + RPL_CREATED(arg1);
+		case 4:
+			return sample + RPL_MYINFO(arg1, arg2, arg3, arg4);
 		case 5:
 			return sample + RPL_BOUNCE(arg1, arg2);
 		case 221:

@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/19 15:01:58 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/24 18:23:32 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/25 11:41:02 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,6 @@ void        service_command(const std::string &line, std::list<Service>::iterato
 	service_it->set_info(args[6]);
 	service_it->set_register(true);
 	service_it->push_to_buffer(create_msg(383, service_it, serv, service_it->get_nickname()));
+	service_it->push_to_buffer(create_msg(2, service_it, serv, serv.get_hostname(), SERV_VERSION));
+	service_it->push_to_buffer(create_msg(4, service_it, serv, serv.get_hostname(), SERV_VERSION, USER_VALID_MODE, CHANNEL_VALID_MODE));
 }

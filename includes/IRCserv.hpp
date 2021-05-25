@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/24 19:30:33 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/25 11:16:55 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # define TIMEOUT 115
 
 # define TIMEOUT_REGISTER 60
+
+# define SERV_VERSION "0.9"
 
 # define PROTOCOL_VERSION "0210"
 

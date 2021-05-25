@@ -74,6 +74,9 @@
 **  reponse for command file
 */
 # define RPL_WELCOME(nick) (":Welcome to the Internet Relay Network " + nick + "\r\n")
+# define RPL_YOURHOST(servername, version) (":Your host is " + servername + ", running version " + version + "\r\n")
+# define RPL_MYINFO(servername, version, usr_modes, chann_modes) (":" + servername + " " + version + " " + usr_modes + " " + chann_modes + "\r\n")
+# define RPL_CREATED(date) (":This server was created " + date + "\r\n");
 # define RPL_BOUNCE(server_name, port) ("Try server " + server_name + ", port " + port + "\n")
 # define RPL_NONE() ("\r\n") //300
 # define RPL_USERHOST(userhost_list) (userhost_list + "\r\n") //<réponse> ::= <pseudo>['*'] '=' <'+'|'-'><hôte>
@@ -151,7 +154,7 @@
 # define RPL_ADMINLOC2() (":<info admin>\r\n")
 # define RPL_ADMINEMAIL() (":<info admin>\r\n")
 # define RPL_CREATIONTIME(channel, c_time) (channel + " " + c_time + "\r\n")
-# define RPL_YOURESERVICE(servicename) ("You are service " + servicename + "\r\n")
+# define RPL_YOURESERVICE(servicename) (":You are service " + servicename + "\r\n")
 
 std::string     create_msg(const int &code, std::list<Client>::iterator client_it, const MyServ &serv, const std::string &arg1 = std::string(), const std::string &arg2 = std::string(), const std::string &arg3 = std::string(), const std::string &arg4 = std::string());
 std::string		create_msg(const int &code, std::list<Server>::iterator server_it, const MyServ &serv, const std::string &arg1 = "", const std::string &arg2 = "", const std::string &arg3 = "", const std::string &arg4 = "");
@@ -244,5 +247,10 @@ void	mode_v(std::list<Client>::iterator client_it, const size_t &chann_idx, cons
 ** nick.cpp
 */
 bool	check_valid_nickname(const std::string &nick);
+
+/*
+** info.cpp
+*/
+std::string		get_created_time();
 
 #endif
