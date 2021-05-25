@@ -8,7 +8,6 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 	std::string		sample;
 	std::string		true_code;
 
-	std::cout << "Hello, code = " << code << std::endl;
 	true_code = ft_to_string(code);
 	if (code < 10)
 		true_code = std::string(2, '0').append(ft_to_string(code));
