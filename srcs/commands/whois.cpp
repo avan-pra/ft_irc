@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:16:05 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/26 17:54:51 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/26 18:02:11 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ static void		whois_client(std::list<Client>::iterator &client_it, std::vector<st
 	curr_t -= target->get_t_idle();
 	client_it->push_to_buffer(create_msg(311, client_it, serv, target->get_nickname(), target->get_username(),
 															target->get_hostname(), target->get_realname()));
-	whois_channel(client_it, target, serv);
+	//312
+	if (client_it->get_is_oper() == true)
+		client_it->push_to_buffer(create_msg(313, client_it, serv, args[1]));
+	whois_channel(client_it, target, serv); //319
 	client_it->push_to_buffer(create_msg(317, client_it, serv, args[1], ft_to_string(curr_t), ft_to_string(target->get_t_signon())));
 	client_it->push_to_buffer(create_msg(318, client_it, serv, args[1]));
 }
