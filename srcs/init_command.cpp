@@ -30,7 +30,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["INVITE"] = invite_command;
 	cmd["KICK"] = kick_command;
 	cmd["VERSION"] = version_command;
-	cmd["STATS"] = NULL;
+	cmd["STATS"] = stats_command;
 	cmd["LINKS"] = NULL;
 	cmd["TIME"] = time_command;
 	cmd["TRACE"] = NULL;
@@ -91,7 +91,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["LIST"] = NULL;
 	cmd["INVITE"] = NULL;
 	cmd["KICK"] = NULL;
-	cmd["STATS"] = NULL;
+	cmd["STATS"] = stats_command;
 	cmd["LINKS"] = NULL;
 	cmd["CONNECT"] = NULL;
 	cmd["TRACE"] = NULL;

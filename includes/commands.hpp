@@ -177,6 +177,7 @@ void	pong_command(const std::string &line, std::list<Client>::iterator client_it
 void	nick_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	user_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	ping_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	stats_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	time_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	motd_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	info_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
@@ -218,6 +219,7 @@ void	join_command(const std::string &line, std::list<Server>::iterator server_it
 void	privmsg_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	motd_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	info_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	stats_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	time_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	version_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	error_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
