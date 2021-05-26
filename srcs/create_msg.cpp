@@ -31,6 +31,12 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_MYINFO(arg1, arg2, arg3, arg4);
 		case 5:
 			return sample + RPL_BOUNCE(arg1, arg2);
+		case 211:
+			return sample + RPL_STATSLINKINFO(arg1);
+		case 212:
+			return sample + RPL_STATSCOMMANDS(arg1);
+		case 219:
+			return sample + RPL_ENDOFSTATS(arg1);
 		case 221:
 			return sample + RPL_UMODEIS(arg1);
 		case 301:

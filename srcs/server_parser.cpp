@@ -83,7 +83,7 @@ void		set_unmoded_channel(std::string &rpl)
 	}
 }
 
-void		server_parser(char *line, std::list<Server>::iterator server_it, const MyServ &serv)
+void		server_parser(char *line, std::list<Server>::iterator server_it, MyServ &serv)
 {
 	std::string					true_line;
 	std::vector<std::string>	packet;
@@ -101,7 +101,6 @@ void		server_parser(char *line, std::list<Server>::iterator server_it, const MyS
 		{
 			std::string command = true_command(*str);
 
-
 			if (std::strcmp(command.c_str(), "329") == 0 || std::strcmp(command.c_str(), "324") == 0)
 			{
 				set_unmoded_channel(*str);
@@ -110,6 +109,14 @@ void		server_parser(char *line, std::list<Server>::iterator server_it, const MyS
 			{
 				for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 					*it = std::toupper(*it);
+
+				// related to stats command
+			try
+			{
+				server_it->inc_number_of_messages_received();
+				serv.get_use_per_command().at(command)++;
+			}
+			catch (const std::exception &e) { }
 
 				if (can_read(command, server_it, serv) == true)
 					serv.get_rpl_server().at(command)(*str, server_it, serv);

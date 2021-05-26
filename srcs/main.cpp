@@ -12,6 +12,7 @@
 
 #include "../includes/IRCserv.hpp"
 #include "../includes/Disconnect.hpp"
+#include <cstdlib>
 
 std::deque<t_sock>							g_serv_sock;
 t_connect									g_all;
@@ -38,6 +39,7 @@ int			main(int argc, char **argv)
 	MyServ				serv;
 	std::map<int, bool>	m_port;
 
+	std::srand(time(0));
 	SSL_library_init();
 	SSL_load_error_strings();
 	if (argc < 2)

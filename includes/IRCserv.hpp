@@ -211,7 +211,7 @@ int		ft_isalnum(int c);
 /*
 ** parser.cpp
 */
-void	parser(char *line, std::list<Client>::iterator client_it, const MyServ &server);
+void	parser(char *line, std::list<Client>::iterator client_it, MyServ &server);
 void	build_unfinished_packet(const std::string &true_line, Connection &co, std::string &last);
 void	clear_empty_packet(std::vector<std::string> &packet);
 
@@ -286,7 +286,7 @@ void		set_serv_attributes(MyServ &serv);
 /*
 ** server_parser.cpp
 */
-void   		server_parser(char *line, std::list<Server>::iterator server_it, const MyServ &serv);
+void   		server_parser(char *line, std::list<Server>::iterator server_it, MyServ &serv);
 
 /*
 ** rehash.cpp 

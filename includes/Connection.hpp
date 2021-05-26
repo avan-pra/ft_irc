@@ -1,6 +1,7 @@
 #ifndef CONNECTION_HPP
 # define CONNECTION_HPP
 
+#include <cstddef>
 #include <iostream>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -34,6 +35,11 @@ class Connection
 		int				_type;
 		int				_hopcount;
 
+		size_t			_bytes_sent;
+		size_t			_bytes_received;
+		size_t			_messages_sent;
+		size_t			_messages_received;
+
 	public:
 
 		SOCKET			_fd;
@@ -56,6 +62,11 @@ class Connection
 			_t_signon = time(0);
  			_t_idle = time(0);
 			connection_state = ACCEPT;
+
+			_bytes_sent = 0;
+			_bytes_received = 0;
+			_messages_sent = 0;
+			_messages_received = 0;
 		}
 		virtual ~Connection() { }
 
@@ -72,6 +83,12 @@ class Connection
 		int				get_hopcount() { return _hopcount; }
 		int				get_type() { return _type; }
 
+		//related to stats
+		size_t			get_number_of_messages_sent() { return _messages_sent;}			// sent message
+		size_t			get_number_bytes_sent() { return _bytes_sent;}					// nbr of bytes sent
+		size_t			get_number_of_messages_received() { return _messages_received;}	// received message
+		size_t			get_number_bytes_received() { return _bytes_received;}			//nbr of bytes received
+
 		/*
 		** Setter 
 		*/
@@ -82,6 +99,11 @@ class Connection
 		void			set_t_idle(time_t time) { _t_idle = time; }
 		void			set_hopcount(int count) { _hopcount = count; }
 		void			set_type(int t) { _type = t; }
+
+		void			inc_number_of_messages_sent(size_t nbr = 1) { _messages_sent += nbr; }			// sent message
+		void			inc_number_bytes_sent(size_t nbr = 1) { _bytes_sent += nbr; }					// nbr of bytes sent
+		void			inc_number_of_messages_received(size_t nbr = 1) { _messages_received += nbr; }	// received message
+		void			inc_number_bytes_received(size_t nbr = 1) { _bytes_received += nbr; }			//nbr of bytes received
 
 		/*
 		** Methods

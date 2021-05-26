@@ -2,6 +2,7 @@
 #include "../includes/MyServ.hpp"
 #include "../includes/Disconnect.hpp"
 #include <ctime>
+#include <exception>
 
 enum	s_state
 {
@@ -90,7 +91,7 @@ static void	handle_wrong_command(std::string &command, std::list<Unregistered>::
 	}
 }
 
-void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregistered_it, const MyServ &serv)
+void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregistered_it, MyServ &serv)
 {
 	std::vector<std::string>	packet;
 	std::string					true_line;
@@ -167,6 +168,13 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 				}
 				catch (QuitCommandException) { throw QuitCommandException(); }
 			}
+			// related to stats command
+			try
+			{
+				unregistered_it->inc_number_of_messages_received();	
+				serv.get_use_per_command().at(command)++;
+			}
+			catch (const std::exception &e) { }
 		}
 	}
 }

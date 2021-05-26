@@ -74,6 +74,12 @@ class Server : public Connection
 			_implementation_name = co.get_implementation_name();
 			_implementation_option = co.get_implementation_option();
 			_link_option = co.get_link_option();
+
+			//related to STATS command ptet pas utile mais sait on jamais
+			_bytes_sent = co.get_number_bytes_sent();
+			_bytes_received = co.get_number_bytes_received();
+			_messages_sent = co.get_number_of_messages_sent();
+			_messages_received = co.get_number_of_messages_received();
 		}
 
 		~Server();

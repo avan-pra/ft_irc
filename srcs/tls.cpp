@@ -77,10 +77,16 @@ int		receive_message(Connection &co, char *buf)
 	int	ret = 0;
 
 	if (co.get_tls() == false)
+	{
 		ret = recv(co._fd, buf, BUFF_SIZE, 0);
+		if (ret > 0)
+			co.inc_number_bytes_received(ret);
+	}
 	else
 	{
 		ret = SSL_read(co._sslptr, buf, BUFF_SIZE);
+		if (ret > 0)
+			co.inc_number_bytes_received(ret);
 		if (ret == -1 && (SSL_get_error(co._sslptr, ret) == 2 || SSL_get_error(co._sslptr, ret) == 3))
 			ret = 1;
 	}

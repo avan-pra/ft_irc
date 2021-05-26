@@ -13,6 +13,7 @@
 #ifndef MYSERV
 # define MYSERV
 
+#include <cstddef>
 #include <openssl/ossl_typ.h>
 # include <unistd.h>
 # include <iostream>
@@ -35,6 +36,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	fill_command_server(void);
 std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iterator client_it, const MyServ &serv)>	fill_command_service(void);
 std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	fill_rpl_server(void);
+std::map<std::string, size_t>																							init_command_used(void);
 
 struct t_networkID
 {
@@ -149,8 +151,9 @@ class MyServ
 		const std::map<std::string, void (*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)>	_command;
 		const std::map<std::string, void (*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	_command_server;
 		const std::map<std::string, void (*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	_rpl_server;
-		const std::map<std::string, void (*)(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)> _command_service; 
-	
+		const std::map<std::string, void (*)(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)> _command_service;
+		std::map<std::string, size_t>																								_number_of_use_per_command;
+
 	public:
 
 		SSL_CTX						*sslctx;
@@ -164,7 +167,7 @@ class MyServ
 		*/
 		MyServ() : _listen_limit(0), _client_limit(0), _max_fd(0), _pass_for_connection(false),
 					_pass_oper(false), _ping(0), _t_timeout(0), _timeout_register(0), _command(fill_command()),
-					_command_server(fill_command_server()), _rpl_server(fill_rpl_server()), _command_service(fill_command_service())
+					_command_server(fill_command_server()), _rpl_server(fill_rpl_server()), _command_service(fill_command_service()), _number_of_use_per_command(init_command_used())
 		{
 			time(&_start_time);
 			set_timeout(3);
@@ -206,6 +209,8 @@ class MyServ
 		const std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	&get_command_server() const { return _command_server; }
 		const std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)>	&get_command_service() const { return _command_service; }
 		const std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	&get_rpl_server() const { return _rpl_server; }
+		std::map<std::string, size_t>																									&get_use_per_command() { return _number_of_use_per_command; }
+		const std::map<std::string, size_t>																								&get_use_per_command() const { return _number_of_use_per_command; }
 
 		/*
 		** Setter

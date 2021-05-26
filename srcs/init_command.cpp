@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <iostream>
 #include <map>
 #include "../includes/MyServ.hpp"
@@ -153,6 +154,61 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iter
 	cmd["WHOWAS"] = whowas_command;
 	cmd["USERHOST"] = userhost_command;
 	cmd["ISON"] = ison_command;
+
+	return cmd;
+}
+
+std::map<std::string, size_t>					init_command_used(void)
+{
+	std::map<std::string, size_t> cmd;
+
+	cmd["PASS"] = 0;
+	cmd["NICK"] = 0;
+	cmd["USER"] = 0;
+	cmd["SERVER"] = 0; 
+	cmd["OPER"] = 0; 
+	cmd["QUIT"] = 0;
+	cmd["CONNECT"] = 0; 
+	cmd["SQUIT"] = 0;
+	cmd["JOIN"] = 0; 
+	cmd["PART"] = 0; 
+	cmd["MODE"] = 0; 
+	cmd["TOPIC"] = 0;
+	cmd["NAMES"] = 0;
+	cmd["LIST"] = 0;
+	cmd["INVITE"] = 0;
+	cmd["KICK"] = 0;
+	cmd["VERSION"] = 0;
+	cmd["STATS"] = 0;
+	cmd["LINKS"] = 0;
+	cmd["TIME"] = 0;
+	cmd["TRACE"] = 0;
+	cmd["ADMIN"] = 0;
+	cmd["INFO"] = 0;
+	cmd["PRIVMSG"] = 0;
+	cmd["NOTICE"] = 0;
+	cmd["WHO"] = 0;
+	cmd["WHOIS"] = 0;
+	cmd["WHOWAS"] = 0;
+	cmd["KILL"] = 0;
+	cmd["PING"] = 0;
+	cmd["PONG"] = 0;
+	cmd["AWAY"] = 0;
+	cmd["REHASH"] = 0;
+	cmd["RESTART"] = 0;
+	cmd["SUMMON"] = 0;
+	cmd["USERS"] = 0;
+	cmd["WALLOPS"] = 0;
+	cmd["USERHOST"] = 0;
+	cmd["ISON"] = 0;
+	cmd["MOTD"] = 0;
+	cmd["LUSERS"] = 0;
+	cmd["SERVLIST"] = 0;
+	cmd["DIE"] = 0;
+	cmd["NJOIN"] = 0;
+	cmd["SQUERY"] = 0;
+	cmd["CAP"] = 0;
+	cmd["SERVICE"] = 0;
 
 	return cmd;
 }

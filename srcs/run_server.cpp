@@ -1,7 +1,9 @@
 #include "../includes/IRCserv.hpp"
 #include "../includes/MyServ.hpp"
 #include "../includes/Connection.hpp"
+#include <cstddef>
 #include <ctime>
+#include <string>
 
 //called at each message received
 static void re_init_serv_class(MyServ &serv)
@@ -105,6 +107,25 @@ bool		kick_if_away(Connection &co, const MyServ &serv)
 	return false;
 }
 
+size_t	get_number_of_message(const std::string &msg)
+{
+	size_t						i = 0;
+	size_t						k = 0;
+	size_t						ret = 0;
+
+	while (i < msg.length())
+	{
+		k = i;
+		i = msg.find("\r\n", i);
+		if (k != i)
+			++ret;
+		if (i == std::string::npos)
+			break;
+		i += 2;
+	}
+	return (ret);
+}
+
 void	send_bufferised_packet()
 {
 	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
@@ -112,6 +133,8 @@ void	send_bufferised_packet()
 		if (!(it->get_tls()) || (it->get_tls() && SSL_is_init_finished(it->_sslptr)))
 		{
 			it->send_packets();
+			it->inc_number_bytes_sent(it->get_buffer().size());
+			it->inc_number_of_messages_sent(get_number_of_message(it->get_buffer()));
 			it->reset_buffer();
 		}
 		else if (it->get_tls())
@@ -122,6 +145,8 @@ void	send_bufferised_packet()
 		if (!(it->get_tls()) || (it->get_tls() && SSL_is_init_finished(it->_sslptr)))
 		{
 			it->send_packets();
+			it->inc_number_bytes_sent(it->get_buffer().size());
+			it->inc_number_of_messages_sent(get_number_of_message(it->get_buffer()));
 			it->reset_buffer();
 		}
 		else if (it->get_tls())
@@ -132,6 +157,8 @@ void	send_bufferised_packet()
 		if (!(it->get_tls()) || (it->get_tls() && SSL_is_init_finished(it->_sslptr)))
 		{
 			it->send_packets();
+			it->inc_number_bytes_sent(it->get_buffer().size());
+			it->inc_number_of_messages_sent(get_number_of_message(it->get_buffer()));
 			it->reset_buffer();
 		}
 		else if (it->get_tls())
@@ -144,6 +171,8 @@ void	send_bufferised_packet()
 		if (!(it->get_tls()) || (it->get_tls() && SSL_is_init_finished(it->_sslptr)))
 		{
 			it->send_packets();
+			it->inc_number_bytes_sent(it->get_buffer().size());
+			it->inc_number_of_messages_sent(get_number_of_message(it->get_buffer()));
 			it->reset_buffer();
 		}
 		else if (it->get_tls())
