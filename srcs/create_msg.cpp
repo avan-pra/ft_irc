@@ -51,6 +51,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_NOWAWAY();
 		case 311:
 			return sample + RPL_WHOISUSER(arg1, arg2, arg3, arg4);
+		case 313:
+			return sample + RPL_WHOISOPERATOR(arg1);
 		case 314:
 			return sample + RPL_WHOWASUSER(arg1, arg2, arg3, arg4);
 		case 315:
@@ -59,6 +61,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_WHOISIDLE(arg1, arg2, arg3);
 		case 318:
 			return sample + RPL_ENDOFWHOIS(arg1);
+		case 319:
+			return sample + RPL_WHOISCHANNELS(arg1, arg2);
 		case 322:
 			return sample + RPL_LIST(arg1, arg2);
 		case 323:

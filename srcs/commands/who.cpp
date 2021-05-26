@@ -25,6 +25,8 @@ static int		who_channel(const std::string &channel, std::list<Client>::iterator 
 		return (1);
 	for (size_t n = 0; n < g_vChannel[channel_id]._users.size(); ++n)
 	{
+		if (g_vChannel[channel_id].is_mode('p') == true || g_vChannel[channel_id].is_mode('s') == true)
+			;
 		if (c == 'o' && g_vChannel[channel_id]._users[n]->get_is_oper() == false)
 			;//do not print the user if o is specified
 		else

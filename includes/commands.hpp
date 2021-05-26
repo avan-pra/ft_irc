@@ -90,7 +90,7 @@
 # define RPL_WHOISIDLE(pseudo, idle, signon) (pseudo + " " + idle + " " + signon + " :seconds idle, signon time\r\n")
 # define RPL_WHOREPLY(arg) (arg + "\r\n")
 # define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of /WHOIS list\r\n")
-//# define RPL_WHOISCHANNELS(pseudo, channel) (pseudo + " :{[@|+]<canal><espace>}\r\n")
+# define RPL_WHOISCHANNELS(nick, chann_info) (nick + " :" + chann_info + "\r\n")
 # define RPL_WHOWASUSER(nick, user, host, realname) (nick + " " + user + " " + host + " * :" + realname + "\r\n")
 # define RPL_ENDOFWHOWAS(nick) (nick + " :End of WHOWAS\r\n")
 # define RPL_LISTSTART() ("Channel :Users Name\r\n")
