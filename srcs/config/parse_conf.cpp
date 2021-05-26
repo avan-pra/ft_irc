@@ -12,6 +12,7 @@
 
 # include "../../includes/IRCserv.hpp"
 # include <cstring>
+#include <iostream>
 
 enum confID
 {
@@ -561,7 +562,7 @@ static std::string truncate(std::string str, size_t nbr)
 	size_t width = nbr;
 	std::string space(nbr + 1, ' ');
 
-	if (str.length() > width)
+	if (str.length() - 1 > width)
 		return str.substr(0, width) + ".";
 	else
 		str.insert(0, space, 0, width - str.length() + 1);
@@ -570,16 +571,24 @@ static std::string truncate(std::string str, size_t nbr)
 
 static void	print_servers(std::deque<t_networkID> aNetworks)
 {
-	std::cerr << "\n        IRC NETWORK CONFIGURATION\n";
-	std::cerr << "-----------------------------------------\n";
-	std::cerr << UNDERLINE << "      NAME|           HOST|      PORT    " << NC << "\n";
+	std::cerr << 			"\n                           IRC NETWORK CONFIGURATION                           \n";
+	std::cerr << 			  "-------------------------------------------------------------------------------\n";
+	std::cerr << UNDERLINE << "          NAME|           HOST| PORT|    LOCAL_PASS (hash)|         REMOTE_PASS" << NC << "\n";
 	for (size_t i = 0; i < aNetworks.size(); ++i)
 	{
-		std::cerr << truncate(aNetworks[i].name, 9) << "|";
+		std::cerr << truncate(aNetworks[i].name, 13) << "|";
 		std::cerr << truncate(aNetworks[i].host, 14) << "|";
 		std::cerr << (aNetworks[i].is_tls ? BRIGHT_GREEN : GREEN);
-		std::cerr << truncate(ft_to_string(aNetworks[i].port), 9);
+		std::cerr << truncate(ft_to_string(aNetworks[i].port), 4);
 		std::cerr << NC;
+		std::cerr << "|";
+		for (size_t k = 0; k < 10; ++k)
+		{
+			std::cerr << hex2char(aNetworks[i].local_pass[k] / 16);
+			std::cerr << hex2char(aNetworks[i].local_pass[k] % 16);
+		}
+		std::cerr << ".|";
+		std::cerr << truncate(aNetworks[i].remote_pass, 19);
 		std::cerr << std::endl;
 	}
 }
