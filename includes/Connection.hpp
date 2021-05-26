@@ -100,6 +100,7 @@ class Connection
 		void			set_hopcount(int count) { _hopcount = count; }
 		void			set_type(int t) { _type = t; }
 
+		//related to stats
 		void			inc_number_of_messages_sent(size_t nbr = 1) { _messages_sent += nbr; }			// sent message
 		void			inc_number_bytes_sent(size_t nbr = 1) { _bytes_sent += nbr; }					// nbr of bytes sent
 		void			inc_number_of_messages_received(size_t nbr = 1) { _messages_received += nbr; }	// received message
