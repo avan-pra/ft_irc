@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:16:05 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/26 17:34:52 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/26 17:54:51 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ static void		whois_channel(std::list<Client>::iterator &client_it, std::list<Cli
 				if (g_vChannel[i].is_user_in_chan(&(*target)))
 				{
 					if (g_vChannel[i].is_operator(&(*target)))
-					{
 						output += "@";
-						std::cout << "Hello: " << output << std::endl;
-					}
 					else if (g_vChannel[i].is_voice(&(*target)))
 						output += "+";
 					output += g_vChannel[i].get_name();
