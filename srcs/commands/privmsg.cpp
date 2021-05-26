@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/26 00:52:14 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/27 00:36:53 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 		return ;
 	i = find_channel(params[1]);
 	if (i != -1)
-		send_privmsg_to_channel(params, client_it, i);
+		send_to_channel(line.substr(line.find("PRIVMSG")), client_it, i, false);
 	else if ((it = find_client_by_iterator(params[1])) != g_all.g_aClient.end())
 	{
 		if (it->get_hopcount() > 0)
@@ -140,14 +140,6 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 	}
 	time(&new_time);
 	client_it->set_t_idle(new_time);
-}
-
-std::string		trim_client_name(std::string full_name)
-{
-	std::string		nick;
-
-	nick = full_name.substr(0, full_name.find('!'));
-	return (nick);
 }
 
 void	privmsg_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)

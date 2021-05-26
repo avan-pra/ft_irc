@@ -72,7 +72,7 @@ void	nick_command(const std::string &line, std::list<Client>::iterator client_it
 				+ client_it->get_username() + "@" + client_it->get_hostname() + " NICK " + name + "\r\n");
 			//tell all channel he changed his nick
 			send_to_all_channel("NICK " + name + "\r\n", client_it);
-			send_to_all_server(":" + client_it->get_nickname() + " NICK " + ":" + name + "\r\n", g_all.g_aServer.begin(), true);
+			send_to_all_server(":" + client_it->get_nickname() + " NICK " + name + "\r\n", g_all.g_aServer.begin(), true);
 		}
 		client_it->set_nickname(name);
 		if (client_it->is_registered() == false && client_it->get_username().size() > 0
@@ -206,6 +206,8 @@ void	change_nick(std::vector<std::string> params, std::list<Server>::iterator se
 	std::string					nick;
 	std::string					new_nick;
 	std::list<Client>::iterator	client_it;
+	std::string					rpl;
+	std::string					rpl_server;
 
 	(void)server_it;
 	(void)serv;
@@ -216,16 +218,18 @@ void	change_nick(std::vector<std::string> params, std::list<Server>::iterator se
 	if (find_client_by_iterator(&params[2][1]) != g_all.g_aClient.end())
 		return ;
 	nick = &params[0][1];
-	new_nick = &params[2][1];
+	new_nick = params[2];
 	if (!check_valid_nickname(nick) || !check_valid_nickname(new_nick))
 		return ;
-	send_to_all_server(":" + client_it->get_nickname() + " NICK " + new_nick + "\r\n", server_it);
-	std::string		rpl = create_full_name_msg(client_it) + " NICK " + new_nick + "\r\n";
+
+	rpl_server = ":" + client_it->get_nickname() + " NICK " + new_nick + "\r\n";
+	rpl = " NICK " + new_nick + "\r\n";
+	send_to_all_server(rpl_server, server_it);
 	for (size_t i = 0; i < g_vChannel.size(); i++)
 	{
 		if (g_vChannel[i].is_user_in_chan(*client_it))
 		{
-			g_vChannel[i].send_to_all_interne(rpl);
+			send_to_channel_local(rpl, client_it, i, false);
 		}
 	}
 	client_it->set_nickname(new_nick);
@@ -243,6 +247,11 @@ void	nick_command(const std::string &line, std::list<Server>::iterator server_it
 	}
 	if (params[0].size() <= 1)
 		return ;
+	if (params[0].find('!') != std::string::npos)
+	{
+		params[0] = trim_client_name(params[0]);
+		//true_line = params[0] + " " + true_line.substr(true_line.find("PRIVMSG"));
+	}
 	if (is_servername_exist(&params[0][1]))
 	{
 		if (params.size() < 9)

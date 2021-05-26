@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:11:18 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/06 11:27:55 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/27 00:36:16 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@ void		part_command(const std::string &line, std::list<Client>::iterator client_i
 			check_usr_in_channel(chann_idx, client_it, serv);
 			send_to_all_server(":" + client_it->get_nickname() + " PART " + g_vChannel[chann_idx].get_name() +
 					" :" + output + "\r\n", g_all.g_aServer.begin(), true);
-			send_to_channel(("PART " + g_vChannel[chann_idx].get_name() + " :" + output), client_it, chann_idx, true);
-			// g_vChannel[chann_idx]._users.erase(g_vChannel[chann_idx].find_user_in_channel(client_it->get_nickname()));
+			send_to_channel_local(("PART " + g_vChannel[chann_idx].get_name() + " :" + output),
+																	client_it, chann_idx, true);
+
 			g_vChannel[chann_idx].remove_user(client_it->get_nickname());
 			g_vChannel[chann_idx].remove_user_operator(client_it->get_nickname());
 			g_vChannel[chann_idx].remove_user_voice(client_it->get_nickname());
@@ -111,8 +112,9 @@ void		part_command(const std::string &line, std::list<Server>::iterator server_i
 				return ;
 			chann_idx = check_channel_exists(channel_name, client_it, serv);
 			check_usr_in_channel(chann_idx, client_it, serv);
-			send_to_channel(("PART " + g_vChannel[chann_idx].get_name() + " :" + output), client_it, chann_idx, true);
-			// g_vChannel[chann_idx]._users.erase(g_vChannel[chann_idx].find_user_in_channel(client_it->get_nickname()));
+			send_to_channel_local(("PART " + g_vChannel[chann_idx].get_name() + " :" + output),
+																	client_it, chann_idx, true);
+
 			g_vChannel[chann_idx].remove_user(client_it->get_nickname());
 			g_vChannel[chann_idx].remove_user_operator(client_it->get_nickname());
 			g_vChannel[chann_idx].remove_user_voice(client_it->get_nickname());
