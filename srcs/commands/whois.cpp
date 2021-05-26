@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 17:16:05 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/25 00:03:05 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/26 17:34:52 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,38 @@
 ** Client
 */
 
-static void		whois_client(std::list<Client>::iterator client_it, std::vector<std::string> &args, const MyServ &serv)
+static void		whois_channel(std::list<Client>::iterator &client_it, std::list<Client>::iterator &target, const MyServ &serv)
+{
+	std::string	output = "";
+
+	for (size_t i = 0; i < g_vChannel.size(); i++)
+	{
+		if (g_vChannel[i].is_mode('s') == false && g_vChannel[i].is_mode('p') == false)
+		{
+			if (g_vChannel[i].is_user_in_chan(&(*client_it)))
+			{
+				if (g_vChannel[i].is_user_in_chan(&(*target)))
+				{
+					if (g_vChannel[i].is_operator(&(*target)))
+					{
+						output += "@";
+						std::cout << "Hello: " << output << std::endl;
+					}
+					else if (g_vChannel[i].is_voice(&(*target)))
+						output += "+";
+					output += g_vChannel[i].get_name();
+					client_it->push_to_buffer(create_msg(319, client_it, serv, target->get_nickname(), output));
+				}
+			}
+		}
+	}
+}
+
+static void		whois_client(std::list<Client>::iterator &client_it, std::vector<std::string> &args, const MyServ &serv)
 {
 	std::list<Client>::iterator	target;
 
-	//Erro if the user used 2 arguments of WHOIS but quering a host
+	//Error if the user used 2 arguments of WHOIS but quering a host
 	if (args[1].find('.') != std::string::npos)
 	{
 		client_it->push_to_buffer(create_msg(406, client_it, serv, args[1]));
@@ -41,6 +68,7 @@ static void		whois_client(std::list<Client>::iterator client_it, std::vector<std
 	curr_t -= target->get_t_idle();
 	client_it->push_to_buffer(create_msg(311, client_it, serv, target->get_nickname(), target->get_username(),
 															target->get_hostname(), target->get_realname()));
+	whois_channel(client_it, target, serv);
 	client_it->push_to_buffer(create_msg(317, client_it, serv, args[1], ft_to_string(curr_t), ft_to_string(target->get_t_signon())));
 	client_it->push_to_buffer(create_msg(318, client_it, serv, args[1]));
 }

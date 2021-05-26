@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:41:44 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/21 18:22:01 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/26 17:52:59 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,7 @@ class Channel
 					return (true);
 			return (false);
 		}
+
 		bool			is_operator(const Client *cli)
 		{
 			for (size_t i = 0; i < _operator.size(); i++)
@@ -207,6 +208,7 @@ class Channel
 					return (true);
 			return (false);
 		}
+
 		bool			is_voice(const Client *cli)
 		{
 			for (size_t i = 0; i < _voice.size(); i++)
@@ -244,6 +246,16 @@ class Channel
 			for (size_t i = 0; i < _users.size(); ++i)
 			{
 				if (*_users[i] == cli)
+					return true;
+			}
+			return false;
+		}
+
+		bool			is_user_in_chan(const Client *cli)
+		{
+			for (size_t i = 0; i < _users.size(); ++i)
+			{
+				if (_users[i] == cli)
 					return true;
 			}
 			return false;
