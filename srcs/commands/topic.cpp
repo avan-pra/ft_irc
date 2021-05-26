@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/09 11:34:56 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/04 12:18:26 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/26 18:36:14 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	send_topic(const std::vector<std::string> params, std::list<Client>::iterat
 	int		chan_id = find_channel(params[1]);
 
 	if (!check_params(params, client_it, serv))
+		return ;
+	if (g_vChannel[chan_id].is_mode('s') == true || g_vChannel[chan_id].is_mode('p') == true)
 		return ;
 	if (g_vChannel[chan_id].get_topic().empty())
 		client_it->push_to_buffer(create_msg(331, client_it, serv, params[1]));

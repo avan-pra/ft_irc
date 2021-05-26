@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/26 11:14:49 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/04 13:16:42 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/26 19:03:27 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,12 @@ void	names_command(const std::string &line, std::list<Client>::iterator client_i
 	{
 		if ((chan_id = find_channel(channel_names[i])) != -1)
 		{
-			flag = set_flag(chan_id) + g_vChannel[chan_id].get_name();
-			nick_list = set_nick_list(chan_id);
-			client_it->push_to_buffer(create_msg(353, client_it, serv, flag, nick_list));
+			if (g_vChannel[chan_id].is_mode('s') == false && g_vChannel[chan_id].is_mode('p') == false)
+			{
+				flag = set_flag(chan_id) + g_vChannel[chan_id].get_name();
+				nick_list = set_nick_list(chan_id);
+				client_it->push_to_buffer(create_msg(353, client_it, serv, flag, nick_list));
+			}
 		}
 		client_it->push_to_buffer(create_msg(366, client_it, serv, channel_names[i]));
 	}
