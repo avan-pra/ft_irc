@@ -2,6 +2,20 @@
 #include "../includes/MyServ.hpp"
 #include "../includes/Disconnect.hpp"
 #include <ctime>
+#include <deque>
+
+void call_disconnect_server(std::list<Server>::iterator server_it)
+{
+	for (std::deque<Server*>::iterator it = server_it->_introduced_serv.begin(); it != server_it->_introduced_serv.end(); )
+	{
+		std::list<Server>::iterator se = find_server_by_iterator(*it);
+
+		send_to_all_server(":" + se->get_servername() + " SQUIT " + se->get_servername() + ":\r\n", server_it);
+		g_all.g_aServer.erase(se);
+		it = server_it->_introduced_serv.erase(it);
+	}
+	disconnect(&(*server_it), server_it);
+}
 
 void	iterate_server(MyServ &serv)
 {
