@@ -71,8 +71,8 @@ void	nick_command(const std::string &line, std::list<Client>::iterator client_it
 			client_it->push_to_buffer(":" + client_it->get_nickname() + "!"
 				+ client_it->get_username() + "@" + client_it->get_hostname() + " NICK " + name + "\r\n");
 			//tell all channel he changed his nick
-			send_to_all_channel("NICK " + name + "\r\n", client_it);
-			send_to_all_server(":" + client_it->get_nickname() + " NICK " + name + "\r\n", g_all.g_aServer.begin(), true);
+			send_to_all_channel_local("NICK " + name + "\r\n", client_it);
+			send_to_all_server(":" + client_it->get_nickname() + " NICK :" + name + "\r\n", g_all.g_aServer.begin(), true);
 		}
 		client_it->set_nickname(name);
 		if (client_it->is_registered() == false && client_it->get_username().size() > 0
@@ -209,7 +209,6 @@ void	change_nick(std::vector<std::string> params, std::list<Server>::iterator se
 	std::string					rpl;
 	std::string					rpl_server;
 
-	(void)server_it;
 	(void)serv;
 	if (params[0].find(':') != 0 || params.size() < 3)
 		return ;
@@ -218,11 +217,11 @@ void	change_nick(std::vector<std::string> params, std::list<Server>::iterator se
 	if (find_client_by_iterator(&params[2][1]) != g_all.g_aClient.end())
 		return ;
 	nick = &params[0][1];
-	new_nick = params[2];
+	new_nick = &params[2][1];
 	if (!check_valid_nickname(nick) || !check_valid_nickname(new_nick))
 		return ;
 
-	rpl_server = ":" + client_it->get_nickname() + " NICK " + new_nick + "\r\n";
+	rpl_server = ":" + client_it->get_nickname() + " NICK :" + new_nick + "\r\n";
 	rpl = " NICK " + new_nick + "\r\n";
 	send_to_all_server(rpl_server, server_it);
 	for (size_t i = 0; i < g_vChannel.size(); i++)

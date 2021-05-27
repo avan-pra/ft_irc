@@ -76,13 +76,34 @@ void	send_to_all_channel(const std::string &msg, std::list<Client>::iterator cli
 	}
 }
 
+void	send_to_all_channel_local(const std::string &msg, std::list<Client>::iterator client_it, bool to_sender)
+{
+	std::string		full_msg = 	":" + client_it->get_nickname() + "!"
+		+ client_it->get_username() + "@" + client_it->get_hostname() + " " + msg + "\r\n";
+
+	for (size_t chan_id = 0; chan_id < g_vChannel.size(); ++chan_id)
+	{
+		if (g_vChannel[chan_id].is_user_in_chan(*client_it) == true)
+		{
+			for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
+			{
+				if (to_sender == true || g_vChannel[chan_id]._users[i] != &(*client_it))
+				{
+					if (g_vChannel[chan_id]._users[i]->get_hopcount() == 0)
+						g_vChannel[chan_id]._users[i]->push_to_buffer(full_msg);
+				}
+			}
+		}
+	}
+}
+
 void	send_to_all_server(const std::string &msg, std::list<Server>::iterator server_it, bool to_sender)
 {
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
 	{
-		if (it != server_it)
+		if (it != server_it && it->get_hopcount() == 1)
 			it->push_to_buffer(msg);
-		if (to_sender && it == server_it)
+		if (to_sender && it == server_it && it->get_hopcount() == 1)
 			server_it->push_to_buffer(msg);
 	}
 }
@@ -91,9 +112,9 @@ void	send_to_all_server(const std::string &msg, Server *serv, bool to_sender)
 {
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
 	{
-		if (*it != *serv)
+		if (*it != *serv && it->get_hopcount() == 1)
 			it->push_to_buffer(msg);
-		if (to_sender && *it == *serv)
+		if (to_sender && *it == *serv && it->get_hopcount() == 1)
 			serv->push_to_buffer(msg);
 	}
 }
