@@ -40,7 +40,6 @@ void	pass_command(const std::string &line, std::list<Server>::iterator server_it
 		server_it->push_to_buffer(":" + serv.get_hostname() + " 461 * PASS :Not enough parameters\r\n"); return;
 		return;
 	}
-	std::cout << "arg1: " << arg[1] << std::endl;
 	server_it->set_pass_submited(arg[1]);
 
 	server_it->set_pass_try(true);

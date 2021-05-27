@@ -13,6 +13,8 @@
 #include "../../includes/commands.hpp"
 #include "../../includes/Disconnect.hpp"
 #include "../../includes/IRCserv.hpp"
+#include <deque>
+#include <list>
 
 static bool		is_user_in_any_channel(const std::string nickname)
 {
@@ -43,6 +45,32 @@ std::string		create_part_str(std::list<Client>::iterator client_it)
 		}
 	}
 	return (part_string);
+}
+
+static void		remove_pointer_to_client(std::list<Client>::iterator client_it)
+{
+	Server *ptr = client_it->get_server_uplink();
+	if (ptr != NULL)
+	{
+		for (std::deque<Client*>::iterator it = ptr->_client_attached.begin(); it != ptr->_client_attached.end(); )
+		{
+			if (&(*client_it) == *it)
+				ptr->_client_attached.erase(it);
+			else
+				++it;
+		}
+	}
+	// ptr = client_it->get_server_host();
+	if (ptr != NULL)
+	{
+		for (std::deque<Client*>::iterator it = ptr->_client_attached.begin(); it != ptr->_client_attached.end(); ++it)
+		{
+			if (&(*client_it) == *it)
+				ptr->_client_attached.erase(it);
+			else
+				++it;
+		}
+	}
 }
 
 void			quit_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
@@ -100,15 +128,8 @@ void		quit_command(const std::string &line, std::list<Server>::iterator server_i
 		part_command("PART " + part_string, client_it, serv);
 	add_disconnected_nick(client_it);
 	send_to_all_server(line, server_it);
-	client_it = g_all.g_aClient.erase(client_it);
-	for (std::deque<Client*>::iterator it = server_it->_client_attached.begin(); it != server_it->_client_attached.end(); it++)
-	{
-		if (**it == *client_it)
-		{
-			server_it->_client_attached.erase(it);
-			break ;
-		}
-	}
+	remove_pointer_to_client(client_it);
+	g_all.g_aClient.erase(client_it);
 }
 
 

@@ -29,7 +29,6 @@ uint32_t reverse_custom_ntoa(std::string in)
 	unsigned int	buffer = 0;
 	std::vector<std::string> tmp = ft_split(in, ".");
 
-	std::cout << in << std::endl;
 	if (tmp.size() != 4)
 		return 0;
 	buffer = ft_atoi(tmp[0]) + (ft_atoi(tmp[1]) << 8) + (ft_atoi(tmp[2]) << 16) + (ft_atoi(tmp[3]) << 24);

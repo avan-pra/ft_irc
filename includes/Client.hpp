@@ -67,6 +67,8 @@ class Client : public Connection
 			sock_addr = co.sock_addr;
 			_is_oper = false;
 			_type = CLIENT_TYPE;
+			_server_host = NULL;
+			_server_uplink = NULL;
 
 			//related to STATS command
 			_bytes_sent = co.get_number_bytes_sent();
