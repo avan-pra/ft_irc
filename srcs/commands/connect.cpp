@@ -7,14 +7,14 @@
 #include <netinet/in.h>
 #include <openssl/ossl_typ.h>
 #include <openssl/ssl.h>
+#include <string>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <vector>
 
-SOCKADDR_IN6 *get_serv_info(t_networkID net, struct addrinfo **res)
+void	get_serv_info(t_networkID net, struct addrinfo **res)
 {
 	struct addrinfo info;
-	SOCKADDR_IN6 *tmp;
 
 	memset(&info, 0, sizeof(info));
 	info.ai_family = AF_UNSPEC;
@@ -23,30 +23,42 @@ SOCKADDR_IN6 *get_serv_info(t_networkID net, struct addrinfo **res)
 	{
 		throw std::exception();
 	}
-	// for (loop = *res; loop != NULL; loop = loop->ai_next)
-	// {
-	// 	ip_access = (struct sockaddr_in *)loop->ai_addr;
-	// 	std::cout << inet_ntoa(ip_access->sin_addr) << std::endl;
-	// }
-	tmp = (SOCKADDR_IN6 *)(*res)->ai_addr;
-	tmp->sin6_port = htons(net.port);
-
-	return tmp;
 }
 
-void	connect_to_serv(t_networkID net, SOCKADDR_IN6 *ip_info, const MyServ &serv)
+void	connect_to_serv(t_networkID net, struct addrinfo *res, const MyServ &serv)
 {
 	Unregistered tmp;
 	Server new_serv = tmp;
 	int serv_socket;
+	struct addrinfo *p = NULL;
 
-	serv_socket = socket(ip_info->sin6_family, SOCK_STREAM, 0);
-
-	if (connect(serv_socket, (sockaddr*)ip_info, sizeof(sockaddr)) != 0)
+	for (p = res; p != NULL; p = p->ai_next)
 	{
-		std::cerr << "Error could not connect to " << net.name << std::endl;
+		try
+		{
+			if (!(serv_socket = socket(p->ai_family, SOCK_STREAM, 0)))
+				throw std::exception();
+			if (p->ai_addr->sa_family == AF_INET)
+				(((struct sockaddr_in*)p->ai_addr)->sin_port) = ntohs(net.port);
+			else
+				(((struct sockaddr_in6*)p->ai_addr)->sin6_port) = ntohs(net.port);
+			if (connect(serv_socket, p->ai_addr, p->ai_addrlen) != 0)
+			{
+				closesocket(serv_socket);
+				throw std::exception();
+			}
+			break ;
+		}
+		catch (const std::exception &e) { }
+	}
+	if (p == NULL)
+	{
+		#ifdef DEBUG
+			std::cerr << "error could not connect to: " << net.name << std::endl;
+		#endif
 		throw std::exception();
 	}
+
 	if (fcntl(serv_socket, F_SETFL, O_NONBLOCK) < 0)
 	{
 		#ifdef DEBUG
@@ -72,17 +84,19 @@ void	connect_to_serv(t_networkID net, SOCKADDR_IN6 *ip_info, const MyServ &serv)
 			}
 		}
 	}
+	memset(&new_serv.sock_addr, 0, sizeof(struct sockaddr_in6));
+	new_serv.sock_addr.sin6_port = ntohs(net.port);
+	// new_serv.sock_addr.sin6_family = p->ai_family;
 	#ifdef __APPLE__
-		ip_info->sin6_addr.__u6_addr.__u6_addr32[3] = ((SOCKADDR_IN*)ip_info)->sin_addr.s_addr;
-		std::cerr << "* Initiating new server connection towards: " << custom_ntoa(ip_info->sin6_addr.__u6_addr.__u6_addr32[3]) << ":"
-			<< ntohs(ip_info->sin6_port) << (net.is_tls ? " (tls)" : "") << std::endl;
+		new_serv.sock_addr.sin6_addr.__u6_addr.__u6_addr32[3] = reverse_custom_ntoa(net.host);
+		std::cerr << "* Initiating new server connection towards: " << custom_ntoa(new_serv.sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]) << ":"
+			<< ntohs(new_serv.sock_addr.sin6_port) << (net.is_tls ? " (tls)" : "") << std::endl;
 	#endif
 	#ifdef __linux__
-		ip_info->sin6_addr.__in6_u.__u6_addr32[3] = ((SOCKADDR_IN*)ip_info)->sin_addr.s_addr;
-		std::cerr << "* Initiating new server connection towards: " << custom_ntoa(ip_info->sin6_addr.__in6_u.__u6_addr32[3]) << ":"
-			<< ntohs(ip_info->sin6_port) << (net.is_tls ? " (tls)" : "") << std::endl;
+		new_serv.sock_addr.sin6_addr.__in6_u.__u6_addr32[3] = reverse_custom_ntoa(net.host);
+		std::cerr << "* Initiating new server connection towards: " << custom_ntoa(new_serv.sock_addr.sin6_addr.__in6_u.__u6_addr32[3]) << ":"
+			<< ntohs(new_serv.sock_addr.sin6_port) << (net.is_tls ? " (tls)" : "") << std::endl;
 	#endif
-	new_serv.sock_addr = *(struct sockaddr_in6*)ip_info;
 	new_serv._fd = serv_socket;
 	new_serv.set_hopcount(1);
 	new_serv.push_to_buffer("PASS " + net.remote_pass + " " + PROTOCOL_VERSION + " ircGODd|1.1:" + "\r\n");
@@ -110,14 +124,15 @@ void	connect_command(const std::string &line, std::list<Client>::iterator client
 		if (serv.network[i].name == arg[1])
 		{
 			struct addrinfo *res = NULL;
-			SOCKADDR_IN6 *ip_info;
 			std::list<Server>::iterator new_serv;
 
 			try
 			{
-				ip_info = get_serv_info(serv.network[i], &res);
-				connect_to_serv(serv.network[i], ip_info, serv);
-				freeaddrinfo(res);
+				get_serv_info(serv.network[i], &res);
+				connect_to_serv(serv.network[i], res, serv);
+				if (res != NULL)
+					freeaddrinfo(res);
+				res = NULL;
 			}
 			catch (const std::exception &e) {
 				if (res != NULL)
