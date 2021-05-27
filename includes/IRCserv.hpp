@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/26 23:48:12 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/27 14:12:41 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,7 @@ void	clear_empty_packet(std::vector<std::string> &packet);
 void	send_to_channel(const std::string &msg, std::list<Client>::iterator client_it, const int &chan_id, bool to_sender = false);
 void	send_to_channel_local(const std::string &msg, std::list<Client>::iterator client_it, const int &chan_id, bool to_sender = false);
 void	send_to_all_channel(const std::string &msg, std::list<Client>::iterator client_it, bool to_sender = false);
+void	send_to_all_channel_local(const std::string &msg, std::list<Client>::iterator client_it, bool to_sender = false);
 void	send_to_all_server(const std::string &msg, std::list<Server>::iterator server_it, bool to_sender = false);
 
 /*
