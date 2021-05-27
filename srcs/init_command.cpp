@@ -58,7 +58,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["SERVLIST"] = NULL;
 	cmd["DIE"] = die_command;
 	// cmd["NJOIN"] = NULL;
-	// cmd["SQUERY"] = NULL;
+	cmd["SQUERY"] = squery_command;
 	cmd["CAP"] = cap_command;
 
 	return cmd;
@@ -84,6 +84,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["TIME"] = time_command;
 	cmd["VERSION"] = version_command;
 	cmd["ERROR"] = error_command;
+	cmd["NOTICE"] = notice_command;
 
 
 	cmd["PART"] = part_command;
@@ -97,7 +98,6 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["CONNECT"] = NULL;
 	cmd["TRACE"] = NULL;
 	cmd["ADMIN"] = NULL;
-	cmd["NOTICE"] = NULL;
 	cmd["WHO"] = NULL;
 	cmd["WHOIS"] = NULL;
 	cmd["WHOWAS"] = NULL;

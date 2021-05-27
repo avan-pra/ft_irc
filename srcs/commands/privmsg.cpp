@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/27 00:36:53 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/27 14:01:08 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,10 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 	client_it->set_t_idle(new_time);
 }
 
+/*
+** Server
+*/
+
 void	privmsg_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
 {
 	std::vector<std::string>		params = ft_split(line, " ");
@@ -189,6 +193,10 @@ void	privmsg_command(const std::string &line, std::list<Server>::iterator server
 		}
 	}
 }
+
+/*
+** Service
+*/
 
 int		check_params(const std::vector<std::string> &params, std::list<Service>::iterator service_it, const MyServ &serv)
 {
