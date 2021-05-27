@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   die.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 16:24:30 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/05 19:36:57 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/27 16:43:47 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,10 @@ void		die_command(const std::string &line, std::list<Client>::iterator client_it
 	(void)line;
 	(void)client_it;
 	(void)serv;
+	if (client_it->get_is_oper() == false)
+	{
+		client_it->push_to_buffer(create_msg(481, client_it, serv));
+		return ;
+	}
 	throw DieException();
 }
