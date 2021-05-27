@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/25 11:16:55 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/26 23:48:12 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ void	clear_empty_packet(std::vector<std::string> &packet);
 ** send_msg_to.cpp
 */
 void	send_to_channel(const std::string &msg, std::list<Client>::iterator client_it, const int &chan_id, bool to_sender = false);
+void	send_to_channel_local(const std::string &msg, std::list<Client>::iterator client_it, const int &chan_id, bool to_sender = false);
 void	send_to_all_channel(const std::string &msg, std::list<Client>::iterator client_it, bool to_sender = false);
 void	send_to_all_server(const std::string &msg, std::list<Server>::iterator server_it, bool to_sender = false);
 
@@ -306,5 +307,10 @@ void		service_parser(char *line, std::list<Service>::iterator service_it, const 
 ** iterate_service.cpp 
 */
 void		iterate_service(MyServ &serv);
+
+/*
+ ** get_nickname.cpp
+*/
+std::string		trim_client_name(std::string full_name);
 
 #endif
