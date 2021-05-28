@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/25 22:34:21 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/28 11:51:46 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,24 @@ std::string		create_part_str(std::list<Client>::iterator client_it)
 static void		remove_pointer_to_client(std::list<Client>::iterator client_it)
 {
 	Server *ptr = client_it->get_server_uplink();
+
 	if (ptr != NULL)
 	{
 		for (std::deque<Client*>::iterator it = ptr->_client_attached.begin(); it != ptr->_client_attached.end(); )
 		{
 			if (&(*client_it) == *it)
-				ptr->_client_attached.erase(it);
+				it = ptr->_client_attached.erase(it);
 			else
 				++it;
 		}
 	}
-	// ptr = client_it->get_server_host();
+	ptr = client_it->get_server_host();
 	if (ptr != NULL)
 	{
-		for (std::deque<Client*>::iterator it = ptr->_client_attached.begin(); it != ptr->_client_attached.end(); ++it)
+		for (std::deque<Client*>::iterator it = ptr->_client_attached.begin(); it != ptr->_client_attached.end();)
 		{
 			if (&(*client_it) == *it)
-				ptr->_client_attached.erase(it);
+				it = ptr->_client_attached.erase(it);
 			else
 				++it;
 		}
