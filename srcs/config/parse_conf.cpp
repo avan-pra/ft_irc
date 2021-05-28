@@ -153,12 +153,7 @@ int		set_hostname(t_config_file &config_file, std::string hostname, const int &n
 }
 
 int		set_port(t_config_file &config_file, std::string port, const int &nb_line, bool is_tls)
-{	
-	if (is_tls && !config_file.accept_tls)
-	{
-		// std::cout << "variable : " << port << std::endl;
-		return (config_error("PORT_TLS cannot be set when TLS is turn to false", nb_line));
-	}
+{
 	if (config_file.port_set == true && !is_tls)
 		return (config_error("PORT has multiple declaration", nb_line));
 	if (config_file.port_tls_set == true && is_tls)
@@ -166,6 +161,11 @@ int		set_port(t_config_file &config_file, std::string port, const int &nb_line, 
 	if (config_file.listen_limit <= 0)
 		return (config_error("PORT_TLS/PORT must be initialized after LISTEN_LIMIT", nb_line));
 	std::vector<std::string> port_list = ft_split(port, ","); 
+	if (is_tls && !config_file.accept_tls && port_list.size() > 0)
+	{
+		// std::cout << "variable : " << port << std::endl;
+		return (config_error("PORT_TLS cannot be set when TLS is turn to false. No certificate found ?", nb_line));
+	}
 	for (std::vector<std::string>::iterator it = port_list.begin(); it < port_list.end(); ++it)
 	{
 		if (!is_only_digit(*it))
