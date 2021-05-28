@@ -26,7 +26,7 @@ void	share_server(std::list<Server>::iterator &server_it, const MyServ &serv)
 			if (it != server_it)
 			{
 				rpl = ":" + serv.get_hostname() + " SERVER " + it->get_servername();
-				rpl += " " + ft_to_string(it->get_hopcount()) + " " + ft_to_string(it->get_token()) + " :New server\r\n";
+				rpl += " " + ft_to_string(it->get_hopcount() + 1) + " " + ft_to_string(it->get_token()) + " :New server\r\n";
 				server_it->push_to_buffer(rpl);
 			}
 		}
@@ -70,6 +70,7 @@ void	server_reply(std::string line, std::list<Server>::iterator server_it, const
 		server_it->push_to_buffer(create_msg(462, server_it, serv));
 		return ;
 	}
+	std::cout << "server_reply\n";
 	server_it->set_server_name(arg[2]);
 	server_it->set_hopcount(1);
 	server_it->set_token(g_all.g_aServer.size());
@@ -79,6 +80,7 @@ void	server_reply(std::string line, std::list<Server>::iterator server_it, const
 	share_client(server_it, serv);
 	share_channel(server_it, serv);
 	server_it->set_register(true);
+	send_to_all_server(":" + serv.get_hostname() + " SERVER " + server_it->get_servername() + " 2 " + ft_to_string(server_it->get_token() + 1) + " " + server_it->get_info() + "\r\n", server_it);
 }
 
 void	new_direct_server(std::string line, std::list<Server>::iterator server_it, const MyServ &serv)
@@ -115,12 +117,15 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 	share_channel(server_it, serv);
 
 	server_it->set_register(true);
+	std::cout << "new direct\n";
+	send_to_all_server(":" + serv.get_hostname() + " SERVER " + server_it->get_servername() + " 2 " + ft_to_string(server_it->get_token() + 1) + " " + server_it->get_info() + "\r\n", server_it);
 }
 
-void	introduce_server(const std::string &line, std::list<Server>::iterator server_it)
+void	introduce_server(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
 {
 	std::vector<std::string>	params = ft_split(line, " ");
 
+	(void)serv;
 	if (params.size() < 6)
 		return ;
 	if (params[5].size() < 1 || (params[5].size() >= 1 && params[5][0] != ':'))
@@ -142,6 +147,7 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 	new_serv.set_register(true);
 	g_all.g_aServer.push_back(new_serv);
 	server_it->_introduced_serv.push_back(&g_all.g_aServer.back());
+	send_to_all_server(":" + serv.get_hostname() + " SERVER " + new_serv.get_servername() + " 2 " + ft_to_string(new_serv.get_token() + 1) + " " + new_serv.get_info() + "\r\n", server_it, false);
 	return ;
 }
 
@@ -189,12 +195,12 @@ void	server_command(const std::string &line, std::list<Server>::iterator server_
 
 	if (line[0] == ':' && server_it->is_registered() == false)
 	{
+		std::cout << "here" << std::endl;
 		server_reply(line, server_it, serv);
 	}
 	else if (line[0] == ':' && server_it->is_registered())
 	{
-		std::cout << "introduce_server" << std::endl;
-		introduce_server(line, server_it);
+		introduce_server(line, server_it, serv);
 	}
 	else if (server_it->is_registered() == false)
 		new_direct_server(line, server_it, serv);

@@ -150,9 +150,9 @@
 # define RPL_LUSERCHANNELS(int1) (int1 + " :channels formed\r\n")
 # define RPL_LUSERME(int1, int2) (":I have " + int1 + " clients and " + int2 + " servers\r\n")
 # define RPL_ADMINME(server) (server + " :Administrative info\r\n")
-# define RPL_ADMINLOC1() (":<info admin>\r\n")
-# define RPL_ADMINLOC2() (":<info admin>\r\n")
-# define RPL_ADMINEMAIL() (":<info admin>\r\n")
+# define RPL_ADMINLOC1(info) (":" + info + "\r\n")
+# define RPL_ADMINLOC2(info) (":" + info + "\r\n")
+# define RPL_ADMINEMAIL(info) (":" + info + "\r\n")
 # define RPL_CREATIONTIME(channel, c_time) (channel + " " + c_time + "\r\n")
 # define RPL_YOURESERVICE(servicename) (":You are service " + servicename + "\r\n")
 
@@ -205,6 +205,7 @@ void	kill_command(const std::string &line, std::list<Client>::iterator client_it
 void	connect_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	rehash_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	squit_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	admin_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 
 void	server_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
@@ -226,6 +227,7 @@ void	version_command(const std::string &line, std::list<Server>::iterator server
 void	error_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	squit_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	notice_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	admin_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 
 
 void	service_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);

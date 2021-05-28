@@ -39,6 +39,14 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_ENDOFSTATS(arg1);
 		case 221:
 			return sample + RPL_UMODEIS(arg1);
+		case 256:
+			return sample + RPL_ADMINME(arg1);
+		case 257:
+			return sample + RPL_ADMINLOC1(arg1);
+		case 258:
+			return sample + RPL_ADMINLOC2(arg1);
+		case 259:
+			return sample + RPL_ADMINEMAIL(arg1);
 		case 301:
 			return sample + RPL_AWAY(arg1, arg2);
 		case 302:
@@ -127,6 +135,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + ERR_UNKNOWNCOMMAND(arg1);
 		case 422:
 			return sample + ERR_NOMOTD();
+		case 423:
+			return sample + ERR_NOADMININFO(arg1);
 		case 431:
 			return sample + ERR_NONICKNAMEGIVEN();
 		case 432:
@@ -245,6 +255,14 @@ std::string		create_msg(const int &code, std::list<Service>::iterator service_it
 			return sample + RPL_YOURHOST(arg1, arg2);
 		case 4:
 			return sample + RPL_MYINFO(arg1, arg2, arg3, arg4);
+		case 256:
+			return sample + RPL_ADMINME(arg1);
+		case 257:
+			return sample + RPL_ADMINLOC1(arg1);
+		case 258:
+			return sample + RPL_ADMINLOC2(arg1);
+		case 259:
+			return sample + RPL_ADMINEMAIL(arg1);
 		case 301:
 			return sample + RPL_AWAY(arg1, arg2);
 		case 302:

@@ -17,9 +17,12 @@ void	send_to_channel(const std::string &msg, std::list<Client>::iterator client_
 {
 	std::deque<Server*>		serv_list;
 	std::string				full_msg;
+	std::string				full_msg_serv;
 
 	full_msg = ":" + client_it->get_nickname() + "!" + client_it->get_username() +
 				"@" + client_it->get_hostname() + " " + msg + "\r\n";
+	full_msg_serv = ":" + client_it->get_nickname() + " " + msg + "\r\n";
+
 
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
@@ -29,7 +32,7 @@ void	send_to_channel(const std::string &msg, std::list<Client>::iterator client_
 				g_vChannel[chan_id]._users[i]->push_to_buffer(full_msg);
 			else if (!has_already_send(serv_list, g_vChannel[chan_id]._users[i]->get_server_uplink()))
 			{
-				g_vChannel[chan_id]._users[i]->get_server_uplink()->push_to_buffer(full_msg);
+				g_vChannel[chan_id]._users[i]->get_server_uplink()->push_to_buffer(full_msg_serv);
 				serv_list.push_back(g_vChannel[chan_id]._users[i]->get_server_uplink());
 			}
 		}
