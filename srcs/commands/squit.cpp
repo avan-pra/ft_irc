@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/25 19:12:33 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/28 12:57:20 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/28 15:35:47 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	squit_command(const std::string &line, std::list<Server>::iterator server_i
 				break;
 			}
 		}
-		disconnect(&(*quit_it), quit_it);
+		g_all.g_aServer.erase(quit_it);
 		return ;
 	}
 	quit_msg = line.substr(line.find(":"), 1);
@@ -57,3 +57,10 @@ void	squit_command(const std::string &line, std::list<Server>::iterator server_i
 							quit_it->get_servername() + " " + quit_msg + "\r\n", quit_it);
 	throw QuitCommandException();
 }
+/*
+		     	  5 -- 5.1
+	     	 	/
+1 -- 2 -- 3    4 
+                \
+		    	  6
+				  */

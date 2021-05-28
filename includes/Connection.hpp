@@ -19,6 +19,7 @@
 # define ACCEPT false
 
 typedef int	SOCKET;
+class Server;
 
 class Connection
 {
@@ -34,6 +35,7 @@ class Connection
 		bool			_tls;
 		int				_type;
 		int				_hopcount;
+		Server			*_server_uplink;
 
 		size_t			_bytes_sent;
 		size_t			_bytes_received;
@@ -67,6 +69,7 @@ class Connection
 			_bytes_received = 0;
 			_messages_sent = 0;
 			_messages_received = 0;
+			_server_uplink = NULL;
 		}
 		virtual ~Connection() { }
 
@@ -82,6 +85,7 @@ class Connection
 		time_t			&get_t_signon() { return _t_signon; }
 		int				get_hopcount() { return _hopcount; }
 		int				get_type() { return _type; }
+		Server			*get_server_uplink() { return (_server_uplink); }
 
 		//related to stats
 		size_t			get_number_of_messages_sent() { return _messages_sent;}			// sent message
@@ -99,6 +103,7 @@ class Connection
 		void			set_t_idle(time_t time) { _t_idle = time; }
 		void			set_hopcount(int count) { _hopcount = count; }
 		void			set_type(int t) { _type = t; }
+		void			set_server_uplink(Server *serv) { _server_uplink = serv; }
 
 		//related to stats
 		void			inc_number_of_messages_sent(size_t nbr = 1) { _messages_sent += nbr; }			// sent message

@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 18:12:15 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/21 16:27:04 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/28 16:27:32 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ void	add_channel(std::string &chan_name, std::string &nick_list)
 
 	new_chan.set_name(chan_name);
 	new_chan.set_mode("+");
+	std::cout << nick_list << std::endl;
 	for (std::vector<std::string>::iterator it = nick.begin(); it != nick.end(); it++)
 	{
+		std::cout << "nick try :" << *it << std::endl;
 		if ((*it)[0] == '@' && it->size() > 1)
 		{
 			if ((client_it = find_client_by_iterator(&(*it)[1])) != g_all.g_aClient.end())
@@ -39,7 +41,7 @@ void	add_channel(std::string &chan_name, std::string &nick_list)
 				new_chan._voice.push_back(&(*client_it));
 			}
 		}
-		else if ((client_it = find_client_by_iterator(&(*it)[1])) != g_all.g_aClient.end())
+		else if ((client_it = find_client_by_iterator(*it)) != g_all.g_aClient.end())
 		{
 			new_chan._users.push_back(&(*client_it));
 		}
