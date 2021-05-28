@@ -15,7 +15,7 @@ Client::~Client()
 			cht->remove_user(this->get_nickname());
 			cht->remove_user_operator(this->get_nickname());
 			cht->remove_user_voice(this->get_nickname());
-			send_to_channel("PART " + cht->get_name() + " :", it, i);
+			send_to_channel_local("PART " + cht->get_name() + " :", it, i);
 		}
 		if (cht->_users.size() == 0)
 		{
