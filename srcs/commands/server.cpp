@@ -193,6 +193,7 @@ void	server_command(const std::string &line, std::list<Server>::iterator server_
 	}
 	else if (line[0] == ':' && server_it->is_registered())
 	{
+		std::cout << "introduce_server" << std::endl;
 		introduce_server(line, server_it);
 	}
 	else if (server_it->is_registered() == false)
