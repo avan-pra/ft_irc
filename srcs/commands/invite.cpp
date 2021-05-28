@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/30 12:22:43 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/03 17:46:30 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/28 16:04:38 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ void	invite_command(const std::string &line, std::list<Client>::iterator client_
 	}
 	if (!exist)
 		g_vChannel[chan_id]._invite.push_back(&(*nick_id));
-	client_it->push_to_buffer(create_msg(341, client_it, serv, nick_id->get_nickname(), params[2]));
-	nick_id->push_to_buffer(create_full_msg(params, client_it));
+	if (nick_id->get_is_away() == true)
+		client_it->push_to_buffer(create_msg(301, client_it, serv, nick_id->get_nickname(), nick_id->get_away_str()));
+	else
+	{
+		client_it->push_to_buffer(create_msg(341, client_it, serv, nick_id->get_nickname(), params[2]));
+		nick_id->push_to_buffer(create_full_msg(params, client_it));
+	}
 }

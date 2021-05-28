@@ -163,6 +163,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + ERR_NOPRIVILEGES();
 		case 482:
 			return sample + ERR_CHANOPRIVSNEEDED(arg1);
+		case 483:
+			return sample + ERR_CANTKILLSERVER();
 		case 491:
 			return sample + ERR_NOOPERHOST();
 		case 501:
