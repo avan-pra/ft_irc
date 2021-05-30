@@ -39,7 +39,7 @@ void	admin_command(const std::string &line, std::list<Client>::iterator client_i
 	}
 	if (params.size() == 1)
 	{
-		file.open(serv.get_admin_path());
+		file.open(serv.get_admin_path().c_str());
 		if (!file)
 		{
 			client_it->push_to_buffer(create_msg(423, client_it, serv, serv.get_hostname()));
@@ -87,7 +87,7 @@ void	admin_command(const std::string &line, std::list<Server>::iterator server_i
 		return ;
 	if (params[2] == serv.get_hostname())
 	{
-		file.open(serv.get_admin_path());
+		file.open(serv.get_admin_path().c_str());
 		if (!file)
 		{
 			server_it->push_to_buffer(create_msg(423, client_it, serv, serv.get_hostname()));

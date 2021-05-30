@@ -145,9 +145,15 @@ void	disconnect(Unregistered *co, std::list<Unregistered>::iterator &unregistere
 
 void		disconnect_all()
 {
-	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); ++it)
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); )
 	{
-		disconnect(&(*it), it);
+		if (it->get_hopcount() == 1)
+		{
+			disconnect(&(*it), it);
+			it = g_all.g_aServer.begin();
+		}
+		else
+			++it;
 	}
 	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); ++it)
 	{

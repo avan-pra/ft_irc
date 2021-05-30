@@ -36,7 +36,7 @@ void	motd_command(const std::string &line, std::list<Client>::iterator client_it
 		motd_other_serv(params[1], client_it, serv);
 		return ;
 	}
-	file.open(serv.get_motd_path());
+	file.open(serv.get_motd_path().c_str());
 	if (!file)
 	{
 		client_it->push_to_buffer(create_msg(422, client_it, serv)); //je connais pas le code et flemme de check
@@ -67,7 +67,7 @@ void	motd_command(const std::string &line, std::list<Server>::iterator server_it
 		return ;
 	if (params[2] == serv.get_hostname())
 	{
-		file.open(serv.get_motd_path());
+		file.open(serv.get_motd_path().c_str());
 		if (!file)
 		{
 			server_it->push_to_buffer(create_msg(422, client_it, serv));

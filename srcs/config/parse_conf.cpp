@@ -338,7 +338,7 @@ int		set_motd_path(t_config_file &config_file, std::string motd_path, const int 
 		config_file.motd_path = "./motd";
 		return (1);
 	}
-	file.open(motd_path);
+	file.open(motd_path.c_str());
 	if (!file)
 		return (config_error("MOTD_PATH: " + motd_path + " file not found", nb_line));
 	config_file.motd_path = motd_path;
@@ -359,7 +359,7 @@ int		set_admin_path(t_config_file &config_file, std::string admin_path, const in
 		config_file.motd_path = "./admin";
 		return (1);
 	}
-	file.open(admin_path);
+	file.open(admin_path.c_str());
 	if (!file)
 		return (config_error("ADMIN_PATH: " + admin_path + " file not found", nb_line));
 	config_file.admin_path = admin_path;
