@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/27 00:34:58 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/28 16:46:29 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,10 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 	if (enter == false)
 		client_it->push_to_buffer(create_msg(403, client_it, serv, chan_name[0]));
 }
+
+/*
+** Server
+*/
 
 void	create_channel(const std::string &chan_name, std::list<Client>::iterator client_it)
 {

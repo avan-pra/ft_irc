@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 11:19:24 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/14 11:54:25 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/30 15:26:12 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	set_serv_attributes(MyServ &serv)
 {
 	serv.set_hostname(serv.serv_config.hostname);
+	serv.set_motd_path(serv.serv_config.motd_path);
+	serv.set_admin_path(serv.serv_config.admin_path);
 	serv.set_listen_limit(serv.serv_config.listen_limit);
 	serv.set_oper_name(serv.serv_config.oper_name);
 	serv.set_oper_password(serv.serv_config.oper_password);

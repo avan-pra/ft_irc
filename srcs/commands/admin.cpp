@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 18:07:56 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/28 13:58:46 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/30 15:44:33 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	admin_command(const std::string &line, std::list<Client>::iterator client_i
 	}
 	if (params.size() == 1)
 	{
-		file.open("./admin");
+		file.open(serv.get_admin_path());
 		if (!file)
 		{
 			client_it->push_to_buffer(create_msg(423, client_it, serv, serv.get_hostname()));
@@ -87,7 +87,7 @@ void	admin_command(const std::string &line, std::list<Server>::iterator server_i
 		return ;
 	if (params[2] == serv.get_hostname())
 	{
-		file.open("./admin");
+		file.open(serv.get_admin_path());
 		if (!file)
 		{
 			server_it->push_to_buffer(create_msg(423, client_it, serv, serv.get_hostname()));

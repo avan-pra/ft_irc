@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <deque>
+# include <map>
 
 # include "Connection.hpp"
 # include "Unregistered.hpp"
@@ -44,6 +45,7 @@ class Server : public Connection
 	public:
 		std::deque<Client*>				_client_attached;
 		std::deque<Server*>				_introduced_serv;
+		std::map<size_t, std::string>	_token_map;
 
 		/*
 		** Constructor/Destructor

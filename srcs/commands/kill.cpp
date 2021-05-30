@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 00:41:24 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/06 11:31:51 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/28 19:00:23 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ void	kill_command(const std::string &line, std::list<Client>::iterator client_it
 	}
 
 	std::list<Client>::iterator target;
+	std::list<Server>::iterator	serv_it;
+	
+	if ((serv_it = find_server_by_iterator(args[1])) != g_all.g_aServer.end())
+	{
+		client_it->push_to_buffer(create_msg(483, client_it, serv));
+		return ;
+	}
 	if ((target = find_client_by_iterator(args[1])) == g_all.g_aClient.end())
 	{
 		client_it->push_to_buffer(create_msg(401, client_it, serv, args[1]));
