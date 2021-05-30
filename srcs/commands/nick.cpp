@@ -186,7 +186,7 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	cli._fd = server_it->_fd;
 	cli.set_server_token(ft_atoi(params[6]));
 
-	std::cout << "cli stat : host << " << host->get_servername() << std::endl;
+//	std::cout << "cli stat : host << " << host->get_servername() << std::endl;
 
 	g_all.g_aClient.push_back(cli);
 
@@ -198,17 +198,15 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin();
 								it != g_all.g_aServer.end(); it++)
 	{
-		std::cout << "SERV NAME :" << it->get_servername() << ", if (" << (it->get_hopcount() == 1 && &(*it) != &(*server_it) ? "true" : "false") << ")\n";
+	//	std::cout << "SERV NAME :" << it->get_servername() << ", if (" << (it->get_hopcount() == 1 && &(*it) != &(*server_it) ? "true" : "false") << ")\n";
 		if (&(*it) != &(*server_it) && it->get_hopcount() == 1)
 		{
 			std::map<size_t, std::string>::const_iterator	map_it = it->_token_map.begin();
 
 			while (map_it->second != host->get_servername())
 			{
-			std::cout <<"compare name = " <<  map_it->second << "/" << host->get_servername() << std::endl;
 				if (map_it == it->_token_map.end())
 				{
-					std::cout << "token not found\n";
 					map_it--;
 					break ;
 				}

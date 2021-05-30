@@ -75,7 +75,6 @@ void	server_reply(std::string line, std::list<Server>::iterator server_it, const
 		server_it->push_to_buffer(create_msg(462, server_it, serv));
 		return ;
 	}
-	std::cout << "server_reply\n";
 	server_it->set_server_name(arg[2]);
 	server_it->set_hopcount(1);
 	server_it->set_token(g_all.g_aServer.size());
@@ -113,7 +112,6 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 		return ;
 	}
 
-	std::cout << "new direct\n";
 	size_t i;
 
 	for (i = 0; i < serv.network.size(); ++i) //check if we know the foreign server
@@ -169,7 +167,6 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 	if (ft_atoi(params[3]) <= 1)
 		return ;
 
-	std::cout << "introduce_server \n";
 	Unregistered	tmp;
 	Server			new_serv = tmp;
 
@@ -243,17 +240,14 @@ void	server_command(const std::string &line, std::list<Server>::iterator server_
 
 	if (line[0] == ':' && server_it->is_registered() == false)
 	{
-		std::cout << "here" << std::endl;
 		server_reply(line, server_it, serv);
 	}
 	else if (line[0] == ':' && server_it->is_registered())
 	{
-		std::cout << "here2\n";
 		introduce_server(line, server_it, serv);
 	}
 	else if (server_it->is_registered() == false)
 	{
-		std::cout << "here3\n";
 		new_direct_server(line, server_it, serv);
 	}
 }
