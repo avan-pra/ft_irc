@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 18:07:56 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/30 15:44:33 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/31 01:07:20 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void	admin_other_serv(std::string serv_name, std::list<Client>::iterator client_
 		client_it->push_to_buffer(create_msg(402, client_it, serv, serv_name));
 		return ;
 	}
-	server_it->push_to_buffer(":" + client_it->get_nickname() + " ADMIN " + serv_name + "\r\n");
+	if (server_it->get_hopcount() > 1)
+		server_it->get_server_uplink()->push_to_buffer(":" + client_it->get_nickname() + " ADMIN " + serv_name + "\r\n");
+	else
+		server_it->push_to_buffer(":" + client_it->get_nickname() + " ADMIN " + serv_name + "\r\n");
 }
 
 void	admin_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
@@ -70,6 +73,8 @@ void	admin_command(const std::string &line, std::list<Client>::iterator client_i
 		}
 		file.close();
 	}
+	else if (params.size() >= 2)
+		admin_other_serv(params[1], client_it, serv);
 }
 
 void	admin_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)

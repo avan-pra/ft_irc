@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/24 12:46:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/24 17:21:11 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/31 01:06:49 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,8 @@ void	reply_code(const std::string &line, std::list<Server>::iterator server_it, 
 		return ;
 	if ((client_it = find_client_by_iterator(params[2])) == g_all.g_aClient.end())
 		return ;
-	client_it->push_to_buffer(line + "\r\n");
+	if (client_it->get_hopcount() > 0)
+		client_it->get_server_uplink()->push_to_buffer(line + "\r\n");
+	else
+		client_it->push_to_buffer(line + "\r\n");
 }

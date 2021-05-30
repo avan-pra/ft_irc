@@ -176,6 +176,7 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 	new_serv.set_info(&params[5][1]);
 	new_serv._fd = server_it->_fd;
 	new_serv.set_register(true);
+	new_serv.set_server_uplink(&(*server_it));
 	g_all.g_aServer.push_back(new_serv);
 	server_it->_introduced_serv.push_back(&g_all.g_aServer.back());
 	server_it->_token_map.insert(std::make_pair(new_serv.get_token(), new_serv.get_servername()));

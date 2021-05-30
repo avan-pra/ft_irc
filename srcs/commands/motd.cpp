@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 19:01:28 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/30 15:44:58 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/31 00:53:31 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,12 @@ void	motd_other_serv(std::string serv_name, std::list<Client>::iterator client_i
 		client_it->push_to_buffer(create_msg(402, client_it, serv, serv_name));
 		return ;
 	}
-	server_it->push_to_buffer(":" + client_it->get_nickname() + " MOTD " + serv_name + "\r\n");
+	if (server_it->get_hopcount() > 1)
+	{
+		server_it->get_server_uplink()->push_to_buffer(":" + client_it->get_nickname() + " MOTD " + serv_name + "\r\n");
+	}
+	else
+		server_it->push_to_buffer(":" + client_it->get_nickname() + " MOTD " + serv_name + "\r\n");
 }
 
 void	motd_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
@@ -83,7 +88,7 @@ void	motd_command(const std::string &line, std::list<Server>::iterator server_it
 		server_it->push_to_buffer(create_msg(376, client_it, serv));
 		file.close();
 	}
-/*	else
+	else
 	{
 		if ((serv_cible = find_server_by_iterator(params[2])) == g_all.g_aServer.end())
 		{
@@ -92,4 +97,4 @@ void	motd_command(const std::string &line, std::list<Server>::iterator server_it
 		}
 		serv_cible->push_to_buffer(line + "\r\n");
 	}
-*/}
+}
