@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 13:57:16 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/24 12:08:38 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/30 19:29:44 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,17 @@ std::list<Server>::iterator			find_server_by_iterator(const Server *se)
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
 		if (se == &(*it))
 			return (it);
+	return (g_all.g_aServer.end());
+}
+
+std::list<Server>::iterator			find_server_by_token(std::list<Server>::iterator server_it, size_t token)
+{
+	for (std::map<size_t, std::string>::iterator it = server_it->_token_map.begin();
+		it != server_it->_token_map.end(); it++)
+	{
+		if (it->first == token)
+			return (find_server_by_iterator(it->second));
+	}
 	return (g_all.g_aServer.end());
 }
 
