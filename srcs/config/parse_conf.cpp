@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/13 17:57:24 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/30 15:43:29 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ enum confID
 	ePING,
 	eTIMEOUT,
 	eTIMEOUT_REGISTER,
+	eADMIN_PATH,
+	eMOTD_PATH,
 	eNETWORK,
 	eERROR
 };
@@ -73,6 +75,8 @@ confID	hashit_s(const std::string &s)
 	else if (s == "PING")					return	ePING;
 	else if (s == "TIMEOUT")				return	eTIMEOUT;
 	else if (s == "TIMEOUT_REGISTER")		return	eTIMEOUT_REGISTER;
+	else if (s == "ADMIN_PATH")				return	eADMIN_PATH;
+	else if (s == "MOTD_PATH")				return	eMOTD_PATH;
 	else if (s == "NETWORK:")				return	eNETWORK;
 	else if (s.size() > 0 && s[0] == '#')	return	eCOMMENT_LINE;
 	return	eERROR;
@@ -320,6 +324,48 @@ int		set_client_hostname(t_config_file &config_file, std::string &cli_hostname, 
 	return (1);
 }
 
+int		set_motd_path(t_config_file &config_file, std::string motd_path, const int &nb_line)
+{
+	std::ifstream	file;
+
+	if (config_file.motd_path != "")
+		return (config_error("MOTD_PATH already set", nb_line));
+	if (motd_path.size() == 0)
+	{
+		file.open("./motd");
+		if (!file)
+			return (config_error("MOTD_PATH not set and basic motd at ./motd not found", nb_line));
+		config_file.motd_path = "./motd";
+		return (1);
+	}
+	file.open(motd_path);
+	if (!file)
+		return (config_error("MOTD_PATH: " + motd_path + " file not found", nb_line));
+	config_file.motd_path = motd_path;
+	return (1);
+}
+
+int		set_admin_path(t_config_file &config_file, std::string admin_path, const int &nb_line)
+{
+	std::ifstream	file;
+
+	if (config_file.admin_path != "")
+		return (config_error("ADMIN_PATH already set", nb_line));
+	if (admin_path.size() == 0)
+	{
+		file.open("./admin");
+		if (!file)
+			return (config_error("ADMIN_PATH not set and basic motd at ./motd not found", nb_line));
+		config_file.motd_path = "./admin";
+		return (1);
+	}
+	file.open(admin_path);
+	if (!file)
+		return (config_error("ADMIN_PATH: " + admin_path + " file not found", nb_line));
+	config_file.admin_path = admin_path;
+	return (1);
+}
+
 int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line, bool all_param_set)
 {
 	std::string		line;
@@ -535,9 +581,23 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 				config_file.i++;
 				break ;
 			}
+			case eMOTD_PATH:
+			{
+				if (!set_motd_path(config_file, variable, nb_line))
+					throw ConfigFileException();
+				config_file.i++;
+				break ;
+			}
+			case eADMIN_PATH:
+			{
+				if (!set_admin_path(config_file, variable, nb_line))
+					throw ConfigFileException();
+				config_file.i++;
+				break ;
+			}
 			case eNETWORK:
 			{
-				if (!set_network_id(config_file, file, nb_line, (config_file.i == 13 ? true : false)))
+				if (!set_network_id(config_file, file, nb_line, (config_file.i == 15 ? true : false)))
 					throw ConfigFileException();
 				break ;
 			}
@@ -553,7 +613,7 @@ void	parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line, bo
 			}
 		}
 	}
-	if (config_file.i == 13)
+	if (config_file.i == 15)
 		all_param_set = true;
 }
 
@@ -597,6 +657,8 @@ void		print_config_file(t_config_file &config_file)
 {
 	std::cerr << CYAN "<<<< Config file >>>>" NC<< std::endl;
 	std::cerr << "HOSTNAME            : " << BLUE << config_file.hostname << NC << std::endl;
+	std::cerr << "MOTD_PATH           : " << BLUE << config_file.motd_path << NC << std::endl;
+	std::cerr << "ADMIN_PATH          : " << BLUE << config_file.admin_path << NC << std::endl;
 	std::cerr << "LISTEN_LIMIT        : " << GREEN << config_file.listen_limit << NC << std::endl;
 	std::cerr << "PORTS               : ";
 	for (std::map<int, bool>::iterator it = config_file.m_ports.begin();

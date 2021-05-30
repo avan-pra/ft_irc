@@ -6,12 +6,11 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 19:01:28 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/24 16:05:13 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/30 15:44:58 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/IRCserv.hpp"
-#include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
 void	motd_other_serv(std::string serv_name, std::list<Client>::iterator client_it, const MyServ &serv)
@@ -37,7 +36,7 @@ void	motd_command(const std::string &line, std::list<Client>::iterator client_it
 		motd_other_serv(params[1], client_it, serv);
 		return ;
 	}
-	file.open("./motd");
+	file.open(serv.get_motd_path());
 	if (!file)
 	{
 		client_it->push_to_buffer(create_msg(422, client_it, serv)); //je connais pas le code et flemme de check
@@ -60,6 +59,7 @@ void	motd_command(const std::string &line, std::list<Server>::iterator server_it
 	std::fstream				file;
 	std::string					motd_line;
 	std::list<Client>::iterator	client_it;
+	std::list<Server>::iterator	serv_cible;
 
 	if (params.size() < 3)
 		return ;
@@ -67,7 +67,7 @@ void	motd_command(const std::string &line, std::list<Server>::iterator server_it
 		return ;
 	if (params[2] == serv.get_hostname())
 	{
-		file.open("./motd");
+		file.open(serv.get_motd_path());
 		if (!file)
 		{
 			server_it->push_to_buffer(create_msg(422, client_it, serv));
@@ -83,4 +83,13 @@ void	motd_command(const std::string &line, std::list<Server>::iterator server_it
 		server_it->push_to_buffer(create_msg(376, client_it, serv));
 		file.close();
 	}
-}
+/*	else
+	{
+		if ((serv_cible = find_server_by_iterator(params[2])) == g_all.g_aServer.end())
+		{
+			server_it->push_to_buffer(create_msg(402, client_it, serv, params[2]));
+			return ;
+		}
+		serv_cible->push_to_buffer(line + "\r\n");
+	}
+*/}
