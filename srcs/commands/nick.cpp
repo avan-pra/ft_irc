@@ -175,7 +175,7 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 		disconnect(&(*client_it), client_it);
 		return ;
 	}
-	std::list<Server>::iterator		host = find_server_by_iterator(&params[0][1]);
+	std::list<Server>::iterator		host = find_server_by_token(server_it, ft_atoi(params[6]));
 
 	cli.set_nickname(params[2]);
 	cli.set_mode(params[7]);
@@ -186,6 +186,8 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	cli._fd = server_it->_fd;
 	cli.set_server_token(ft_atoi(params[6]));
 
+	std::cout << "cli stat : host << " << host->get_servername() << std::endl;
+
 	g_all.g_aClient.push_back(cli);
 
 	g_all.g_aClient.rbegin()->set_server_host(&(*host));
@@ -193,12 +195,33 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 
 	host->_client_attached.push_back(&(*(g_all.g_aClient.rbegin())));
 
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin();
+								it != g_all.g_aServer.end(); it++)
+	{
+		std::cout << "SERV NAME :" << it->get_servername() << ", if (" << (it->get_hopcount() == 1 && &(*it) != &(*server_it) ? "true" : "false") << ")\n";
+		if (&(*it) != &(*server_it) && it->get_hopcount() == 1)
+		{
+			std::map<size_t, std::string>::const_iterator	map_it = it->_token_map.begin();
 
-	full_msg = ":" + serv.get_hostname();
-	for (size_t i = 1; i < params.size(); i++)
-		full_msg += " " + params[i];
-	full_msg += "\r\n";
-	send_to_all_server(full_msg, server_it);
+			while (map_it->second != host->get_servername())
+			{
+			std::cout <<"compare name = " <<  map_it->second << "/" << host->get_servername() << std::endl;
+				if (map_it == it->_token_map.end())
+				{
+					std::cout << "token not found\n";
+					map_it--;
+					break ;
+				}
+				map_it++;
+			}
+			full_msg = params[0] + " NICK " + cli.get_nickname() + " " +
+					ft_to_string(cli.get_hopcount() + 1) + " " + cli.get_username() +
+					" " + cli.get_hostname() + " " + ft_to_string(map_it->first) + " " +
+					cli.get_mode() + " :" + cli.get_realname() + "\r\n";
+			std::cout << "|" << full_msg;
+			it->push_to_buffer(full_msg);
+		}
+	}
 }
 
 void	change_nick(std::vector<std::string> params, std::list<Server>::iterator server_it, const MyServ &serv)

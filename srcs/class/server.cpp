@@ -10,6 +10,8 @@ Server::~Server()
 	for (std::deque<Server*>::iterator se = this->_introduced_serv.begin(); se != this->_introduced_serv.end(); )
 	{
 		std::list<Server>::iterator it = find_server_by_iterator(&(**se));
+
+		std::cout << "DESTRUCTOR = " << it->get_servername() << std::endl;;
 		//send squit to every1
 		g_all.g_aServer.erase(it);
 		se = this->_introduced_serv.erase(se);
