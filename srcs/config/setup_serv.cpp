@@ -23,7 +23,14 @@ int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 		sock.sockfd = socket(AF_INET6, SOCK_STREAM, 0);
 	else						// allow only ipv4		
 		sock.sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	fcntl(sock.sockfd, F_SETFL, O_NONBLOCK);
+	if (sock.sockfd == INVALID_SOCKET)
+		throw CantInitSocket();
+	if (fcntl(sock.sockfd, F_SETFL, O_NONBLOCK) < 0)
+		throw CantInitSocket();
+
+	int enable;
+	if (setsockopt(sock.sockfd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+		throw CantInitSocket();
 
 	if (sock.sockfd == INVALID_SOCKET)
 		throw CantInitSocket();
