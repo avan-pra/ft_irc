@@ -11,8 +11,9 @@ Server::~Server()
 	{
 		std::list<Server>::iterator it = find_server_by_iterator(&(**se));
 
-		std::cout << "DESTRUCTOR = " << it->get_servername() << std::endl;;
+		// std::cout << "DESTRUCTOR = " << it->get_servername() << std::endl;;
 		//send squit to every1
+		it->set_quit_str(this->get_quit_str());
 		g_all.g_aServer.erase(it);
 		se = this->_introduced_serv.erase(se);
 	}
@@ -20,6 +21,8 @@ Server::~Server()
 	for (std::deque<Client*>::iterator cht = this->_client_attached.begin(); cht != this->_client_attached.end(); )
 	{
 		std::list<Client>::iterator it = find_client_by_iterator(&(**cht));
+
+		it->set_quit_str(this->get_quit_str());
 		g_all.g_aClient.erase(it);
 		cht = this->_client_attached.erase(cht);
 	}

@@ -221,6 +221,7 @@ void	clear_empty_packet(std::vector<std::string> &packet);
 */
 void	send_to_channel(const std::string &msg, std::list<Client>::iterator client_it, const int &chan_id, bool to_sender = false);
 void	send_to_channel_local(const std::string &msg, std::list<Client>::iterator client_it, const int &chan_id, bool to_sender = false);
+void	send_to_channel_local(const std::string &msg, Client *client_it, const int &chan_id, bool to_sender = false);
 void	send_to_all_channel(const std::string &msg, std::list<Client>::iterator client_it, bool to_sender = false);
 void	send_to_all_channel_local(const std::string &msg, std::list<Client>::iterator client_it, bool to_sender = false);
 void	send_to_all_server(const std::string &msg, std::list<Server>::iterator server_it, bool to_sender = false);

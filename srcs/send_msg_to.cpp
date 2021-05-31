@@ -46,9 +46,28 @@ void	send_to_channel_local(const std::string &msg, std::list<Client>::iterator c
 	full_msg = ":" + client_it->get_nickname() + "!" + client_it->get_username() +
 				"@" + client_it->get_hostname() + " " + msg + "\r\n";
 
+	std::cout << full_msg << std::endl;
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
 		if (to_sender == true || g_vChannel[chan_id]._users[i] != &(*client_it))
+		{
+			if (g_vChannel[chan_id]._users[i]->get_hopcount() == 0)
+				g_vChannel[chan_id]._users[i]->push_to_buffer(full_msg);
+		}
+	}
+}
+
+void	send_to_channel_local(const std::string &msg, Client *client_it, const int &chan_id, bool to_sender)
+{
+	std::string				full_msg;
+
+	full_msg = ":" + client_it->get_nickname() + "!" + client_it->get_username() +
+				"@" + client_it->get_hostname() + " " + msg + "\r\n";
+
+	std::cout << full_msg << std::endl;
+	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
+	{
+		if (to_sender == true || g_vChannel[chan_id]._users[i] != client_it)
 		{
 			if (g_vChannel[chan_id]._users[i]->get_hopcount() == 0)
 				g_vChannel[chan_id]._users[i]->push_to_buffer(full_msg);

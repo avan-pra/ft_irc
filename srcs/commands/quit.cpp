@@ -16,19 +16,6 @@
 #include <deque>
 #include <list>
 
-static bool		is_user_in_any_channel(const std::string nickname)
-{
-	for (size_t i = 0; i < g_vChannel.size(); i++)
-	{
-		for (size_t j = 0; j < g_vChannel[i]._users.size(); j++)
-		{
-			if (g_vChannel[i]._users[j]->get_nickname() == nickname)
-				return	true;
-		}
-	}
-	return	false;
-}
-
 std::string		create_part_str(std::list<Client>::iterator client_it)
 {
 	std::string		part_string;
@@ -77,10 +64,10 @@ static void		remove_pointer_to_client(std::list<Client>::iterator client_it)
 void			quit_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string>	args;
-	std::string					output;
 	std::string					part_string;
 	std::string					quit_msg_server;
 
+	(void)serv;
 	//Add nick to disconnected user deque
 	add_disconnected_nick(client_it);
 	args = ft_split(line, " ");
@@ -89,22 +76,10 @@ void			quit_command(const std::string &line, std::list<Client>::iterator client_
 	if (quit_msg_server.find("\r\n") == std::string::npos)
 		quit_msg_server += "\r\n";
 	send_to_all_server(quit_msg_server, g_all.g_aServer.begin(), true);
-	if (is_user_in_any_channel(client_it->get_nickname()) == true)
-	{
-		if (part_string.size() > 0)
-			part_string.resize(part_string.size() - 1);
-		if (args.size() == 1)
-			part_command("PART " + part_string, client_it, serv);
-		else
-		{
-			try
-			{
-				output = line.substr(line.find_first_of(':'), line.size());
-			}
-			catch (std::exception) { return; }
-			part_command("PART " + part_string + " " + output, client_it, serv);
-		}
-	}
+	if (line.find(':') != std::string::npos)
+		client_it->set_quit_str(line.substr(line.find_first_of(':') + 1, line.size()));
+	else
+		client_it->set_quit_str("");
 	throw QuitCommandException();
 }
 
@@ -130,6 +105,7 @@ void		quit_command(const std::string &line, std::list<Server>::iterator server_i
 	add_disconnected_nick(client_it);
 	send_to_all_server(line, server_it);
 	remove_pointer_to_client(client_it);
+	client_it->set_quit_str(part_string);
 	g_all.g_aClient.erase(client_it);
 }
 
