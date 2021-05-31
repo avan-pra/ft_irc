@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 19:01:28 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/31 00:53:31 by lucas            ###   ########.fr       */
+/*   Updated: 2021/05/31 11:44:08 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,9 @@ void	motd_command(const std::string &line, std::list<Server>::iterator server_it
 			server_it->push_to_buffer(create_msg(402, client_it, serv, params[2]));
 			return ;
 		}
-		serv_cible->push_to_buffer(line + "\r\n");
+		if (serv_cible->get_hopcount() > 1)
+			serv_cible->get_server_uplink()->push_to_buffer(line + "\r\n");
+		else
+			serv_cible->push_to_buffer(line + "\r\n");
 	}
 }

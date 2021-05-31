@@ -150,7 +150,6 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 	share_server(server_it, serv);
 	share_client(server_it, serv);
 	share_channel(server_it, serv);
-	//send_to_all_server(":" + serv.get_hostname() + " SERVER " + server_it->get_servername() + " 1 " + ft_to_string(server_it->get_token() + 1) + " " + server_it->get_info() + "\r\n", server_it);
 }
 
 void	introduce_server(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)

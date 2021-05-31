@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 19:42:41 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/25 12:05:44 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/31 22:45:34 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ void	info_other_serv(std::string serv_name, std::list<Client>::iterator client_i
 		client_it->push_to_buffer(create_msg(402, client_it, serv, serv_name));
 		return ;
 	}
-	server_it->push_to_buffer(":" + client_it->get_nickname() + " INFO " + serv_name + "\r\n");
+	if (server_it->get_hopcount() > 1)
+		server_it->get_server_uplink()->push_to_buffer(":" + client_it->get_nickname() + " INFO " + serv_name + "\r\n");
+	else
+		server_it->push_to_buffer(":" + client_it->get_nickname() + " INFO " + serv_name + "\r\n");
 }
 
 std::string		get_created_time()
@@ -89,6 +92,7 @@ void			info_command(const std::string &line, std::list<Server>::iterator server_
 {
 	std::vector<std::string>	params = ft_split(line, " ");
 	std::list<Client>::iterator	client_it;
+	std::list<Server>::iterator	serv_cible;
 	std::string					time;
 
 	if (params.size() < 3)
@@ -100,5 +104,17 @@ void			info_command(const std::string &line, std::list<Server>::iterator server_
 		time = get_created_time();
 		server_it->push_to_buffer(make_info_str(serv, client_it, time));
 		server_it->push_to_buffer(create_msg(374, client_it, serv));
+	}
+	else
+	{
+		if ((serv_cible = find_server_by_iterator(params[2])) == g_all.g_aServer.end())
+		{
+			server_it->push_to_buffer(create_msg(402, client_it, serv, params[2]));
+			return ;
+		}
+		if (serv_cible->get_hopcount() > 1)
+			serv_cible->get_server_uplink()->push_to_buffer(line + "\r\n");
+		else
+			serv_cible->push_to_buffer(line + "\r\n");
 	}
 }
