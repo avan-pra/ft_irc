@@ -20,7 +20,7 @@ _erase_only:
 		std::list<Client>::iterator	it = find_client_by_iterator(co);
 		if (it == g_all.g_aClient.end())
 		{
-			// std::cout << "Can't find Client" << std::endl;
+			++client_it;
 			return ;
 		}
 		size_t			sin_port = ntohs(co->sock_addr.sin6_port);
@@ -61,6 +61,12 @@ void	disconnect(Server *co, std::list<Server>::iterator &server_it)
 		std::list<Server>::iterator		it = find_server_by_iterator(co->_fd);
 		size_t			sin_port = ntohs(co->sock_addr.sin6_port);
 		std::string		tls_str = (it->get_tls() ? " (tls)" : "");
+
+		if (it == g_all.g_aServer.end())
+		{
+			++server_it;
+			return ;
+		}
 		#ifdef __linux__
 			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__in6_u.__u6_addr32[3]);
 		#endif
@@ -94,6 +100,7 @@ _erase_only:
 		if (it == g_all.g_aService.end())
 		{
 			// std::cout << "Can't find Service" << std::endl;
+			++service_it;
 			return ;
 		}
 		size_t			sin_port = ntohs(co->sock_addr.sin6_port);
@@ -130,6 +137,14 @@ void	disconnect(Unregistered *co, std::list<Unregistered>::iterator &unregistere
 		std::list<Unregistered>::iterator	it = find_unregister_by_iterator(co->_fd);
 		size_t			sin_port = ntohs(co->sock_addr.sin6_port);
 		std::string		tls_str = (it->get_tls() ? " (tls)" : "");
+
+		if (it == g_all.g_aUnregistered.end())
+		{
+			// std::cout << "Can't find Service" << std::endl;
+			++unregistered_it;
+			return ;
+		}
+
 		#ifdef __linux__
 			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__in6_u.__u6_addr32[3]);
 		#endif
@@ -145,6 +160,8 @@ void	disconnect(Unregistered *co, std::list<Unregistered>::iterator &unregistere
 
 void		disconnect_all()
 {
+	std::cout << g_all.g_aClient.size() << std::endl;
+
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); )
 	{
 		if (it->get_hopcount() == 1)
@@ -155,11 +172,15 @@ void		disconnect_all()
 		else
 			++it;
 	}
-	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); ++it)
+	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); )
 	{
 		disconnect(&(*it), it);
 	}
-	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
+	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); )
+	{
+		disconnect(&(*it), it);
+	}
+	for (std::list<Service>::iterator it = g_all.g_aService.begin(); it != g_all.g_aService.end(); )
 	{
 		disconnect(&(*it), it);
 	}

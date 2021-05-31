@@ -36,6 +36,12 @@ class Service : public Connection
 			_sslptr = co._sslptr;
 			sock_addr = co.sock_addr;
 			_type = SERVICE_TYPE;
+
+			//related to STATS command
+			_bytes_sent = co.get_number_bytes_sent();
+			_bytes_received = co.get_number_bytes_received();
+			_messages_sent = co.get_number_of_messages_sent();
+			_messages_received = co.get_number_of_messages_received();
 		}
 		
 		~Service() {}

@@ -304,7 +304,7 @@ void		connect_to_network(MyServ &serv);
 /*
 ** service_parser.cpp 
 */
-void		service_parser(char *line, std::list<Service>::iterator service_it, const MyServ &serv);
+void		service_parser(char *line, std::list<Service>::iterator service_it, MyServ &serv);
 
 /*
 ** iterate_service.cpp 

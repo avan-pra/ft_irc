@@ -10,9 +10,66 @@ void	statslinkinfo(std::list<Client>::iterator client_it, const MyServ &serv)
 
 	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); ++it)
 	{
-		rpl = it->get_nickname();						// linkname
-		rpl += "!" + it->get_username();				// linkname
-		rpl += "@" + it->get_hostname();				// linkname
+		if (it->get_hopcount() == 0)
+		{
+			rpl = (it->get_nickname().size() == 0 ? "*" : it->get_nickname());						// linkname
+			rpl += "!" + (it->get_username().size() == 0 ? "*" : it->get_username());				// linkname
+			rpl += "@" + (it->get_hostname().size() == 0 ? "*" : it->get_hostname());				// linkname
+			rpl += " ";
+			rpl += ft_to_string(it->get_buffer().size());					// sendq
+			rpl += " ";
+			rpl += ft_to_string(it->get_number_of_messages_sent());		// sent message
+			rpl += " ";
+			rpl += ft_to_string(it->get_number_bytes_sent());				// nbr of bytes sent
+			rpl += " ";
+			rpl += ft_to_string(it->get_number_of_messages_received());	// received message
+			rpl += " ";
+			rpl += ft_to_string(it->get_number_bytes_received());			//nbr of bytes received
+			rpl += " ";
+			rpl += ft_to_string(time(0) - it->get_t_signon());			//how long ago he joined in sec
+			client_it->push_to_buffer(create_msg(211, client_it, serv, rpl));
+		}
+	}
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); ++it)
+	{
+		if (it->get_hopcount() == 1)
+		{
+			rpl = (it->get_servername().size() == 0 ? "*" : it->get_servername());	// linkname
+			rpl += " ";
+			rpl += ft_to_string(it->get_buffer().size());					// sendq
+			rpl += " ";
+			rpl += ft_to_string(it->get_number_of_messages_sent());		// sent message
+			rpl += " ";
+			rpl += ft_to_string(it->get_number_bytes_sent());				// nbr of bytes sent
+			rpl += " ";
+			rpl += ft_to_string(it->get_number_of_messages_received());	// received message
+			rpl += " ";
+			rpl += ft_to_string(it->get_number_bytes_received());			//nbr of bytes received
+			rpl += " ";
+			rpl += ft_to_string(time(0) - it->get_t_signon());			//how long ago he joined in sec
+			client_it->push_to_buffer(create_msg(211, client_it, serv, rpl));
+		}
+	}
+	for (std::list<Service>::iterator it = g_all.g_aService.begin(); it != g_all.g_aService.end(); ++it)
+	{
+		rpl = (it->get_nickname().size() == 0 ? "*" : it->get_nickname());	// linkname
+		rpl += " ";
+		rpl += ft_to_string(it->get_buffer().size());					// sendq
+		rpl += " ";
+		rpl += ft_to_string(it->get_number_of_messages_sent());		// sent message
+		rpl += " ";
+		rpl += ft_to_string(it->get_number_bytes_sent());				// nbr of bytes sent
+		rpl += " ";
+		rpl += ft_to_string(it->get_number_of_messages_received());	// received message
+		rpl += " ";
+		rpl += ft_to_string(it->get_number_bytes_received());			//nbr of bytes received
+		rpl += " ";
+		rpl += ft_to_string(time(0) - it->get_t_signon());			//how long ago he joined in sec
+		client_it->push_to_buffer(create_msg(211, client_it, serv, rpl));
+	}
+	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
+	{
+		rpl = "*";						// linkname
 		rpl += " ";
 		rpl += ft_to_string(it->get_buffer().size());					// sendq
 		rpl += " ";

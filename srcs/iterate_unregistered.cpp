@@ -156,7 +156,15 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
  				g_all.g_aService.push_back(new_Service);
  				throw  NewServiceException();
  			}
-			else if (command == "PASS")
+			//related to stats commands
+			try
+			{
+				unregistered_it->inc_number_of_messages_received();
+				serv.get_use_per_command().at(command)++;
+			}
+			catch (const std::exception &e) { }
+
+			if (command == "PASS")
 			{
 				pass_command(*str, unregistered_it, serv);
 			}

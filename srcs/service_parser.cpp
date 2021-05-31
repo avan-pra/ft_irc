@@ -23,7 +23,7 @@ bool	can_execute(const std::string command, std::list<Service>::iterator service
 	return ret;
 }
 
-void	service_parser(char *line, std::list<Service>::iterator service_it, const MyServ &serv)
+void	service_parser(char *line, std::list<Service>::iterator service_it, MyServ &serv)
 {
 	std::vector<std::string>	packet;
 	std::string					true_line;
@@ -44,6 +44,13 @@ void	service_parser(char *line, std::list<Service>::iterator service_it, const M
 			//put to uppercase letter the command (irssi send in lower case for example)
 			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 				*it = std::toupper(*it);
+			try
+			{
+				service_it->inc_number_of_messages_received();	
+				serv.get_use_per_command().at(command)++;
+			}
+			catch (const std::exception &e) { }
+
 			try
 			{
 				/*
