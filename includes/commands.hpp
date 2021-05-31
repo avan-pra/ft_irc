@@ -140,7 +140,7 @@
 # define RPL_STATSYLINE(classe, frq_ping, frq_connection, sendq_max) ("Y " + classe + " " + frq_ping + " " + frq_connection + " " + sendq_max + "\r\n")
 # define RPL_ENDOFSTATS(stat_letter) (stat_letter + " :End of STATS report\r\n")
 # define RPL_STATSLLINE(host_mask, server_name, max_depth) ("L " + host_mask + " * " + server_name + max_depth "\r\n")
-//# define RPL_STATSUPTIME() (":Server Up %d days %d:%02d:%02d\r\n")
+# define RPL_STATSUPTIME(arg) (":Server Up " + arg + "\r\n")
 # define RPL_STATSOLINE(host_mask, name) ("O " + host_mask + " * " + name + "\r\n")
 # define RPL_STATSHLINE(host_mask, server_name) ("H " + host_mask + " * " + server_name + "\r\n")
 # define RPL_UMODEIS(user_mode) (user_mode + "\r\n")

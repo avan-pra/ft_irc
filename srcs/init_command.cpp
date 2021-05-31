@@ -127,6 +127,10 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 
 	//RPL code
 	cmd["005"] = reply_code;
+	cmd["211"] = reply_code;
+	cmd["212"] = reply_code;
+	cmd["219"] = reply_code;
+	cmd["242"] = reply_code;
 	cmd["256"] = reply_code;
 	cmd["257"] = reply_code;
 	cmd["258"] = reply_code;

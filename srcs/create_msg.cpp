@@ -39,6 +39,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_ENDOFSTATS(arg1);
 		case 221:
 			return sample + RPL_UMODEIS(arg1);
+		case 242:
+			return sample + RPL_STATSUPTIME(arg1);
 		case 256:
 			return sample + RPL_ADMINME(arg1);
 		case 257:
