@@ -250,6 +250,9 @@ void	stats_command(const std::string &line, std::list<Server>::iterator server_i
 			server_it->push_to_buffer(create_msg(402, client_it, serv, params[3]));
 			return ;
 		}
-		serv_cible->push_to_buffer(line + "\r\n");
+		if (serv_cible->get_hopcount() > 1)
+			serv_cible->get_server_uplink()->push_to_buffer(line + "\r\n");
+		else
+			serv_cible->push_to_buffer(line + "\r\n");
 	}
 }
