@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:57:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/28 16:46:29 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/05/31 23:10:49 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ static void	create_channel(const std::map<std::string, std::string>::iterator it
 
 	chan._users.push_back(&(*client_it));
 	chan._operator.push_back(&(*client_it));
-	chan.set_mode("+nt");
+	chan.set_mode("+");
 	g_vChannel.push_back(chan);
 	enter = true;
 }

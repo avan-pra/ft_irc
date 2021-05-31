@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/26 15:31:53 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/06/01 00:54:03 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 	return	(ret);
 }
 
-static void			set_chann_mode(const std::string mode, const std::vector<std::string> args, const size_t &chann_idx, std::list<Client>::iterator client_it, const MyServ &serv)
+static void			set_chann_mode(const std::string &line, const std::string mode, const std::vector<std::string> args, const size_t &chann_idx, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	char				sign = '+';
 	std::string			tmp;
@@ -230,7 +230,14 @@ static void			set_chann_mode(const std::string mode, const std::vector<std::stri
 				j++;
 		}
 	}
-	g_vChannel[chann_idx].send_to_all(create_full_msg_mode(g_vChannel[chann_idx].get_mode(), client_it, chann_idx));
+	send_to_channel_local("MODE " + g_vChannel[chann_idx].get_name() + " " + g_vChannel[chann_idx].get_mode(), client_it, chann_idx);
+	if (client_it->get_hopcount() == 0)
+		send_to_all_server(":" + client_it->get_nickname() + " " + line + "\r\n", g_all.g_aServer.begin(), true);
+	else
+	{
+		std::list<Server>::iterator		server_it = find_server_by_iterator(client_it->get_server_uplink()->get_servername());
+		send_to_all_server(":" + client_it->get_nickname() + " " + line + "\r\n", server_it, false);
+	}
 }
 
 static void			check_channel_errors(std::list<Client>::iterator client_it, size_t &channel_idx, const std::string channel_name, const MyServ &serv)
@@ -329,7 +336,7 @@ void				mode_command(const std::string &line, std::list<Client>::iterator client
 					ban_list(channel_idx, client_it, serv);
 				//On set le(s) nouveaux modes
 				else
-					set_chann_mode(mode, mode_args, channel_idx, client_it, serv);
+					set_chann_mode(line, mode, mode_args, channel_idx, client_it, serv);
 			}
 		}
 		//La query concerne un user

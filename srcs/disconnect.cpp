@@ -1,6 +1,5 @@
 # include "../includes/Disconnect.hpp"
 # include "../includes/IRCserv.hpp"
-#include <asm-generic/socket.h>
 #include <sys/socket.h>
 
 void	disconnect(Client *co, std::list<Client>::iterator &client_it)
