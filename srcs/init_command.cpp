@@ -17,11 +17,11 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["PASS"] = pass_command;
 	cmd["NICK"] = nick_command;
 	cmd["USER"] = user_command;
-	cmd["SERVER"] = NULL; 
-	cmd["OPER"] = oper_command; 
+	cmd["SERVER"] = NULL;
+	cmd["OPER"] = oper_command;
 	cmd["QUIT"] = quit_command;
-	cmd["CONNECT"] = connect_command; 
-	cmd["SQUIT"] = NULL;
+	cmd["CONNECT"] = connect_command;
+	cmd["SQUIT"] = squit_command;
 	cmd["JOIN"] = join_command; 
 	cmd["PART"] = part_command; 
 	cmd["MODE"] = mode_command; 
