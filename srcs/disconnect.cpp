@@ -1,5 +1,7 @@
 # include "../includes/Disconnect.hpp"
 # include "../includes/IRCserv.hpp"
+#include <asm-generic/socket.h>
+#include <sys/socket.h>
 
 void	disconnect(Client *co, std::list<Client>::iterator &client_it)
 {
@@ -160,8 +162,6 @@ void	disconnect(Unregistered *co, std::list<Unregistered>::iterator &unregistere
 
 void		disconnect_all()
 {
-	std::cout << g_all.g_aClient.size() << std::endl;
-
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); )
 	{
 		if (it->get_hopcount() == 1)
@@ -186,6 +186,11 @@ void		disconnect_all()
 	}
 	for (size_t i = 0; i < g_serv_sock.size(); i++)
 	{
+		linger opt;
+
+		opt.l_onoff = 1;
+		opt.l_linger = 0;
+		setsockopt(g_serv_sock[i].sockfd, SOL_SOCKET, SO_LINGER, &opt, sizeof(opt));
 		closesocket(g_serv_sock[i].sockfd);
 	}
 }

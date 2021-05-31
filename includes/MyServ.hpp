@@ -31,12 +31,27 @@ class MyServ;
 class Client;
 class Server;
 class Service;
+struct t_stats;
 
 std::map<std::string, void	(*)(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)> 	fill_command(void);
 std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	fill_command_server(void);
 std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iterator client_it, const MyServ &serv)>	fill_command_service(void);
 std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	fill_rpl_server(void);
-std::map<std::string, size_t>																							init_command_used(void);
+std::map<std::string, t_stats>																							init_command_used(void);
+
+struct t_stats
+{
+	size_t	_count;
+	size_t	_byte_count;
+	size_t	_remote_count;
+
+	t_stats()
+	{
+		_count = 0;
+		_byte_count = 0;
+		_remote_count = 0;
+	}
+};
 
 struct t_networkID
 {
@@ -158,7 +173,7 @@ class MyServ
 		const std::map<std::string, void (*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	_command_server;
 		const std::map<std::string, void (*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	_rpl_server;
 		const std::map<std::string, void (*)(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)> _command_service;
-		std::map<std::string, size_t>																								_number_of_use_per_command;
+		std::map<std::string, t_stats>																								_number_of_use_per_command;
 
 	public:
 
@@ -217,8 +232,8 @@ class MyServ
 		const std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	&get_command_server() const { return _command_server; }
 		const std::map<std::string, void	(*)(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)>	&get_command_service() const { return _command_service; }
 		const std::map<std::string, void	(*)(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)>	&get_rpl_server() const { return _rpl_server; }
-		std::map<std::string, size_t>																									&get_use_per_command() { return _number_of_use_per_command; }
-		const std::map<std::string, size_t>																								&get_use_per_command() const { return _number_of_use_per_command; }
+		std::map<std::string, t_stats>																									&get_use_per_command() { return _number_of_use_per_command; }
+		const std::map<std::string, t_stats>																							&get_use_per_command() const { return _number_of_use_per_command; }
 
 		/*
 		** Setter

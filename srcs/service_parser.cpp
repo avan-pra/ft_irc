@@ -47,7 +47,7 @@ void	service_parser(char *line, std::list<Service>::iterator service_it, MyServ 
 			try
 			{
 				service_it->inc_number_of_messages_received();	
-				serv.get_use_per_command().at(command)++;
+				serv.get_use_per_command().at(command)._count++;
 			}
 			catch (const std::exception &e) { }
 

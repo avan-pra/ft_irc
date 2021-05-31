@@ -82,7 +82,7 @@ void	parser(char *line, std::list<Client>::iterator client_it, MyServ &serv)
 			try
 			{
 				client_it->inc_number_of_messages_received();	
-				serv.get_use_per_command().at(command)++;
+				serv.get_use_per_command().at(command)._count++;
 			}
 			catch (const std::exception &e) { }
 

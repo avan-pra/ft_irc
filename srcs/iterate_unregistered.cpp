@@ -160,7 +160,7 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 			try
 			{
 				unregistered_it->inc_number_of_messages_received();
-				serv.get_use_per_command().at(command)++;
+				serv.get_use_per_command().at(command)._count++;
 			}
 			catch (const std::exception &e) { }
 
@@ -176,13 +176,6 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 				}
 				catch (QuitCommandException) { throw QuitCommandException(); }
 			}
-			// related to stats command
-			try
-			{
-				unregistered_it->inc_number_of_messages_received();	
-				serv.get_use_per_command().at(command)++;
-			}
-			catch (const std::exception &e) { }
 		}
 	}
 }

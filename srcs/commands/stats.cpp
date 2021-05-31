@@ -90,19 +90,17 @@ void	statscommand(std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::string rpl;
 
-	for (std::map<std::string, size_t>::const_iterator it = serv.get_use_per_command().begin(); it != serv.get_use_per_command().end(); ++it)
+	for (std::map<std::string, t_stats>::const_iterator it = serv.get_use_per_command().begin(); it != serv.get_use_per_command().end(); ++it)
 	{
-		if (it->second)
+		if (it->second._count != 0 || it->second._remote_count != 0)
 		{
 			rpl = it->first;
 			rpl += " ";
-			rpl += ft_to_string(it->second);
+			rpl += ft_to_string(it->second._count);
 			rpl += " ";
-			rpl += ft_to_string(std::rand());
+			rpl += ft_to_string(it->second._byte_count);
 			rpl += " ";
-			rpl += ft_to_string(std::rand());
-			rpl += " ";
-			rpl += ft_to_string(std::rand());
+			rpl += ft_to_string(it->second._remote_count);
 			client_it->push_to_buffer(create_msg(212, client_it, serv, rpl));
 		}
 	}

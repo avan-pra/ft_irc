@@ -114,7 +114,7 @@ void		server_parser(char *line, std::list<Server>::iterator server_it, MyServ &s
 			try
 			{
 				server_it->inc_number_of_messages_received();
-				serv.get_use_per_command().at(command)++;
+				serv.get_use_per_command().at(command)._remote_count++;
 			}
 			catch (const std::exception &e) { }
 

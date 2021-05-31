@@ -3,6 +3,7 @@
 #include "../includes/Connection.hpp"
 #include <cstddef>
 #include <ctime>
+#include <list>
 #include <string>
 
 //called at each message received
@@ -109,25 +110,12 @@ bool		kick_if_away(Connection &co, const MyServ &serv)
 
 size_t	get_number_of_message(const std::string &msg)
 {
-	size_t						i = 0;
-	size_t						k = 0;
-	size_t						ret = 0;
-
-	while (i < msg.length())
-	{
-		k = i;
-		i = msg.find("\r\n", i);
-		if (k != i)
-			++ret;
-		if (i == std::string::npos)
-			break;
-		i += 2;
-	}
-	return (ret);
+	return (ft_split(msg, "\r\n").size());
 }
 
-void	send_bufferised_packet()
+void	send_bufferised_packet(MyServ &serv)
 {
+	(void)serv;
 	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
 	{
 		if (!(it->get_tls()) || (it->get_tls() && SSL_is_init_finished(it->_sslptr)))
@@ -196,6 +184,6 @@ void run_server(MyServ &serv)
 		iterate_client(serv);
 		iterate_server(serv);
 		iterate_service(serv);
-		send_bufferised_packet();
+		send_bufferised_packet(serv);
 	}
 }
