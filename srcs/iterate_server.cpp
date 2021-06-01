@@ -37,7 +37,7 @@ void	iterate_server(MyServ &serv)
 			{
 				get_message(c, *it, ret);
 				// if (std::strlen(c) > 2)
-				 	std::cout << "iterate_server :" << c;
+				 	// std::cout << "iterate_server :" << c;
 				check_message_problem(c, *it, serv, ret);
 				/*
 				 ** get_message & check_message_problem may set ret to -1 which indicate an critical error such as a too big packet size
