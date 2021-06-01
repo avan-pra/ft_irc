@@ -34,7 +34,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["STATS"] = stats_command;
 	cmd["LINKS"] = NULL;
 	cmd["TIME"] = time_command;
-	cmd["TRACE"] = NULL;
+	cmd["TRACE"] = trace_command;
 	cmd["ADMIN"] = admin_command;
 	cmd["INFO"] = info_command;
 	cmd["PRIVMSG"] = privmsg_command;
@@ -87,6 +87,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["NOTICE"] = notice_command;
 	cmd["ADMIN"] = admin_command;
 	cmd["LUSERS"] = lusers_command;
+	cmd["TRACE"] = trace_command;
 
 
 	cmd["PART"] = part_command;
@@ -98,7 +99,6 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["STATS"] = stats_command;
 	cmd["LINKS"] = NULL;
 	cmd["CONNECT"] = NULL;
-	cmd["TRACE"] = NULL;
 	cmd["WHO"] = NULL;
 	cmd["WHOIS"] = NULL;
 	cmd["WHOWAS"] = NULL;
@@ -127,6 +127,11 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 
 	//RPL code
 	cmd["005"] = reply_code;
+	cmd["200"] = reply_code;
+	cmd["203"] = reply_code;
+	cmd["204"] = reply_code;
+	cmd["205"] = reply_code;
+	cmd["206"] = reply_code;
 	cmd["211"] = reply_code;
 	cmd["212"] = reply_code;
 	cmd["219"] = reply_code;

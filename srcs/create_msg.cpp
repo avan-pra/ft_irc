@@ -31,6 +31,16 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_MYINFO(arg1, arg2, arg3, arg4);
 		case 5:
 			return sample + RPL_BOUNCE(arg1, arg2);
+		case 200:
+			return sample + RPL_TRACELINK(arg1, arg2);
+		case 203:
+			return sample + RPL_TRACEUNKNOWN(arg1);
+		case 204:
+			return sample + RPL_TRACEOPERATOR(arg1);
+		case 205:
+			return sample + RPL_TRACEUSER(arg1);
+		case 206:
+			return sample + RPL_TRACESERVER(arg1);
 		case 211:
 			return sample + RPL_STATSLINKINFO(arg1);
 		case 212:
@@ -59,6 +69,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_ADMINLOC2(arg1);
 		case 259:
 			return sample + RPL_ADMINEMAIL(arg1);
+		case 262:
+			return sample + RPL_TRACEEND(arg1, arg2);
 		case 301:
 			return sample + RPL_AWAY(arg1, arg2);
 		case 302:

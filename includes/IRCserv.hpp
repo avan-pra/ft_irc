@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/06/01 01:59:56 by lucas            ###   ########.fr       */
+/*   Updated: 2021/06/01 03:45:19 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # define SERV_VERSION "0.9"
 
 # define PROTOCOL_VERSION "0210"
+
+# define VERSION "ircGODd-0.9"
 
 # define HASH_CHAR "0123456789abcdefABCDEF"
 

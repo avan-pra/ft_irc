@@ -122,15 +122,16 @@
 //# define RPL_USERS() (":%-8s %-9s %-8s\r\n")
 # define RPL_ENDOFUSERS() (":End of users\r\n")
 # define RPL_NOUSERS() (":Nobody logged in\r\n")
-//# define RPL_TRACELINK() ("Link <version & niveau de débugage> <destination> <serveur suivant>\r\n")
+# define RPL_TRACELINK(dest, next_serv) ("Link " + std::string(VERSION) + " " + dest + " " + next_serv + "\r\n")
 # define RPL_TRACECONNECTING(classe, server) ("Try. " + classe + " " + server + "\r\n")
 # define RPL_TRACEHANDSHAKE(classe, server) ("H.S. " + classe + " " + serveur + "\r\n")
-# define RPL_TRACEUNKNOWN(classe) ("???? " + classe + " " + "[<adresse IP du client au format utilisant des points>]\r\n")
-# define RPL_TRACEOPERATOR(classe, pseudo) ("Oper " + classe + " " + pseudo + "\r\n")
-# define RPL_TRACEUSER(classe, pseudo) ("User " + classe + " " + pseudo + "\r\n")
-# define RPL_TRACESERVER(classe) ("Serv " + classe + " <int>S <int>C <serveur> <pseudo!utilisateur|*!*>@<hôte|serveur>\r\n")
+# define RPL_TRACEUNKNOWN(pseudo) ("???? 1 " + pseudo + "\r\n")
+# define RPL_TRACEOPERATOR(pseudo) ("Oper 1 " + pseudo + "\r\n")
+# define RPL_TRACEUSER(pseudo) ("User 1 " + pseudo + "\r\n")
+# define RPL_TRACESERVER(server_name) ("Serv 1 0S 0C " + server_name + " *!*@" + server_name + " V" + PROTOCOL_VERSION + "\r\n")
 # define RPL_TRACENEWTYPE(new_type, name) (new_type + " 0 " + name + "\r\n")
 # define RPL_TRACELOG(file_log, debug_level) ("File " + file_log + " " + debug_level + "\r\n")
+# define RPL_TRACEEND(server_name, version_debug) (server_name + " " + version_debug + " :End of TRACE\r\n")
 # define RPL_STATSLINKINFO(arg) (arg + "\r\n")
 # define RPL_STATSCOMMANDS(arg) (arg + "\r\n")
 # define RPL_STATSCLINE(host, name, port, classe) ("C " + host + " * " + name + " " + port + " " + classe + "\r\n")
@@ -207,6 +208,7 @@ void	rehash_command(const std::string &line, std::list<Client>::iterator client_
 void	squit_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	admin_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	lusers_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	trace_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 
 void	server_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
@@ -230,6 +232,7 @@ void	squit_command(const std::string &line, std::list<Server>::iterator server_i
 void	notice_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	admin_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	lusers_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	trace_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 
 
 void	service_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
