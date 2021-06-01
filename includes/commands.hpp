@@ -106,8 +106,8 @@
 # define RPL_ENDOFWHO(name) (name + " :End of WHO list\r\n")
 # define RPL_NAMREPLY(channel, nick_list) (channel + " :" + nick_list + "\r\n") //modif_ici
 # define RPL_ENDOFNAMES(channel) (channel + " :End of NAMES list\r\n")
-//# define RPL_LINKS(mask, server) (mask + " " + server + " :<compteur de distance> <info serveur>\r\n")
-# define RPL_ENDOFLINKS(mask) (mask + " :End of LINKS list\r\n)"
+# define RPL_LINKS(mask, server_name, hopcount, info) (mask + " " + server_name + " " + hopcount + " " + info + "\r\n")
+# define RPL_ENDOFLINKS(mask) (mask + " :End of LINKS list\r\n")
 # define RPL_BANLIST(mssg) (mssg + "\r\n")
 # define RPL_ENDOFBANLIST(channel) (channel + " :End of list\r\n")
 # define RPL_INFO(info) (":" + info + "\r\n")
@@ -209,6 +209,7 @@ void	squit_command(const std::string &line, std::list<Client>::iterator client_i
 void	admin_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	lusers_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	trace_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	links_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 
 void	server_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
@@ -233,6 +234,7 @@ void	notice_command(const std::string &line, std::list<Server>::iterator server_
 void	admin_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	lusers_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	trace_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	links_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 
 
 void	service_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);

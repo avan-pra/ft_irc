@@ -115,6 +115,10 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_WHOREPLY(arg1);
 		case 353:
 			return sample + RPL_NAMREPLY(arg1, arg2);
+		case 364:
+			return sample + RPL_LINKS(arg1, arg2, arg3, arg4);
+		case 365:
+			return sample + RPL_ENDOFLINKS(arg1);
 		case 366:
 			return sample + RPL_ENDOFNAMES(arg1);
 		case 367:

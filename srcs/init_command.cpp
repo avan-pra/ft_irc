@@ -32,7 +32,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["KICK"] = kick_command;
 	cmd["VERSION"] = version_command;
 	cmd["STATS"] = stats_command;
-	cmd["LINKS"] = NULL;
+	cmd["LINKS"] = links_command;
 	cmd["TIME"] = time_command;
 	cmd["TRACE"] = trace_command;
 	cmd["ADMIN"] = admin_command;
@@ -88,16 +88,16 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["ADMIN"] = admin_command;
 	cmd["LUSERS"] = lusers_command;
 	cmd["TRACE"] = trace_command;
-
-
+	cmd["LINKS"] = links_command;
 	cmd["PART"] = part_command;
+	cmd["STATS"] = stats_command;
+
+
 	cmd["TOPIC"] = NULL;
 	cmd["NAMES"] = NULL;
 	cmd["LIST"] = NULL;
 	cmd["INVITE"] = NULL;
 	cmd["KICK"] = NULL;
-	cmd["STATS"] = stats_command;
-	cmd["LINKS"] = NULL;
 	cmd["CONNECT"] = NULL;
 	cmd["WHO"] = NULL;
 	cmd["WHOIS"] = NULL;
@@ -146,6 +146,8 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["258"] = reply_code;
 	cmd["259"] = reply_code;
 	cmd["351"] = reply_code;
+	cmd["364"] = reply_code;
+	cmd["365"] = reply_code;
 	cmd["371"] = reply_code;
 	cmd["372"] = reply_code;
 	cmd["374"] = reply_code;
