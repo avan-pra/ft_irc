@@ -54,7 +54,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Client>::itera
 	cmd["USERHOST"] = userhost_command;
 	cmd["ISON"] = ison_command;
 	cmd["MOTD"] = motd_command;
-	cmd["LUSERS"] = NULL;
+	cmd["LUSERS"] = lusers_command;
 	cmd["SERVLIST"] = NULL;
 	cmd["DIE"] = die_command;
 	// cmd["NJOIN"] = NULL;
@@ -86,6 +86,7 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["ERROR"] = error_command;
 	cmd["NOTICE"] = notice_command;
 	cmd["ADMIN"] = admin_command;
+	cmd["LUSERS"] = lusers_command;
 
 
 	cmd["PART"] = part_command;
@@ -112,7 +113,6 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["USERHOST"] = NULL;
 	cmd["ISON"] = NULL;
 	cmd["SERVICE"] = NULL;
-	cmd["LUSERS"] = NULL;
 	cmd["SERVLIST"] = NULL;
 	cmd["SQUERY"] = NULL;
 	cmd["DIE"] = NULL;
@@ -131,6 +131,11 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["212"] = reply_code;
 	cmd["219"] = reply_code;
 	cmd["242"] = reply_code;
+	cmd["251"] = reply_code;
+	cmd["252"] = reply_code;
+	cmd["253"] = reply_code;
+	cmd["254"] = reply_code;
+	cmd["255"] = reply_code;
 	cmd["256"] = reply_code;
 	cmd["257"] = reply_code;
 	cmd["258"] = reply_code;

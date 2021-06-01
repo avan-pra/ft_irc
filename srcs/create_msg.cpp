@@ -41,6 +41,16 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + RPL_UMODEIS(arg1);
 		case 242:
 			return sample + RPL_STATSUPTIME(arg1);
+		case 251:
+			return sample + RPL_LUSERCLIENT(arg1, arg2, arg3);
+		case 252:
+			return sample + RPL_LUSEROP(arg1);
+		case 253:
+			return sample + RPL_LUSERUNKNOWN(arg1);
+		case 254:
+			return sample + RPL_LUSERCHANNELS(arg1);
+		case 255:
+			return sample + RPL_LUSERME(arg1, arg2);
 		case 256:
 			return sample + RPL_ADMINME(arg1);
 		case 257:

@@ -206,6 +206,7 @@ void	connect_command(const std::string &line, std::list<Client>::iterator client
 void	rehash_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	squit_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 void	admin_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
+void	lusers_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv);
 
 
 void	server_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
@@ -228,6 +229,7 @@ void	error_command(const std::string &line, std::list<Server>::iterator server_i
 void	squit_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	notice_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 void	admin_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
+void	lusers_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv);
 
 
 void	service_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv);
