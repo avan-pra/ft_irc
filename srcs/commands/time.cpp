@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:54:27 by lucas             #+#    #+#             */
-/*   Updated: 2021/06/01 14:22:44 by lucas            ###   ########.fr       */
+/*   Updated: 2021/06/01 17:21:42 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@ void			time_command(const std::string &line, std::list<Client>::iterator client_
 		return ;
 	}
 	client_it->push_to_buffer(create_msg(391, client_it, serv, get_time()));
+	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
+	{
+		if (it->get_hopcount() == 1)
+		{
+			std::cout << it->get_servername() << " :\n";
+			for (std::map<size_t, std::string>::iterator m_it = it->_token_map.begin(); m_it != it->_token_map.end(); m_it++)
+				std::cout << "{" << m_it->first << "/" << m_it->second << "} ";
+			std::cout << std::endl;
+		}
+	}
 }
 
 void	time_command(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
