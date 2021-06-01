@@ -39,6 +39,33 @@ void	send_to_channel(const std::string &msg, std::list<Client>::iterator client_
 	}
 }
 
+void	send_to_channel_except_server_sender(const std::string &msg, std::list<Client>::iterator client_it, const int &chan_id)
+{
+	std::deque<Server*>		serv_list;
+	std::string				full_msg;
+	std::string				full_msg_serv;
+
+	full_msg = ":" + client_it->get_nickname() + "!" + client_it->get_username() +
+				"@" + client_it->get_hostname() + " " + msg + "\r\n";
+	full_msg_serv = ":" + client_it->get_nickname() + " " + msg + "\r\n";
+
+
+	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
+	{
+		if (g_vChannel[chan_id]._users[i] != &(*client_it) &&
+			g_vChannel[chan_id]._users[i]->get_server_uplink() != client_it->get_server_uplink())
+		{
+			if (g_vChannel[chan_id]._users[i]->get_hopcount() == 0)
+				g_vChannel[chan_id]._users[i]->push_to_buffer(full_msg);
+			else if (!has_already_send(serv_list, g_vChannel[chan_id]._users[i]->get_server_uplink()))
+			{
+				g_vChannel[chan_id]._users[i]->get_server_uplink()->push_to_buffer(full_msg_serv);
+				serv_list.push_back(g_vChannel[chan_id]._users[i]->get_server_uplink());
+			}
+		}
+	}
+}
+
 void	send_to_channel_local(const std::string &msg, std::list<Client>::iterator client_it, const int &chan_id, bool to_sender)
 {
 	std::string				full_msg;

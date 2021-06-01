@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/27 14:01:08 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/06/01 02:27:03 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ void	privmsg_command(const std::string &line, std::list<Server>::iterator server
 	std::list<Client>::iterator		cible;
 
 	(void)serv;
+	(void)server_it;
 	true_line = line;
 	if (params.size() < 4)
 		return ;
@@ -180,18 +181,7 @@ void	privmsg_command(const std::string &line, std::list<Server>::iterator server
 			cible->push_to_buffer(line + "\r\n");
 	}
 	else if (chan_id != -1)
-	{
-		for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
-		{
-			if (g_vChannel[chan_id]._users[i]->get_server_uplink() != &(*server_it))
-			{
-				if (g_vChannel[chan_id]._users[i]->get_hopcount() > 0)
-					g_vChannel[chan_id]._users[i]->get_server_uplink()->push_to_buffer(line + "\r\n");
-				else
-					g_vChannel[chan_id]._users[i]->push_to_buffer(line + "\r\n");
-			}
-		}
-	}
+		send_to_channel_except_server_sender(line.substr(line.find("PRIVMSG")), client_it, chan_id);
 }
 
 /*
