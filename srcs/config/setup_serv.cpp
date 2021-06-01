@@ -28,7 +28,7 @@ int			setup_server_socket(const MyServ &serv, int port, bool is_tls)
 	if (fcntl(sock.sockfd, F_SETFL, O_NONBLOCK) < 0)
 		throw CantInitSocket();
 
-	int enable;
+	int enable = 1;
 	if (setsockopt(sock.sockfd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
 		throw CantInitSocket();
 

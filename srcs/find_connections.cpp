@@ -23,7 +23,7 @@ std::list<Client>::iterator			find_client_by_iterator(const std::string &nicknam
 std::list<Client>::iterator			find_client_by_iterator(Connection *co)
 {
 	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); it++)
-		if (co->_fd == it->_fd)
+		if (co == &(*it))
 			return (it);
 	return (g_all.g_aClient.end());
 }

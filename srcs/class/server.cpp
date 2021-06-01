@@ -18,7 +18,8 @@ Server::~Server()
 			}
 		}
 	}
-*/	for (std::deque<Server*>::iterator se = this->_introduced_serv.begin(); se != this->_introduced_serv.end(); )
+*/
+	for (std::deque<Server*>::iterator se = this->_introduced_serv.begin(); se != this->_introduced_serv.end(); )
 	{
 		std::list<Server>::iterator it = find_server_by_iterator(&(**se));
 
