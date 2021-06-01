@@ -166,19 +166,21 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 	if (ft_atoi(params[3]) <= 1)
 		return ;
 
-	Unregistered	tmp;
-	Server			new_serv = tmp;
+	{
+		Unregistered	tmp;
+		Server			new_serv = tmp;
+		g_all.g_aServer.push_back(new_serv);
+	}
 
-	new_serv.set_server_name(params[2]);
-	new_serv.set_hopcount(ft_atoi(params[3]));
-	new_serv.set_token(ft_atoi(params[4]));
-	new_serv.set_info(&params[5][1]);
-	new_serv._fd = server_it->_fd;
-	new_serv.set_register(true);
-	new_serv.set_server_uplink(&(*server_it));
-	g_all.g_aServer.push_back(new_serv);
+	g_all.g_aServer.rbegin()->set_server_name(params[2]);
+	g_all.g_aServer.rbegin()->set_hopcount(ft_atoi(params[3]));
+	g_all.g_aServer.rbegin()->set_token(ft_atoi(params[4]));
+	g_all.g_aServer.rbegin()->set_info(&params[5][1]);
+	g_all.g_aServer.rbegin()->_fd = server_it->_fd;
+	g_all.g_aServer.rbegin()->set_register(true);
+	g_all.g_aServer.rbegin()->set_server_uplink(&(*server_it));
 	server_it->_introduced_serv.push_back(&g_all.g_aServer.back());
-	server_it->_token_map.insert(std::make_pair(new_serv.get_token(), new_serv.get_servername()));
+	server_it->_token_map.insert(std::make_pair(g_all.g_aServer.rbegin()->get_token(), g_all.g_aServer.rbegin()->get_servername()));
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
 	{
 		if (it->get_hopcount() == 1 && &(*it) != &(*server_it))
@@ -188,7 +190,7 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 				token_value++;
 			it->_token_map.insert(std::make_pair(token_value, server_it->get_servername()));
 			it->push_to_buffer(":" + serv.get_hostname() + " SERVER " +
-				new_serv.get_servername() + " " + ft_to_string(new_serv.get_hopcount() + 1) + " " +
+				g_all.g_aServer.rbegin()->get_servername() + " " + ft_to_string(g_all.g_aServer.rbegin()->get_hopcount() + 1) + " " +
 				ft_to_string(token_value) + " " + server_it->get_info() + "\r\n");
 		}
 	}

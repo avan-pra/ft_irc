@@ -155,7 +155,6 @@ bool	check_valid_hostname(const std::string hostname)
 
 void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator server_it, const MyServ &serv)
 {
-	Client							cli;
 	std::list<Client>::iterator		client_it;
 	std::string						full_msg;
 
@@ -177,18 +176,21 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	}
 	std::list<Server>::iterator		host = find_server_by_token(server_it, ft_atoi(params[6]));
 
-	cli.set_nickname(params[2]);
-	cli.set_mode(params[7]);
-	cli.set_hopcount(ft_atoi(params[3]));
-	cli.set_username(params[4]);
-	cli.set_hostname(params[5]);
-	cli.set_realname(&params[8][1]);
-	cli._fd = server_it->_fd;
-	cli.set_server_token(ft_atoi(params[6]));
+	{
+		Client	cli;
+		g_all.g_aClient.push_back(cli);
+	}
+
+	g_all.g_aClient.rbegin()->set_nickname(params[2]);
+	g_all.g_aClient.rbegin()->set_mode(params[7]);
+	g_all.g_aClient.rbegin()->set_hopcount(ft_atoi(params[3]));
+	g_all.g_aClient.rbegin()->set_username(params[4]);
+	g_all.g_aClient.rbegin()->set_hostname(params[5]);
+	g_all.g_aClient.rbegin()->set_realname(&params[8][1]);
+	g_all.g_aClient.rbegin()->_fd = server_it->_fd;
+	g_all.g_aClient.rbegin()->set_server_token(ft_atoi(params[6]));
 
 //	std::cout << "cli stat : host << " << host->get_servername() << std::endl;
-
-	g_all.g_aClient.push_back(cli);
 
 	g_all.g_aClient.rbegin()->set_server_host(&(*host));
 	g_all.g_aClient.rbegin()->set_server_uplink(&(*server_it));
@@ -212,10 +214,10 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 				}
 				map_it++;
 			}
-			full_msg = params[0] + " NICK " + cli.get_nickname() + " " +
-					ft_to_string(cli.get_hopcount() + 1) + " " + cli.get_username() +
-					" " + cli.get_hostname() + " " + ft_to_string(map_it->first) + " " +
-					cli.get_mode() + " :" + cli.get_realname() + "\r\n";
+			full_msg = params[0] + " NICK " + g_all.g_aClient.rbegin()->get_nickname() + " " +
+					ft_to_string(g_all.g_aClient.rbegin()->get_hopcount() + 1) + " " + g_all.g_aClient.rbegin()->get_username() +
+					" " + g_all.g_aClient.rbegin()->get_hostname() + " " + ft_to_string(map_it->first) + " " +
+					g_all.g_aClient.rbegin()->get_mode() + " :" + g_all.g_aClient.rbegin()->get_realname() + "\r\n";
 			std::cout << "|" << full_msg;
 			it->push_to_buffer(full_msg);
 		}
