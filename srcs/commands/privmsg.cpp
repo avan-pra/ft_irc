@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 11:33:44 by lucas             #+#    #+#             */
-/*   Updated: 2021/06/01 02:27:03 by lucas            ###   ########.fr       */
+/*   Updated: 2021/06/01 17:03:19 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ void	privmsg_command(const std::string &line, std::list<Client>::iterator client
 			std::string		rpl = ":" + client_it->get_nickname() + " " + line + "\r\n";
 
 			it->get_server_uplink()->push_to_buffer(rpl);
+			if (it->get_is_away() == true)
+				client_it->push_to_buffer(create_msg(301, client_it, serv, it->get_nickname(), it->get_away_str()));
 		}
 		else
 		{

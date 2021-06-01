@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/06/01 00:54:03 by lucas            ###   ########.fr       */
+/*   Updated: 2021/06/01 17:04:15 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ static void		set_usr_mode(const std::string mode, std::list<Client>::iterator cl
 			}
 			else if (!(std::strchr(new_mode.c_str(), mode[i])) && minus == false)
 			{
-					new_mode += mode[i];
+				new_mode += mode[i];
+				if (mode[i] == 'a')
+					client_it->set_away_str(":Away");
 			}
 		}
 	}
@@ -363,6 +365,7 @@ void				mode_command(const std::string &line, std::list<Server>::iterator server
 {
 	std::vector<std::string>	params = ft_split(line, " ");
 	std::list<Client>::iterator	client_it;
+	std::list<Client>::iterator	client_cible;
 	std::string					command;
 
 	(void)server_it;
@@ -370,7 +373,11 @@ void				mode_command(const std::string &line, std::list<Server>::iterator server
 		return ;
 	if ((client_it = find_client_by_iterator(&params[0][1])) == g_all.g_aClient.end())
 		return ;
+	if (params[3].size() > 0 && params[3][0] == ':')
+		params[3] = &params[3][0];
 	command = line.substr(line.find("MODE"));
+	if (command.find(":") != std::string::npos)
+		command = command.substr(0, command.find(":")) + command.substr(command.find(":") + 1);
 	try
 	{
 		mode_command(command, client_it, serv);
