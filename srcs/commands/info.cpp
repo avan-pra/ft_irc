@@ -6,39 +6,75 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 19:42:41 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/31 22:45:34 by lucas            ###   ########.fr       */
+/*   Updated: 2021/06/01 15:30:08 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
+#include <stdio.h>
+#include <string.h>
 #include <sys/stat.h>
 
-std::string		make_info_str(const MyServ &serv, std::list<Client>::iterator client_it, std::string time)
+size_t			find_str(const std::string &line, const std::string search)
+{
+	for (size_t i = 0; i < line.size(); i++)
+	{
+		if (line[i] == search[0])
+		{
+			size_t k = 0;
+			while (line[i + k] && search[k] && line[i + k] == search[k])
+				k++;
+			if (!search[k])
+				return (i);
+		}
+	}
+	return (std::string::npos);
+}
+
+std::string		make_info_str(const MyServ &serv, std::list<Client>::iterator client_it, std::string compiled_time)
 {
 	std::string					info = "";
+	std::string					line;
+	std::fstream				file;
+	std::string					actual_time;
 	time_t						tmp = serv.get_start_time();
+	size_t						pos;
 
-	info += create_msg(371, client_it, serv, "--------------------INFO--------------------");
-	info += create_msg(371, client_it, serv, " Server name : " + serv.get_hostname());
-	info += create_msg(371, client_it, serv, " " + serv.get_hostname() + " compiled on " + time);
-	time = ctime(&tmp);
-	if (time[time.size() - 1] == '\n')
-		time.resize(time.size() - 1);
-	info += create_msg(371, client_it, serv, " " + serv.get_hostname() + " started on " + time + "\n");
-	info += create_msg(371, client_it, serv, " Project : FT_IRC of 42\n");
-	info += create_msg(371, client_it, serv, " Version : beta " + std::string(SERV_VERSION) + "\n");
-	info += create_msg(371, client_it, serv, " Created by :\n");
-	info += create_msg(371, client_it, serv, "  lmoulin  <lmoulin@student.42.fr>\n");
-	info += create_msg(371, client_it, serv, "  jvaquer  <jvaquer@student.42.fr>\n");
-	info += create_msg(371, client_it, serv, "  avan-pra <avan-pra@student.42.fr>\n");
-	info += create_msg(371, client_it, serv, "\n");
-	info += create_msg(371, client_it, serv, " You can check our other project at :\n");
-	info += create_msg(371, client_it, serv, "  https://github.com/lucasmln\n");
-	info += create_msg(371, client_it, serv, "  https://github.com/EudaldV98\n");
-	info += create_msg(371, client_it,serv, "  https://github.com/Velovo\n");
-
+	actual_time = ctime(&tmp);
+	if (actual_time[actual_time.size() - 1] == '\n')
+		actual_time.resize(actual_time.size() - 1);
+	file.open("./info");
+	if (!file)
+	{
+		return (create_msg(422, client_it, serv));
+	}
+	while (file)
+	{
+		getline(file, line);
+		if ((pos = line.find("#")) != std::string::npos)
+			line = line.substr(0, pos);
+		if ((pos = find_str(line, "$SERVER_NAME")) != std::string::npos)
+		{
+			line = line.substr(0, pos) + serv.get_hostname() + line.substr(pos + strlen("$SERVER_NAME"));
+		}
+		if ((pos = find_str(line,"$TIME_COMPILATION")) != std::string::npos)
+		{
+			line = line.substr(0, pos) + compiled_time + line.substr(pos + strlen("$TIME_COMPILATION"));
+		}
+		if ((pos = find_str(line,"$TIME_START")) != std::string::npos)
+		{
+			line = line.substr(0, pos) + actual_time + line.substr(pos + strlen("$TIME_START"));
+		}
+		if ((pos = find_str(line,"$SERVER_VERSION")) != std::string::npos)
+		{
+			line = line.substr(0, pos) + SERV_VERSION + line.substr(pos + strlen("$SERV_VERSION"));
+		}
+		info += create_msg(371, client_it, serv, line);
+		line = "";
+	}
+	std::cout << info;
 	return (info);
 }
 
@@ -78,6 +114,7 @@ void			info_command(const std::string &line, std::list<Client>::iterator client_
 	std::vector<std::string>	params = ft_split(line, " ");
 	std::string					time;
 
+	
 	if (params.size() >= 2)
 	{
 		info_other_serv(params[1], client_it, serv);
@@ -85,6 +122,7 @@ void			info_command(const std::string &line, std::list<Client>::iterator client_
 	}
 	time = get_created_time();
 	client_it->push_to_buffer(make_info_str(serv, client_it, time));
+	std::cout << "start\n";
 	client_it->push_to_buffer(create_msg(374, client_it, serv));
 }
 

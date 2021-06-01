@@ -1,0 +1,18 @@
+-------------INFO-------------
+ Server name : $SERVER_NAME
+ $SERVER_HOSTNAME compiled on $TIME_COMPILATION
+ $SERVER_HOSTNAME started on $TIME_START
+ Projet : Ft_irc of 42
+ Version : beta $SERVER_VERSION
+ Created by :
+  - lmoulin  <lmoulin@student.42.fr>
+  - jvaquer  <jvaquer@student.42.fr>
+  - avan-pra <avan-pra@student.42.fr>
+
+ We explain how we build it on our website at :
+  - https://ircgod.com
+
+ You can check our other project at :
+  - https:://github.com/lucasmln
+  - https:://github.com/EudaldV98
+  - https://github.com/Velovo
