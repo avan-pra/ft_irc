@@ -51,7 +51,7 @@ static int		who_channel(const std::string &channel, std::list<Client>::iterator 
 					str += "+";
 				str += " ";
 			}
-			str += std::string(":0") + " ";
+			str += ":" + ft_to_string(g_vChannel[channel_id]._users[n]->get_hopcount()) + " ";
 			str += g_vChannel[channel_id]._users[n]->get_realname();
 			client_it->push_to_buffer(create_msg(352, client_it, serv, str));
 		}
