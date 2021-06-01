@@ -46,7 +46,7 @@ std::string		make_info_str(const MyServ &serv, std::list<Client>::iterator clien
 	actual_time = ctime(&tmp);
 	if (actual_time[actual_time.size() - 1] == '\n')
 		actual_time.resize(actual_time.size() - 1);
-	file.open(serv.get_info_path());
+	file.open(serv.get_info_path().c_str());
 	std::cout << "path = " << serv.get_info_path() << std::endl;
 	if (!file)
 	{
