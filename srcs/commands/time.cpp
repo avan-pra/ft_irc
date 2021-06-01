@@ -6,7 +6,7 @@
 /*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 14:54:27 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/24 17:13:48 by lucas            ###   ########.fr       */
+/*   Updated: 2021/06/01 14:22:44 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ void	time_other_serv(std::string serv_name, std::list<Client>::iterator client_i
 		client_it->push_to_buffer(create_msg(402, client_it, serv, serv_name));
 		return ;
 	}
-	server_it->push_to_buffer(":" + client_it->get_nickname() + " TIME " + serv_name + "\r\n");
+	if (server_it->get_hopcount() > 1)
+		server_it->get_server_uplink()->push_to_buffer(":" + client_it->get_nickname() + " TIME " + serv_name + "\r\n");
+	else
+		server_it->push_to_buffer(":" + client_it->get_nickname() + " TIME " + serv_name + "\r\n");
 }
 
 std::string		get_time()
@@ -56,6 +59,7 @@ void	time_command(const std::string &line, std::list<Server>::iterator server_it
 	std::string					now;
 	std::vector<std::string>	params = ft_split(line, " ");
 	std::list<Client>::iterator	client_it;
+	std::list<Server>::iterator	serv_cible;
 
 	if (params.size() < 3)
 		return ;
@@ -63,4 +67,12 @@ void	time_command(const std::string &line, std::list<Server>::iterator server_it
 		return ;
 	if (params[2] == serv.get_hostname())
 		server_it->push_to_buffer(create_msg(391, client_it, serv, serv.get_hostname(), get_time()));
+	else if ((serv_cible = find_server_by_iterator(params[2])) != g_all.g_aServer.end())
+	{
+		if (serv_cible->get_hopcount() > 1)
+			serv_cible->get_server_uplink()->push_to_buffer(line + "\r\n");
+		else
+			serv_cible->push_to_buffer(line + "\r\n");
+	}
+
 }
