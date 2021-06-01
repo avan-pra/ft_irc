@@ -1,3 +1,8 @@
+# $SERVER_NAME = the name of the IRC Server
+# $TIME_COMPILATION = the date when the IRC Server has been compiled
+# $TIME_START = the date when the IRC Server has been launch
+# $SERVER_VERSION = is the actual version of the IRC Server
+
 -------------INFO-------------
  Server name : $SERVER_NAME
  $SERVER_HOSTNAME compiled on $TIME_COMPILATION

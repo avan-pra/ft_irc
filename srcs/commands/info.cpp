@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/22 19:42:41 by lucas             #+#    #+#             */
-/*   Updated: 2021/06/01 15:30:08 by lucas            ###   ########.fr       */
+/*   Updated: 2021/06/01 16:05:20 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,29 @@ std::string		make_info_str(const MyServ &serv, std::list<Client>::iterator clien
 	std::string					actual_time;
 	time_t						tmp = serv.get_start_time();
 	size_t						pos;
+	bool						full_comment_line;
 
 	actual_time = ctime(&tmp);
 	if (actual_time[actual_time.size() - 1] == '\n')
 		actual_time.resize(actual_time.size() - 1);
-	file.open("./info");
+	file.open(serv.get_info_path());
+	std::cout << "path = " << serv.get_info_path() << std::endl;
 	if (!file)
 	{
-		return (create_msg(422, client_it, serv));
+		return (create_msg(424, client_it, serv, "INFO", serv.get_info_path()));
 	}
 	while (file)
 	{
 		getline(file, line);
+		full_comment_line = false;
 		if ((pos = line.find("#")) != std::string::npos)
+		{
 			line = line.substr(0, pos);
+			if (line.size() == 0)
+				full_comment_line = true;
+		}
+		if (info == "" && line == "")
+			full_comment_line = true;
 		if ((pos = find_str(line, "$SERVER_NAME")) != std::string::npos)
 		{
 			line = line.substr(0, pos) + serv.get_hostname() + line.substr(pos + strlen("$SERVER_NAME"));
@@ -71,7 +80,8 @@ std::string		make_info_str(const MyServ &serv, std::list<Client>::iterator clien
 		{
 			line = line.substr(0, pos) + SERV_VERSION + line.substr(pos + strlen("$SERV_VERSION"));
 		}
-		info += create_msg(371, client_it, serv, line);
+		if (!full_comment_line)
+			info += create_msg(371, client_it, serv, line);
 		line = "";
 	}
 	std::cout << info;
@@ -122,7 +132,6 @@ void			info_command(const std::string &line, std::list<Client>::iterator client_
 	}
 	time = get_created_time();
 	client_it->push_to_buffer(make_info_str(serv, client_it, time));
-	std::cout << "start\n";
 	client_it->push_to_buffer(create_msg(374, client_it, serv));
 }
 

@@ -165,6 +165,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + ERR_NOMOTD();
 		case 423:
 			return sample + ERR_NOADMININFO(arg1);
+		case 424:
+			return sample + ERR_FILEERROR(arg1, arg2);
 		case 431:
 			return sample + ERR_NONICKNAMEGIVEN();
 		case 432:

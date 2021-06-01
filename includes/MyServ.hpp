@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:03 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/30 15:28:25 by lucas            ###   ########.fr       */
+/*   Updated: 2021/06/01 15:35:25 by lucas            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ struct			t_config_file
 	std::string				oper_name;
 	std::string				motd_path;
 	std::string				admin_path;
+	std::string				info_path;
 	int						listen_limit;
 	int						client_limit;
 	unsigned char			password[32];
@@ -149,6 +150,7 @@ class MyServ
 		std::string		_config_file_name;
 		std::string		_motd_path;
 		std::string		_admin_path;
+		std::string		_info_path;
 		int				_listen_limit;
 		int				_client_limit;
 
@@ -207,6 +209,7 @@ class MyServ
 		std::string			get_hostname() const		{ return _hostname; }
 		std::string			get_motd_path() const		{ return _motd_path; }
 		std::string			get_admin_path() const		{ return _admin_path; }
+		std::string			get_info_path() const		{ return _info_path; }
 		std::string			get_port() const			{ return _port; }
 		std::string			get_client_hostname() const	{ return _client_hostname; }
 		std::string			get_config_file_name() const	{ return _config_file_name; }
@@ -241,6 +244,7 @@ class MyServ
 		void	set_hostname(const std::string &hostname) { _hostname = hostname; }
 		void	set_motd_path(const std::string &motd) { _motd_path = motd; }
 		void	set_admin_path(const std::string &admin) { _admin_path = admin; }
+		void	set_info_path(const std::string &info) { _info_path = info; }
 		void	set_port(const std::string &port) { _port = port; }
 		void	set_config_file_name(const std::string &_file_name) { _config_file_name = _file_name; }
 		void	set_listen_limit(int listen_limit) { _listen_limit = listen_limit; }
