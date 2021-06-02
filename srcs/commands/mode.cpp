@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/06/01 17:05:43 by lucas            ###   ########.fr       */
+/*   Updated: 2021/06/02 21:26:11 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,6 +355,13 @@ void				mode_command(const std::string &line, std::list<Client>::iterator client
 				mode = params[2];
 				set_usr_mode(mode, client_it, serv);
 				client_it->push_to_buffer(create_msg(221, client_it, serv, client_it->get_mode()));
+				if (client_it->get_hopcount() == 0)
+					send_to_all_server(":" + client_it->get_nickname() + " " + line + "\r\n", g_all.g_aServer.begin(), true);
+				else
+				{
+					std::list<Server>::iterator		server_it = find_server_by_iterator(client_it->get_server_uplink()->get_servername());
+					send_to_all_server(":" + client_it->get_nickname() + " " + line + "\r\n", server_it, false);
+				}
 			}
 		}
 	}
