@@ -124,7 +124,7 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 	server_it->set_server_name(arg[1]);
 	server_it->set_hopcount(1);
 	server_it->set_token(1);
-	server_it->set_info(line.substr(line.find_first_of(':')));
+	server_it->set_info(line.substr(line.find_first_of(':', 1)));
 	server_it->push_to_buffer(":" + serv.get_hostname() + " PASS " +
 			serv.network[i].remote_pass + " " + PROTOCOL_VERSION + " ircGODd|1.1:\r\n");
 	server_it->push_to_buffer(":" + serv.get_hostname() + " SERVER " +
@@ -172,7 +172,7 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 	g_all.g_aServer.rbegin()->set_server_name(params[2]);
 	g_all.g_aServer.rbegin()->set_hopcount(ft_atoi(params[3]));
 	g_all.g_aServer.rbegin()->set_token(ft_atoi(params[4]));
-	g_all.g_aServer.rbegin()->set_info(&params[5][1]);
+	g_all.g_aServer.rbegin()->set_info(line.substr(line.find(':', 1)));
 	g_all.g_aServer.rbegin()->_fd = server_it->_fd;
 	g_all.g_aServer.rbegin()->set_register(true);
 	g_all.g_aServer.rbegin()->set_server_uplink(&(*server_it));

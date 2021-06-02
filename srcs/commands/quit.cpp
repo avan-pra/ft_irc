@@ -72,12 +72,14 @@ void			quit_command(const std::string &line, std::list<Client>::iterator client_
 	add_disconnected_nick(client_it);
 	args = ft_split(line, " ");
 	part_string = create_part_str(client_it);
-	quit_msg_server += ":" + client_it->get_nickname() + " QUIT " + ":leaving";
-	if (quit_msg_server.find("\r\n") == std::string::npos)
-		quit_msg_server += "\r\n";
+	if (line.find(':') != std::string::npos)
+		part_string += line.substr(line.find_first_of(':', 1) + 1, line.size());
+	else
+		part_string += "";
+	quit_msg_server = ":" + client_it->get_nickname() + " QUIT " + ":" + part_string + "\r\n";
 	send_to_all_server(quit_msg_server, g_all.g_aServer.begin(), true);
 	if (line.find(':') != std::string::npos)
-		client_it->set_quit_str(line.substr(line.find_first_of(':') + 1, line.size()));
+		client_it->set_quit_str(line.substr(line.find_first_of(':', 1) + 1, line.size()));
 	else
 		client_it->set_quit_str("");
 	throw QuitCommandException();
@@ -95,20 +97,18 @@ void		quit_command(const std::string &line, std::list<Server>::iterator server_i
 	if (params[1].size() < 2 || (client_it = find_client_by_iterator(&params[0][1])) == g_all.g_aClient.end())
 		return ;
 	part_string = create_part_str(client_it);
-	if (part_string != "" && params[3][0] == ':')
-	{
-		for (size_t i = 3; i < params.size(); i++)
-			part_string += " " + params[i];
-	}
+	if (line.find(':', 1) != std::string::npos)
+		part_string += line.substr(line.find_first_of(':', 1) + 1, line.size());
+	else
+		part_string += "";
 	if (part_string != "")
-		part_command("PART " + part_string, client_it, serv);
+		part_command("PART :" + part_string, client_it, serv);
 	add_disconnected_nick(client_it);
 	send_to_all_server(line + "\r\n", server_it);
 	remove_pointer_to_client(client_it);
-	client_it->set_quit_str(part_string);
+	client_it->set_quit_str(line.substr(line.find_first_of(':', 1) + 1, line.size()));
 	g_all.g_aClient.erase(client_it);
 }
-
 
 void			quit_command(const std::string &line, std::list<Service>::iterator service_it, const MyServ &serv)
 {
