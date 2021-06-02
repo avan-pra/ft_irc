@@ -39,7 +39,7 @@ int			main(int argc, char **argv)
 	MyServ				serv;
 	std::map<int, bool>	m_port;
 
-	std::srand(time(0));
+	std::srand(time(0) + ::getpid());
 	SSL_library_init();
 	SSL_load_error_strings();
 	if (argc < 2)
