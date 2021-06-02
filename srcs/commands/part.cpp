@@ -92,7 +92,7 @@ void		part_command(const std::string &line, std::list<Server>::iterator server_i
 	params = ft_split(line, " ");
 	if (params.size() < 4)
 		return ;
-	client_it = find_client_by_iterator(&params[0][1]);
+	client_it = find_client_by_iterator(&params[0][1]); //checker client_it
 	chan_list = ft_split(params[2], ",");
 	try
 	{

@@ -171,7 +171,7 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	if ((client_it = find_client_by_iterator(params[2])) != g_all.g_aClient.end())
 	{
 		server_it->push_to_buffer(create_msg(436, server_it, serv, params[2], client_it->get_username(), client_it->get_hostname()));
-		disconnect(&(*client_it), client_it);
+		disconnect(&(*client_it), client_it); //checker que le client est chez nous nan ?
 		return ;
 	}
 	std::list<Server>::iterator		host = find_server_by_token(server_it, ft_atoi(params[6]));
@@ -180,7 +180,6 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 		Client	cli;
 		g_all.g_aClient.push_back(cli);
 	}
-
 	g_all.g_aClient.rbegin()->set_nickname(params[2]);
 	g_all.g_aClient.rbegin()->set_mode(params[7]);
 	g_all.g_aClient.rbegin()->set_hopcount(ft_atoi(params[3]));
@@ -218,7 +217,6 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 					ft_to_string(g_all.g_aClient.rbegin()->get_hopcount() + 1) + " " + g_all.g_aClient.rbegin()->get_username() +
 					" " + g_all.g_aClient.rbegin()->get_hostname() + " " + ft_to_string(map_it->first) + " " +
 					g_all.g_aClient.rbegin()->get_mode() + " :" + g_all.g_aClient.rbegin()->get_realname() + "\r\n";
-			std::cout << "|" << full_msg;
 			it->push_to_buffer(full_msg);
 		}
 	}
