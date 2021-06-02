@@ -27,8 +27,12 @@ void	get_serv_info(t_networkID net, struct addrinfo **res)
 
 void	connect_to_serv(t_networkID net, struct addrinfo *res, const MyServ &serv)
 {
-	Unregistered tmp;
-	Server new_serv = tmp;
+	{
+		Unregistered tmp;
+		Server new_serv = tmp;
+		g_all.g_aServer.push_back(new_serv);
+	}
+	std::list<Server>::reverse_iterator _new_serv = g_all.g_aServer.rbegin();
 	int serv_socket;
 	struct addrinfo *p = NULL;
 
@@ -69,40 +73,39 @@ void	connect_to_serv(t_networkID net, struct addrinfo *res, const MyServ &serv)
 	}
 	if (net.is_tls == true)
 	{
-		new_serv._sslptr = SSL_new(serv.client_sslctx);
-		new_serv.set_tls(true);
-		SSL_set_fd(new_serv._sslptr, serv_socket);
-		const int status = SSL_connect(new_serv._sslptr);
+		_new_serv->_sslptr = SSL_new(serv.client_sslctx);
+		_new_serv->set_tls(true);
+		SSL_set_fd(_new_serv->_sslptr, serv_socket);
+		const int status = SSL_connect(_new_serv->_sslptr);
 		if (status != 1)
 		{
-			int err = SSL_get_error(new_serv._sslptr, status);
+			int err = SSL_get_error(_new_serv->_sslptr, status);
 			if (!(err == SSL_ERROR_WANT_READ || err == SSL_ERROR_WANT_WRITE))
 			{
-				free(new_serv._sslptr);
+				free(_new_serv->_sslptr);
 				closesocket(serv_socket);
 				throw std::exception();
 			}
 		}
 	}
-	memset(&new_serv.sock_addr, 0, sizeof(struct sockaddr_in6));
-	new_serv.sock_addr.sin6_port = ntohs(net.port);
-	// new_serv.sock_addr.sin6_family = p->ai_family;
+	memset(&_new_serv->sock_addr, 0, sizeof(struct sockaddr_in6));
+	_new_serv->sock_addr.sin6_port = ntohs(net.port);
+	// _new_serv->sock_addr.sin6_family = p->ai_family;
 	#ifdef __APPLE__
-		new_serv.sock_addr.sin6_addr.__u6_addr.__u6_addr32[3] = reverse_custom_ntoa(net.host);
-		std::cerr << "* Initiating new server connection towards: " << custom_ntoa(new_serv.sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]) << ":"
-			<< ntohs(new_serv.sock_addr.sin6_port) << (net.is_tls ? " (tls)" : "") << std::endl;
+		_new_serv->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3] = reverse_custom_ntoa(net.host);
+		std::cerr << "* Initiating new server connection towards: " << custom_ntoa(_new_serv->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]) << ":"
+			<< ntohs(_new_serv->sock_addr.sin6_port) << (net.is_tls ? " (tls)" : "") << std::endl;
 	#endif
 	#ifdef __linux__
-		new_serv.sock_addr.sin6_addr.__in6_u.__u6_addr32[3] = reverse_custom_ntoa(net.host);
-		std::cerr << "* Initiating new server connection towards: " << custom_ntoa(new_serv.sock_addr.sin6_addr.__in6_u.__u6_addr32[3]) << ":"
-			<< ntohs(new_serv.sock_addr.sin6_port) << (net.is_tls ? " (tls)" : "") << std::endl;
+		_new_serv->sock_addr.sin6_addr.__in6_u.__u6_addr32[3] = reverse_custom_ntoa(net.host);
+		std::cerr << "* Initiating new server connection towards: " << custom_ntoa(_new_serv->sock_addr.sin6_addr.__in6_u.__u6_addr32[3]) << ":"
+			<< ntohs(_new_serv->sock_addr.sin6_port) << (net.is_tls ? " (tls)" : "") << std::endl;
 	#endif
-	new_serv._fd = serv_socket;
-	new_serv.set_hopcount(1);
-	new_serv.push_to_buffer("PASS " + net.remote_pass + " " + PROTOCOL_VERSION + " ircGODd|1.1:" + "\r\n");
-	new_serv.push_to_buffer("SERVER " + serv.get_hostname() + " :salut la miff" + "\r\n");
-	time(&new_serv.get_last_activity());
-	g_all.g_aServer.push_back(new_serv);
+	_new_serv->_fd = serv_socket;
+	_new_serv->set_hopcount(1);
+	_new_serv->push_to_buffer("PASS " + net.remote_pass + " " + PROTOCOL_VERSION + " ircGODd|1.1:" + "\r\n");
+	_new_serv->push_to_buffer("SERVER " + serv.get_hostname() + " :salut la miff" + "\r\n");
+	time(&_new_serv->get_last_activity());
 }
 
 void	connect_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
