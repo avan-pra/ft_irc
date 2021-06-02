@@ -103,7 +103,7 @@ void		quit_command(const std::string &line, std::list<Server>::iterator server_i
 	if (part_string != "")
 		part_command("PART " + part_string, client_it, serv);
 	add_disconnected_nick(client_it);
-	send_to_all_server(line, server_it);
+	send_to_all_server(line + "\r\n", server_it);
 	remove_pointer_to_client(client_it);
 	client_it->set_quit_str(part_string);
 	g_all.g_aClient.erase(client_it);

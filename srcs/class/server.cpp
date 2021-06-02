@@ -7,21 +7,18 @@
 Server::~Server()
 {
 	// delete every server he introduced to us (which will delete every user they have)
-	// for (std::list<Server>::iterator serv_it = g_all.g_aServer.begin(); serv_it != g_all.g_aServer.end(); serv_it++)
-	// {
-	// 	if (serv_it->get_hopcount() == 1 && &(*serv_it) != this)
-	// 	{
-	// 		// std::cout << this->get_servername() << ":" << std::endl;
-	// 		for (std::map<size_t, std::string>::iterator it = serv_it->_token_map.begin(), it_next = it; it != serv_it->_token_map.end(); it = it_next)
-	// 		{
-	// 			// std::cout << it->second << "/" << this->get_servername() << std::endl;
-	// 			++it_next;
-	// 			if (it->second == this->get_servername())
-	// 				serv_it->_token_map.erase(it);
-	// 		}
-	// 		// std::cout << std::endl;
-	// 	}
-	// }
+	for (std::list<Server>::iterator serv_it = g_all.g_aServer.begin(); serv_it != g_all.g_aServer.end(); serv_it++)
+	{
+		if (serv_it->get_hopcount() == 1 && &(*serv_it) != this)
+		{
+			for (std::map<size_t, std::string>::iterator it = serv_it->_token_map.begin(), it_next = it; it != serv_it->_token_map.end(); it = it_next)
+			{
+				++it_next;
+				if (it->second == this->get_servername())
+					serv_it->_token_map.erase(it);
+			}
+		}
+	}
 	for (std::deque<Server*>::iterator se = this->_introduced_serv.begin(); se != this->_introduced_serv.end(); )
 	{
 		std::list<Server>::iterator it = find_server_by_iterator(&(**se));

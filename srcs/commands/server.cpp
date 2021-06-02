@@ -25,10 +25,9 @@ void	share_server(std::list<Server>::iterator &server_it, const MyServ &serv)
 //		{
 			if (it != server_it)
 			{
-				size_t	value;
-				for (value = server_it->get_token();
-					server_it->_token_map.find(value) != server_it->_token_map.end(); value++)
-					;
+				size_t	value = 1;
+				while (server_it->_token_map.find(value) != server_it->_token_map.end())
+					value = std::rand();
 				rpl = ":" + serv.get_hostname() + " SERVER " + it->get_servername();
 				rpl += " " + ft_to_string(it->get_hopcount() + 1) + " " + ft_to_string(value) + " :New server\r\n";
 				server_it->_token_map.insert(std::make_pair(value, it->get_servername()));
@@ -77,7 +76,7 @@ void	server_reply(std::string line, std::list<Server>::iterator server_it, const
 	}
 	server_it->set_server_name(arg[2]);
 	server_it->set_hopcount(1);
-	server_it->set_token(g_all.g_aServer.size());
+	server_it->set_token(1);
 	server_it->set_info(line.substr(line.find_first_of(':', 1)));
 	server_it->_token_map.insert(std::make_pair(1, server_it->get_servername()));
 
@@ -90,8 +89,9 @@ void	server_reply(std::string line, std::list<Server>::iterator server_it, const
 		if (it->get_hopcount() == 1 && &(*it) != &(*server_it))
 		{
 			size_t	token_value = 1;
+
 			while (it->_token_map.find(token_value) != it->_token_map.end())
-				token_value++;
+				token_value = std::rand();
 			it->_token_map.insert(std::make_pair(token_value, server_it->get_servername()));
 			it->push_to_buffer(":" + serv.get_hostname() + " SERVER " + server_it->get_servername() +
 								" 2 " + ft_to_string(token_value) + " " + server_it->get_info() + "\r\n");
@@ -129,20 +129,17 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 			serv.network[i].remote_pass + " " + PROTOCOL_VERSION + " ircGODd|1.1:\r\n");
 	server_it->push_to_buffer(":" + serv.get_hostname() + " SERVER " +
 			serv.get_hostname() + " 1 :Experimental server\r\n");
-	server_it->_token_map[1] = server_it->get_servername();
 
 	server_it->set_register(true);
+	server_it->_token_map.insert(std::make_pair(server_it->get_token(), server_it->get_servername()));
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
 	{
 		if (it->get_hopcount() == 1 && &(*it) != &(*server_it))
 		{
 			size_t		token_value = 1;
-			std::string	rpl;
+
 			while (it->_token_map.find(token_value) != it->_token_map.end())
-				token_value++;
-			rpl = ":" + serv.get_hostname() + " SERVER " + server_it->get_servername() + " 2 " + ft_to_string(token_value) + " " + server_it->get_info() + "\r\n";
-			std::cout << "token : " << token_value << std::endl;
-			std::cout << "rpl | " << server_it->get_info() << std::endl;
+				token_value = std::rand();
 			it->_token_map.insert(std::make_pair(token_value, server_it->get_servername()));
 			it->push_to_buffer(":" + serv.get_hostname() + " SERVER " + server_it->get_servername() + " 2 " + ft_to_string(token_value) + " " + server_it->get_info() + "\r\n");
 		}
@@ -186,12 +183,13 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 		if (it->get_hopcount() == 1 && &(*it) != &(*server_it))
 		{
 			size_t	token_value = 1;
+
 			while (it->_token_map.find(token_value) != it->_token_map.end())
 				token_value++;
-			it->_token_map.insert(std::make_pair(token_value, server_it->get_servername()));
+			it->_token_map.insert(std::make_pair(token_value, g_all.g_aServer.rbegin()->get_servername()));
 			it->push_to_buffer(":" + serv.get_hostname() + " SERVER " +
 				g_all.g_aServer.rbegin()->get_servername() + " " + ft_to_string(g_all.g_aServer.rbegin()->get_hopcount() + 1) + " " +
-				ft_to_string(token_value) + " " + server_it->get_info() + "\r\n");
+				ft_to_string(token_value) + " " + g_all.g_aServer.rbegin()->get_info() + "\r\n");
 		}
 	}
 //	send_to_all_server(":" + serv.get_hostname() + " SERVER " + new_serv.get_servername() + " 1 " + ft_to_string(new_serv.get_token() + 1) + " " + new_serv.get_info() + "\r\n", server_it, false);
