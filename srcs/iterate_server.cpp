@@ -6,6 +6,11 @@
 
 void call_disconnect_server(std::list<Server>::iterator &server_it)
 {
+	if (server_it->is_registered() == false)
+	{
+		disconnect(&(*server_it), server_it);
+		return ;
+	}
 	for (std::deque<Server*>::iterator it = server_it->_introduced_serv.begin(); it != server_it->_introduced_serv.end(); )
 	{
 		std::list<Server>::iterator se = find_server_by_iterator(*it);
