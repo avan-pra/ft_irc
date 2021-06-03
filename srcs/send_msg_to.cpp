@@ -150,10 +150,13 @@ void	send_to_all_server(const std::string &msg, std::list<Server>::iterator serv
 {
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
 	{
-		if (it != server_it && it->get_hopcount() == 1)
-			it->push_to_buffer(msg);
-		if (to_sender && it == server_it && it->get_hopcount() == 1)
-			server_it->push_to_buffer(msg);
+		if (it->is_registered() == true)
+		{
+			if (it != server_it && it->get_hopcount() == 1)
+				it->push_to_buffer(msg);
+			if (to_sender && it == server_it && it->get_hopcount() == 1)
+				server_it->push_to_buffer(msg);
+		}
 	}
 }
 
@@ -161,9 +164,12 @@ void	send_to_all_server(const std::string &msg, Server *serv, bool to_sender)
 {
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
 	{
-		if (*it != *serv && it->get_hopcount() == 1)
-			it->push_to_buffer(msg);
-		if (to_sender && *it == *serv && it->get_hopcount() == 1)
-			serv->push_to_buffer(msg);
+		if (it->is_registered() == true)
+		{
+			if (*it != *serv && it->get_hopcount() == 1)
+				it->push_to_buffer(msg);
+			if (to_sender && *it == *serv && it->get_hopcount() == 1)
+				serv->push_to_buffer(msg);
+		}
 	}
 }
