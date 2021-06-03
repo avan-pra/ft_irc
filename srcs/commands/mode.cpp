@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/06/02 21:26:11 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/06/03 11:51:13 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,7 +304,7 @@ static void			sort_mode_args(std::string &mode, std::vector<std::string> &mode_a
 void				mode_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	std::vector<std::string> params;
-	std::string str, mode;
+	std::string str, mode, to_send;
 
 	params = ft_split(line, " ");
 	if (params.size() < 2)
@@ -353,14 +353,26 @@ void				mode_command(const std::string &line, std::list<Client>::iterator client
 			else
 			{
 				mode = params[2];
+				if (mode.find('.') != std::string::npos)
+					mode = mode.substr(mode.find(':') + 1);
 				set_usr_mode(mode, client_it, serv);
 				client_it->push_to_buffer(create_msg(221, client_it, serv, client_it->get_mode()));
+				params[2].insert(0, 1, ':');
+				for (size_t i = 0; i < params.size(); i++)
+				{
+					to_send += params[i];
+					to_send += " ";
+				}
+				to_send = to_send.substr(0, to_send.size() - 1);
 				if (client_it->get_hopcount() == 0)
-					send_to_all_server(":" + client_it->get_nickname() + " " + line + "\r\n", g_all.g_aServer.begin(), true);
+				{
+					
+					send_to_all_server(":" + client_it->get_nickname() + " " + to_send + "\r\n", g_all.g_aServer.begin(), true);
+				}
 				else
 				{
 					std::list<Server>::iterator		server_it = find_server_by_iterator(client_it->get_server_uplink()->get_servername());
-					send_to_all_server(":" + client_it->get_nickname() + " " + line + "\r\n", server_it, false);
+					send_to_all_server(":" + client_it->get_nickname() + " " + to_send + "\r\n", server_it, false);
 				}
 			}
 		}
