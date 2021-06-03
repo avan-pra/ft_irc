@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 10:06:50 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/06/03 11:51:13 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/06/03 17:16:43 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void		set_usr_mode(const std::string mode, std::list<Client>::iterator cl
 		else
 		{
 			//mode char not valid
-			if (!(strchr(USER_VALID_MODE, mode[i]) || (mode[i] == 'a' && client_it->get_hopcount() == 0)))
+			if (((strchr(USER_VALID_MODE, mode[i]) == false) || (mode[i] == 'a' && client_it->get_hopcount() == 0)))
 			{
 				std::string str = " ";
 				str.push_back(mode[i]);
