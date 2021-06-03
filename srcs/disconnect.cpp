@@ -24,6 +24,9 @@ _erase_only:
 			++client_it;
 			return ;
 		}
+
+		send_to_all_server(":" + client_it->get_nickname() + " QUIT " + ":" + client_it->get_quit_str() + "\r\n", g_all.g_aServer.begin(), true); //ICI WSH
+
 		size_t			sin_port = ntohs(co->sock_addr.sin6_port);
 		std::string		tls_str = (it->get_tls() ? " (tls)" : "");
 		#ifdef __linux__
@@ -59,9 +62,7 @@ void	disconnect(Server *co, std::list<Server>::iterator &server_it)
 	closesocket(co->_fd);
 	if (dynamic_cast<Server*> (co) != NULL)
 	{
-		std::list<Server>::iterator		it = find_server_by_iterator(co->_fd);
-		size_t			sin_port = ntohs(co->sock_addr.sin6_port);
-		std::string		tls_str = (it->get_tls() ? " (tls)" : "");
+		std::list<Server>::iterator		it = find_server_by_iterator(co);
 
 		if (it == g_all.g_aServer.end())
 		{
@@ -74,8 +75,8 @@ void	disconnect(Server *co, std::list<Server>::iterator &server_it)
 		#ifdef __APPLE__
 			std::string 	sin_addr = custom_ntoa(co->sock_addr.sin6_addr.__u6_addr.__u6_addr32[3]);
 		#endif
-		std::cerr << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (server) "
-			<< (server_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
+		// std::cerr << "* Connection lost to: " << sin_addr << ":" << sin_port << tls_str << " (server) "
+		// 	<< (server_it->is_registered() == true ? ("(registered)") : ("(unregistered)")) << std::endl;
 		server_it = g_all.g_aServer.erase(it);
 		return ;
 	}

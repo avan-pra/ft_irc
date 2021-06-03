@@ -27,12 +27,6 @@ void	get_serv_info(t_networkID net, struct addrinfo **res)
 
 void	connect_to_serv(t_networkID net, struct addrinfo *res, const MyServ &serv)
 {
-	{
-		Unregistered tmp;
-		Server new_serv = tmp;
-		g_all.g_aServer.push_back(new_serv);
-	}
-	std::list<Server>::reverse_iterator _new_serv = g_all.g_aServer.rbegin();
 	int serv_socket;
 	struct addrinfo *p = NULL;
 
@@ -71,6 +65,14 @@ void	connect_to_serv(t_networkID net, struct addrinfo *res, const MyServ &serv)
 		closesocket(serv_socket);
 		throw std::exception();
 	}
+
+	{
+		Unregistered tmp;
+		Server new_serv = tmp;
+		g_all.g_aServer.push_back(new_serv);
+	}
+	std::list<Server>::reverse_iterator _new_serv = g_all.g_aServer.rbegin();
+
 	if (net.is_tls == true)
 	{
 		_new_serv->_sslptr = SSL_new(serv.client_sslctx);
@@ -84,6 +86,7 @@ void	connect_to_serv(t_networkID net, struct addrinfo *res, const MyServ &serv)
 			{
 				free(_new_serv->_sslptr);
 				closesocket(serv_socket);
+				g_all.g_aClient.erase((g_all.g_aClient.end()--));
 				throw std::exception();
 			}
 		}

@@ -65,7 +65,6 @@ void			quit_command(const std::string &line, std::list<Client>::iterator client_
 {
 	std::vector<std::string>	args;
 	std::string					part_string;
-	std::string					quit_msg_server;
 
 	(void)serv;
 	//Add nick to disconnected user deque
@@ -76,8 +75,6 @@ void			quit_command(const std::string &line, std::list<Client>::iterator client_
 		part_string += line.substr(line.find_first_of(':', 1) + 1, line.size());
 	else
 		part_string += "";
-	quit_msg_server = ":" + client_it->get_nickname() + " QUIT " + ":" + part_string + "\r\n";
-	send_to_all_server(quit_msg_server, g_all.g_aServer.begin(), true);
 	if (line.find(':') != std::string::npos)
 		client_it->set_quit_str(line.substr(line.find_first_of(':', 1) + 1, line.size()));
 	else

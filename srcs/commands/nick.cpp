@@ -171,8 +171,15 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	if ((client_it = find_client_by_iterator(params[2])) != g_all.g_aClient.end())
 	{
 		server_it->push_to_buffer(create_msg(436, server_it, serv, params[2], client_it->get_username(), client_it->get_hostname()));
-		disconnect(&(*client_it), client_it); //checker que le client est chez nous nan ?
-		return ;
+		throw QuitCommandException();
+		// if (client_it->get_hopcount() == 0)
+		// 	disconnect(&(*client_it), client_it); //checker que le client est chez nous nan ?
+		// else
+		// {
+		// 	// remove_pointer_to_client(client_it); ICI WSH
+		// 	g_all.g_aClient.erase(client_it);
+		// }
+		// return ;
 	}
 	std::list<Server>::iterator		host = find_server_by_token(server_it, ft_atoi(params[6]));
 
@@ -201,7 +208,7 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 								it != g_all.g_aServer.end(); it++)
 	{
 	//	std::cout << "SERV NAME :" << it->get_servername() << ", if (" << (it->get_hopcount() == 1 && &(*it) != &(*server_it) ? "true" : "false") << ")\n";
-		if (&(*it) != &(*server_it) && it->get_hopcount() == 1)
+		if (&(*it) != &(*server_it) && it->get_hopcount() == 1 && it->is_registered())
 		{
 			std::map<size_t, std::string>::const_iterator	map_it = it->_token_map.begin();
 
@@ -244,7 +251,7 @@ void	change_nick(std::vector<std::string> params, std::list<Server>::iterator se
 		return ;
 
 	rpl_server = ":" + client_it->get_nickname() + " NICK :" + new_nick + "\r\n";
-	rpl = " NICK " + new_nick + "\r\n";
+	rpl = "NICK " + new_nick + "\r\n";
 	send_to_all_server(rpl_server, server_it);
 	for (size_t i = 0; i < g_vChannel.size(); i++)
 	{
