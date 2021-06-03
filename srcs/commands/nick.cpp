@@ -181,6 +181,7 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 		g_all.g_aClient.push_back(cli);
 	}
 	g_all.g_aClient.rbegin()->set_nickname(params[2]);
+	g_all.g_aClient.rbegin()->set_register(true);
 	g_all.g_aClient.rbegin()->set_mode(params[7]);
 	g_all.g_aClient.rbegin()->set_hopcount(ft_atoi(params[3]));
 	g_all.g_aClient.rbegin()->set_username(params[4]);

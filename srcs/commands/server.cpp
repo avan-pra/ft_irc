@@ -5,13 +5,13 @@ void	share_client(std::list<Server>::iterator &server_it, const MyServ &serv)
 {
 	for (std::list<Client>::iterator client_it = g_all.g_aClient.begin(); client_it != g_all.g_aClient.end(); client_it++)
 	{
-	//	if (client_it->get_hopcount() == 0)
-	//	{
+		if (client_it->is_registered() == true)
+		{
 			std::string		rpl = ":" + serv.get_hostname() + " NICK " + client_it->get_nickname() + " 1 " +
 				client_it->get_username() + " " + client_it->get_hostname() + " 1 " + client_it->get_mode() +
 				" :" + client_it->get_realname() + "\r\n";
 			server_it->push_to_buffer(rpl);
-	//	}
+		}
 	}
 }
 
@@ -23,7 +23,7 @@ void	share_server(std::list<Server>::iterator &server_it, const MyServ &serv)
 	{
 	//	if (server_it->get_hopcount() == 1)
 //		{
-			if (it != server_it)
+			if (it != server_it && it->is_registered() == true)
 			{
 				size_t	value = 1;
 				while (server_it->_token_map.find(value) != server_it->_token_map.end())
@@ -88,7 +88,7 @@ void	server_reply(std::string line, std::list<Server>::iterator server_it, const
 	server_it->set_register(true);
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
 	{
-		if (it->get_hopcount() == 1 && &(*it) != &(*server_it))
+		if (it->get_hopcount() == 1 && &(*it) != &(*server_it) && it->is_registered() == true)
 		{
 			size_t	token_value = 1;
 
@@ -134,11 +134,15 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 	server_it->push_to_buffer(":" + serv.get_hostname() + " SERVER " +
 			serv.get_hostname() + " 1 :" + SE_INFO + "\r\n");
 
+
+	share_server(server_it, serv);
+	share_client(server_it, serv);
+	share_channel(server_it, serv);
 	server_it->set_register(true);
 	server_it->_token_map.insert(std::make_pair(server_it->get_token(), server_it->get_servername()));
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
 	{
-		if (it->get_hopcount() == 1 && &(*it) != &(*server_it))
+		if (it->get_hopcount() == 1 && &(*it) != &(*server_it) && it->is_registered() == true)
 		{
 			size_t		token_value = 1;
 
@@ -148,9 +152,6 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 			it->push_to_buffer(":" + serv.get_hostname() + " SERVER " + server_it->get_servername() + " 2 " + ft_to_string(token_value) + " " + server_it->get_info() + "\r\n");
 		}
 	}
-	share_server(server_it, serv);
-	share_client(server_it, serv);
-	share_channel(server_it, serv);
 }
 
 void	introduce_server(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)
@@ -166,6 +167,11 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 		return ;
 	if (ft_atoi(params[3]) <= 1)
 		return ;
+	if (is_servername_exist(params[2]))
+	{
+		server_it->push_to_buffer(create_msg(462, server_it, serv));
+		throw QuitCommandException();
+	}
 
 	{
 		Unregistered	tmp;
@@ -186,7 +192,7 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 	server_it->_token_map.insert(std::make_pair(g_all.g_aServer.rbegin()->get_token(), g_all.g_aServer.rbegin()->get_servername()));
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); it++)
 	{
-		if (it->get_hopcount() == 1 && &(*it) != &(*server_it))
+		if (it->get_hopcount() == 1 && &(*it) != &(*server_it) && it->is_registered() == true)
 		{
 			size_t	token_value = 1;
 

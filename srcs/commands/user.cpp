@@ -127,7 +127,7 @@ void				user_command(const std::string &line, std::list<Client>::iterator client
 			motd_command("MOTD", client_it, serv);
 			time(&client_it->get_last_activity());
 			client_it->set_register(true);
-			
+
 			std::string		nick_msg = ":" + serv.get_hostname() + " NICK " + client_it->get_nickname() + " 1 ";
 
 			nick_msg += client_it->get_username() + " " + client_it->get_hostname() + " 1 ";

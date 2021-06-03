@@ -103,7 +103,7 @@ void	connect_to_serv(t_networkID net, struct addrinfo *res, const MyServ &serv)
 	#endif
 	_new_serv->_fd = serv_socket;
 	_new_serv->set_hopcount(1);
-	_new_serv->push_to_buffer("PASS " + net.remote_pass + " " + PROTOCOL_VERSION + " " + P_FLAGS + ":" + P_OPTION + "\r\n");
+	_new_serv->push_to_buffer("PASS " + net.remote_pass + " " + PROTOCOL_VERSION + " " + P_FLAGS + " :" + P_OPTION + "\r\n");
 	_new_serv->push_to_buffer("SERVER " + serv.get_hostname() + " :" + SE_INFO + "\r\n");
 	time(&_new_serv->get_last_activity());
 }

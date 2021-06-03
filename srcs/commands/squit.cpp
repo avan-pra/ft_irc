@@ -21,7 +21,6 @@ void	squit_command(const std::string &line, std::list<Server>::iterator server_i
 	std::list<Server>::iterator	quit_it;
 	std::string					quit_msg;
 
-	std::cout << "SQUIT comand\n";
 	if (params.size() < 4)
 	{
 		server_it->push_to_buffer(create_msg(461, server_it, serv, "SQUIT"));
