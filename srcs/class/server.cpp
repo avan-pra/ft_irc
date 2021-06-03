@@ -6,6 +6,15 @@
 
 Server::~Server()
 {
+	if (this->is_registered() == true)
+	{
+		#ifdef DEBUG
+			if (this->get_hopcount() == 1)
+				std::cout << "* Direct server " << this->get_servername() << " unregistered" << std::endl;
+			else
+				std::cout << "* Server " << this->get_servername() << " unregistered" << std::endl;
+		#endif
+	}
 	// delete every server he introduced to us (which will delete every user they have)
 	for (std::list<Server>::iterator serv_it = g_all.g_aServer.begin(); serv_it != g_all.g_aServer.end(); serv_it++)
 	{

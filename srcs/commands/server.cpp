@@ -72,6 +72,7 @@ void	server_reply(std::string line, std::list<Server>::iterator server_it, const
 	if (is_servername_exist(arg[2]))
 	{
 		server_it->push_to_buffer(create_msg(462, server_it, serv));
+		std::cout << "* Server " << arg[2] << " is already known, disconnecting from new " << arg[2] << std::endl;
 		throw QuitCommandException();
 	}
 	server_it->set_server_name(arg[2]);
@@ -111,6 +112,7 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 	if (is_servername_exist(arg[1]))
 	{
 		server_it->push_to_buffer(create_msg(462, server_it, serv));
+		std::cout << "* Server " << arg[1] << " is already known, disconnecting from new " << arg[1] << std::endl;
 		throw QuitCommandException();
 	}
 
@@ -118,7 +120,7 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 
 	for (i = 0; i < serv.network.size(); ++i) //check if we know the foreign server
 	{
-		if (serv.network[i].name == arg[1])
+		if (serv.network[i].name == arg[1]) //ca sert possiblkement a rien ces lignes la
 			break ;
 	}
 	i == serv.network.size() ? throw QuitCommandException() : NULL;
@@ -204,6 +206,10 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 				ft_to_string(token_value) + " " + g_all.g_aServer.rbegin()->get_info() + "\r\n");
 		}
 	}
+	#ifdef DEBUG
+		std::cout << "* New server " << g_all.g_aServer.rbegin()->get_servername() << " registered via " << server_it->get_servername()
+			<< " (" << g_all.g_aServer.rbegin()->get_hopcount() << " hops)" << std::endl;
+	#endif
 //	send_to_all_server(":" + serv.get_hostname() + " SERVER " + new_serv.get_servername() + " 1 " + ft_to_string(new_serv.get_token() + 1) + " " + new_serv.get_info() + "\r\n", server_it, false);
 	return ;
 }
