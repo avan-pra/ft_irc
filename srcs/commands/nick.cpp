@@ -171,15 +171,14 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	if ((client_it = find_client_by_iterator(params[2])) != g_all.g_aClient.end())
 	{
 		server_it->push_to_buffer(create_msg(436, server_it, serv, params[2], client_it->get_username(), client_it->get_hostname()));
-		throw QuitCommandException();
-		// if (client_it->get_hopcount() == 0)
-		// 	disconnect(&(*client_it), client_it); //checker que le client est chez nous nan ?
-		// else
-		// {
-		// 	// remove_pointer_to_client(client_it); ICI WSH
-		// 	g_all.g_aClient.erase(client_it);
-		// }
-		// return ;
+		if (client_it->get_hopcount() == 0)
+			disconnect(&(*client_it), client_it); //checker que le client est chez nous nan ?
+		else
+		{
+			remove_pointer_to_client(client_it);
+			g_all.g_aClient.erase(client_it);
+		}
+		return ;
 	}
 	std::list<Server>::iterator		host = find_server_by_token(server_it, ft_atoi(params[6]));
 

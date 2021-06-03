@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/28 11:51:46 by lucas            ###   ########.fr       */
+/*   Updated: 2021/06/03 21:20:19 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ std::string		create_part_str(std::list<Client>::iterator client_it)
 	return (part_string);
 }
 
-static void		remove_pointer_to_client(std::list<Client>::iterator client_it)
+void		remove_pointer_to_client(std::list<Client>::iterator client_it)
 {
 	Server *ptr = client_it->get_server_uplink();
 
