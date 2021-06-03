@@ -21,7 +21,7 @@ std::string		make_reply(std::list<Client>::iterator client_it, const MyServ &ser
 	std::string		rpl;
 
 	rpl = create_msg(251, client_it, serv, ft_to_string(g_all.g_aClient.size()),
-				ft_to_string(g_all.g_aService.size()), ft_to_string(g_all.g_aServer.size()));
+				ft_to_string(g_all.g_aService.size()), ft_to_string(g_all.g_aServer.size() + 1));
 	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); it++)
 	{
 		if (it->get_hopcount() == 0)
