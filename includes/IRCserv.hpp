@@ -35,6 +35,12 @@
 
 # define HASH_CHAR "0123456789abcdefABCDEF"
 
+# define SE_INFO "ircGOD server"
+
+# define P_FLAGS "ircGODd|1.1"
+
+# define P_OPTION ""
+
 # define NC "\e[0m"
 
 # define RED "\e[0;31m"

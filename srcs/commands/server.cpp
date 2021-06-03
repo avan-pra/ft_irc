@@ -29,7 +29,7 @@ void	share_server(std::list<Server>::iterator &server_it, const MyServ &serv)
 				while (server_it->_token_map.find(value) != server_it->_token_map.end())
 					value = std::rand();
 				rpl = ":" + serv.get_hostname() + " SERVER " + it->get_servername();
-				rpl += " " + ft_to_string(it->get_hopcount() + 1) + " " + ft_to_string(value) + " :New server\r\n";
+				rpl += " " + ft_to_string(it->get_hopcount() + 1) + " " + ft_to_string(value) + " " + it->get_info() + "\r\n";
 				server_it->_token_map.insert(std::make_pair(value, it->get_servername()));
 				server_it->push_to_buffer(rpl);
 			}
@@ -78,6 +78,8 @@ void	server_reply(std::string line, std::list<Server>::iterator server_it, const
 	server_it->set_hopcount(1);
 	server_it->set_token(1);
 	server_it->set_info(line.substr(line.find_first_of(':', 1)));
+	if (server_it->get_info().size() == 0)
+		server_it->set_info(":");
 	server_it->_token_map.insert(std::make_pair(1, server_it->get_servername()));
 
 	share_server(server_it, serv);
@@ -125,10 +127,12 @@ void	new_direct_server(std::string line, std::list<Server>::iterator server_it, 
 	server_it->set_hopcount(1);
 	server_it->set_token(1);
 	server_it->set_info(line.substr(line.find_first_of(':', 1)));
+	if (server_it->get_info().size() == 0)
+		server_it->set_info(":");
 	server_it->push_to_buffer(":" + serv.get_hostname() + " PASS " +
-			serv.network[i].remote_pass + " " + PROTOCOL_VERSION + " ircGODd|1.1:\r\n");
+			serv.network[i].remote_pass + " " + PROTOCOL_VERSION + " " + P_FLAGS + " :" + "\r\n");
 	server_it->push_to_buffer(":" + serv.get_hostname() + " SERVER " +
-			serv.get_hostname() + " 1 :Experimental server\r\n");
+			serv.get_hostname() + " 1 :" + SE_INFO + "\r\n");
 
 	server_it->set_register(true);
 	server_it->_token_map.insert(std::make_pair(server_it->get_token(), server_it->get_servername()));
@@ -173,6 +177,8 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 	g_all.g_aServer.rbegin()->set_hopcount(ft_atoi(params[3]));
 	g_all.g_aServer.rbegin()->set_token(ft_atoi(params[4]));
 	g_all.g_aServer.rbegin()->set_info(line.substr(line.find(':', 1)));
+	if (g_all.g_aServer.rbegin()->get_info().size() == 0)
+		g_all.g_aServer.rbegin()->set_info(":");
 	g_all.g_aServer.rbegin()->_fd = server_it->_fd;
 	g_all.g_aServer.rbegin()->set_register(true);
 	g_all.g_aServer.rbegin()->set_server_uplink(&(*server_it));
@@ -185,7 +191,7 @@ void	introduce_server(const std::string &line, std::list<Server>::iterator serve
 			size_t	token_value = 1;
 
 			while (it->_token_map.find(token_value) != it->_token_map.end())
-				token_value++;
+				token_value = std::rand();
 			it->_token_map.insert(std::make_pair(token_value, g_all.g_aServer.rbegin()->get_servername()));
 			it->push_to_buffer(":" + serv.get_hostname() + " SERVER " +
 				g_all.g_aServer.rbegin()->get_servername() + " " + ft_to_string(g_all.g_aServer.rbegin()->get_hopcount() + 1) + " " +
