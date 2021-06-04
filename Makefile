@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/02/26 16:25:58 by jvaquer           #+#    #+#              #
-#    Updated: 2021/06/01 14:08:31 by lucas            ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = ircserv
 
 C++ = clang++
@@ -27,6 +15,8 @@ FLAG = -Wall -Werror -Wextra -std=c++98
 CXXFLAGS = $(FLAG)
 
 FLAGS = -lssl -lcrypto -ldl -L$(CUR_DIR)/openssl-1.1.1j
+
+FLAGS42 = -lssl -lcrypto -I${HOME}/.brew/opt/openssl/include -L${HOME}/.brew/opt/openssl/lib
 
 #srcs file
 SRCS =			$(addprefix $(DIR_SRCS), $(SRC)) 
@@ -78,6 +68,10 @@ all : $(NAME)
 
 $(NAME) : $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF)
 		$(C++) $(FLAGS) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) -o $(NAME)
+
+42 : $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF)
+		$(C++) $(FLAGS42) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) -o $(NAME)
+
 
 certs :
 		openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
