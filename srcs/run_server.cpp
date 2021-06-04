@@ -98,8 +98,6 @@ bool		kick_if_away(Connection &co, const MyServ &serv)
 {
 	time_t time_compare; //may be optimized better
 
-	if (co.get_hopcount() > 0 )
-		return false;
 	if (co.is_registered() == false)
 		return false;
 	time(&time_compare);

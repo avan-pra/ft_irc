@@ -103,7 +103,6 @@ std::map<std::string, void	(*)(const std::string &line, std::list<Server>::itera
 	cmd["WHOIS"] = NULL;
 	cmd["WHOWAS"] = NULL;
 	cmd["KILL"] = NULL;
-	cmd["PONG"] = NULL;
 	cmd["AWAY"] = NULL;
 	cmd["REHASH"] = NULL;
 	cmd["RESTART"] = NULL;
