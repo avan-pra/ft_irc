@@ -153,6 +153,8 @@ std::string		create_msg(const int &code, std::list<Client>::iterator client_it, 
 			return sample + ERR_CANNOTSENDTOCHAN(arg1);
 		case 406:
 			return sample + ERR_WASNOSUCHNICK(arg1);
+		case 409:
+			return sample + ERR_NOORIGIN();
 		case 410:
 			return sample + ERR_INVALIDCAP(arg1);
 		case 411:
@@ -247,6 +249,8 @@ std::string		create_msg(const int &code, std::list<Server>::iterator server_it, 
 			return sample + ERR_NOSUCHNICK(arg1);
 		case 402:
 			return sample + ERR_NOSUCHSERVER(arg1);
+		case 409:
+			return sample + ERR_NOORIGIN();
 		case 421:
 			return sample + ERR_UNKNOWNCOMMAND();
 		case 433:
