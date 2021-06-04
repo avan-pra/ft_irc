@@ -22,13 +22,13 @@ void	kill_command(const std::string &line, std::list<Client>::iterator client_it
 	}
 
 	std::list<Client>::iterator target;
-	std::list<Server>::iterator	serv_it;
+	// std::list<Server>::iterator	serv_it;
 	
-	if ((serv_it = find_server_by_iterator(args[1])) != g_all.g_aServer.end())
-	{
-		client_it->push_to_buffer(create_msg(483, client_it, serv));
-		return ;
-	}
+	// if ((serv_it = find_server_by_iterator(args[1])) != g_all.g_aServer.end())
+	// {
+	// 	client_it->push_to_buffer(create_msg(483, client_it, serv));
+	// 	return ;
+	// }
 	if ((target = find_client_by_iterator(args[1])) == g_all.g_aClient.end())
 	{
 		client_it->push_to_buffer(create_msg(401, client_it, serv, args[1]));
