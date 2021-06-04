@@ -183,7 +183,8 @@ void	introduce_user(std::vector<std::string> params, std::list<Server>::iterator
 	std::list<Server>::iterator		host = find_server_by_token(server_it, ft_atoi(params[6]));
 
 	{
-		Client	cli;
+		Unregistered tmp;
+		Client	cli = tmp;
 		g_all.g_aClient.push_back(cli);
 	}
 	g_all.g_aClient.rbegin()->set_nickname(params[2]);

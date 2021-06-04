@@ -56,6 +56,7 @@ class Client : public Connection
 		
 		Client(Connection &co)
 		{
+			_hopcount = 0;
 			_unended_packet = co.get_unended_packet();
 			_fd = co._fd;
 			_last_activity = co.get_last_activity();
