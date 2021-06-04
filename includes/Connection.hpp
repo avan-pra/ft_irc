@@ -141,10 +141,13 @@ class Connection
 
 		void			send_packets()
 		{
-			if (_tls)
-				SSL_write(_sslptr, _buff.c_str(), _buff.size());
-			else
-				send(_fd, _buff.c_str(), _buff.size(), MSG_NOSIGNAL);
+			if (_buff.size() > 0)
+			{
+				if (_tls)
+					SSL_write(_sslptr, _buff.c_str(), _buff.size());
+				else
+					send(_fd, _buff.c_str(), _buff.size(), MSG_NOSIGNAL);
+			}
 		}
 };
 
