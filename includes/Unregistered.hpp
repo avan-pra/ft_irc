@@ -21,6 +21,7 @@ class Unregistered : public Connection
 			_has_try_password = false;
 			_password_state = -1;
 			_all_arg_set = false;
+			_type = UNKNOWN_TYPE;
 		}
 		virtual ~Unregistered()
 		{

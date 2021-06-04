@@ -11,6 +11,7 @@
 		# define MSG_NOSIGNAL 0
 # endif
 
+# define UNKNOWN_TYPE 0
 # define SERVER_TYPE 1
 # define CLIENT_TYPE 2
 # define SERVICE_TYPE 3
@@ -129,6 +130,8 @@ class Connection
 
 		void			push_to_buffer(const std::string &s)
 		{
+			if (_type == UNKNOWN_TYPE)
+				_buff += s;
 			if (_type == CLIENT_TYPE && _hopcount == 0)
 				_buff += s;
 			else if (_type == SERVER_TYPE && _hopcount == 1)
