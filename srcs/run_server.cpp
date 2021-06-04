@@ -41,7 +41,7 @@ static void re_init_serv_class(MyServ &serv)
 		}
 		serv.set_max_fd(max);
 	}
-	serv.set_timeout(3);
+	serv.set_timeout(1);
 }
 
 static void push_fd_to_set(MyServ &serv)

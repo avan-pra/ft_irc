@@ -261,6 +261,10 @@ int		set_ping(t_config_file &config_file, std::string &ping, const int &nb_line)
 		config_file.ping = PING;
 	else
 		config_file.ping = ft_atoi(ping);
+	if (config_file.ping == 0)
+		return (config_error("PING must not be 0", nb_line));
+	if (config_file.t_timeout != 0 && config_file.t_timeout <= config_file.ping)
+		return (config_error("PING must not be inferior to TIMEOUT", nb_line));
 	return (1);
 }
 
@@ -274,6 +278,10 @@ int		set_timeout(t_config_file &config_file, std::string &timeout, const int &nb
 		config_file.t_timeout = TIMEOUT;
 	else
 		config_file.t_timeout = ft_atoi(timeout);
+	if (config_file.t_timeout == 0)
+		return (config_error("TIMEOUT must not be 0", nb_line));
+	if (config_file.ping != 0 && config_file.t_timeout <= config_file.ping)
+		return (config_error("TIMEOUT must be superior to PING", nb_line));
 	return (1);
 }
 
@@ -287,6 +295,8 @@ int		set_timeout_register(t_config_file &config_file, std::string &timeout_regis
 		config_file.t_timeout = TIMEOUT_REGISTER;
 	else
 		config_file.timeout_register = ft_atoi(timeout_register);
+	if (config_file.timeout_register == 0)
+		return (config_error("TIMEOUT_REGISTER must not be 0", nb_line));
 	return (1);
 }
 
@@ -386,7 +396,7 @@ int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line
 	bool			name = false, local_pass = false, remote_pass = false, host = false;
 
 	if (!all_param_set)
-		return (config_error("ircserv variables must be at the top of the config file", nb_line));
+		return (config_error("ircserv variables must be at the top of the config file, maybe a variable is missing ?", nb_line));
 	net.is_tls = false;
 	while (file && i < 5)
 	{
@@ -757,9 +767,9 @@ void		start_parse_conf(t_config_file &config_file, std::string filename)
 			throw ConfigFileException();
 		}
 	}
+	file.close();
 	if (all_param_set == false)
 	{
-		file.close();
 		config_error("Need more parmeters", nb_line);
 		throw ConfigFileException();
 	}
@@ -769,5 +779,4 @@ void		start_parse_conf(t_config_file &config_file, std::string filename)
 	#ifdef DEBUG
 		print_config_file(config_file);
 	#endif
-	file.close();
 }
