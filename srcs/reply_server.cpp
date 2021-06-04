@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   reply_server.cpp                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lucas <marvin@42.fr>                       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/24 12:46:31 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/31 01:06:49 by lucas            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/IRCserv.hpp"
 
 void	reply_code(const std::string &line, std::list<Server>::iterator server_it, const MyServ &serv)

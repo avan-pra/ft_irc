@@ -1,21 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   userhost.cpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/04 15:50:26 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/25 00:06:12 by jvaquer          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/commands.hpp"
-
-/*
-** Client
-*/
 
 void	userhost_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {

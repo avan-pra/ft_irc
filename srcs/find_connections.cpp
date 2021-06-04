@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   find_connections.cpp                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/29 13:57:16 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/30 19:29:44 by lucas            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/IRCserv.hpp"
 
 std::list<Client>::iterator			find_client_by_iterator(const std::string &nickname)
