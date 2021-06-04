@@ -55,26 +55,26 @@ static void push_fd_to_set(MyServ &serv)
 	for (std::list<Unregistered>::iterator ite = g_all.g_aUnregistered.begin(); ite != g_all.g_aUnregistered.end(); ++ite)
 	{
 		FD_SET(ite->_fd, &serv.get_readfs());
-		// FD_SET(ite->first, &serv.get_writefs());
+		// FD_SET(ite->first, &serv.get_writefs()); POUR LA CORREC
 		// FD_SET(*ite, &serv.get_exceptfs());
 	}
 	//push all client fd to all 3 set
 	for (std::list<Client>::iterator ite = g_all.g_aClient.begin(); ite != g_all.g_aClient.end(); ++ite)
 	{
 		FD_SET(ite->_fd, &serv.get_readfs());
-		// FD_SET(ite->first, &serv.get_writefs());
+		// FD_SET(ite->first, &serv.get_writefs()); POUR LA CORREC
 		// FD_SET(*ite, &serv.get_exceptfs());
 	}
 	for (std::list<Server>::iterator ite = g_all.g_aServer.begin(); ite != g_all.g_aServer.end(); ++ite)
 	{
 		FD_SET(ite->_fd, &serv.get_readfs());
-		// FD_SET(ite->first, &serv.get_writefs());
+		// FD_SET(ite->first, &serv.get_writefs()); POUR LA CORREC
 		// FD_SET(*ite, &serv.get_exceptfs());
 	}
 	for (std::list<Service>::iterator ite =g_all.g_aService.begin(); ite != g_all.g_aService.end(); ++ite)
 	{
 		FD_SET(ite->_fd, &serv.get_readfs());
-		// FD_SET(ite->first, &serv.get_writefs());
+		// FD_SET(ite->first, &serv.get_writefs()); POUR LA CORREC
 		// FD_SET(*ite, &serv.get_exceptfs());
 	}
 }

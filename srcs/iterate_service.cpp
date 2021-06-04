@@ -10,6 +10,8 @@ void	iterate_service(MyServ &serv)
 
 	for (std::list<Service>::iterator it = g_all.g_aService.begin(); it != g_all.g_aService.end(); ++it)
 	{
+		// if (!FD_ISSET(it->_fd, &serv.get_writefs()))
+		// 	disconnect(&(*it), it); POUR LA CORREC
 		ping_if_away(*it, serv);
 		//si je l'ai kick car ca fait trop longtemps qu'il a pas rep alors forcement je vais pas check ses demandes
 		if (kick_if_away(*it, serv) == true || check_register_timeout(*it, serv) == true)

@@ -199,6 +199,8 @@ void	iterate_unregistered(MyServ &serv)
 
 	for (std::list<Unregistered>::iterator it = g_all.g_aUnregistered.begin(); it != g_all.g_aUnregistered.end(); ++it)
 	{
+		// if (!FD_ISSET(it->_fd, &serv.get_writefs()))
+		// 	disconnect(&(*it), it); POUR LA CORREC, mettre un else en dessous
 		if (check_register_timeout(*it, serv) == true)
 			disconnect(&(*it), it);
 		else if (is_readable(serv, *it))

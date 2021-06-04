@@ -30,6 +30,8 @@ void	iterate_server(MyServ &serv)
 
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); ++it)
 	{
+		// if (it->get_hopcount() == 1 && !FD_ISSET(it->_fd, &serv.get_writefs()))
+		// 	call_disconnect_server(it); POUR LA CORREC, mette un else en dessous
 		if (it->get_hopcount() == 1)
 		{
 			ping_if_away(*it, serv);
