@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 15:30:04 by lmoulin           #+#    #+#             */
-/*   Updated: 2021/05/18 18:09:50 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/06/04 12:22:57 by avan-pra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int			main(int argc, char **argv)
 		{
 			disconnect_all();
 			std::cerr << e.what() << std::endl;
+			return (0);
 		}
 		catch (const RehashException &e)
 		{
