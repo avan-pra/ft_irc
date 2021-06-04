@@ -1,17 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_conf.cpp                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/19 16:19:20 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/06/01 15:55:21 by lucas            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-# include "../../includes/IRCserv.hpp"
-# include <cstring>
+#include "../../includes/IRCserv.hpp"
+#include <cstring>
 #include <iostream>
 
 enum confID

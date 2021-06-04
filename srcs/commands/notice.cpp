@@ -1,23 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   notice.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/12 16:52:49 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/27 14:32:43 by lucas            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/Channel.hpp"
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
-
-/*
-** Client
-*/
 
 bool	check_priv_chan(std::list<Client>::iterator client_it, const int &id)
 {

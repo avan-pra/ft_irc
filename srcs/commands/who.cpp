@@ -2,10 +2,6 @@
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
-/*
-** Client
-*/
-
 static size_t	who_switch(char c)
 {
 	if (c == '#' || c == '&' || c == '!' || c == '+')

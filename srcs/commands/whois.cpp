@@ -1,21 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   whois.cpp                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/23 17:16:05 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/26 18:02:11 by jvaquer          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/commands.hpp"
-
-/*
-** Client
-*/
 
 static void		whois_channel(std::list<Client>::iterator &client_it, std::list<Client>::iterator &target, const MyServ &serv)
 {

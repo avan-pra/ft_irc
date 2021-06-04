@@ -41,8 +41,7 @@ void	iterate_server(MyServ &serv)
 			else if (is_readable(serv, *it))
 			{
 				get_message(c, *it, ret);
-				// if (std::strlen(c) > 2)
-				 	// std::cout << "iterate_server :" << c;
+				FD_CLR(it->_fd, &serv.get_readfs());
 				check_message_problem(c, *it, serv, ret);
 				/*
 				 ** get_message & check_message_problem may set ret to -1 which indicate an critical error such as a too big packet size

@@ -1,21 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   whowas.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/27 19:32:09 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/05/25 00:04:31 by jvaquer          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/commands.hpp"
-
-/*
-** Client
-*/
 
 void		add_disconnected_nick(std::list<Client>::iterator client_it)
 {

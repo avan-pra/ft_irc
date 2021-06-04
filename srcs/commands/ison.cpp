@@ -1,21 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ison.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/04 13:42:01 by lucas             #+#    #+#             */
-/*   Updated: 2021/05/25 00:07:55 by jvaquer          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/IRCserv.hpp"
 #include "../../includes/commands.hpp"
-
-/*
-** Client
-*/
 
 void	ison_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
