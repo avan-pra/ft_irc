@@ -6,6 +6,8 @@ Client::~Client()
 {
 	size_t		i = 0;
 
+	if (this->_hopcount > 0)
+		remove_pointer_to_client(this);
 	for (std::deque<Channel>::iterator cht = g_vChannel.begin(); cht != g_vChannel.end(); i++)
 	{
 		cht->remove_user_invite(this->get_nickname());

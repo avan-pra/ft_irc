@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/25 12:27:36 by jvaquer           #+#    #+#             */
-/*   Updated: 2021/06/03 21:20:19 by jvaquer          ###   ########.fr       */
+/*   Updated: 2021/06/04 15:44:27 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,33 @@ void		remove_pointer_to_client(std::list<Client>::iterator client_it)
 		for (std::deque<Client*>::iterator it = ptr->_client_attached.begin(); it != ptr->_client_attached.end();)
 		{
 			if (&(*client_it) == *it)
+				it = ptr->_client_attached.erase(it);
+			else
+				++it;
+		}
+	}
+}
+
+void		remove_pointer_to_client(Client *cli)
+{
+	Server *ptr = cli->get_server_uplink();
+
+	if (ptr != NULL)
+	{
+		for (std::deque<Client*>::iterator it = ptr->_client_attached.begin(); it != ptr->_client_attached.end(); )
+		{
+			if (cli == *it)
+				it = ptr->_client_attached.erase(it);
+			else
+				++it;
+		}
+	}
+	ptr = cli->get_server_host();
+	if (ptr != NULL)
+	{
+		for (std::deque<Client*>::iterator it = ptr->_client_attached.begin(); it != ptr->_client_attached.end();)
+		{
+			if (cli == *it)
 				it = ptr->_client_attached.erase(it);
 			else
 				++it;

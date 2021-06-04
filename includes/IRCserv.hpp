@@ -6,7 +6,7 @@
 /*   By: jvaquer <jvaquer@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 18:15:22 by lucas             #+#    #+#             */
-/*   Updated: 2021/06/01 03:45:19 by lucas            ###   ########.fr       */
+/*   Updated: 2021/06/04 15:45:04 by jvaquer          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,5 +325,11 @@ void		iterate_service(MyServ &serv);
  ** get_nickname.cpp
 */
 std::string		trim_client_name(std::string full_name);
+
+/*
+** quit.cpp
+*/
+void		remove_pointer_to_client(std::list<Client>::iterator client_it);
+void		remove_pointer_to_client(Client *cli);
 
 #endif

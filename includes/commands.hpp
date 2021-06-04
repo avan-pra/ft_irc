@@ -270,10 +270,4 @@ bool	check_valid_nickname(const std::string &nick);
 */
 std::string		get_created_time();
 
-/*
-** quit.cpp
-*/
-
-void		remove_pointer_to_client(std::list<Client>::iterator client_it);
-
 #endif
