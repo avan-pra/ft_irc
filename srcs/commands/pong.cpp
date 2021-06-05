@@ -12,7 +12,7 @@ void	pong_command(const std::string &line, std::list<Client>::iterator client_it
 		client_it->push_to_buffer(create_msg(409, client_it, serv));
 		return ;
 	}
-	if (arg[1].substr(1, arg[1].size()) == serv.get_hostname())
+	if (arg[1].substr(1, arg[1].size()) == serv.get_hostname() || arg[1] == serv.get_hostname())
 	{
 		time(&client_it->get_last_activity());
 		client_it->set_ping_status(false);
