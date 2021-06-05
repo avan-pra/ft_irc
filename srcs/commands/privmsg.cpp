@@ -3,7 +3,7 @@
 #include "../../includes/MyServ.hpp"
 #include "../../includes/commands.hpp"
 
-int		check_params(const std::vector<std::string> &params, std::list<Client>::iterator client_it, const MyServ &serv)
+int		check_params(std::vector<std::string> &params, std::list<Client>::iterator client_it, const MyServ &serv)
 {
 	int		chan_id;
 
@@ -38,8 +38,12 @@ int		check_params(const std::vector<std::string> &params, std::list<Client>::ite
 	{
 		//Msg not started by ':'
 		if (params[1][0] == ':')
+		{
 			client_it->push_to_buffer(create_msg(411, client_it, serv, params[0] + " " + params[1]));
-		return (0);
+			return (0);
+		}
+		if (params[2].find(' ') == std::string::npos)
+			params[2] = std::string(":" + params[2]);
 	}
 	if (chan_id != -1)
 	{
