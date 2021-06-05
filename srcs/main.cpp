@@ -43,6 +43,9 @@ int			main(int argc, char **argv)
 		signal(SIGPIPE, sig_handler);
 		InitSSLCTX(serv.serv_config, serv);
 		start_parse_conf(serv.serv_config, serv.get_config_file_name());
+		#ifdef DEBUG
+			print_config_file(serv.serv_config);
+		#endif
 		set_serv_attributes(serv);
 		launch_all_socket(serv, serv.serv_config.m_ports);
 	}

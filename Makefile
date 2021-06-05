@@ -60,7 +60,7 @@ OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 #config folder
 SRCS_CONF = $(addprefix $(DIR_CONF), $(SRC_CONF))
 DIR_CONF = ./srcs/config/
-SRC_CONF = parse_conf.cpp setup_serv.cpp
+SRC_CONF = parse_conf.cpp setup_serv.cpp print_config_file.cpp
 
 OBJ_CONF = $(SRCS_CONF:.cpp=.o)
 

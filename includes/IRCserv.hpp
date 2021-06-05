@@ -168,6 +168,13 @@ uint32_t reverse_custom_ntoa(std::string in);
 */
 void		parse_conf(t_config_file &config_file, std::fstream &file, int &nb_line);
 void		start_parse_conf(t_config_file &config_file, std::string filename);
+int			config_error(const std::string &error_msg, const int &nb_line);
+/*
+** print_config_file.cpp
+*/
+void		print_config_file(t_config_file &config_file);
+void		print_servers(std::deque<t_networkID> aNetworks);
+std::string	truncate(std::string str, size_t nbr);
 
 /*
  ** ft_bzero.cpp

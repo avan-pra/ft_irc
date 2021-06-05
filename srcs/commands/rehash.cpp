@@ -32,6 +32,9 @@ void				close_old_socket(MyServ &serv, t_config_file &new_file)
 			{
 				if (it->first == it2->port)
 				{
+					#ifdef DEBUG
+						std::cerr << "Closing socket listenning on port: " << RED << it->first << NC << std::endl;
+					#endif
 					closesocket(it2->sockfd);
 					it2 = g_serv_sock.erase(it2);
 				}
@@ -61,6 +64,14 @@ void				rehash(MyServ &serv)
 	else
 		new_file.accept_tls = false;
 	start_parse_conf(new_file, serv.get_config_file_name());
+	if (new_file.hostname != serv.get_hostname())
+	{
+		config_error("HOSTNAME has changed in program runtime, revert it back to: " + serv.get_hostname(), 0);
+		throw ConfigFileException();
+	}
+	#ifdef DEBUG
+		print_config_file(new_file);
+	#endif
 	//close old sockets not present in new config file
 	close_old_socket(serv, new_file);
 	//add new ports and launch them
