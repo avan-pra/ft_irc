@@ -1,7 +1,7 @@
 #ifndef IRCSERV_HPP
 # define IRCSERV_HPP
 
-//#define MUTEX
+#define MUTEX
 
 # define closesocket(param) close(param)
 # define INVALID_SOCKET -1

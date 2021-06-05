@@ -70,7 +70,7 @@ void	send_privmsg_to_channel(const std::vector<std::string> params, std::list<Cl
 	{
 		if (*g_vChannel[chan_id]._users[i] != *client_it)
 		{
-			if (g_vChannel[chan_id]._users[i]->get_hopcount() > 0)
+			if ((g_vChannel[chan_id]._users[i]->get_hopcount() > 0) && (g_vChannel[chan_id].get_name()[0] != '&')) //??
 			{
 				for (k = 0; i < already_server_send.size(); i++)
 				{

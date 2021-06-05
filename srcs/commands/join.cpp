@@ -88,6 +88,8 @@ static int	try_enter_chan(const std::map<std::string, std::string>::iterator it,
 {
 	int		i = find_channel(it->first);
 
+	if ((client_it->get_hopcount() > 0) && (g_vChannel[i].get_name()[0] == '&'))
+		return -1;
 	for (std::deque<Client*>::iterator ite = g_vChannel[i]._users.begin(); ite != g_vChannel[i]._users.end(); ite++)
 	{
 		if (*ite == &(*client_it))
@@ -243,6 +245,7 @@ void	join_command(const std::string &line, std::list<Server>::iterator server_it
 	if (params.size() < 3)
 		return ;
 	client_it = find_client_by_iterator(&params[0][1]);
+
 	chan_list = ft_split(params[2], ",");
 	send_to_all_server(line + "\r\n", server_it);
 	for (size_t i = 0; i < chan_list.size(); i++)
@@ -251,7 +254,9 @@ void	join_command(const std::string &line, std::list<Server>::iterator server_it
 			chan_name = chan_list[i].substr(0, pos);
 		else
 			chan_name = chan_list[i];
-		if ((chan_id = find_channel(chan_name)) != -1)
+		if (g_vChannel[chan_id].get_name()[0] == '&')
+			;
+		else if ((chan_id = find_channel(chan_name)) != -1)
 		{
 			std::string		rpl;
 
