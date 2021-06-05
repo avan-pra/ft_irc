@@ -11,12 +11,12 @@ void	ping_command(const std::string &line, std::list<Client>::iterator client_it
 		return ;
 	}
 	else if (arg.size() == 2)
-		client_it->push_to_buffer(":" + serv.get_hostname() + " PONG " + serv.get_hostname() + " " + arg[1] + "\r\n");
+		client_it->push_to_buffer(":" + serv.get_hostname() + " PONG " + serv.get_hostname() + " :" + arg[1] + "\r\n");
 	else //3 arg avec ducoup le server a qui il faut envoyer le ping
 	{
 		if (arg[2] == serv.get_hostname())
 		{
-			client_it->push_to_buffer(":" + serv.get_hostname() + " PONG " + serv.get_hostname() + " " + arg[1] + "\r\n");
+			client_it->push_to_buffer(":" + serv.get_hostname() + " PONG " + serv.get_hostname() + " :" + arg[1] + "\r\n");
 			return ;
 		}
 
@@ -38,23 +38,27 @@ void	ping_command(const std::string &line, std::list<Server>::iterator server_it
 {
 	std::vector<std::string> arg = ft_split(line, " ");
 
-	if (arg.size() == 1)
+	if (arg.size() <= 2)
 	{
 		server_it->push_to_buffer(create_msg(409, server_it, serv));
 		return ;
 	}
-	else if (arg.size() == 2)
-		server_it->push_to_buffer(":" + serv.get_hostname() + " PONG " + serv.get_hostname() + " " + arg[1] + "\r\n");
+
+	std::string nick = arg[0].substr(arg[0].find_first_of(':') + 1, arg[0].size());
+	if (nick == "")
+		nick = "*";
+
+	else if (arg.size() == 3)
+		server_it->push_to_buffer(":" + serv.get_hostname() + " PONG " + nick + " " + arg[2] + "\r\n");
 	else //		:avan PING teest :irc.ircgod.com
 	{
 		std::string target = line.substr(line.find_first_of(':', 1) + 1, line.size());
-
 		if (target == "")
 			target = "*";
 
 		if (target == serv.get_hostname())
 		{
-			server_it->push_to_buffer(":" + serv.get_hostname() + " PONG " + serv.get_hostname() + " " + arg[2] + "\r\n");
+			server_it->push_to_buffer(":" + serv.get_hostname() + " PONG " + nick + " :" + arg[2] + "\r\n");
 			return ;
 		}
 

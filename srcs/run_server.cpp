@@ -89,7 +89,11 @@ void		ping_if_away(Connection &co, const MyServ &serv)
 	//si je lui ai pas deja envoye un ping et si ca fait plus de 30sec que je l'ai pas ping
 	if (co.get_ping_status() == false && time_compare - co.get_last_activity() > serv.get_ping())
 	{
-		co.push_to_buffer("PING :" + serv.get_hostname() + "\r\n");
+		Connection * tmp = &co;
+		if (dynamic_cast<Server*> (tmp) != 0)
+			co.push_to_buffer(":" + serv.get_hostname() + " PING :" + serv.get_hostname() + "\r\n");
+		else
+			co.push_to_buffer("PING :" + serv.get_hostname() + "\r\n");
 		co.set_ping_status(true);
 	}
 }
