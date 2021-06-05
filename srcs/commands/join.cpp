@@ -195,8 +195,11 @@ void	join_command(const std::string &line, std::list<Client>::iterator client_it
 			send_to_channel_local(("JOIN " + it->first), client_it, find_channel(it->first), true);
 			names_command("names " + it->first, client_it, serv);
 			send_channel_time(client_it, serv, it->first);
-			rpl = ":" + client_it->get_nickname() + " JOIN " + it->first + "\x07o\r\n";
-			send_to_all_server(rpl, g_all.g_aServer.begin(), true);
+			if (it->first[0] != '&')
+			{
+				rpl = ":" + client_it->get_nickname() + " JOIN " + it->first + "\x07o\r\n";
+				send_to_all_server(rpl, g_all.g_aServer.begin(), true);
+			}
 		}
 		else
 		{

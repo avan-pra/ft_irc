@@ -43,23 +43,26 @@ void	share_channel(std::list<Server>::iterator &server_it, const MyServ &serv)
 
 	for (std::deque<Channel>::iterator it = g_vChannel.begin(); it != g_vChannel.end(); it++)
 	{
-		rpl = ":" + serv.get_hostname() + " NJOIN " + it->get_name() + " :";
-		for (std::deque<Client*>::iterator cli_it = it->_users.begin(); cli_it != it->_users.end(); cli_it++)
+		if (it->get_name()[0] != '&')
 		{
-			if (cli_it != it->_users.begin())
-				rpl += ",";
-			if (it->is_operator(*cli_it))
-				rpl += "@";
-			else if (it->is_voice(*cli_it))
-				rpl += "+";
-			rpl += (*cli_it)->get_nickname();
+			rpl = ":" + serv.get_hostname() + " NJOIN " + it->get_name() + " :";
+			for (std::deque<Client*>::iterator cli_it = it->_users.begin(); cli_it != it->_users.end(); cli_it++)
+			{
+				if (cli_it != it->_users.begin())
+					rpl += ",";
+				if (it->is_operator(*cli_it))
+					rpl += "@";
+				else if (it->is_voice(*cli_it))
+					rpl += "+";
+				rpl += (*cli_it)->get_nickname();
+			}
+			rpl += "\r\n";
+			server_it->push_to_buffer(rpl);
+			rpl = "";
+			rpl += ":" + serv.get_hostname() + " MODE " + it->get_name() + " " + it->get_mode() + "\r\n";
+			server_it->push_to_buffer(rpl);
+			rpl = "";
 		}
-		rpl += "\r\n";
-		server_it->push_to_buffer(rpl);
-		rpl = "";
-		rpl += ":" + serv.get_hostname() + " MODE " + it->get_name() + " " + it->get_mode() + "\r\n";
-		server_it->push_to_buffer(rpl);
-		rpl = "";
 	}
 }
 

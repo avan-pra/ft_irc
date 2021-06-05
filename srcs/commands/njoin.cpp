@@ -51,6 +51,9 @@ void	njoin_command(const std::string &line, std::list<Server>::iterator server_i
 	if (params[2][0] == '&')
 		return ;
 	nick_list = &params[3][1];
-	add_channel(params[2], nick_list);
-	server_it->push_to_buffer(":" + serv.get_hostname() + " MODE " + params[2] + "\r\n");
+	if (params[2][0] != '&')
+	{
+		add_channel(params[2], nick_list);
+		server_it->push_to_buffer(":" + serv.get_hostname() + " MODE " + params[2] + "\r\n");
+	}
 }

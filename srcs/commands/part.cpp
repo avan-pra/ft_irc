@@ -52,8 +52,11 @@ void		part_command(const std::string &line, std::list<Client>::iterator client_i
 			}
 			chann_idx = check_channel_exists(channel_name, client_it, serv);
 			check_usr_in_channel(chann_idx, client_it, serv);
-			send_to_all_server(":" + client_it->get_nickname() + " PART " + g_vChannel[chann_idx].get_name() +
-					" :" + output + "\r\n", g_all.g_aServer.begin(), true);
+			if (g_vChannel[chann_idx].get_name()[0] != '&')
+			{
+				send_to_all_server(":" + client_it->get_nickname() + " PART " + g_vChannel[chann_idx].get_name() +
+						" :" + output + "\r\n", g_all.g_aServer.begin(), true);
+			}
 			send_to_channel_local(("PART " + g_vChannel[chann_idx].get_name() + " :" + output),
 																	client_it, chann_idx, true);
 
