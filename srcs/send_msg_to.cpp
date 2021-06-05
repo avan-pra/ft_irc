@@ -91,7 +91,6 @@ void	send_to_channel_local(const std::string &msg, Client *client_it, const int 
 	full_msg = ":" + client_it->get_nickname() + "!" + client_it->get_username() +
 				"@" + client_it->get_hostname() + " " + msg + "\r\n";
 
-	std::cout << full_msg << std::endl;
 	for (size_t i = 0; i < g_vChannel[chan_id]._users.size(); i++)
 	{
 		if (to_sender == true || g_vChannel[chan_id]._users[i] != client_it)
