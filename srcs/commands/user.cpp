@@ -55,7 +55,6 @@ static void			set_user(const MyServ &serv, const std::string username, std::stri
 
 void				user_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
 {
-	std::vector<std::string>	params;
 	std::vector<std::string>	args;
 	std::string					realname, line_new;
 
@@ -69,26 +68,24 @@ void				user_command(const std::string &line, std::list<Client>::iterator client
 	{
 		std::string host_name, mode;
 		//Split with : to store already realname
-		params = ft_split(line, " ");
+		args = ft_split(line, " ");
 		//On check si le nombre d'arguments de USER est bon
-		if (params.size() < 5)
+		if (args.size() < 5)
 		{
 			client_it->push_to_buffer(create_msg(461, client_it, serv, "USER"));
 			throw std::exception();
 		}
-		params = ft_split(line, ":");
+
 		//On check si le realname a été donné ou pas
-		if (params.size() != 2)
+		if (line.substr(line.find(":")).size() < 1)
 		{
 			client_it->push_to_buffer(create_msg(461, client_it, serv, "USER"));
 			throw std::exception();
 		}
-		realname = params[1];
-		line_new = params[0];
+		realname = line.substr(line.find(":") + 1);
 		//On resplit par ' ' la premiere string recuperee par le premier split
 		//comme ca les parametres sont bien separes
-		args = ft_split(line_new, " ");
-		
+
 		if (client_it->is_registered())
 		{
 			client_it->push_to_buffer(create_msg(462, client_it, serv, realname));
