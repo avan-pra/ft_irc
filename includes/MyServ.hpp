@@ -214,7 +214,7 @@ class MyServ
 		bool				get_pass_oper() const { return _pass_oper; }
 		bool				get_accept_tls() const { return _accept_tls; }
 		bool				get_allow_ipv6() const { return _allow_ipv6; }
-		int					get_client_limit() { return _client_limit; }
+		int					get_client_limit() const { return _client_limit; }
 		long				get_ping() const { return _ping; }
 		long				get_t_timeout() const { return _t_timeout; }
 		long				get_timeout_register() const { return _timeout_register; }

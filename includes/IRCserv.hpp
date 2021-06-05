@@ -174,7 +174,8 @@ bool		check_register_timeout(Connection &co, const MyServ &serv);
 void		accept_connection(MyServ &serv);
 void		try_accept_connection(MyServ &serv);
 std::string	custom_ntoa(uint32_t in);
-uint32_t reverse_custom_ntoa(std::string in);
+uint32_t	reverse_custom_ntoa(std::string in);
+void		check_slot_availability(std::list<Client>::iterator &client_it, const MyServ &serv);
 
 /*
 ** parse_conf.cpp

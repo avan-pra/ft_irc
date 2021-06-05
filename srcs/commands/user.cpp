@@ -100,6 +100,7 @@ void				user_command(const std::string &line, std::list<Client>::iterator client
 			std::string		str_time;
 			time_t			tmp = serv.get_start_time();
 
+			check_slot_availability(client_it, serv);
 			str_time = get_created_time();
 			str_time = ctime(&tmp);
 			if (str_time[str_time.size() - 1] == '\n')
@@ -119,7 +120,7 @@ void				user_command(const std::string &line, std::list<Client>::iterator client
 			nick_msg += client_it->get_mode() + " :" + client_it->get_realname() + "\r\n";
 			send_to_all_server(nick_msg, g_all.g_aServer.begin(), true);
 		}
-
 	}
-	catch(const std::exception &e) {return ; }
+	catch (const QuitCommandException &e) { throw QuitCommandException(); }
+	catch (const std::exception &e) { return ; }
 }

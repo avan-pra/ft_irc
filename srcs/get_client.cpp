@@ -23,6 +23,20 @@ uint32_t reverse_custom_ntoa(std::string in)
 	return buffer;
 }
 
+void		check_slot_availability(std::list<Client>::iterator &client_it, const MyServ &serv)
+{
+	size_t comp = serv.get_client_limit();
+
+	if (g_all.g_aUnregistered.size() + g_all.g_aClient.size() > comp)
+	{
+		std::string							sample = std::string(":" + serv.get_hostname() + " " + "005" + " ");
+
+		sample += RPL_BOUNCE(std::string("chat.freenode.net"), std::string("6667"));
+		client_it->push_to_buffer(sample);
+		throw QuitCommandException();
+	}
+}
+
 void		accept_connection(MyServ &serv, t_sock &sock)
 {
 	Unregistered	new_connection;
@@ -91,16 +105,6 @@ void		accept_connection(MyServ &serv, t_sock &sock)
 	//push de <fd, User> sur le vecteur
 	g_all.g_aUnregistered.push_back(new_connection);
 
-	if (g_all.g_aUnregistered.size() + g_all.g_aClient.size() > (size_t)serv.get_client_limit())
-	{
-		std::list<Unregistered>::iterator		it = g_all.g_aUnregistered.end()--;
-		std::string							sample = std::string(":" + serv.get_hostname() + " " + "5" + " ");
-
-		sample += RPL_BOUNCE(std::string("chat.freenode.net"), std::string("6667"));
-		it->push_to_buffer(sample);
-		it->send_packets();
-		disconnect(&(*it), it);
-	}
 	//send motd a l'arrivee du client sur le server
 	// motd_command("", g_aClient.size() - 1, serv);
 	//sort en ordre decroissant en fonction de la key(ou first)
