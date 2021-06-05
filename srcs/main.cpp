@@ -11,8 +11,13 @@ void		sig_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		disconnect_all();
-		exit(0);
+		#ifndef MUTEX
+			g_all.run_server = false;
+		#endif
+		#ifdef MUTEX
+			disconnect_all();
+			exit(0);
+		#endif
 	}
 	else if (signal == SIGPIPE)
 	{
@@ -27,6 +32,12 @@ int			main(int argc, char **argv)
 	MyServ				serv;
 	std::map<int, bool>	m_port;
 
+	#ifndef MUTEX
+		g_all.run_server = true;
+	#endif
+	#ifdef MUTEX
+		pthread_mutex_init(&g_all.run_server, NULL);
+	#endif
 	std::srand(time(0) + ::getpid());
 	SSL_library_init();
 	SSL_load_error_strings();
@@ -68,7 +79,6 @@ int			main(int argc, char **argv)
 		catch (const DieException &e)
 		{
 			disconnect_all();
-			std::cerr << e.what() << std::endl;
 			return (0);
 		}
 		catch (const RehashException &e)

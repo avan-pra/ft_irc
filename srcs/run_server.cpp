@@ -179,7 +179,17 @@ void run_server(MyServ &serv)
 		re_init_serv_class(serv);
 		push_fd_to_set(serv);
 
+		#ifdef MUTEX
+			pthread_mutex_unlock(&g_all.run_server);
+		#endif
 		readyfd = select(serv.get_max_fd() + 1, &serv.get_readfs(), &serv.get_writefs(), &serv.get_exceptfs(), &serv.get_timeout());
+		#ifndef MUTEX
+			if (g_all.run_server == false)
+				throw DieException();
+		#endif
+		#ifdef MUTEX
+			pthread_mutex_lock(&g_all.run_server);
+		#endif
 
 		try_accept_connection(serv);
 		iterate_unregistered(serv);

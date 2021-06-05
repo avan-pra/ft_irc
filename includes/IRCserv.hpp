@@ -1,6 +1,8 @@
 #ifndef IRCSERV_HPP
 # define IRCSERV_HPP
 
+//#define MUTEX
+
 # define closesocket(param) close(param)
 # define INVALID_SOCKET -1
 # define SOCKET_ERROR -1
@@ -99,6 +101,10 @@ typedef struct	s_discon_id
 	std::string	realname;
 }				t_discon_id;
 
+#ifdef MUTEX
+	# include <pthread.h>
+#endif
+
 typedef struct	s_connect
 {
 	std::list<Unregistered>						g_aUnregistered;
@@ -106,6 +112,13 @@ typedef struct	s_connect
 	std::list<Client>							g_aClient;
 	std::list<Service>							g_aService;
 	std::list<Server>							g_aServer;
+
+	#ifndef MUTEX
+		bool				run_server;
+	#endif
+	#ifdef MUTEX
+		pthread_mutex_t		run_server;
+	#endif
 }				t_connect;
 
 extern std::deque<t_sock>			g_serv_sock;

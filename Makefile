@@ -56,7 +56,6 @@ SRC_CMD = nick.cpp user.cpp time.cpp \
 
 OBJ_CMD = $(SRCS_CMD:.cpp=.o)
 
-
 #config folder
 SRCS_CONF = $(addprefix $(DIR_CONF), $(SRC_CONF))
 DIR_CONF = ./srcs/config/
@@ -66,12 +65,11 @@ OBJ_CONF = $(SRCS_CONF:.cpp=.o)
 
 all : $(NAME)
 
-$(NAME) : $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF)
+$(NAME)	: $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF)
 		$(C++) $(FLAGS) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) -o $(NAME)
 
-42 : $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF)
+42		: $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF)
 		$(C++) $(FLAGS42) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) -o $(NAME)
-
 
 certs :
 		openssl req -x509 -nodes -days 365 -newkey rsa:4096 \

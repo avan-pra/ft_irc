@@ -162,6 +162,10 @@ void	disconnect(Unregistered *co, std::list<Unregistered>::iterator &unregistere
 
 void		disconnect_all()
 {
+	#ifdef MUTEX
+		pthread_mutex_lock(&g_all.run_server);
+	#endif
+	std::cout << "|Stopping server" << std::endl;
 	for (std::list<Server>::iterator it = g_all.g_aServer.begin(); it != g_all.g_aServer.end(); )
 	{
 		if (it->get_hopcount() == 1)
