@@ -78,6 +78,9 @@ int			main(int argc, char **argv)
 		}
 		catch (const DieException &e)
 		{
+			#ifdef MUTEX
+				pthread_mutex_unlock(&g_all.run_server);
+			#endif
 			disconnect_all();
 			return (0);
 		}
