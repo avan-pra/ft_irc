@@ -14,7 +14,7 @@ It supports multi server, service and most clients
 # Install 
 linux  
 `sudo apt install -y libssl-dev && make`
-or `sudo make install && make`
+or `make install && make`
 
 macos  
 `(mettez la ligne svp)`
@@ -23,6 +23,11 @@ macos
 `brew install openssl && (mettre la ligne d'export) && make 42`
 
 # Run
+
+Generate SSL certs for tls communication (optional):  
+`make certs`  
+and then run:
+
 ```
 ./ircserv <config_filename>
 ```
