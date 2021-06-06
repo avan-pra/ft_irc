@@ -106,11 +106,6 @@ static bool			switch_mode(const char c, std::string arg, const size_t &chann_idx
 			ret = false;
 			break;
 		}
-		case 'q':
-		{
-			ret = false;
-			break;
-		}
 		case 'p':
 		{
 			if (g_vChannel[chann_idx].is_mode('s'))
@@ -219,7 +214,12 @@ static void			set_chann_mode(const std::string &line, const std::string mode, co
 			sign = '+';
 		else
 		{
-			ret = (args.size()) ? switch_mode(mode[i], "", chann_idx, client_it, sign, serv) : switch_mode(mode[i], args[j], chann_idx, client_it, sign, serv);
+			if (std::string(CHANNEL_VALID_MODE).find(mode[i]) == false)
+				;
+			else if (args.empty())
+				ret = switch_mode(mode[i], "", chann_idx, client_it, sign, serv);
+			else
+				ret = switch_mode(mode[i], args[j], chann_idx, client_it, sign, serv);
 			if ( ret == true)
 				j++;
 		}

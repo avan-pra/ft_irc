@@ -12,7 +12,7 @@
 
 //define valid USER modes
 # define USER_VALID_MODE "aiwroOs"
-# define CHANNEL_VALID_MODE "OovaimnqpsrtklbeI"
+# define CHANNEL_VALID_MODE "OovaimnpsrtklbeI"
 
 /*
 **  error for command file
