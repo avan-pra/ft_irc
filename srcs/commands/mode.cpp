@@ -74,7 +74,7 @@ static std::string	set_output_mode(const size_t &chann_idx)
 	return	output;
 }
 
-static bool			switch_mode(const char c, const std::string arg, const size_t &chann_idx,
+static bool			switch_mode(const char c, std::string arg, const size_t &chann_idx,
 						std::list<Client>::iterator client_it, const char &sign, const MyServ &serv)
 {
 	bool				ret = true;
@@ -154,6 +154,8 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 		{
 			if (is_user_in_chan(chann_idx, arg) == false)
 			{
+				if (arg.empty())
+					arg = "*";
 				client_it->push_to_buffer(create_msg(441, client_it, serv, arg, g_vChannel[chann_idx].get_name()));
 				return false;
 			}
@@ -169,6 +171,8 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 		{
 			if (is_user_in_chan(chann_idx, arg) == false)
 			{
+				if (arg.empty())
+					arg = "*";
 				client_it->push_to_buffer(create_msg(441, client_it, serv, arg, g_vChannel[chann_idx].get_name()));
 				return false;
 			}
@@ -215,7 +219,7 @@ static void			set_chann_mode(const std::string &line, const std::string mode, co
 			sign = '+';
 		else
 		{
-			ret = (args.empty()) ? switch_mode(mode[i], "", chann_idx, client_it, sign, serv) : switch_mode(mode[i], args[j], chann_idx, client_it, sign, serv);
+			ret = (args.size()) ? switch_mode(mode[i], "", chann_idx, client_it, sign, serv) : switch_mode(mode[i], args[j], chann_idx, client_it, sign, serv);
 			if ( ret == true)
 				j++;
 		}
