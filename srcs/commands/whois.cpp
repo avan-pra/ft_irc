@@ -19,6 +19,7 @@ static void		whois_channel(std::list<Client>::iterator &client_it, std::list<Cli
 						output += "+";
 					output += g_vChannel[i].get_name();
 					client_it->push_to_buffer(create_msg(319, client_it, serv, target->get_nickname(), output));
+					output = "";
 				}
 			}
 		}
