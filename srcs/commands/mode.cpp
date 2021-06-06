@@ -40,7 +40,7 @@ static void		set_usr_mode(const std::string mode, std::list<Client>::iterator cl
 			//mode char not valid
 			if (((strchr(USER_VALID_MODE, mode[i]) == false) || (mode[i] == 'a' && client_it->get_hopcount() == 0)))
 			{
-				std::string str = " ";
+				std::string str = "";
 				str.push_back(mode[i]);
 				client_it->push_to_buffer(create_msg(472, client_it, serv, str));
 			}
@@ -177,7 +177,7 @@ static bool			switch_mode(const char c, const std::string arg, const size_t &cha
 		}
 		default:
 		{
-			std::string str = " ";
+			std::string str = "";
 			str.push_back(c);
 			client_it->push_to_buffer(create_msg(472, client_it, serv, str));
 			return false;
