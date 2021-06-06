@@ -130,9 +130,9 @@ static bool			switch_mode(const char c, std::string arg, const size_t &chann_idx
 			if (sign == '+' && !arg.empty())
 				g_vChannel[chann_idx].set_password(arg);
 			else if (sign == '-')
-				break;
-			else
-				return	false;
+				g_vChannel[chann_idx].set_password("");
+			else if (arg.empty())
+				return false;
 			break;
 		}
 		case 'l':
@@ -140,9 +140,9 @@ static bool			switch_mode(const char c, std::string arg, const size_t &chann_idx
 			if (sign == '+' && !arg.empty())
 				g_vChannel[chann_idx].set_limit(ft_atoi(arg));
 			else if (sign == '-')
-				break;
-			else
-				return	false;
+				g_vChannel[chann_idx].set_limit(0);
+			else if (arg.empty())
+				return false;
 			break;
 		}
 		case 'o':
@@ -152,7 +152,7 @@ static bool			switch_mode(const char c, std::string arg, const size_t &chann_idx
 				if (arg.empty())
 					arg = "*";
 				client_it->push_to_buffer(create_msg(441, client_it, serv, arg, g_vChannel[chann_idx].get_name()));
-				return false;
+				return true;
 			}
 			mode_o(client_it, chann_idx, sign, arg);
 			break;
@@ -169,7 +169,7 @@ static bool			switch_mode(const char c, std::string arg, const size_t &chann_idx
 				if (arg.empty())
 					arg = "*";
 				client_it->push_to_buffer(create_msg(441, client_it, serv, arg, g_vChannel[chann_idx].get_name()));
-				return false;
+				return true;
 			}
 			mode_v(client_it, chann_idx, sign, arg);
 			break;
@@ -198,7 +198,7 @@ static void			set_chann_mode(const std::string &line, const std::string mode, co
 {
 	char				sign = '+';
 	std::string			tmp;
-	int					j = 0;
+	size_t				j = 0;
 	bool				ret;
 
 	if (g_vChannel[chann_idx].is_operator(&(*client_it)) == false)
@@ -216,11 +216,11 @@ static void			set_chann_mode(const std::string &line, const std::string mode, co
 		{
 			if (std::string(CHANNEL_VALID_MODE).find(mode[i]) == false)
 				;
-			else if (args.empty())
+			else if (j >= args.size())
 				ret = switch_mode(mode[i], "", chann_idx, client_it, sign, serv);
-			else
+			else if (j < args.size())
 				ret = switch_mode(mode[i], args[j], chann_idx, client_it, sign, serv);
-			if ( ret == true)
+			if (ret == true)
 				j++;
 		}
 	}

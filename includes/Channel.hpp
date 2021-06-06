@@ -64,6 +64,7 @@ class Channel
 			_name = name;
 			_topic = "";
 			time(&_creation);
+			_limit = 0;
 		}
 
 		~Channel() {}
