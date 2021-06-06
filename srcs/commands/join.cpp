@@ -257,7 +257,7 @@ void	join_command(const std::string &line, std::list<Server>::iterator server_it
 			chan_name = chan_list[i].substr(0, pos);
 		else
 			chan_name = chan_list[i];
-		if (g_vChannel[chan_id].get_name()[0] == '&')
+		if (chan_name[0] == '&')
 			;
 		else if ((chan_id = find_channel(chan_name)) != -1)
 		{

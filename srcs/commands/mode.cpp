@@ -220,7 +220,7 @@ static void			set_chann_mode(const std::string &line, const std::string mode, co
 				j++;
 		}
 	}
-	send_to_channel_local("MODE " + g_vChannel[chann_idx].get_name() + " " + g_vChannel[chann_idx].get_mode(), client_it, chann_idx);
+	send_to_channel_local("MODE " + g_vChannel[chann_idx].get_name() + " " + g_vChannel[chann_idx].get_mode(), client_it, chann_idx, true);
 	if (client_it->get_hopcount() == 0)
 		send_to_all_server(":" + client_it->get_nickname() + " " + line + "\r\n", g_all.g_aServer.begin(), true);
 	else

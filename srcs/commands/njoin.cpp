@@ -9,10 +9,8 @@ void	add_channel(std::string &chan_name, std::string &nick_list)
 
 	new_chan.set_name(chan_name);
 	new_chan.set_mode("+");
-	std::cout << nick_list << std::endl;
 	for (std::vector<std::string>::iterator it = nick.begin(); it != nick.end(); it++)
 	{
-		std::cout << "nick try :" << *it << std::endl;
 		if ((*it)[0] == '@' && it->size() > 1)
 		{
 			if ((client_it = find_client_by_iterator(&(*it)[1])) != g_all.g_aClient.end())
