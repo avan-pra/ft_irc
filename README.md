@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="media/icon.png" alt="Girl in a jacket" width="225" style="text-align:center;">
+</p>
+
 # ircgod
 
 ircgod is a plug and play irc server built from scratch in cpp which aim to provide all basic fonctionnality of an irc server.  
