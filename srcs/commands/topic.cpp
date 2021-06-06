@@ -48,7 +48,7 @@ void	change_topic(const std::string &line, std::vector<std::string> params, std:
 		return ;
 	}
 	g_vChannel[chan_id].set_topic(topic);
-	g_vChannel[chan_id].send_to_all(create_full_msg(params, client_it));
+	g_vChannel[chan_id].send_to_all(create_full_name_msg(client_it) + " TOPIC " + params[1] + " :" + topic + "\r\n");
 }
 
 void	topic_command(const std::string &line, std::list<Client>::iterator client_it, const MyServ &serv)
