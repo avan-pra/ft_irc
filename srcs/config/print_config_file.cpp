@@ -60,7 +60,7 @@ void		print_config_file(t_config_file &config_file)
 	}
 	std::cerr << std::endl;
 	
-	std::cerr << "OPER_CREDENTIALS    : ";
+	std::cerr << "OPER_CREDENTIALS    : " << YELLOW;
 	if (config_file.pass_oper == true)
 	{
 		std::cerr << YELLOW << config_file.oper_name << NC << ":" << YELLOW;
