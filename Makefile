@@ -14,7 +14,7 @@ FLAG = -Wall -Werror -Wextra -std=c++98
 
 CXXFLAGS = $(FLAG)
 
-FLAGS = -lssl -lcrypto -ldl -L$(CUR_DIR)/openssl-1.1.1j
+FLAGS = -lssl -lcrypto -ldl
 
 FLAGS42 = -lssl -lcrypto -I${HOME}/.brew/opt/openssl/include -L${HOME}/.brew/opt/openssl/lib
 
