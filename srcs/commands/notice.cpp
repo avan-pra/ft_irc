@@ -40,7 +40,7 @@ void	notice_command(const std::string &line, std::list<Client>::iterator client_
 	{
 		if (check_priv_chan(client_it, id))
 		{
-			send_to_channel_local(create_full_msg(params, client_it), client_it, id, false);
+			send_to_channel_local(line.substr(line.find("NOTICE")), client_it, id, false);
 			send_to_all_server(":" + client_it->get_nickname() + " " + line.substr(line.find("NOTICE"))
 						+ "\r\n", g_all.g_aServer.begin(), true);
 		}
