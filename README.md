@@ -14,10 +14,6 @@ It supports multi server, service and most clients
 # Install 
 linux  
 `sudo apt install -y libssl-dev && make`
-or `make install && make`
-
-macos  
-`(mettez la ligne svp)`
 
 42  
 `brew install openssl && (mettre la ligne d'export) && make 42`
