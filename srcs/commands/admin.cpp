@@ -40,7 +40,6 @@ void	admin_command(const std::string &line, std::list<Client>::iterator client_i
 		while (file)
 		{
 			getline(file, admin_line);
-			std::cout << admin_line << std::endl;
 			if (code == 0 && admin_line != "[ADMIN LOC1]")
 				return;
 			else if (code == 0 && admin_line == "[ADMIN LOC1]")
