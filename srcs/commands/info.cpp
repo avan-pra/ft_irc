@@ -35,7 +35,6 @@ std::string		make_info_str(const MyServ &serv, std::list<Client>::iterator clien
 	if (actual_time[actual_time.size() - 1] == '\n')
 		actual_time.resize(actual_time.size() - 1);
 	file.open(serv.get_info_path().c_str());
-	std::cout << "path = " << serv.get_info_path() << std::endl;
 	if (!file)
 	{
 		return (create_msg(424, client_it, serv, "INFO", serv.get_info_path()));
@@ -66,13 +65,12 @@ std::string		make_info_str(const MyServ &serv, std::list<Client>::iterator clien
 		}
 		if ((pos = find_str(line,"$SERVER_VERSION")) != std::string::npos)
 		{
-			line = line.substr(0, pos) + SERV_VERSION + line.substr(pos + strlen("$SERV_VERSION"));
+			line = line.substr(0, pos) + SERV_VERSION + line.substr(pos + strlen("$SERVER_VERSION"));
 		}
 		if (!full_comment_line)
 			info += create_msg(371, client_it, serv, line);
 		line = "";
 	}
-	std::cout << info;
 	return (info);
 }
 
@@ -97,7 +95,7 @@ std::string		get_created_time()
 	std::string					time;
 	struct stat					file_info;
 
-	if ((fd = open("./Serv", O_RDONLY)) > 0)
+	if ((fd = open("./ircserv", O_RDONLY)) > 0)
 	{
 		fstat(fd, &file_info);
 		time = ctime(&file_info.st_mtime);

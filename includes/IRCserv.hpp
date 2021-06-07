@@ -17,7 +17,7 @@
 
 # define TIMEOUT_REGISTER 60
 
-# define SERV_VERSION "0.9"
+# define SERV_VERSION "1.0"
 
 # define PROTOCOL_VERSION "0210"
 
