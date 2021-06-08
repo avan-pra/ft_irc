@@ -16,7 +16,7 @@ linux
 `sudo apt install -y libssl-dev && make`
 
 42  
-`brew install openssl && (mettre la ligne d'export) && make 42`
+`brew install openssl && export CPPFLAGS=-I$HOME/.brew/opt/openssl/include && make 42`
 
 # Run
 
