@@ -139,7 +139,7 @@ std::string	statsuptime(std::list<Client>::iterator client_it, const MyServ &ser
 
 	seconds = _diff % 60;
 	minutes = (_diff / 60) % 60;
-	hours = (_diff / (60 * 60)) % 60;
+	hours = (_diff / (60 * 60)) % 24;
 	days = (_diff / (60 * 60 * 24));
 	rpl = ft_to_string(days) + " days ";
 	rpl += ft_to_string(hours) + ":";
