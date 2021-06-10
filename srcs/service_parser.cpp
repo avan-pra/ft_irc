@@ -37,13 +37,17 @@ void	service_parser(char *line, std::list<Service>::iterator service_it, MyServ 
 	{
 		build_unfinished_packet(true_line, *service_it, packet.back());
 		clear_empty_packet(packet);
-		for (std::vector<std::string>::iterator str = packet.begin(); str != packet.end(); ++str)
+		for (size_t i = 0; i < packet.size(); ++i)
 		{
-			std::string command = std::string(str->substr(0, str->find(" ", 0)));
+			std::string command = std::string(packet[i].substr(0, packet[i].find(" ", 0)));
 
 			//put to uppercase letter the command (irssi send in lower case for example)
 			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 				*it = std::toupper(*it);
+			
+			for (size_t j = 0; packet[i][j] != ' '; j++)
+				packet[i][j] = std::toupper(packet[i][j]);
+
 			try
 			{
 				service_it->inc_number_of_messages_received();	
@@ -58,7 +62,7 @@ void	service_parser(char *line, std::list<Service>::iterator service_it, MyServ 
 				** or if register) AND if command exist
 				*/
 				if (can_execute(command, service_it, serv) == true)
-					serv.get_command_service().at(command)(*str, service_it, serv);
+					serv.get_command_service().at(command)(packet[i], service_it, serv);
 			}
 			catch (const IncorrectPassException &e) { throw IncorrectPassException(); }
 			catch (const QuitCommandException &e) { throw QuitCommandException(); }

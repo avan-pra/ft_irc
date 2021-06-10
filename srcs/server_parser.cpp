@@ -85,19 +85,21 @@ void		server_parser(char *line, std::list<Server>::iterator server_it, MyServ &s
 		build_unfinished_packet(true_line, *server_it, packet.back());
 		clear_empty_packet(packet);
 
-		for (std::vector<std::string>::iterator str = packet.begin(); str != packet.end(); ++str)
+		for (size_t i = 0; i < packet.size(); ++i)
 		{
-			std::string command = true_command(*str);
+			std::string command = true_command(packet[i]);
 
 			if (std::strcmp(command.c_str(), "329") == 0 || std::strcmp(command.c_str(), "324") == 0)
 			{
-				set_unmoded_channel(*str);
+				set_unmoded_channel(packet[i]);
 			}
 			else
 			{
 				for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 					*it = std::toupper(*it);
 
+				for (size_t j = 0; packet[i][j] != ' '; j++)
+					packet[i][j] = std::toupper(packet[i][j]);
 				// related to stats command
 			try
 			{
@@ -107,13 +109,13 @@ void		server_parser(char *line, std::list<Server>::iterator server_it, MyServ &s
 			catch (const std::exception &e) { }
 
 				if (can_read(command, server_it, serv) == true)
-					serv.get_rpl_server().at(command)(*str, server_it, serv);
+					serv.get_rpl_server().at(command)(packet[i], server_it, serv);
 				else
 				{
 					try
 					{
 						if (can_execute(command, server_it, serv) == true)
-							serv.get_command_server().at(command)(*str, server_it, serv);
+							serv.get_command_server().at(command)(packet[i], server_it, serv);
 					}
 					catch (const DieException &e) { throw DieException(); }
 					catch (const RehashException &e) { throw RehashException(); }

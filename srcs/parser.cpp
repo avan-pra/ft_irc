@@ -70,13 +70,16 @@ void	parser(char *line, std::list<Client>::iterator client_it, MyServ &serv)
 	{
 		build_unfinished_packet(true_line, *client_it, packet.back());
 		clear_empty_packet(packet);
-		for (std::vector<std::string>::iterator str = packet.begin(); str != packet.end(); ++str)
+		for (size_t i = 0; i < packet.size(); ++i)
 		{
-			std::string command = std::string(str->substr(0, str->find(" ", 0)));
+			std::string command = std::string(packet[i].substr(0, packet[i].find(" ", 0)));
 			
 			//put to uppercase letter the command (irssi send in lower case for example)
 			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 				*it = std::toupper(*it);
+
+			for (size_t j = 0; packet[i][j] != ' '; j++)
+				packet[i][j] = std::toupper(packet[i][j]);
 
 			// related to stats command
 			try
@@ -93,7 +96,7 @@ void	parser(char *line, std::list<Client>::iterator client_it, MyServ &serv)
 				** or if register) AND if command exist
 				*/
 				if (can_execute(command, client_it, serv) == true)
-					serv.get_command().at(command)(*str, client_it, serv);
+					serv.get_command().at(command)(packet[i], client_it, serv);
 			}
 			catch (const DieException &e) { throw DieException(); }
 			catch (const RehashException &e) { throw RehashException(); }
