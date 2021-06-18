@@ -310,6 +310,7 @@ void		set_serv_attributes(MyServ &serv);
 ** server_parser.cpp
 */
 void   		server_parser(char *line, std::list<Server>::iterator server_it, MyServ &serv);
+std::string	true_command(const std::string &line);
 
 /*
 ** rehash.cpp 

@@ -39,7 +39,7 @@ void	service_parser(char *line, std::list<Service>::iterator service_it, MyServ 
 		clear_empty_packet(packet);
 		for (size_t i = 0; i < packet.size(); ++i)
 		{
-			std::string command = std::string(packet[i].substr(0, packet[i].find(" ", 0)));
+			std::string command = true_command(packet[i]);
 
 			//put to uppercase letter the command (irssi send in lower case for example)
 			for (std::string::iterator it = command.begin(); it != command.end(); ++it)

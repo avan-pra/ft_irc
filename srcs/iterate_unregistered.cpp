@@ -105,7 +105,7 @@ void	unregistered_parser(char *line, std::list<Unregistered>::iterator unregiste
 		clear_empty_packet(packet);
 		for (std::vector<std::string>::iterator str = packet.begin(); str != packet.end(); ++str)
 		{
-			std::string command = std::string(str->substr(0, str->find(" ", 0)));
+			std::string command = true_command(*str);
 
 			true_line.erase(0, str->size() + 2); //erase the current packet from the starting string
 
