@@ -45,7 +45,7 @@ void	service_parser(char *line, std::list<Service>::iterator service_it, MyServ 
 			for (std::string::iterator it = command.begin(); it != command.end(); ++it)
 				*it = std::toupper(*it);
 			
-			for (size_t j = 0; packet[i][j] != ' '; j++)
+			for (size_t j = 0; packet[i][j] != ' ' && packet[i][j] != '\0'; j++)
 				packet[i][j] = std::toupper(packet[i][j]);
 
 			try
