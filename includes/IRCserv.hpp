@@ -206,6 +206,11 @@ int			ft_atoi(std::string str);
 std::vector<std::string>	ft_split(std::string s, std::string splitter);
 
 /*
+** toup.cpp
+*/
+std::string to_up(std::string &str);
+
+/*
 ** char2hex.cpp
 */
 int		char2hex(char input);

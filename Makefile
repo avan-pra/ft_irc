@@ -35,7 +35,7 @@ OBJ = $(SRCS:.cpp=.o)
 SRCS_LIB = $(addprefix $(DIR_LIB), $(SRC_LIB))
 DIR_LIB = ./srcs/libft/
 SRC_LIB = ft_atoi.cpp ft_bzero.cpp ft_split.cpp char2hex.cpp ft_to_string.cpp \
-		  is_number.cpp
+		  is_number.cpp toup.cpp
 
 OBJ_LIB = $(SRCS_LIB:.cpp=.o)
 

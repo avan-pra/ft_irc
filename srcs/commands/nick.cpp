@@ -34,13 +34,20 @@ static std::string	check_username(const std::string &str, std::list<Client>::ite
 
 static void	check_username_ownership(std::string str, std::list<Client>::iterator client_it, const MyServ &serv)
 {
+	//create a copy of the nick and put it in uppercase for comparison
+	std::string db_nick;
+	std::string new_nick = str;
+
+	to_up(new_nick);
 	for (std::list<Client>::iterator it = g_all.g_aClient.begin(); it != g_all.g_aClient.end(); ++it)
 	{
 		if (&(*it) != &(*client_it))
 		{
-			if (it->get_nickname() == str)
+			db_nick = it->get_nickname();
+			to_up(db_nick);
+			if (db_nick == new_nick)
 			{
-				client_it->push_to_buffer(create_msg(433, client_it, serv, str)); throw std::exception();
+				client_it->push_to_buffer(create_msg(433, client_it, serv, it->get_nickname())); throw std::exception();
 			}
 		}
 	}
