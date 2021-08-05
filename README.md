@@ -32,3 +32,4 @@ Preconfigured config file can already be found under the conf directory but we a
 
 # TODO
 Handle all vector to connection as connection * (instead of the connection class directly)
+Fix client casing check in multi server (comparison in the same casing via to_up())
