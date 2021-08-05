@@ -34,7 +34,7 @@ static std::string	check_username(const std::string &str, std::list<Client>::ite
 
 static void	check_username_ownership(std::string str, std::list<Client>::iterator client_it, const MyServ &serv)
 {
-	//create a copy of the nick and put it in uppercase for comparison
+	//create a copy of the nick and put it in uppercase for comparison (to_up function few lines below)
 	std::string db_nick;
 	std::string new_nick = str;
 
