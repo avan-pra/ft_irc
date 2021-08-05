@@ -28,3 +28,7 @@ and then run:
 ./ircserv <config_filename>
 ```
 Preconfigured config file can already be found under the conf directory but we advise you to fork sample.conf and modify it to your convenience.
+
+
+# TODO
+Handle all vector to connection as connection * (instead of the connection class directly)
