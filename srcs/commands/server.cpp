@@ -7,8 +7,9 @@ void	share_client(std::list<Server>::iterator &server_it, const MyServ &serv)
 	{
 		if (client_it->is_registered() == true)
 		{
-			std::string		rpl = ":" + serv.get_hostname() + " NICK " + client_it->get_nickname() + " 1 " +
-				client_it->get_username() + " " + client_it->get_hostname() + " 1 " + client_it->get_mode() +
+			// not so sure about this especially hopcount and token
+			std::string		rpl = ":" + serv.get_hostname() + " NICK " + client_it->get_nickname() + " " + ft_to_string(client_it->get_hopcount()) +  " " +
+				client_it->get_username() + " " + client_it->get_hostname() + " " + ft_to_string(client_it->get_server_token()) + " " + client_it->get_mode() +
 				" :" + client_it->get_realname() + "\r\n";
 			server_it->push_to_buffer(rpl);
 		}
