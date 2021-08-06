@@ -13,7 +13,7 @@ It supports multi server, service and most clients
 
 # Install 
 linux  
-`sudo apt install -y libssl-dev && make`
+`sudo apt install -y libssl-dev make clang && make`
 
 42  
 `brew install openssl && export CPPFLAGS=-I$HOME/.brew/opt/openssl/include && make 42`
