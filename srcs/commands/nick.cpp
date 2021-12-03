@@ -97,7 +97,6 @@ void	nick_command(const std::string &line, std::list<Client>::iterator client_it
 			client_it->push_to_buffer(create_msg(2, client_it, serv, serv.get_hostname(), SERV_VERSION));
 			client_it->push_to_buffer(create_msg(3, client_it, serv, str_time));
 			client_it->push_to_buffer(create_msg(4, client_it, serv, serv.get_hostname(), SERV_VERSION, USER_VALID_MODE, CHANNEL_VALID_MODE));
-			client_it->push_to_buffer(create_msg(5, client_it, serv, serv.get_hostname(), serv.get_port()));
 
 			motd_command("", client_it, serv);
 			client_it->set_register(true);
