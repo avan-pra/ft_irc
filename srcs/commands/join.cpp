@@ -129,7 +129,7 @@ static void	create_channel(const std::map<std::string, std::string>::iterator it
 
 	chan._users.push_back(&(*client_it));
 	chan._operator.push_back(&(*client_it));
-	chan.set_mode("+");
+	chan.set_mode("+n");
 	g_vChannel.push_back(chan);
 	enter = true;
 }
