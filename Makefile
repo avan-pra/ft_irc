@@ -1,6 +1,6 @@
 NAME = ircserv
 
-CXX = g++
+CXX = clang++
 
 CERT = godirc.crt
 
