@@ -1,6 +1,6 @@
 NAME = ircserv
 
-CXX = clang++
+CXX = g++
 
 CERT = godirc.crt
 
@@ -8,11 +8,9 @@ KEY = godirc.key
 
 CUR_DIR = $(shell pwd)
 
-FLAG = -Wall -Wextra -std=c++98
+CXXFLAGS = -Wall -Wextra -std=c++98
 
-CXXFLAGS = $(FLAG)
-
-FLAGS = -lssl -lcrypto -ldl
+CXXFLAGSLINK = $(CXXFLAGS) -lssl -lcrypto -ldl
 
 FLAGS42 = -lssl -lcrypto -I${HOME}/.brew/opt/openssl/include -L${HOME}/.brew/opt/openssl/lib
 
@@ -64,7 +62,7 @@ OBJ_CONF = $(SRCS_CONF:.cpp=.o)
 all : $(NAME)
 
 $(NAME)	: $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF)
-		$(CXX) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) $(FLAGS) -o $(NAME)
+		$(CXX) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) $(CXXFLAGSLINK) -o $(NAME)
 
 42		: $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF)
 		$(CXX) $(FLAGS42) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) -o $(NAME)

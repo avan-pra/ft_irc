@@ -426,7 +426,7 @@ int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line
 			}
 			case eNETWORK_LOCAL_PASS:
 			{
-				unsigned char	target[32];
+				unsigned char	target[33];
 				int				check = setup_hash_pass(variable, target);
 
 				if (local_pass == true)
@@ -436,7 +436,7 @@ int		set_network_id(t_config_file &config_file, std::fstream &file, int &nb_line
 				if (check == 0)
 					return (1);
 				local_pass = true;
-				std::memcpy(net.local_pass, target, 32);
+				std::memcpy(net.local_pass, target, 33);
 				break ;
 			}
 			case eNETWORK_REMOTE_PASS:

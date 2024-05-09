@@ -44,7 +44,7 @@ struct t_stats
 struct t_networkID
 {
 	std::string		name;
-	unsigned char	local_pass[32];
+	unsigned char	local_pass[33];
 	std::string		remote_pass;
 	std::string		host;
 	int				port;
