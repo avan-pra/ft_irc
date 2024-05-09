@@ -1,8 +1,6 @@
 NAME = ircserv
 
-C++ = clang++
-
-CXX = clang++
+CXX = g++
 
 CERT = godirc.crt
 
@@ -10,7 +8,7 @@ KEY = godirc.key
 
 CUR_DIR = $(shell pwd)
 
-FLAG = -Wall -Werror -Wextra -std=c++98
+FLAG = -Wall -Wextra -std=c++98
 
 CXXFLAGS = $(FLAG)
 
@@ -66,10 +64,10 @@ OBJ_CONF = $(SRCS_CONF:.cpp=.o)
 all : $(NAME)
 
 $(NAME)	: $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF)
-		$(C++) $(FLAGS) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) -o $(NAME)
+		$(CXX) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) $(FLAGS) -o $(NAME)
 
 42		: $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF)
-		$(C++) $(FLAGS42) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) -o $(NAME)
+		$(CXX) $(FLAGS42) $(OBJ) $(OBJ_LIB) $(OBJ_CMD) $(OBJ_CONF) -o $(NAME)
 
 certs :
 		openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
